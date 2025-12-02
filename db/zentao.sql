@@ -16488,6 +16488,7 @@ CREATE INDEX `idx_account` ON `zt_mark`(`account`);
 
 INSERT INTO `zt_config`(`vision`, `owner`, `module`, `section`, `key`, `value`) VALUES ('', 'system', 'common', 'global', 'metriclibShowed', 1);
 
+-- DROP TABLE IF EXISTS `zt_ai_teammate`;
 CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(10) NOT NULL DEFAULT 'rnd' COMMENT '员工名称',
@@ -16506,6 +16507,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- DROP TABLE IF EXISTS `zt_ai_task`;
 CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `teammate` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT '执行此任务的数字员工 ID',
@@ -16534,6 +16536,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- DROP TABLE IF EXISTS `zt_ai_chat`;
 CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `type` varchar(50)  NOT NULL DEFAULT '' COMMENT '对话类型 chat(用户普通聊天)、task(任务处理)、agent(禅道智能体)、miniprogram(通用智能体)',
@@ -16553,6 +16556,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- DROP TABLE IF EXISTS `zt_ai_chat_message`;
 CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `chatID` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT '对话 ID',
