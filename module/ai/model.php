@@ -1633,6 +1633,27 @@ class aiModel extends model
     }
 
     /**
+     * 批量获取智能体列表
+     * Get agents by IDs.
+     *
+     * @param  array $ids 智能体 ID 数组
+     * @access public
+     * @return array
+     */
+    public function getAgentsByIDs(array $ids): array
+    {
+        if(empty($ids)) return [];
+
+        $agents = $this->dao->select('id, name')
+            ->from('zt_ai_prompt')
+            ->where('id')->in($ids)
+            ->andWhere('deleted')->eq('0')
+            ->fetchAll('id', false);
+
+        return $agents;
+    }
+
+    /**
      * Create a prompt.
      *
      * @param  object    $prompt
