@@ -16505,7 +16505,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
   `editedDate` datetime DEFAULT NULL COMMENT '编辑时间',
   `deleted` enum('0','1') NOT NULL DEFAULT '0' COMMENT '是否已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB;
 
 -- DROP TABLE IF EXISTS `zt_ai_task`;
 CREATE TABLE IF NOT EXISTS `zt_ai_task` (
@@ -16534,7 +16534,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `closedDate` datetime DEFAULT NULL COMMENT '关闭时间',
   `deleted` enum('0','1') NOT NULL DEFAULT '0' COMMENT '是否已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB;
 
 -- DROP TABLE IF EXISTS `zt_ai_chat`;
 CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
@@ -16554,7 +16554,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` enum('0','1') NOT NULL DEFAULT '0' COMMENT '是否已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB;
 
 -- DROP TABLE IF EXISTS `zt_ai_chat_message`;
 CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
@@ -16572,4 +16572,4 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `updatedDate` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB;
