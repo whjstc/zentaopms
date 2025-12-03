@@ -16495,7 +16495,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
   `desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '员工描述',
   `llm` varchar(255) NOT NULL DEFAULT '' COMMENT '执行 AI 任务时默认使用的模型 ID, 对应 ZAI 中的模型 ID',
   `role` varchar(10) NOT NULL DEFAULT '' COMMENT '员工职位, 与 zt_user.role 来源相同',
-  `avatar` text DEFAULT NULL '员工头像, 对应 ZAI 中的头像文件路径',
+  `avatar` text DEFAULT NULL COMMENT '员工头像, 对应 ZAI 中的头像文件路径',
   `agents` varchar(255) NOT NULL DEFAULT '' COMMENT '挂载的智能体ID, 多个用逗号分隔',
   `klibs` varchar(255) NOT NULL DEFAULT '' COMMENT '挂载的知识库ID, 多个用逗号分隔',
   `disabled` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否禁用',
