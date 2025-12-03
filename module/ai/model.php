@@ -1645,10 +1645,10 @@ class aiModel extends model
         if(empty($ids)) return [];
 
         $agents = $this->dao->select('id, name')
-            ->from('zt_ai_prompt')
+            ->from(TABLE_AI_PROMPT)
             ->where('id')->in($ids)
             ->andWhere('deleted')->eq('0')
-            ->fetchAll('id', false);
+            ->fetchAll('id');
 
         return $agents;
     }
