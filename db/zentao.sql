@@ -16494,15 +16494,15 @@ CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
   `name` varchar(10) NOT NULL DEFAULT 'rnd' COMMENT '员工名称',
   `desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '员工描述',
   `llm` varchar(255) NOT NULL DEFAULT '' COMMENT '执行 AI 任务时默认使用的模型 ID, 对应 ZAI 中的模型 ID',
-  `role` char(10) NOT NULL DEFAULT '' COMMENT '员工职位, 与 zt_user.role 来源相同',
-  `avatar` text NULL '员工头像, 对应 ZAI 中的头像文件路径',
+  `role` varchar(10) NOT NULL DEFAULT '' COMMENT '员工职位, 与 zt_user.role 来源相同',
+  `avatar` text DEFAULT NULL '员工头像, 对应 ZAI 中的头像文件路径',
   `agents` varchar(255) NOT NULL DEFAULT '' COMMENT '挂载的智能体ID, 多个用逗号分隔',
   `klibs` varchar(255) NOT NULL DEFAULT '' COMMENT '挂载的知识库ID, 多个用逗号分隔',
-  `disabled` enum('0','1') NOT NULL DEFAULT '0' COMMENT '是否禁用',
+  `disabled` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否禁用',
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建者',
-  `createdDate` datetime NULL COMMENT '创建时间',
+  `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `editedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '编辑者',
-  `editedDate` datetime NULL COMMENT '编辑时间',
+  `editedDate` datetime DEFAULT NULL COMMENT '编辑时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -16522,16 +16522,16 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `klibs` varchar(255) NOT NULL DEFAULT '' COMMENT '实际挂载的知识库ID, 多个用逗号分隔',
   `chatID` int unsigned NOT NULL DEFAULT 0 COMMENT '对话 ID。任务未被队列处理时为 0, 重新处理时会创建新对话并更新此 ID',
   `result` text DEFAULT NULL COMMENT '任务处理结果，包括要操作的禅道对象、要创建的文档等数据，对此次任务的 AI 总结, 使用 JSON 存储',
-  `consumed` float NOT NULL DEFAULT '0' COMMENT '总计耗时',
+  `consumed` decimal(10,2) unsigned NOT NULL DEFAULT 0.00 COMMENT '总计耗时',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '总计消耗 token',
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人/负责人/委派人',
-  `createdDate` datetime NULL COMMENT '创建时间',
+  `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `verifyBy` varchar(30) NOT NULL DEFAULT '' COMMENT '验收者',
-  `verifyDate` datetime NULL COMMENT '验收时间',
+  `verifyDate` datetime DEFAULT NULL COMMENT '验收时间',
   `cancelBy` varchar(30) NOT NULL DEFAULT '' COMMENT '取消者',
-  `cancelDate` datetime NULL COMMENT '取消时间',
+  `cancelDate` datetime DEFAULT NULL COMMENT '取消时间',
   `closedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '关闭者',
-  `closedDate` datetime NULL COMMENT '关闭时间',
+  `closedDate` datetime DEFAULT NULL COMMENT '关闭时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -16551,7 +16551,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
   `externalID` varchar(255) NOT NULL DEFAULT '' COMMENT '外部对话 ID, 目前为 ZAI 中的对话 ID(GUID 格式)',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '对话消耗的 token 数量',
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人',
-  `createdDate` datetime NULL COMMENT '创建时间',
+  `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -16569,7 +16569,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `toolCalls` text DEFAULT NULL COMMENT '当角色为 assistant 时，工具调用列表(JSON 数组)',
   `toolCallID` varchar(255) NOT NULL DEFAULT '' COMMENT '当角色为 system 时，工具调用 ID（GUID 格式），用于向 AI 返回工具调用结果',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '对话消耗的 token 数量',
-  `createdDate` datetime NULL COMMENT '创建时间',
-  `updatedDate` datetime NULL COMMENT '更新时间',
+  `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatedDate` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
