@@ -57,8 +57,6 @@ class teammateMenu extends wg
         CSS;
     }
 
-    private array $modules = array();
-
     private function buildMenuTree(): array
     {
         $modules = $this->prop('modules');
