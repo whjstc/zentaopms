@@ -12,6 +12,7 @@ class teammateMenu extends wg
         'activeKey?: int|string',
         'settingLink?: string',
         'settingApp?: string=""',
+        'link: string',
         'closeLink: string',
         'showDisplay?: bool=true',
         'allText?: string',
@@ -60,6 +61,7 @@ class teammateMenu extends wg
     private function buildMenuTree(): array
     {
         $modules = $this->prop('modules');
+        $link    = $this->prop('link');
         if(count($modules) === 0) return [];
 
         global $app;
@@ -70,7 +72,7 @@ class teammateMenu extends wg
             $selected = $activeKey == $moduleItem->id;
             $treeItems[] = h::a
             (
-                set::href(inlink('teammatetask', array('teammate' => $moduleItem->id))),
+                set::href(sprintf($link, $moduleItem->id)),
                 setClass('w-full py-2.5 px-3 flex items-center gap-2 mt-3 module-item', $selected ? 'selected' : ''),
                 avatar
                 (
