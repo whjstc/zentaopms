@@ -82,6 +82,13 @@ class aiModel extends model
             if($action == 'exportminiprogram')    return common::hasPriv('ai', 'exportMiniProgram') && $isPublished && !$isBuiltIn;
         }
 
+        if(in_array($this->app->rawMethod, array('teammatetask', 'teammatetaskview')))
+        {
+            if($action == 'activateteammatetask') return common::hasPriv('ai', 'activateteammatetask') && $object->status == 'cancel';
+            if($action == 'cancelteammatetask')   return common::hasPriv('ai', 'cancelteammatetask') && $object->status != 'cancel' && $object->status != 'closed';
+            if($action == 'deleteteammatetask')   return common::hasPriv('ai', 'deleteteammatetask');
+        }
+
         return true;
     }
 
