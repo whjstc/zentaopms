@@ -171,7 +171,7 @@ class myZen extends my
         if($this->app->getViewType() == 'mhtml') $recPerPage = 10;
         $pager = pager::init($recTotal, $recPerPage, $pageID);
 
-        $count = array('task' => 0, 'story' => 0, 'bug' => 0, 'case' => 0, 'testtask' => 0, 'requirement' => 0, 'issue' => 0, 'risk' => 0, 'qa' => 0, 'meeting' => 0, 'ticket' => 0, 'feedback' => 0);
+        $count = array('task' => 0, 'teammatetask' => 0, 'story' => 0, 'bug' => 0, 'case' => 0, 'testtask' => 0, 'requirement' => 0, 'issue' => 0, 'risk' => 0, 'qa' => 0, 'meeting' => 0, 'ticket' => 0, 'feedback' => 0);
 
         /* Get the number of tasks assigned to me. */
         $this->loadModel('task')->getUserTasks($this->app->user->account, 'assignedTo', 0, $pager);
@@ -252,6 +252,9 @@ class myZen extends my
 
         if($this->config->edition != 'open')
         {
+            $this->loadModel('ai')->getTeammateTasks(0, 'done', 'id_desc', $pager);
+            $count['teammatetask'] = $pager->recTotal;
+
             $this->loadModel('feedback')->getList('assigntome', 'id_desc', $pager);
             $count['feedback'] = $pager->recTotal;
 
