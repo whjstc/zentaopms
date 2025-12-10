@@ -255,6 +255,7 @@ class myZen extends my
             $this->loadModel('ai')->getTeammateTasks(0, 'done', 'id_desc', $pager);
             $count['teammatetask'] = $pager->recTotal;
 
+            $pager->recTotal = 0;
             $this->loadModel('feedback')->getList('assigntome', 'id_desc', $pager);
             $count['feedback'] = $pager->recTotal;
 
