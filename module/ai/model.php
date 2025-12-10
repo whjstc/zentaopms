@@ -1652,7 +1652,7 @@ class aiModel extends model
         if(empty($ids)) return [];
 
         return $this->dao->select('id, name')
-            ->from(TABLE_AI_PROMPT)
+            ->from(TABLE_AI_AGENT)
             ->where('id')->in($ids)
             ->andWhere('deleted')->eq('0')
             ->fetchAll('id');
