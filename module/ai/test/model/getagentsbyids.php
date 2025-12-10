@@ -17,7 +17,7 @@ cid=15044
 include dirname(__FILE__, 5) . '/test/lib/init.php';
 include dirname(__FILE__, 2) . '/lib/ai.unittest.class.php';
 
-$table = zenData('ai_prompt');
+$table = zenData('ai_agent');
 $table->id->range('1-10');
 $table->name->range('智能体1,智能体2,智能体3,智能体4,智能体5,智能体6,智能体7,智能体8,智能体9,智能体10');
 $table->desc->range('测试描述内容{10}');
