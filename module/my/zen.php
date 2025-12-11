@@ -252,7 +252,7 @@ class myZen extends my
 
         if($this->config->edition != 'open')
         {
-            $this->loadModel('ai')->getTeammateTasks(0, 'done', 'id_desc', $pager);
+            $this->loadModel('aitask')->getList(0, 'done', 'id_desc', $pager);
             $count['teammatetask'] = $pager->recTotal;
 
             $pager->recTotal = 0;

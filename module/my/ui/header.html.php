@@ -17,7 +17,7 @@ if($app->rawMethod == 'work')
 
     if($isOpenedURAndSR !== 0)                       $nameMap = array_merge($nameMap, array('requirement' => 'requirement'));
     if($config->enableER)                            $nameMap = array_merge($nameMap, array('epic' => 'epic'));
-    if($isBiz !== 0 || $isMax !== 0 || $isIPD !== 0) $nameMap = array_merge($nameMap, array('teammatetask' => 'teammatetask', 'feedback' => 'feedback', 'ticket' => 'ticket'));
+    if($isBiz !== 0 || $isMax !== 0 || $isIPD !== 0) $nameMap = array_merge($nameMap, array('aitask' => 'aitask', 'feedback' => 'feedback', 'ticket' => 'ticket'));
     if($isMax !== 0 || $isIPD !== 0)                 $nameMap = array_merge($nameMap, array('issue' => 'issue', 'risk' => 'risk', 'nc' => 'qa', 'myMeeting' => 'meeting'));
     if($isIPD !== 0)                                 $nameMap = array_merge($nameMap, array('demand' => 'demand'));
 
