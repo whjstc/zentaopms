@@ -64,12 +64,14 @@ class teammateMenu extends wg
         $link    = $this->prop('link');
         if(count($modules) === 0) return [];
 
-        global $app;
+        global $app, $lang;
+        $app->loadLang('user');
         $activeKey = $this->prop('activeKey');
         $treeItems = array();
         foreach($modules as $moduleItem)
         {
             $selected = $activeKey == $moduleItem->id;
+            $role     = !empty($lang->user->roleList[$moduleItem->role]) ? $lang->user->roleList[$moduleItem->role] : $moduleItem->role;
             $treeItems[] = h::a
             (
                 set::href(sprintf($link, $moduleItem->id)),
@@ -85,7 +87,7 @@ class teammateMenu extends wg
                 (
                     setClass('text-ellipsis'),
                     p(setClass('text-primary font-bold text-ellipsis'), set::title($moduleItem->name), $moduleItem->name),
-                    p(setClass('text-fore text-ellipsis'), set::title($moduleItem->role), $moduleItem->role),
+                    p(setClass('text-fore text-ellipsis'), set::title($role), $role),
                 )
             );
         }
