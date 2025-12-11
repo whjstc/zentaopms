@@ -34,10 +34,10 @@ su('admin');
 
 global $tester;
 $tester->app->rawModule  = 'my';
-$tester->app->rawMethod  = 'teammatetask';
+$tester->app->rawMethod  = 'work';
 $tester->app->tab        = 'my';
 $tester->app->moduleName = 'my';
-$tester->app->methodName = 'teammatetask';
+$tester->app->methodName = 'work';
 
 $myTest = new myZenTest();
 
