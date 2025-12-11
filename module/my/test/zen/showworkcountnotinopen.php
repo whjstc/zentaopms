@@ -41,10 +41,10 @@ global $config, $tester;
 $config->edition = 'ipd';
 $config->vision  = 'rnd';
 $tester->app->rawModule  = 'my';
-$tester->app->rawMethod  = 'teammatetask';
+$tester->app->rawMethod  = 'work';
 $tester->app->tab        = 'my';
 $tester->app->moduleName = 'my';
-$tester->app->methodName = 'teammatetask';
+$tester->app->methodName = 'work';
 
 $myTest = new myZenTest();
 $count  = array('task' => 0,  'bug' => 0, 'ticket' => 0, 'feedback' => 0);
