@@ -164,7 +164,7 @@ class teammateMenu extends wg
             div
             (
                 setID('teammateMenu'),
-                setClass('module-menu shadow ring rounded bg-canvas col relative scrollbar-thin scrollbar-hover overflow-auto'),
+                setClass('module-menu shadow ring rounded bg-canvas col relative scrollbar-thin scrollbar-hover overflow-auto px-2'),
                 $this->block('header'),
                 $isInSidebar ? null : $header,
                 $this->buildMenuTree(),
