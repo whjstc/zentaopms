@@ -38,7 +38,7 @@ class teammateMenu extends wg
         .module-menu {max-height: calc(100vh - 79px); display: flex; flex-direction: column; min-height: 32px; --menu-selected-bg: none;}
         .module-menu header a:hover > .icon {color: var(--color-primary-600) !important;}
         .module-menu .module-item * {white-space: nowrap;}
-        .module-menu .module-item.selected {background: var(--color-primary-50);}
+        .module-menu .module-item:hover,.module-menu .module-item.selected {background: var(--color-primary-50);}
         .has-module-menu-header #mainMenu {padding-left: 180px;}
         .module-menu-header.is-fixed {position: absolute; left: 0; top: -44px; width: 160px; height: 32px; border: 1px solid var(--color-border); justify-content: center; padding: 0 24px; border-right: 0;}
         .module-menu-header.is-fixed::before,
@@ -58,7 +58,7 @@ class teammateMenu extends wg
         CSS;
     }
 
-    private function buildMenuTree(): array
+    private function buildMenuTree(): node|array
     {
         $modules = $this->prop('modules');
         $link    = $this->prop('link');
@@ -99,7 +99,7 @@ class teammateMenu extends wg
             );
         }
 
-        return $treeItems;
+        return div(setClass('scrollbar-thin scrollbar-hover overflow-auto px-2'), $treeItems);
     }
 
     private function getTitle(): string
@@ -173,7 +173,7 @@ class teammateMenu extends wg
             div
             (
                 setID('teammateMenu'),
-                setClass('module-menu shadow ring rounded bg-canvas col relative scrollbar-thin scrollbar-hover overflow-auto px-2'),
+                setClass('module-menu shadow ring rounded bg-canvas col relative'),
                 $this->block('header'),
                 $isInSidebar ? null : $header,
                 $this->buildMenuTree(),
