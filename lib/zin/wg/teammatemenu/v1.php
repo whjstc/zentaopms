@@ -66,6 +66,7 @@ class teammateMenu extends wg
 
         global $app, $lang;
         $app->loadLang('user');
+        $app->loadLang('aiteammate');
         $activeKey = $this->prop('activeKey');
         $treeItems = array();
         foreach($modules as $moduleItem)
@@ -86,7 +87,13 @@ class teammateMenu extends wg
                 div
                 (
                     setClass('text-ellipsis'),
-                    p(setClass('text-primary font-bold text-ellipsis'), set::title($moduleItem->name), $moduleItem->name),
+                    p
+                    (
+                        setClass('text-primary font-bold text-ellipsis'),
+                        set::title($moduleItem->name),
+                        span($moduleItem->name),
+                        $moduleItem->disabled ? label(setClass('danger-pale text-danger text-sm font-normal ml-2'), $lang->aiteammate->disabled) : null
+                    ),
                     p(setClass('text-fore text-ellipsis'), set::title($role), $role),
                 )
             );
