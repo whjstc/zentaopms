@@ -80,7 +80,7 @@ class teammateMenu extends wg
                 (
                     setStyle(array('min-width' => '36px')),
                     set::src($moduleItem->avatar),
-                    set::test($moduleItem->name),
+                    set::text($moduleItem->name),
                     set::size(36),
                 ),
                 div
