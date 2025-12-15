@@ -16524,8 +16524,10 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `result` text DEFAULT NULL COMMENT '任务处理结果，包括要操作的禅道对象、要创建的文档等数据，对此次任务的 AI 总结, 使用 JSON 存储',
   `consumed` decimal(10,2) unsigned NOT NULL DEFAULT 0.00 COMMENT '总计耗时',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '总计消耗 token',
-  `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人/负责人/委派人',
+  `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人',
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
+  `assignedTo` varchar(30) NOT NULL DEFAULT '' COMMENT '负责人',
+  `assignedDate` datetime DEFAULT NULL COMMENT '指派时间',
   `verifiedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '验收者',
   `verifiedDate` datetime DEFAULT NULL COMMENT '验收时间',
   `activatedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '激活者',
@@ -16554,6 +16556,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '对话消耗的 token 数量',
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人',
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
+  `updateDate` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -16561,7 +16564,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat` (
 -- DROP TABLE IF EXISTS `zt_ai_chat_message`;
 CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `chatID` int unsigned NOT NULL DEFAULT 0 COMMENT '对话 ID',
+  `chat` int unsigned NOT NULL DEFAULT 0 COMMENT '对话 ID',
   `externalID` varchar(255) NOT NULL DEFAULT '' COMMENT '外部对话 ID, 目前为 ZAI 中的对话 ID(GUID 格式)',
   `role` varchar(50)  NOT NULL DEFAULT '' COMMENT '消息角色: user(用户)、assistant(助手)、system(系统)',
   `content` text DEFAULT NULL COMMENT '消息内容',
@@ -16571,7 +16574,12 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `toolCalls` text DEFAULT NULL COMMENT '当角色为 assistant 时，工具调用列表(JSON 数组)',
   `toolCallID` varchar(255) NOT NULL DEFAULT '' COMMENT '当角色为 system 时，工具调用 ID（GUID 格式），用于向 AI 返回工具调用结果',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '对话消耗的 token 数量',
+  `gid` varchar(50) NOT NULL DEFAULT '' COMMENT '全局 ID',
+  `bgid` varchar(50) NOT NULL DEFAULT '' COMMENT '批次 ID',
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
-  `updatedDate` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
+
+RENAME TABLE `zt_ai_prompt` TO `zt_ai_agent`;
+RENAME TABLE `zt_ai_promptrole` TO `zt_ai_agentrole`;
+RENAME TABLE `zt_ai_promptfield` TO `zt_ai_agentfield`;

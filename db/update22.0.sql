@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人',
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `assignedTo` varchar(30) NOT NULL DEFAULT '' COMMENT '负责人',
-  `assignedDate` datetime DEFAULT NULL COMMENT '创建时间',
+  `assignedDate` datetime DEFAULT NULL COMMENT '指派时间',
   `verifiedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '验收者',
   `verifiedDate` datetime DEFAULT NULL COMMENT '验收时间',
   `activatedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '激活者',
