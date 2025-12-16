@@ -16579,7 +16579,3 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
-
-RENAME TABLE `zt_ai_prompt` TO `zt_ai_agent`;
-RENAME TABLE `zt_ai_promptrole` TO `zt_ai_agentrole`;
-RENAME TABLE `zt_ai_promptfield` TO `zt_ai_agentfield`;
