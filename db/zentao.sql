@@ -16522,6 +16522,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `klibs` varchar(255) NOT NULL DEFAULT '' COMMENT '实际挂载的知识库ID, 多个用逗号分隔',
   `chatID` int unsigned NOT NULL DEFAULT 0 COMMENT '对话 ID。任务未被队列处理时为 0, 重新处理时会创建新对话并更新此 ID',
   `result` text DEFAULT NULL COMMENT '任务处理结果，包括要操作的禅道对象、要创建的文档等数据，对此次任务的 AI 总结, 使用 JSON 存储',
+  `userPrompt` text DEFAULT NULL COMMENT '验收不通过时，用户补充的提示词',
   `consumed` decimal(10,2) unsigned NOT NULL DEFAULT 0.00 COMMENT '总计耗时',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '总计消耗 token',
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人',
