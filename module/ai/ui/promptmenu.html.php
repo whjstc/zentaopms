@@ -41,16 +41,29 @@ $promptMenuInject = function()
     $prompts     = $this->ai->filterPromptsForExecution($prompts, true);
     $btnName     = sprintf($this->lang->ai->promptMenu->dropdownTitle, isset($this->lang->ai->dataSource[$module]['common']) ? $this->lang->ai->dataSource[$module]['common'] : '');
 
-    $canAssign = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
-    $teammates = array();
-    if($canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
+    $promptIds     = array_column($prompts, 'id');
+    $hasAssignPriv = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
+    $canAssign     = $hasAssignPriv && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase']) && $this->app->rawMethod == 'view';
+    $teammates     = array();
+    if(!empty($prompts) && $hasAssignPriv) $teammates = $this->loadModel('aiteammate')->browse('0');
 
+    $showTeammates = array_filter($teammates, function($item) use ($promptIds)
+    {
+        if(empty($item->agents)) return false;
+        $agents = array_map('intval', explode(',', $item->agents));
+        return !empty(array_intersect($promptIds, $agents));
+    });
+    if(!empty($showTeammates)) $showTeammates = array_values($showTeammates);
+
+    $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
     if($isDocApp)
     {
         h::globalJS
         (
             'window.docAIPrompts = ' . json_encode($prompts) . ";\n",
-            'window.docAIPromptLang = ' . json_encode(array('dropdownTitle' => $btnName, 'statuses' => $this->lang->ai->prompts->statuses)) . ";\n"
+            'window.docAIPromptLang = ' . json_encode(array('dropdownTitle' => $btnName, 'statuses' => $this->lang->ai->prompts->statuses)) . ";\n",
+            'window.docAITeammates = ' . json_encode($showTeammates) . ";\n",
+            'window.docAITeammateLang = ' . json_encode(array('dropdownTitle' => $assignedBtnName, 'nameLabel' => $this->lang->ai->promptMenu->assignedTo)) . ";\n",
         );
         return;
     }
@@ -89,12 +102,10 @@ $promptMenuInject = function()
     }
     $html .= '</menu></div>';
 
-
-    if($canAssign && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase']) && $this->app->rawMethod == 'view')
+    if(!empty($showTeammates))
     {
-        $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
-        $html           .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
-        foreach($teammates as $teammate)
+        $html .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
+        foreach($showTeammates as $teammate)
         {
             $avatar = html::avatar(array('avatar' => $teammate->avatar, 'account' => $teammate->name), '20', 'rounded-full');
             $name   = sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name);
