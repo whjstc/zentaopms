@@ -97,13 +97,14 @@ $promptMenuInject = function()
         foreach($teammates as $teammate)
         {
             $avatar = html::avatar(array('avatar' => $teammate->avatar, 'account' => $teammate->name), '20', 'rounded-full');
+            $name   = sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name);
             $html  .= '<li class="menu-item">';
             $html  .= html::a
             (
                 helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$currentObjectId"),
-                $avatar . sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name),
+                $avatar . $name,
                 '',
-                "class='prompt' data-placement='left' data-toggle='modal' data-size='sm'",
+                "style='justify-content: flex-start;' data-placement='left' data-toggle='modal' data-size='sm' title='$name'",
                 'btn ghost size-sm font-medium text-left'
             );
             $html .= '</li>';
