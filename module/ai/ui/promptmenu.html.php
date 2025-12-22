@@ -102,7 +102,7 @@ $promptMenuInject = function()
     }
     $html .= '</menu></div>';
 
-    if(!empty($showTeammates))
+    if($canAssign && !empty($showTeammates))
     {
         $html .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
         foreach($showTeammates as $teammate)
