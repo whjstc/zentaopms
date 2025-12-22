@@ -41,6 +41,10 @@ $promptMenuInject = function()
     $prompts     = $this->ai->filterPromptsForExecution($prompts, true);
     $btnName     = sprintf($this->lang->ai->promptMenu->dropdownTitle, isset($this->lang->ai->dataSource[$module]['common']) ? $this->lang->ai->dataSource[$module]['common'] : '');
 
+    $canAssign = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
+    $teammates = array();
+    if($canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
+
     if($isDocApp)
     {
         h::globalJS
@@ -66,10 +70,10 @@ $promptMenuInject = function()
 
     if(empty($prompts)) return;
 
-    $html            = '';
+    $html            = '<div class="flex gap-2">';
     $objectVarName   = empty($menuOptions->objectVarName) ? $menuOptions->module : $menuOptions->objectVarName;
     $currentObjectId = !empty($this->view->$objectVarName) ? $this->view->$objectVarName->id : 0;
-    $html .= '<div class="prompts dropdown inline-block' . ((isset($menuOptions->class) ? ' ' . $menuOptions->class : '') . (isset($menuOptions->dropdownClass) ? ' ' . $menuOptions->dropdownClass : '')) . '"><button class="btn ai-styled size-sm size-sm font-medium' . (isset($menuOptions->buttonClass) ? ' ' . $menuOptions->buttonClass : '') . '" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '">' . $btnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
+    $html .= '<div class="prompts dropdown inline-block' . ((isset($menuOptions->class) ? ' ' . $menuOptions->class : '') . (isset($menuOptions->dropdownClass) ? ' ' . $menuOptions->dropdownClass : '')) . '"><button class="btn ai-styled size-sm size-sm font-medium' . (isset($menuOptions->buttonClass) ? ' ' . $menuOptions->buttonClass : '') . '" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-lightning"></i>' . $btnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
     foreach($prompts as $prompt)
     {
         $html .= '<li class="menu-item">';
@@ -84,6 +88,30 @@ $promptMenuInject = function()
         $html .= '</li>';
     }
     $html .= '</menu></div>';
+
+
+    if($canAssign && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase']) && $this->app->rawMethod == 'view')
+    {
+        $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
+        $html           .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
+        foreach($teammates as $teammate)
+        {
+            $avatar = html::avatar(array('avatar' => $teammate->avatar, 'account' => $teammate->name), '20', 'rounded-full');
+            $html  .= '<li class="menu-item">';
+            $html  .= html::a
+            (
+                helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$currentObjectId"),
+                $avatar . sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name),
+                '',
+                "class='prompt' data-placement='left' data-toggle='modal' data-size='sm'",
+                'btn ghost size-sm font-medium text-left'
+            );
+            $html .= '</li>';
+        }
+        $html .= '</menu></div>';
+    }
+
+    $html .= '</div>';
 
     /* Assemble injector script. */
     $script = <<< JAVASCRIPT
