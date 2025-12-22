@@ -16512,7 +16512,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `teammate` int unsigned NOT NULL DEFAULT 0 COMMENT '执行此任务的数字员工 ID',
   `type` varchar(50)  NOT NULL DEFAULT '' COMMENT '任务类型',
-  `name` varchar(10) NOT NULL DEFAULT 'rnd' COMMENT '任务名称',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '任务名称',
   `desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '任务描述',
   `status` varchar(20)  NOT NULL DEFAULT '' COMMENT '任务状态',
   `objectType` varchar(30) NOT NULL DEFAULT '' COMMENT '任务相关对象类型',
