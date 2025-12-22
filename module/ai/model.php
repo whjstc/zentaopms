@@ -1649,11 +1649,12 @@ class aiModel extends model
      * 批量获取智能体列表
      * Get agents by IDs.
      *
-     * @param  array $ids 智能体 ID 数组
+     * @param  array  $ids    智能体 ID 数组
+     * @param  string $status 状态过滤，为空时不过滤
      * @access public
      * @return array
      */
-    public function getAgentsByIDs(array $ids): array
+    public function getAgentsByIDs(array $ids, string $status = ''): array
     {
         if(empty($ids)) return [];
 
@@ -1661,6 +1662,7 @@ class aiModel extends model
             ->from(TABLE_AI_AGENT)
             ->where('id')->in($ids)
             ->andWhere('deleted')->eq('0')
+            ->beginIF(!empty($status))->andWhere('status')->eq($status)->fi()
             ->fetchAll('id');
     }
 
