@@ -2519,6 +2519,22 @@ class aiTest
     }
 
     /**
+     * 测试通过 id 列表取禅道智能体。
+     * Test get prompts by ids.
+     *
+     * @param  string  $prompts
+     * @access public
+     * @return array
+     */
+    public function getPromptsByIdListTest(string $prompts)
+    {
+        $result = $this->objectModel->getPromptsByIdList($prompts);
+        if(dao::isError()) return dao::getError();
+
+        return $result;
+    }
+
+    /**
      * Test AIResponseException::__construct method.
      *
      * @param  string $type
