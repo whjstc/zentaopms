@@ -1150,6 +1150,7 @@ $lang->ai->formSchema['empty']['empty']->properties->title = new stdclass();
 
 $lang->ai->promptMenu = new stdclass();
 $lang->ai->promptMenu->dropdownTitle = '%s智能助手';
+$lang->ai->promptMenu->assignedTo    = '委派%s';
 
 $lang->ai->dataInject = new stdclass();
 $lang->ai->dataInject->success = '已将禅道智能体执行结果填写到表单中';
