@@ -1618,6 +1618,19 @@ class aiModel extends model
     }
 
     /**
+     * 通过 id 列表取禅道智能体。
+     * Get prompts by ids.
+     *
+     * @param  string  $prompts
+     * @access public
+     * @return array
+     */
+    public function getPromptsByIdList(string $prompts)
+    {
+        return $this->dao->select('*')->from(TABLE_AI_AGENT)->where('id')->in($prompts)->fetchAll('id', false);
+    }
+
+    /**
      * Get prompt fields by prompt id.
      *
      * @param  int   $promptID
