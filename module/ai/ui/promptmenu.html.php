@@ -39,7 +39,7 @@ $promptMenuInject = function()
     $menuOptions = $this->config->ai->menuPrint->locations[$module][$method];
     $prompts     = $this->ai->getPromptsForUser($menuOptions->module);
     $prompts     = $this->ai->filterPromptsForExecution($prompts, true);
-    $btnName     = sprintf($this->lang->ai->promptMenu->dropdownTitle, isset($this->lang->ai->dataSource[$module]['common']) ? $this->lang->ai->dataSource[$module]['common'] : '');
+    $btnName     = $this->lang->ai->prompts->common;
 
     $promptIds     = array_column($prompts, 'id');
     $hasAssignPriv = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
