@@ -55,7 +55,8 @@ $promptMenuInject = function()
     });
     if(!empty($showTeammates)) $showTeammates = array_values($showTeammates);
 
-    $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
+    $assignedBtnName = '';
+    if($canAssign) $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
     if($isDocApp)
     {
         h::globalJS
