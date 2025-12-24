@@ -45,7 +45,7 @@ $promptMenuInject = function()
     $hasAssignPriv = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
     $canAssign     = $hasAssignPriv && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase', 'doc']) && $this->app->rawMethod == 'view';
     $teammates     = array();
-    if(!empty($prompts) && $canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
+    if(!empty($prompts) && $hasAssignPriv) $teammates = $this->loadModel('aiteammate')->browse('0');
 
     $showTeammates = array_filter($teammates, function($item) use ($promptIds)
     {
@@ -56,7 +56,7 @@ $promptMenuInject = function()
     if(!empty($showTeammates)) $showTeammates = array_values($showTeammates);
 
     $assignedBtnName = '';
-    if($canAssign) $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
+    if($hasAssignPriv) $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
     if($isDocApp)
     {
         h::globalJS
