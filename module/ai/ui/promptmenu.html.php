@@ -43,9 +43,9 @@ $promptMenuInject = function()
 
     $promptIds     = array_column($prompts, 'id');
     $hasAssignPriv = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
-    $canAssign     = $hasAssignPriv && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase']) && $this->app->rawMethod == 'view';
+    $canAssign     = $hasAssignPriv && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase', 'doc']) && $this->app->rawMethod == 'view';
     $teammates     = array();
-    if(!empty($prompts) && $hasAssignPriv) $teammates = $this->loadModel('aiteammate')->browse('0');
+    if(!empty($prompts) && $canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
 
     $showTeammates = array_filter($teammates, function($item) use ($promptIds)
     {
