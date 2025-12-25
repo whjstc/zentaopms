@@ -435,7 +435,7 @@ CSS;
                 $this->block('main')
             ),
             $this->block('sections'),
-            $this->buildAITasks(),
+            hasPriv('aitask', 'browse') ? $this->buildAITasks() : null,
             $this->children(),
             $this->buildHistory(),
             $this->buildActions()
