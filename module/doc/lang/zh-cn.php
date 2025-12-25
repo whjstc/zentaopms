@@ -788,6 +788,7 @@ $lang->doc->docLang->editing                     = '正在编辑';
 $lang->doc->docLang->restoreVersionHint          = '恢复到版本';
 $lang->doc->docLang->restoreVersion              = '恢复';
 $lang->doc->docLang->restoreVersionConfirm       = '这将使用文档版本 {version} 的内容创建一个新的版本，确定要继续吗？';
+$lang->doc->docLang->aiTask                      = '数字员工任务';
 
 $lang->docTemplate->types = array();
 $lang->docTemplate->types['plan']   = '计划';
