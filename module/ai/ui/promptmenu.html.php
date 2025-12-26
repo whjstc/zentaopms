@@ -105,7 +105,8 @@ $promptMenuInject = function()
 
     if($canAssign && !empty($showTeammates))
     {
-        $html .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
+        $pageInfo = "$module,$method";
+        $html    .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
         foreach($showTeammates as $teammate)
         {
             $avatar = html::avatar(array('avatar' => $teammate->avatar, 'account' => $teammate->name), '20', 'rounded-full');
@@ -113,7 +114,7 @@ $promptMenuInject = function()
             $html  .= '<li class="menu-item">';
             $html  .= html::a
             (
-                helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$currentObjectId"),
+                helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$currentObjectId&pageInfo=$pageInfo"),
                 $avatar . $name,
                 '',
                 "style='justify-content: flex-start;' data-placement='left' data-toggle='modal' data-size='sm' title='$name'",
