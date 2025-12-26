@@ -47,6 +47,9 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `cancelledDate` datetime DEFAULT NULL COMMENT '取消时间',
   `closedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '关闭者',
   `closedDate` datetime DEFAULT NULL COMMENT '关闭时间',
+  `executeBy` varchar(30) NOT NULL DEFAULT '' COMMENT '执行者，通过定时任务执行的任务为 system，手动执行为当前用户',
+  `executeDate` datetime DEFAULT NULL COMMENT '任务开始执行时间',
+  `finishedDate` datetime DEFAULT NULL COMMENT '完成时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -94,3 +97,5 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
 RENAME TABLE `zt_ai_prompt` TO `zt_ai_agent`;
 RENAME TABLE `zt_ai_promptrole` TO `zt_ai_agentrole`;
 RENAME TABLE `zt_ai_promptfield` TO `zt_ai_agentfield`;
+
+INSERT INTO `zt_cron` (`m`, `h`, `dom`, `mon`, `dow`, `command`, `remark`, `type`, `buildin`, `status`) VALUES ('*/1','*','*','*','*','moduleName=aitask&methodName=exec', '支持数字人任务','zentao', 1, 'normal');
