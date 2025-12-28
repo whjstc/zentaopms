@@ -435,10 +435,10 @@ function registerZentaoAIPlugin(lang)
                 if(ztChunks[item.id]) return;
                 ztChunks[item.id] = 1;
                 newPropms.push(item.content);
-                if(refKeys.has(item.key)) return;
+                if(refKeys.has(item.id)) return;
                 const itemAttrs = item.attrs || {};
-                newRefs.push({key: item.key, name: itemAttrs.objectTitle || item.knowledgeTitle, type: itemAttrs.objectType || 'knowledge', id: itemAttrs.objectID || item.knowledgeID})
-                refKeys.add(item.key);
+                newRefs.push({id: item.id, key: item.key, name: itemAttrs.objectTitle || itemAttrs.knowledgeTitle, objectType: itemAttrs.objectType || 'knowledge', objectID: itemAttrs.objectID || item.knowledgeID})
+                refKeys.add(item.id);
             });
             info.chat.$local.ztChunks = ztChunks;
             return {systemPrompt: newPropms.filter(Boolean).join('\n\n'), refs: newRefs};
