@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `content` text DEFAULT NULL COMMENT '消息内容',
   `reasonContent` text DEFAULT NULL COMMENT '思考内容，当角色为 assistant 时记录 AI 的思考过程',
   `tools` text DEFAULT NULL COMMENT '消息中使用的工具名称和定义(JSON 数组)',
-  `objects` text DEFAULT NULL COMMENT '消息中涉及的禅道对象数据列表(JSON 数组)',
+  `refs` text DEFAULT NULL COMMENT '消息中引用的数据列表(JSON 数组)',
   `toolCalls` text DEFAULT NULL COMMENT '当角色为 assistant 时，工具调用列表(JSON 数组)',
   `toolCallID` varchar(255) NOT NULL DEFAULT '' COMMENT '当角色为 system 时，工具调用 ID（GUID 格式），用于向 AI 返回工具调用结果',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '对话消耗的 token 数量',
@@ -98,4 +98,4 @@ RENAME TABLE `zt_ai_prompt` TO `zt_ai_agent`;
 RENAME TABLE `zt_ai_promptrole` TO `zt_ai_agentrole`;
 RENAME TABLE `zt_ai_promptfield` TO `zt_ai_agentfield`;
 
-INSERT INTO `zt_cron` (`m`, `h`, `dom`, `mon`, `dow`, `command`, `remark`, `type`, `buildin`, `status`) VALUES ('*/1','*','*','*','*','moduleName=aitask&methodName=exec', '支持数字人任务','zentao', 1, 'normal');
+INSERT INTO `zt_cron` (`m`, `h`, `dom`, `mon`, `dow`, `command`, `remark`, `type`, `buildin`, `status`) VALUES ('*/1','*','*','*','*','moduleName=aitask&methodName=exec', '执行数字人任务','zentao', 1, 'normal');
