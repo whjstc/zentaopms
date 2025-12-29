@@ -42,10 +42,9 @@ $promptMenuInject = function()
     $btnName     = $this->lang->ai->prompts->common;
 
     $promptIds     = array_column($prompts, 'id');
-    $hasAssignPriv = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
-    $canAssign     = $hasAssignPriv && in_array($this->app->rawModule, ['task', 'story', 'bug', 'testcase', 'doc']) && $this->app->rawMethod == 'view';
+    $canAssign     = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
     $teammates     = array();
-    if(!empty($prompts) && $hasAssignPriv) $teammates = $this->loadModel('aiteammate')->browse('0');
+    if(!empty($prompts) && $canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
 
     $showTeammates = array_filter($teammates, function($item) use ($promptIds)
     {
@@ -56,7 +55,7 @@ $promptMenuInject = function()
     if(!empty($showTeammates)) $showTeammates = array_values($showTeammates);
 
     $assignedBtnName = '';
-    if($hasAssignPriv) $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
+    if($canAssign) $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
     if($isDocApp)
     {
         h::globalJS
@@ -84,7 +83,7 @@ $promptMenuInject = function()
 
     if(empty($prompts)) return;
 
-    $html            = '<div class="flex gap-2 inline-block pull-right">';
+    $html            = '<div class="flex gap-2 inline-block pull-right ml-2">';
     $objectVarName   = empty($menuOptions->objectVarName) ? $menuOptions->module : $menuOptions->objectVarName;
     $currentObjectId = !empty($this->view->$objectVarName) ? $this->view->$objectVarName->id : 0;
     $html .= '<div class="prompts dropdown' . ((isset($menuOptions->class) ? ' ' . $menuOptions->class : '') . (isset($menuOptions->dropdownClass) ? ' ' . $menuOptions->dropdownClass : '')) . '"><button class="btn ai-styled size-sm size-sm font-medium' . (isset($menuOptions->buttonClass) ? ' ' . $menuOptions->buttonClass : '') . '" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-lightning"></i>' . $btnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
