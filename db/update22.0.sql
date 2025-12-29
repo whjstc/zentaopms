@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `cancelledDate` datetime DEFAULT NULL COMMENT '取消时间',
   `closedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '关闭者',
   `closedDate` datetime DEFAULT NULL COMMENT '关闭时间',
-  `executeBy` varchar(30) NOT NULL DEFAULT '' COMMENT '执行者，通过定时任务执行的任务为 system，手动执行为当前用户',
-  `executeDate` datetime DEFAULT NULL COMMENT '任务开始执行时间',
+  `executedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '执行者，通过定时任务执行的任务为 system，手动执行为当前用户',
+  `executedDate` datetime DEFAULT NULL COMMENT '任务开始执行时间',
   `finishedDate` datetime DEFAULT NULL COMMENT '完成时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
