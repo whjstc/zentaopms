@@ -16537,6 +16537,9 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `cancelledDate` datetime DEFAULT NULL COMMENT '取消时间',
   `closedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '关闭者',
   `closedDate` datetime DEFAULT NULL COMMENT '关闭时间',
+  `executedBy` varchar(30) NOT NULL DEFAULT '' COMMENT '执行者，通过定时任务执行的任务为 system，手动执行为当前用户',
+  `executedDate` datetime DEFAULT NULL COMMENT '任务开始执行时间',
+  `finishedDate` datetime DEFAULT NULL COMMENT '完成时间',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -16571,7 +16574,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
   `content` text DEFAULT NULL COMMENT '消息内容',
   `reasonContent` text DEFAULT NULL COMMENT '思考内容，当角色为 assistant 时记录 AI 的思考过程',
   `tools` text DEFAULT NULL COMMENT '消息中使用的工具名称和定义(JSON 数组)',
-  `objects` text DEFAULT NULL COMMENT '消息中涉及的禅道对象数据列表(JSON 数组)',
+  `refs` text DEFAULT NULL COMMENT '消息中引用的数据列表(JSON 数组)',
   `toolCalls` text DEFAULT NULL COMMENT '当角色为 assistant 时，工具调用列表(JSON 数组)',
   `toolCallID` varchar(255) NOT NULL DEFAULT '' COMMENT '当角色为 system 时，工具调用 ID（GUID 格式），用于向 AI 返回工具调用结果',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '对话消耗的 token 数量',
