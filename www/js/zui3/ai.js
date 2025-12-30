@@ -210,6 +210,13 @@ window.executeZentaoPrompt = async function(info, testingMode)
     zaiPanel.openPopup(popupOptions);
 };
 
+window.callZentaoAgent = async function(agentID, objectID)
+{
+    const res = await $.ajax({url: $.createLink('ai', 'promptExecute', `promptId=${agentID}&objectId=${objectID}`), 'dataType': 'json'});
+    if(!res || res.result !== 'success' || !res.callback) return;
+    return executeZentaoPrompt(res.callback.params[0], res.callback.params[1]);
+};
+
 function registerZentaoAIPlugin(lang)
 {
     const plugin = zui.AIPlugin.define('zentao', {name: lang.name, icon: 'zentao'});
@@ -355,7 +362,35 @@ function registerZentaoAIPlugin(lang)
         });
     }
 
-    plugin.defineCallback('onCreateChat', function(info)
+    plugin.defineSuggestion(
+    {
+        when: ({state}) =>
+        {
+            const page = state ? state.zentaoPage : null;
+            if(!page) return;
+            const openedApp = $.apps.openedApps[page.app];
+            if(!openedApp) return;
+            const aiSuggestions = openedApp.iframe.contentWindow ? openedApp.iframe.contentWindow.aiSuggestions : null;
+            return Array.isArray(aiSuggestions) && aiSuggestions.length;
+        },
+        items: function({state})
+        {
+            const zentaoPage = state ? state.zentaoPage : null;
+            if(!zentaoPage) return;
+            const aiSuggestions = openedApp.iframe.contentWindow ? openedApp.iframe.contentWindow.aiSuggestions : null;
+            return aiSuggestions.map(suggestion => {
+                const {page = '', zentaoAgent, ...others} = suggestion;
+                const pageList = page.split(',').filter(Boolean);
+                if(pageList && !pageList.some(x => x === zentaoPage.path || x === zentaoPage.currentModule)) return;
+                return {
+                    ...others,
+                    ...(zentaoAgent ? {action: () => callZentaoAgent(zentaoAgent.agentID, zentaoAgent.objectID)} : {}),
+                };
+            }).filter(Boolean);
+        }
+    });
+
+    plugin.defineCallback('onCreateChat', async function(info)
     {
         if(info.isLocal) return;
 
@@ -554,4 +589,10 @@ $(() =>
 
         aiStore.isOK().then(isOK => {window.isZaiOK = isOK;});
     }
+
+    /* Bind AI commands in app when app is loaded. */
+    $(document).on('loadapp.apps', (_, args) =>
+    {
+        setTimeout(() => bindAICommandsInApp(args[0].iframe.contentWindow), 1000);
+    });
 });
