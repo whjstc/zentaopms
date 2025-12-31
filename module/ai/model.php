@@ -1654,6 +1654,27 @@ class aiModel extends model
     }
 
     /**
+     * 批量根据 code 获取智能体列表
+     * Get agents by codes
+     *
+     * @param  array  $codes code 数组
+     * @param  string $status 状态筛选
+     * @access public
+     * @return array 以 id 为 key 的数组
+     */
+    public function getAgentsByCodes(array $codes, string $status = ''): array
+    {
+        if(empty($codes)) return array();
+
+        return $this->dao->select('id, code, name')
+            ->from(TABLE_AI_AGENT)
+            ->where('code')->in($codes)
+            ->andWhere('deleted')->eq('0')
+            ->beginIF(!empty($status))->andWhere('status')->eq($status)->fi()
+            ->fetchAll('id');
+    }
+
+    /**
      * Create a prompt.
      *
      * @param  object    $prompt

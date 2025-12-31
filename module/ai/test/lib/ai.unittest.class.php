@@ -1416,6 +1416,22 @@ class aiTest
     }
 
     /**
+     * Test getAgentsByCodes method.
+     *
+     * @param  array  $codes
+     * @param  string $status
+     * @access public
+     * @return mixed
+     */
+    public function getAgentsByCodesTest($codes = null, $status = '')
+    {
+        $result = $this->objectModel->getAgentsByCodes($codes, $status);
+        if(dao::isError()) return dao::getError();
+
+        return $result;
+    }
+
+    /**
      * Test getPromptFields method.
      *
      * @param  int $promptID
