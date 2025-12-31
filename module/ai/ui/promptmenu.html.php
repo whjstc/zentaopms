@@ -177,7 +177,7 @@ $promptMenuInject = function()
             }
         }
 
-        foreach($prompts as $key => $prompt)
+        foreach($prompts as $prompt)
         {
             $zentaoAgent = (object)['agentID' => $prompt->id, 'objectID' => $objectID];
             $aiSuggestions[] = (object)['id' => "zt_agent_$prompt->id", 'title' => $prompt->name, 'hint' => $prompt->desc, 'type' => 'zentao','page' => $page, 'zentaoAgent' => $zentaoAgent];
