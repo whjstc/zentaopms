@@ -29,11 +29,22 @@ $promptMenuInject = function()
 
     $this->app->loadLang('ai');
     $this->app->loadConfig('ai');
-    $module   = $this->app->getModuleName();
-    $method   = $this->app->getMethodName();
-    $isDocApp = $module === 'doc' && $method === 'app';
-
+    $module    = $this->app->getModuleName();
+    $method    = $this->app->getMethodName();
+    $isDocApp  = $module === 'doc' && $method === 'app';
+    $useMethod = $method;
     if($isDocApp) $method = 'view';
+
+    $showOnList = in_array($module, ['product', 'project', 'projectstory', 'execution']) && in_array($useMethod, ['browse', 'story', 'task']);
+    $isOtherDoc = $isDocApp && $this->app->tab != 'doc';
+    $showOnList = $showOnList || ($isOtherDoc);
+    if($showOnList) $method = 'view';
+    if($isOtherDoc)
+    {
+        $module    = $this->app->tab;
+        $useMethod = 'view';
+    }
+
     if(!isset($this->config->ai->menuPrint->locations[$module][$method])) return;
 
     $menuOptions = $this->config->ai->menuPrint->locations[$module][$method];
@@ -41,9 +52,9 @@ $promptMenuInject = function()
     $prompts     = $this->ai->filterPromptsForExecution($prompts, true);
     $btnName     = $this->lang->ai->prompts->common;
 
-    $promptIds     = array_column($prompts, 'id');
-    $canAssign     = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
-    $teammates     = array();
+    $promptIds = array_column($prompts, 'id');
+    $canAssign = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
+    $teammates = array();
     if(!empty($prompts) && $canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
 
     $showTeammates = array_filter($teammates, function($item) use ($promptIds)
@@ -56,7 +67,7 @@ $promptMenuInject = function()
 
     $assignedBtnName = '';
     if($canAssign) $assignedBtnName = sprintf($this->lang->ai->promptMenu->assignedTo, $this->lang->aiteammate->common);
-    if($isDocApp)
+    if($isDocApp && $this->app->tab == 'doc')
     {
         h::globalJS
         (
@@ -83,11 +94,12 @@ $promptMenuInject = function()
 
     if(empty($prompts)) return;
 
+    $aiSuggestions   = [];
     $html            = '<div class="flex gap-2 inline-block pull-right ml-2">';
     $objectVarName   = empty($menuOptions->objectVarName) ? $menuOptions->module : $menuOptions->objectVarName;
     $currentObjectId = !empty($this->view->$objectVarName) ? $this->view->$objectVarName->id : 0;
-    $html .= '<div class="prompts dropdown' . ((isset($menuOptions->class) ? ' ' . $menuOptions->class : '') . (isset($menuOptions->dropdownClass) ? ' ' . $menuOptions->dropdownClass : '')) . '"><button class="btn ai-styled size-sm size-sm font-medium' . (isset($menuOptions->buttonClass) ? ' ' . $menuOptions->buttonClass : '') . '" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-lightning"></i>' . $btnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
-    foreach($prompts as $prompt)
+    $pageInfo        = "$module,$method";
+    if(!$showOnList)
     {
         $html .= '<li class="menu-item">';
         $html .= html::a
@@ -108,23 +120,70 @@ $promptMenuInject = function()
         $html    .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
         foreach($showTeammates as $teammate)
         {
-            $avatar = html::avatar(array('avatar' => $teammate->avatar, 'account' => $teammate->name), '20', 'rounded-full');
-            $name   = sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name);
-            $html  .= '<li class="menu-item">';
-            $html  .= html::a
+            $html .= '<li class="menu-item">';
+            $html .= html::a
             (
-                helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$currentObjectId&pageInfo=$pageInfo"),
-                $avatar . $name,
+                helper::createLink('ai', 'promptExecute', "promptId=$prompt->id&objectId=$currentObjectId&auto=0"),
+                $prompt->name . ($prompt->status != 'active' ? '<span class="label size-sm gray-500-pale ring-gray-500" style="margin-left: 4px; white-space: nowrap;">' . $this->lang->ai->prompts->statuses[$prompt->status] . '</span>' : ''),
                 '',
-                "style='justify-content: flex-start;' data-placement='left' data-toggle='modal' data-size='sm' title='$name'",
+                "class='prompt ajax-submit' style='width: 100%;'" . (empty($prompt->unauthorized) ? '' : ' disabled') . (empty($prompt->desc) ? '' : " data-toggle='popover' data-container='body' data-trigger='hover' data-content='$prompt->desc' data-title='$prompt->name' data-placement='left'"),
                 'btn ghost size-sm font-medium text-left'
             );
             $html .= '</li>';
         }
         $html .= '</menu></div>';
-    }
 
-    $html .= '</div>';
+        if($canAssign && !empty($showTeammates))
+        {
+            $html    .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
+            foreach($showTeammates as $teammate)
+            {
+                $avatar = html::avatar(array('avatar' => $teammate->avatar, 'account' => $teammate->name), '20', 'rounded-full');
+                $name   = sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name);
+                $html  .= '<li class="menu-item">';
+                $html  .= html::a
+                (
+                    helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$currentObjectId&pageInfo=$pageInfo"),
+                    $avatar . $name,
+                    '',
+                    "style='justify-content: flex-start;' data-placement='left' data-toggle='modal' data-size='sm' title='$name'",
+                    'btn ghost size-sm font-medium text-left'
+                );
+                $html .= '</li>';
+            }
+            $html .= '</menu></div>';
+        }
+
+        $html .= '</div>';
+    }
+    else
+    {
+        $page     = "$module-$useMethod";
+        $objectID = $currentObjectId;
+        if($isDocApp)
+        {
+            $objectID = $this->view->objectID;
+            $page     = "doc-app";
+        }
+
+        if($canAssign && !empty($showTeammates))
+        {
+            foreach($showTeammates as $teammate)
+            {
+                $name     = sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name);
+                $url      = helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$objectID&pageInfo=$pageInfo");
+                $btnProps = (object)['data-url' => $url, 'data-toggle' => 'modal', 'data-size' => 'sm'];
+                $aiSuggestions[] = (object)['id' => "zt_teammate_$teammate->id", 'title' => $name, 'hint' => $teammate->desc, 'type' => 'zentao', 'page' => $page, 'btnProps' => $btnProps];
+            }
+        }
+
+        foreach($prompts as $key => $prompt)
+        {
+            $zentaoAgent = (object)['agentID' => $prompt->id, 'objectID' => $objectID];
+            $aiSuggestions[] = (object)['id' => "zt_agent_$prompt->id", 'title' => $prompt->name, 'hint' => $prompt->desc, 'type' => 'zentao','page' => $page, 'zentaoAgent' => $zentaoAgent];
+        }
+        $html = '';
+    }
 
     /* Assemble injector script. */
     $script = <<< JAVASCRIPT
@@ -138,6 +197,7 @@ $promptMenuInject = function()
             container.classList.remove('no-delay');
         }
     JAVASCRIPT;
+    $script .= 'window.aiSuggestions =' . json_encode($aiSuggestions) . ';';
     $script .= 'let $aiMenu = $("' . $menuOptions->targetContainer . '").first();';
     $script .= 'if(!$aiMenu.length) $aiMenu = $("#mainContent .ai-menu-box").empty();';
     $script .= 'else $aiMenu.find(".prompts.dropdown").remove();';
