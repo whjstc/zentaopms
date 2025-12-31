@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
 
 INSERT INTO `zt_ai_teammate` (`id`, `name`, `desc`, `llm`, `role`, `avatar`, `agents`, `klibs`, `disabled`, `createdBy`, `createdDate`, `editedBy`, `editedDate`, `deleted`) VALUES
 (1, '向前', '专注于项目全周期管理与资源协调，擅长将复杂业务目标高效转化为可执行的项目计划与交付成果。', '', 'pm', '/static/images/ai/ai-teammate-pm.jpg', '', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
-(2, '李娟', '专注于测试用例设计与自动化脚本开发，擅长将业务场景高效转化为可执行的测试方案与质量保障体系。', '', 'qa', '/static/images/ai/ai-teammate-qa.jpg', '', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
-(3, '阿道', '专注于后端架构设计与系统性能优化，擅长将业务需求高效转化为稳定可靠的代码实现。', '', 'td', '/static/images/ai/ai-teammate-td.jpg', '', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
-(4, '阿禅', '专注于产品全流程体验设计与用户需求挖掘，擅长将抽象业务逻辑高效转化为可落地的产品方案。', '', 'po', '/static/images/ai/ai-teammate-po.jpg', '', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0);
+(2, '李娟', '专注于测试用例设计与自动化脚本开发，擅长将业务场景高效转化为可执行的测试方案与质量保障体系。', '', 'qa', '/static/images/ai/ai-teammate-qa.jpg', 'zt_story_to_testcase,zt_bug_polishing', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
+(3, '阿道', '专注于后端架构设计与系统性能优化，擅长将业务需求高效转化为稳定可靠的代码实现。', '', 'td', '/static/images/ai/ai-teammate-td.jpg', 'zt_task_polishing,zt_story_to_task,zt_create_doc', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
+(4, '阿禅', '专注于产品全流程体验设计与用户需求挖掘，擅长将抽象业务逻辑高效转化为可落地的产品方案。', '', 'po', '/static/images/ai/ai-teammate-po.jpg', 'zt_story_polishing,zt_story_prototype,zt_release_newsletter,zt_bug_to_story,zt_split_productplan', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0);
 
 -- DROP TABLE IF EXISTS `zt_ai_task`;
 CREATE TABLE IF NOT EXISTS `zt_ai_task` (
@@ -103,5 +103,46 @@ CREATE TABLE IF NOT EXISTS `zt_ai_chat_message` (
 RENAME TABLE `zt_ai_prompt` TO `zt_ai_agent`;
 RENAME TABLE `zt_ai_promptrole` TO `zt_ai_agentrole`;
 RENAME TABLE `zt_ai_promptfield` TO `zt_ai_agentfield`;
+
+ALTER TABLE `zt_ai_agent`
+ADD COLUMN `code` varchar(30) NOT NULL DEFAULT '' COMMENT '内部 code'
+AFTER `id`;
+
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_story_polishing'
+WHERE `name` = '需求润色' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_story_to_testcase'
+WHERE `name` = '一键拆用例' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_task_polishing'
+WHERE `name` = '任务润色' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_story_to_task'
+WHERE `name` = '需求转任务' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_bug_polishing'
+WHERE `name` = 'Bug润色' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_doc_polishing'
+WHERE `name` = '文档润色' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_bug_to_story'
+WHERE `name` = 'Bug转需求' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_split_productplan'
+WHERE `name` = '拆分一个子计划' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_story_review'
+WHERE `name` = '需求评审' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_create_doc'
+WHERE `name` = '编写开发设计文档智能体' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_story_prototype'
+WHERE `name` = '绘制需求原型图智能体' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_release_newsletter'
+WHERE `name` = '编写发布新闻稿' AND `createdBy` = 'system';
 
 INSERT INTO `zt_cron` (`m`, `h`, `dom`, `mon`, `dow`, `command`, `remark`, `type`, `buildin`, `status`) VALUES ('*/1','*','*','*','*','moduleName=aitask&methodName=exec', '执行数字人任务','zentao', 1, 'normal');
