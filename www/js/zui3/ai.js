@@ -377,6 +377,8 @@ function registerZentaoAIPlugin(lang)
         {
             const zentaoPage = state ? state.zentaoPage : null;
             if(!zentaoPage) return;
+            const openedApp = $.apps.openedApps[zentaoPage.app];
+            if(!openedApp) return;
             const aiSuggestions = openedApp.iframe.contentWindow ? openedApp.iframe.contentWindow.aiSuggestions : null;
             return aiSuggestions.map(suggestion => {
                 const {page = '', zentaoAgent, ...others} = suggestion;
