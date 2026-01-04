@@ -1638,14 +1638,15 @@ class aiModel extends model
      *
      * @param  array  $ids    智能体 ID 数组
      * @param  string $status 状态过滤，为空时不过滤
+     * @param  string $fields 需要获取的字段，默认为 id, name
      * @access public
      * @return array
      */
-    public function getAgentsByIDs(array $ids, string $status = ''): array
+    public function getAgentsByIDs(array $ids, string $status = '', string $fields = 'id, name'): array
     {
         if(empty($ids)) return [];
 
-        return $this->dao->select('id, name')
+        return $this->dao->select($fields)
             ->from(TABLE_AI_AGENT)
             ->where('id')->in($ids)
             ->andWhere('deleted')->eq('0')
