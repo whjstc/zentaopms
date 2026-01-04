@@ -35,11 +35,12 @@ $promptMenuInject = function()
     $useMethod = $method;
     if($isDocApp) $method = 'view';
 
-    $showOnList = in_array($module, ['product', 'project', 'projectstory', 'execution']) && in_array($useMethod, ['browse', 'story', 'task']);
-    $isOtherDoc = $isDocApp && $this->app->tab != 'doc';
-    $showOnList = $showOnList || ($isOtherDoc);
+    $showOnList     = in_array($module, ['product', 'project', 'projectstory', 'execution']) && in_array($useMethod, ['browse', 'story', 'task']);
+    $isOtherDoc     = $isDocApp && $this->app->tab != 'doc';
+    $showOnList     = $showOnList || ($isOtherDoc);
+    $isProjectStory = $module === 'product' && $useMethod === 'browse' && $this->app->tab == 'project';
     if($showOnList) $method = 'view';
-    if($isOtherDoc)
+    if($isOtherDoc || $isProjectStory)
     {
         $module    = $this->app->tab;
         $useMethod = 'view';
@@ -165,6 +166,7 @@ $promptMenuInject = function()
             $objectID = $this->view->objectID;
             $page     = "doc-app";
         }
+        if($isProjectStory) $page = "product-browse";
 
         if($canAssign && !empty($showTeammates))
         {
