@@ -96,7 +96,9 @@ $promptMenuInject = function()
     if(empty($prompts)) return;
 
     $aiSuggestions   = [];
-    $html            = '<div class="flex gap-2 inline-block pull-right ml-2">';
+    $isReleaseView   = $module == 'release' && $method == 'view';
+    $className       = $isReleaseView ? 'mt-1' : '';
+    $html            = "<div class='flex gap-2 inline-block pull-right ml-2 $className'>";
     $objectVarName   = empty($menuOptions->objectVarName) ? $menuOptions->module : $menuOptions->objectVarName;
     $currentObjectId = !empty($this->view->$objectVarName) ? $this->view->$objectVarName->id : 0;
     $pageInfo        = "$module,$method";
