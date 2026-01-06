@@ -138,8 +138,20 @@ class webhookModel extends model
      */
     public function getDataList()
     {
-        $dataList  = $this->dao->select('*')->from(TABLE_NOTIFY)->where('status')->eq('wait')->andWhere('objectType')->eq('webhook')->orderBy('id')->fetchAll('id');
-        $dataList += $this->dao->select('*')->from(TABLE_NOTIFY)->where('status')->eq('senting')->andWhere('sendTime')->ge(date('Y-m-d H:i:s', time() - 3 * 3600))->andWhere('objectType')->eq('webhook')->orderBy('id')->fetchAll('id');
+        $now = helper::now();
+        $dataList  = $this->dao->select('*')->from(TABLE_NOTIFY)
+            ->where('status')->eq('wait')
+            ->andWhere('objectType')->eq('webhook')
+            ->andWhere('(sendTime IS NULL OR sendTime <= "' . $now . '")')
+            ->orderBy('id')
+            ->fetchAll('id');
+        $threeHoursAgo = date('Y-m-d H:i:s', time() - 3 * 3600);
+        $dataList += $this->dao->select('*')->from(TABLE_NOTIFY)
+            ->where('status')->eq('senting')
+            ->andWhere('objectType')->eq('webhook')
+            ->andWhere('(sendTime IS NULL OR (sendTime <= "' . $now . '" AND sendTime >= "' . $threeHoursAgo . '"))')
+            ->orderBy('id')
+            ->fetchAll('id');
         return $dataList;
     }
 
@@ -302,7 +314,22 @@ class webhookModel extends model
             $postData = $this->buildData($objectType, $objectID, $actionType, $actionID, $webhook);
             if(!$postData) continue;
 
-            if($webhook->sendType == 'async')
+            $needDelay = false;
+            if($aitaskObject && !empty($aitaskObject->agentsData))
+            {
+                $agentsData = is_string($aitaskObject->agentsData) ? json_decode($aitaskObject->agentsData, true) : $aitaskObject->agentsData;
+                if($agentsData && !empty($agentsData[0]))
+                {
+                    $agentData  = $agentsData[0];
+                    $noticeTime = $agentData['noticeTime'] ?? '1';
+                    if($noticeTime != '1')
+                    {
+                        $needDelay = true;
+                    }
+                }
+            }
+
+            if($webhook->sendType == 'async' || $needDelay)
             {
                 if($webhook->type == 'dinguser')
                 {
@@ -356,6 +383,18 @@ class webhookModel extends model
         if(empty($users)) $users = $this->loadModel('user')->getList();
 
         $object         = $this->dao->select('*')->from($this->config->objectTables[$objectType])->where('id')->eq($objectID)->fetch();
+        if(!$object) return false;
+
+        $host     = empty($webhook->domain) ? common::getSysURL() : $webhook->domain;
+        $viewLink = $this->getViewLink($objectType == 'kanbancard' ? 'kanban' : $objectType, $objectType == 'kanbancard' ? $object->kanban : $objectID);
+
+        if($objectType == 'aitask' && in_array($actionType, array('finished', 'failed')))
+        {
+            $text  = $this->loadModel('aitask')->getNotificationText($object, $objectID, $actionType, 'markdown', '', $viewLink, $host);
+            $title = $text;
+        }
+        else
+        {
         $field          = $this->config->action->objectNameFields[$objectType];
         $objectTypeName = ($objectType == 'story' and $object->type == 'requirement') ? $this->lang->action->objectTypes['requirement'] : $this->lang->action->objectTypes[$objectType];
         $title          = $this->app->user->realname . $this->lang->action->label->$actionType . $objectTypeName;
@@ -800,7 +839,10 @@ class webhookModel extends model
      */
     public function setSentStatus(array|string $idList, string $status, string $time = '')
     {
-        if(empty($time)) $time = helper::now();
-        $this->dao->update(TABLE_NOTIFY)->set('status')->eq($status)->set('sendTime')->eq($time)->where('id')->in($idList)->exec();
+        $this->dao->update(TABLE_NOTIFY)
+            ->set('status')->eq($status)
+            ->beginIF(!empty($time))->set('sendTime')->eq($time)->fi()
+            ->where('id')->in($idList)
+            ->exec();
     }
 }
