@@ -395,11 +395,11 @@ class webhookModel extends model
         }
         else
         {
-        $field          = $this->config->action->objectNameFields[$objectType];
-        $objectTypeName = ($objectType == 'story' and $object->type == 'requirement') ? $this->lang->action->objectTypes['requirement'] : $this->lang->action->objectTypes[$objectType];
-        $title          = $this->app->user->realname . $this->lang->action->label->$actionType . $objectTypeName;
-        $host           = (defined('RUN_MODE') and RUN_MODE == 'api') ? '' : $host;
-        $text           = $title . ' ' . "[#{$objectID}::{$object->$field}](" . $host . $viewLink . ")";
+            $field          = $this->config->action->objectNameFields[$objectType];
+            $objectTypeName = ($objectType == 'story' and $object->type == 'requirement') ? $this->lang->action->objectTypes['requirement'] : $this->lang->action->objectTypes[$objectType];
+            $title          = $this->app->user->realname . $this->lang->action->label->$actionType . $objectTypeName;
+            $host           = (defined('RUN_MODE') and RUN_MODE == 'api') ? '' : $host;
+            $text           = $title . ' ' . "[#{$objectID}::{$object->$field}](" . $host . $viewLink . ")";
         }
         $action->text   = $text;
 
@@ -784,17 +784,46 @@ class webhookModel extends model
      * @access public
      * @return bool
      */
-    public function saveData(int $webhookID, int $actionID, string $data, string $actor = ''): bool
+    public function saveData(int $webhookID, int $actionID, string $data, string $actor = '', object $aitaskObject = null): bool
     {
         if(empty($actor)) $actor = $this->app->user->account;
+
+        $sendTime = helper::now();
+        $object = $aitaskObject;
+        if(!$object)
+        {
+            $action = $this->loadModel('action')->getById($actionID);
+            if($action && $action->objectType == 'aitask' && in_array($action->action, array('finished', 'failed')))
+            {
+                $object = $this->dao->select('*')->from(TABLE_AI_TASK)->where('id')->eq($action->objectID)->fetch();
+            }
+        }
+
+        if($object && !empty($object->agentsData))
+        {
+            $agentsData = is_string($object->agentsData) ? json_decode($object->agentsData, true) : $object->agentsData;
+            if($agentsData && !empty($agentsData[0]))
+            {
+                $agentData  = $agentsData[0];
+                $noticeTime = $agentData['noticeTime'] ?? '1';
+
+                if($noticeTime != '1')
+                {
+                    $today    = date('Y-m-d');
+                    $sendTime = $today . ' ' . $noticeTime . ':00';
+                }
+            }
+        }
 
         $webhookData = new stdclass();
         $webhookData->objectType  = 'webhook';
         $webhookData->objectID    = $webhookID;
         $webhookData->action      = $actionID;
         $webhookData->data        = $data;
+        $webhookData->status      = 'wait';
         $webhookData->createdBy   = $actor;
         $webhookData->createdDate = helper::now();
+        $webhookData->sendTime    = $sendTime;
 
         $this->dao->insert(TABLE_NOTIFY)->data($webhookData)->exec();
         return !dao::isError();
