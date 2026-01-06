@@ -291,6 +291,12 @@ class webhookModel extends model
         /* 如果对象类型是瀑布，动作是提交审计或者审计，那么对象类型就是审批。*/
         if($objectType == 'waterfall' && strpos(',toaudit,audited,', ",{$actionType},") !== false) $objectType = 'review';
 
+        $aitaskObject = null;
+        if($objectType == 'aitask' && in_array($actionType, array('finished', 'failed')))
+        {
+            $aitaskObject = $this->dao->select('*')->from(TABLE_AI_TASK)->where('id')->eq($objectID)->fetch();
+        }
+
         foreach($webhooks as $id => $webhook)
         {
             $postData = $this->buildData($objectType, $objectID, $actionType, $actionID, $webhook);
@@ -304,7 +310,7 @@ class webhookModel extends model
                     if(empty($openIdList)) continue;
                 }
 
-                $this->saveData($id, $actionID, $postData, $actor);
+                $this->saveData($id, $actionID, $postData, $actor, $aitaskObject);
                 continue;
             }
 
@@ -351,12 +357,11 @@ class webhookModel extends model
 
         $object         = $this->dao->select('*')->from($this->config->objectTables[$objectType])->where('id')->eq($objectID)->fetch();
         $field          = $this->config->action->objectNameFields[$objectType];
-        $host           = empty($webhook->domain) ? common::getSysURL() : $webhook->domain;
-        $viewLink       = $this->getViewLink($objectType == 'kanbancard' ? 'kanban' : $objectType, $objectType == 'kanbancard' ? $object->kanban : $objectID);
         $objectTypeName = ($objectType == 'story' and $object->type == 'requirement') ? $this->lang->action->objectTypes['requirement'] : $this->lang->action->objectTypes[$objectType];
         $title          = $this->app->user->realname . $this->lang->action->label->$actionType . $objectTypeName;
         $host           = (defined('RUN_MODE') and RUN_MODE == 'api') ? '' : $host;
         $text           = $title . ' ' . "[#{$objectID}::{$object->$field}](" . $host . $viewLink . ")";
+        }
         $action->text   = $text;
 
         $mobile = '';
@@ -444,6 +449,12 @@ class webhookModel extends model
         {
             $meeting = $this->dao->findById($objectID)->from(TABLE_MEETING)->fetch();
             $tab     = $meeting->project ? '#app=project' : '#app=my';
+        }
+        if($objectType == 'aitask')
+        {
+            $viewLink = helper::createLink('aitask', 'view', "taskID={$objectID}", 'html') . $tab;
+            if($oldOnlyBody) $_GET['onlybody'] = $oldOnlyBody;
+            return $viewLink;
         }
 
         $viewLink = helper::createLink($objectType, 'view', "id=$objectID", 'html') . $tab;

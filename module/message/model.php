@@ -210,15 +210,45 @@ class messageModel extends model
         $isonlybody = isInModal();
         if($isonlybody) unset($_GET['onlybody']);
 
-        $methodNmae = 'view';
-        $moduleName = $objectType == 'case' ? 'testcase' : $objectType;
-        if($objectType == 'kanbancard') $moduleName = 'kanban';
-        if($objectType == 'feedback' && $this->config->vision == 'rnd') $methodNmae = 'adminView';
-        $space      = common::checkNotCN() ? ' ' : '';
-        $data       = ($actor == 'guest' ? 'guest' : $user->realname) . $space . $this->lang->action->label->{$actionType} . $space . $this->lang->action->objectTypes[$objectType];
-        $dataID     = $objectType == 'kanbancard' ? $object->kanban : $objectID;
-        $url        = helper::createLink($moduleName, $methodNmae, "id={$dataID}");
-        $data      .= ' ' . html::a((strpos($url, $sysURL) === 0 ? '' : $sysURL) . $url, "[#{$objectID}::{$object->$field}]");
+        if($objectType == 'aitask' && in_array($actionType, array('finished', 'failed')))
+        {
+            $url     = helper::createLink('aitask', 'view', "taskID={$objectID}");
+            $linkUrl = (strpos($url, $sysURL) === 0 ? '' : $sysURL) . $url;
+            $data    = $this->loadModel('aitask')->getNotificationText($object, $objectID, $actionType, 'html', $linkUrl);
+        }
+        else
+        {
+            $methodNmae = 'view';
+            $moduleName = $objectType == 'case' ? 'testcase' : $objectType;
+            if($objectType == 'kanbancard') $moduleName = 'kanban';
+            if($objectType == 'feedback' && $this->config->vision == 'rnd') $methodNmae = 'adminView';
+            $space      = common::checkNotCN() ? ' ' : '';
+            $data       = ($actor == 'guest' ? 'guest' : $user->realname) . $space . $this->lang->action->label->{$actionType} . $space . $this->lang->action->objectTypes[$objectType];
+            $dataID     = $objectType == 'kanbancard' ? $object->kanban : $objectID;
+            $url        = helper::createLink($moduleName, $methodNmae, "id={$dataID}");
+            $data      .= ' ' . html::a((strpos($url, $sysURL) === 0 ? '' : $sysURL) . $url, "[#{$objectID}::{$object->$field}]");
+        }
+
+        $sendTime = null;
+        if($objectType == 'aitask' && in_array($actionType, array('finished', 'failed')))
+        {
+            $sendTime = helper::now();
+            if($object && !empty($object->agentsData))
+            {
+                $agentsData = is_string($object->agentsData) ? json_decode($object->agentsData, true) : $object->agentsData;
+                if($agentsData && !empty($agentsData[0]))
+                {
+                    $agentData  = $agentsData[0];
+                    $noticeTime = $agentData['noticeTime'] ?? '1';
+
+                    if($noticeTime != '1')
+                    {
+                        $today    = date('Y-m-d');
+                        $sendTime = $today . ' ' . $noticeTime . ':00';
+                    }
+                }
+            }
+        }
 
         if($isonlybody) $_GET['onlybody'] = 'yes';
 
@@ -233,6 +263,7 @@ class messageModel extends model
             $notify->status      = 'wait';
             $notify->createdBy   = $actor;
             $notify->createdDate = helper::now();
+            $notify->sendTime    = $sendTime;
 
             $this->dao->insert(TABLE_NOTIFY)->data($notify)->exec();
         }
@@ -253,6 +284,11 @@ class messageModel extends model
     {
         $toList = '';
         $ccList = '';
+        if($objectType == 'aitask')
+        {
+            $toList = !empty($object->assignedTo) ? $object->assignedTo : ($object->createdBy ?? '');
+            return trim($toList, ',');
+        }
         if(!empty($object->assignedTo))                    $toList = $object->assignedTo;
         if(empty($toList) && $objectType == 'todo')        $toList = $object->account;
         if(empty($toList) && $objectType == 'testtask')    $toList = $object->owner;
