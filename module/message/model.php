@@ -23,12 +23,14 @@ class messageModel extends model
      */
     public function getMessages(string $status = 'all', string $orderBy = 'createdDate'): array
     {
+        $now = helper::now();
         return $this->dao->select('t1.*')->from(TABLE_NOTIFY)->alias('t1')
             ->leftJoin(TABLE_ACTION)->alias('t2')->on("t1.objectType = 'message' AND t1.action = t2.id")
             ->where('t1.objectType')->eq('message')
             ->andWhere('t1.toList')->eq(",{$this->app->user->account},")
             ->andWhere('t2.vision')->eq($this->config->vision)
             ->beginIF(!empty($status) && $status != 'all')->andWhere('t1.status')->eq($status)->fi()
+            ->andWhere('(t1.sendTime IS NULL OR t1.sendTime <= "' . $now . '")')
             ->orderBy($orderBy)
             ->fetchAll('id', false);
     }
@@ -243,8 +245,11 @@ class messageModel extends model
 
                     if($noticeTime != '1')
                     {
-                        $today    = date('Y-m-d');
-                        $sendTime = $today . ' ' . $noticeTime . ':00';
+                        $today           = date('Y-m-d');
+                        $targetTime      = $today . ' ' . $noticeTime . ':00';
+                        $targetTimestamp = strtotime($targetTime);
+                        $nowTimestamp    = time();
+                        $sendTime        = $targetTimestamp < $nowTimestamp ? helper::now() : $targetTime;
                     }
                 }
             }

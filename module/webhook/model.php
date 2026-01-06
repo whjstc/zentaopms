@@ -809,8 +809,11 @@ class webhookModel extends model
 
                 if($noticeTime != '1')
                 {
-                    $today    = date('Y-m-d');
-                    $sendTime = $today . ' ' . $noticeTime . ':00';
+                    $today           = date('Y-m-d');
+                    $targetTime      = $today . ' ' . $noticeTime . ':00';
+                    $targetTimestamp = strtotime($targetTime);
+                    $nowTimestamp    = time();
+                    $sendTime        = $targetTimestamp < $nowTimestamp ? helper::now() : $targetTime;
                 }
             }
         }

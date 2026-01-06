@@ -320,9 +320,12 @@ class webhook extends control
                     $diff = time() - $time;
                 }
                 $this->webhook->saveLog($webhook, $data->action, $data->data, $result);
+                $this->webhook->setSentStatus($data->id, 'sended', $now);
             }
-
-            $this->webhook->setSentStatus($data->id, 'sended', $now);
+            else
+            {
+                $this->webhook->setSentStatus($data->id, 'fail', $now);
+            }
         }
 
         $this->dao->delete()->from(TABLE_NOTIFY)->where('status')->eq('sended')->exec();
