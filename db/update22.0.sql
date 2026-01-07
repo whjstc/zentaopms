@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_task` (
   `userPrompt` text DEFAULT NULL COMMENT '验收不通过时，用户补充的提示词',
   `consumed` decimal(10,2) unsigned NOT NULL DEFAULT 0.00 COMMENT '总计耗时',
   `token` int unsigned NOT NULL DEFAULT 0 COMMENT '总计消耗 token',
+  `noticeTime` varchar(10) NOT NULL DEFAULT '' COMMENT '任务通知时间',
   `createdBy` varchar(30) NOT NULL DEFAULT '' COMMENT '创建人',
   `createdDate` datetime DEFAULT NULL COMMENT '创建时间',
   `assignedTo` varchar(30) NOT NULL DEFAULT '' COMMENT '负责人',
