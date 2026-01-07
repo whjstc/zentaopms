@@ -374,10 +374,7 @@ class webhookModel extends model
             $intersect       = array_intersect($webhookProducts, $actionProduct);
             if(!$intersect) return false;
         }
-        if($webhook->executions)
-        {
-            if(strpos(",$webhook->executions,", ",$action->execution,") === false) return false;
-        }
+        if($webhook->executions && strpos(",$webhook->executions,", ",$action->execution,") === false) return false;
 
         static $users = array();
         if(empty($users)) $users = $this->loadModel('user')->getList();
@@ -553,7 +550,18 @@ class webhookModel extends model
         $data = new stdclass();
         $data->text     = $text;
         $data->markdown = 'true';
-        $data->user     = $mobile ? $mobile : ($email ? $email : $this->app->user->account);
+        if($mobile)
+        {
+            $data->user = $mobile;
+        }
+        elseif($email)
+        {
+            $data->user = $email;
+        }
+        else
+        {
+            $data->user = $this->app->user->account;
+        }
 
         if(!empty($_FILES['files']['name'][0]))
         {
@@ -642,7 +650,7 @@ class webhookModel extends model
         if($toList)
         {
             $openIdList = $this->getBoundUsers($webhookID, $toList);
-            $openIdList = join(',', $openIdList);
+            $openIdList = implode(',', $openIdList);
             return $openIdList;
         }
 
@@ -667,7 +675,7 @@ class webhookModel extends model
         $toList = str_replace(",{$this->app->user->account},", ',', ",$toList,");
 
         $openIdList = $this->getBoundUsers($webhookID, $toList);
-        $openIdList = join(',', $openIdList);
+        $openIdList = implode(',', $openIdList);
         return $openIdList;
     }
 
