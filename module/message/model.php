@@ -235,23 +235,13 @@ class messageModel extends model
         if($objectType == 'aitask' && in_array($actionType, array('finished', 'failed')))
         {
             $sendTime = helper::now();
-            if($object && !empty($object->agentsData))
+            if($object && !empty($object->noticeTime) && $object->noticeTime != '1')
             {
-                $agentsData = is_string($object->agentsData) ? json_decode($object->agentsData, true) : $object->agentsData;
-                if($agentsData && !empty($agentsData[0]))
-                {
-                    $agentData  = $agentsData[0];
-                    $noticeTime = $agentData['noticeTime'] ?? '1';
-
-                    if($noticeTime != '1')
-                    {
-                        $today           = date('Y-m-d');
-                        $targetTime      = $today . ' ' . $noticeTime . ':00';
-                        $targetTimestamp = strtotime($targetTime);
-                        $nowTimestamp    = time();
-                        $sendTime        = $targetTimestamp < $nowTimestamp ? helper::now() : $targetTime;
-                    }
-                }
+                $today           = date('Y-m-d');
+                $targetTime      = $today . ' ' . $object->noticeTime . ':00';
+                $targetTimestamp = strtotime($targetTime);
+                $nowTimestamp    = time();
+                $sendTime        = $targetTimestamp < $nowTimestamp ? helper::now() : $targetTime;
             }
         }
 

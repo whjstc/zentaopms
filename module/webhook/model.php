@@ -315,18 +315,9 @@ class webhookModel extends model
             if(!$postData) continue;
 
             $needDelay = false;
-            if($aitaskObject && !empty($aitaskObject->agentsData))
+            if($aitaskObject && !empty($aitaskObject->noticeTime) && $aitaskObject->noticeTime != '1')
             {
-                $agentsData = is_string($aitaskObject->agentsData) ? json_decode($aitaskObject->agentsData, true) : $aitaskObject->agentsData;
-                if($agentsData && !empty($agentsData[0]))
-                {
-                    $agentData  = $agentsData[0];
-                    $noticeTime = $agentData['noticeTime'] ?? '1';
-                    if($noticeTime != '1')
-                    {
-                        $needDelay = true;
-                    }
-                }
+                $needDelay = true;
             }
 
             if($webhook->sendType == 'async' || $needDelay)
@@ -807,23 +798,13 @@ class webhookModel extends model
             }
         }
 
-        if($object && !empty($object->agentsData))
+        if($object && !empty($object->noticeTime) && $object->noticeTime != '1')
         {
-            $agentsData = is_string($object->agentsData) ? json_decode($object->agentsData, true) : $object->agentsData;
-            if($agentsData && !empty($agentsData[0]))
-            {
-                $agentData  = $agentsData[0];
-                $noticeTime = $agentData['noticeTime'] ?? '1';
-
-                if($noticeTime != '1')
-                {
-                    $today           = date('Y-m-d');
-                    $targetTime      = $today . ' ' . $noticeTime . ':00';
-                    $targetTimestamp = strtotime($targetTime);
-                    $nowTimestamp    = time();
-                    $sendTime        = $targetTimestamp < $nowTimestamp ? helper::now() : $targetTime;
-                }
-            }
+            $today           = date('Y-m-d');
+            $targetTime      = $today . ' ' . $object->noticeTime . ':00';
+            $targetTimestamp = strtotime($targetTime);
+            $nowTimestamp    = time();
+            $sendTime        = $targetTimestamp < $nowTimestamp ? helper::now() : $targetTime;
         }
 
         $webhookData = new stdclass();
