@@ -16030,7 +16030,7 @@ CREATE TABLE IF NOT EXISTS `zt_ai_agent` (
   `editedDate` datetime DEFAULT NULL,
   `deleted` tinyint unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `zt_ai_agent` (`id`, `code`, `name`, `desc`, `model`, `module`, `source`, `targetForm`, `purpose`, `elaboration`, `role`, `characterization`, `createdBy`, `createdDate`, `status`) VALUES
 (1, 'zt_story_polishing', '需求润色', '优化需求中标题、描述和验收标准等字段，使表述清晰准确。', 0, 'story', ',story.title,story.spec,story.verify,story.product,story.module,story.pri,story.category,story.estimate,', 'story.change', '帮忙优化其中各字段的表述，使表述清晰准确。必要时可以修改需求使其更加合理。', '需求描述格式建议使用：作为一名<某种类型的用户>，我希望<达成某些目的>，这样可以<开发的价值>。验收标准建议列举多条。直接给出你的润色结果，无需建议。', '请你扮演一名资深的产品经理。', '负责产品战略、设计、开发、数据分析、用户体验、团队管理、沟通协调等方面，需要具备多种技能和能力，以实现产品目标和公司战略。', 'system', '2023-08-10 13:24:14', 'active'),
