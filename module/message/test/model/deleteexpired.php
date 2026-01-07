@@ -18,11 +18,13 @@ cid=17049
 include dirname(__FILE__, 5) . '/test/lib/init.php';
 include dirname(__FILE__, 2) . '/lib/message.unittest.class.php';
 
+// 使用字段范围设置，避免生成 SQL 文件
+// 需要确保有6条toList包含admin的message记录，删除2条后剩余4条
 $table = zenData('notify');
-$table->objectType->range('message{10},action{5},other{3}');
-$table->toList->range('`,admin,`,`,user1,`,`,user2,`');
-$table->status->range('wait{6},sended{6},read{6}');
-$table->action->range('0{9},1-10');
+$table->objectType->range('message{6}');
+$table->toList->range('`,admin,`');
+$table->status->range('wait{2},sended{2},read{2}');
+$table->action->range('0{3},1-3');
 $table->data->range('test message data');
 $table->createdBy->range('admin{6},user1{6},user2{6}');
 $table->gen(18);
