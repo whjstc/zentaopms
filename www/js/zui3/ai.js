@@ -105,9 +105,9 @@ window.executeZentaoPrompt = async function(info, testingMode)
             {
                 data:     info.schema,
                 title:    {type: 'string', description: langData.promptResultTitle},
-                explain:  {type: 'string', description: langData.changeExplainDesc},
+                summary:  {type: 'string', description: langData.agentResultSummary},
             },
-            required: ['data', 'explain'],
+            required: ['data', 'summary'],
         },
         fn: (response) => {
             const result     = response.data;
