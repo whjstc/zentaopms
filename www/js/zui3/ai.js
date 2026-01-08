@@ -238,26 +238,26 @@ function loadAndRegisterAiTeammates(lang, plugin)
         url: $.createLink('ai', 'ajaxGetTeammates'),
         dataType: 'json',
         success: (res) => {
-            if (res && res.result === 'success' && res.data)
+            if(res && res.result === 'success' && res.data)
             {
                 const teammates = res.data;
-                if (!teammates.length) return;
+                if(!teammates.length) return;
 
                 const items = teammates.map((item) => {
                     const collections = [];
-                    if (item.klibs && item.klibs.length)
+                    if(item.klibs && item.klibs.length)
                     {
                         item.klibs.forEach(klibID => collections.push(`zentao:${klibID}`));
                     }
 
                     const promptParts = [];
-                    if (item.roleName)
+                    if(item.roleName)
                     {
                         const prefix = lang.teammatePromptPrefix;
                         promptParts.push(`${prefix}${item.roleName}`);
                     }
-                    if (item.desc) promptParts.push(item.desc);
-                    if (item.klibNames && item.klibNames.length)
+                    if(item.desc) promptParts.push(item.desc);
+                    if(item.klibNames && item.klibNames.length)
                     {
                         const klibNamesStr = item.klibNames.join(', ');
                         const knowledgePrefix = lang.teammateKnowledgePrefix;
@@ -268,7 +268,7 @@ function loadAndRegisterAiTeammates(lang, plugin)
                     const data = {
                         prompt: promptParts.join(', '),
                     };
-                    if (collections.length) data.memory = {collections};
+                    if(collections.length) data.memory = {collections};
 
                     return {
                         code: `zentao-aiteammate-${item.id}`,
