@@ -240,6 +240,42 @@ function loadAndRegisterAiTeammates(lang, plugin)
         success: (res) => {
             if (res && res.result === 'success' && res.data)
             {
+                const teammates = res.data;
+                if (!teammates.length) return;
+
+                const items = teammates.map((item) => {
+                    const collections = [];
+                    if (item.klibs && item.klibs.length)
+                    {
+                        item.klibs.forEach(klibID => collections.push(`zentao:${klibID}`));
+                    }
+
+                    const promptParts = [];
+                    if (item.roleName)
+                    {
+                        const prefix = lang.teammatePromptPrefix;
+                        promptParts.push(`${prefix}${item.roleName}`);
+                    }
+                    if (item.desc) promptParts.push(item.desc);
+                    if (item.klibNames && item.klibNames.length)
+                    {
+                        const klibNamesStr = item.klibNames.join(', ');
+                        const knowledgePrefix = lang.teammateKnowledgePrefix;
+                        const knowledgeSuffix = lang.teammateKnowledgeSuffix;
+                        promptParts.push(`${knowledgePrefix}${klibNamesStr}${knowledgeSuffix}`);
+                    }
+
+                    const data = {
+                        prompt: promptParts.join(', '),
+                    };
+                    if (collections.length) data.memory = collections;
+
+                    return {
+                        code: `aiteammate-${item.id}`,
+                        title: item.name,
+                        data,
+                    };
+                });
 
                 plugin.defineContextProvider({
                     code: 'ai-teammate',
