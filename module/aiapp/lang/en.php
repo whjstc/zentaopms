@@ -80,3 +80,5 @@ $lang->aiapp->langData->notSupportPreview  = 'Not support preview this content';
 $lang->aiapp->langData->dataListSizeInfo   = 'Total %s items';
 $lang->aiapp->langData->promptTestDataIntro = 'Here is the example {type} of {name}:';
 $lang->aiapp->langData->searchingKLibs      = 'Searching knowledge libraries...';
+$lang->aiapp->langData->recentChats         = 'Recent Chats';
+$lang->aiapp->langData->aiTeammateTasks     = 'Digital Teammate Tasks';

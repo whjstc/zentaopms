@@ -81,3 +81,5 @@ $lang->aiapp->langData->notSupportPreview   = '暂不支持预览该内容';
 $lang->aiapp->langData->dataListSizeInfo    = '共 %s 条数据';
 $lang->aiapp->langData->promptTestDataIntro = '下面是要进行{name}的示例{type}：';
 $lang->aiapp->langData->searchingKLibs      = '正在查找知识库...';
+$lang->aiapp->langData->recentChats         = '最近聊天';
+$lang->aiapp->langData->aiTeammateTasks     = '数字员工任务';

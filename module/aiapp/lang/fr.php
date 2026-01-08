@@ -80,3 +80,5 @@ $lang->aiapp->langData->notSupportPreview  = 'Vraisemblablement non pris en char
 $lang->aiapp->langData->dataListSizeInfo   = 'Total %s items';
 $lang->aiapp->langData->promptTestDataIntro = 'Voici l\'exemple {type} de {name} :';
 $lang->aiapp->langData->searchingKLibs      = 'Recherche de bases de connaissances...';
+$lang->aiapp->langData->recentChats         = 'Chats récents';
+$lang->aiapp->langData->aiTeammateTasks     = 'Tâches numériques';
