@@ -240,15 +240,18 @@ else
     $zaiLang->zaiConfigNotValid = $lang->aiapp->langData->zaiConfigNotValid;
 }
 
+$zaiConfigUrl = createLink('zai', 'setting');
+$zaiLang->zaiConfigNotValid = str_replace('{zaiConfigUrl}', $zaiConfigUrl, $lang->aiapp->langData->zaiConfigNotValid);
+if(isset($zaiLang->unauthorizedError)) $zaiLang->unauthorizedError = str_replace('{zaiConfigUrl}', $zaiConfigUrl, $lang->aiapp->langData->unauthorizedError);
+
 if($config->edition != 'open')
 {
     $this->app->loadLang('ai');
     $zaiLang->knowledgeLib = $lang->ai->knowledgeLib;
+
+    $zaiConfig->teammateMap = $this->loadModel('aiteammate')->getMap();
 }
 
-$zaiConfigUrl = createLink('zai', 'setting');
-$zaiLang->zaiConfigNotValid = str_replace('{zaiConfigUrl}', $zaiConfigUrl, $lang->aiapp->langData->zaiConfigNotValid);
-if(isset($zaiLang->unauthorizedError)) $zaiLang->unauthorizedError = str_replace('{zaiConfigUrl}', $zaiConfigUrl, $lang->aiapp->langData->unauthorizedError);
 to::head
 (
     $zaiConfig ? h::js('window.zai=' . js::value($zaiConfig) . ';') : null,
