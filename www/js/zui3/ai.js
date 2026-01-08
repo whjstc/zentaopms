@@ -210,6 +210,20 @@ window.executeZentaoPrompt = async function(info, testingMode)
     zaiPanel.openPopup(popupOptions);
 };
 
+window.openAITaskPopup = async function(taskID)
+{
+    const zaiPanel = await checkZAIPanel(true);
+    if(!zaiPanel) return;
+
+    const popupOptions = {
+        id         : 'zentao-task-popoup',
+        viewType   : 'task',
+        width      : 600,
+        chatID     : `task-${taskID}`,
+    };
+    zaiPanel.openPopup(popupOptions);
+};
+
 window.callZentaoAgent = async function(agentID, objectID)
 {
     const res = await $.ajax({url: $.createLink('ai', 'promptExecute', `promptId=${agentID}&objectId=${objectID}`), 'dataType': 'json'});
