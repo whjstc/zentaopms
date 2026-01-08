@@ -839,4 +839,28 @@ class ai extends control
             ));
         }
     }
+
+    /**
+     * Get AI teammates.
+     *
+     * @access public
+     * @return void
+     */
+    public function ajaxGetTeammates()
+    {
+        if(!commonModel::hasPriv('aiteammate','browse'))
+        {
+            return $this->send(array('result' => 'fail', 'message' => $this->lang->error->accessDenied));
+        }
+
+        $this->app->loadLang('user');
+        $this->loadModel('aiteammate');
+        $teammates = $this->aiteammate->browse('0');
+        $result    = array();
+
+        foreach($teammates as $teammate)
+        {
+        }
+        $this->send(array('result' => 'success', 'data' => $result));
+    }
 }

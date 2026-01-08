@@ -247,7 +247,11 @@ if(isset($zaiLang->unauthorizedError)) $zaiLang->unauthorizedError = str_replace
 if($config->edition != 'open' && $zaiConfig)
 {
     $this->app->loadLang('ai');
-    $zaiLang->knowledgeLib = $lang->ai->knowledgeLib;
+    $zaiLang->knowledgeLib            = $lang->ai->knowledgeLib;
+    $zaiLang->teammate                = $lang->ai->teammate;
+    $zaiLang->teammatePromptPrefix    = $lang->ai->teammatePromptPrefix;
+    $zaiLang->teammateKnowledgePrefix = $lang->ai->teammateKnowledgePrefix;
+    $zaiLang->teammateKnowledgeSuffix = $lang->ai->teammateKnowledgeSuffix;
 
     $zaiConfig->teammateMap = $this->loadModel('aiteammate')->getMap();
 }
