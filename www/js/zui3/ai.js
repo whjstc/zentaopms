@@ -268,12 +268,14 @@ function loadAndRegisterAiTeammates(lang, plugin)
                     const data = {
                         prompt: promptParts.join(', '),
                     };
-                    if (collections.length) data.memory = collections;
+                    if (collections.length) data.memory = {collections};
 
                     return {
-                        code: `aiteammate-${item.id}`,
+                        code: `zentao-aiteammate-${item.id}`,
                         title: item.name,
+                        hint: item.desc || item.name,
                         data,
+                        llm: item.llm || undefined
                     };
                 });
 
