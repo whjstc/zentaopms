@@ -515,42 +515,47 @@ $(() =>
     if(!zentaoConfig || zentaoConfig.currentModule !== 'index' || zentaoConfig.currentMethod !== 'index') return;
 
     const zaiConfig = window.zai || window.top.zai;
+    const isOpenVersion = /^\d/.test(config.version || $('#zuiCSS').attr('href').split('?v=').pop());
     if(zaiConfig)
     {
         registerZentaoAIPlugin(zaiLang);
 
-        const aiStore = zui.ZAIStore.createFromZentao(zaiConfig);
+        let userAvatarProps;
+        const getAvatar = (type, info) =>
+        {
+            if(type === 'role' && info.role === 'user')
+            {
+                if(userAvatarProps) return userAvatarProps;
+                const $avatar = $.apps.getLastApp().iframe?.contentWindow.$('#userMenu-toggle>.avatar');
+                if($avatar?.length)
+                {
+                    userAvatarProps =
+                    {
+                        text      : $avatar.find('.avatar-text').text(),
+                        code      : window.config.account,
+                        src       : $avatar.find('img').attr('src'),
+                        icon      : undefined,
+                        background: $avatar.css('backgroundColor'),
+                        foreColor : $avatar.css('color'),
+                    };
+                }
+                return userAvatarProps;
+            }
+            if(type === 'chat' && info.chat.teammate)
+            {
+                const teammate = zaiConfig.teammateMap[info.chat.teammate] || {id: info.chat.teammate, name: info.chat.teammate};
+                return {src: teammate.avatar, size: 24, code: teammate.id};
+            }
+        };
+        const aiStore = zui.ZAIStore.createFromZentao($.extend({getAvatar: getAvatar}, zaiConfig));
         if(!aiStore) return
 
-        let userAvatarProps;
         zui.AIPanel.init(
         {
             store            : aiStore,
             position         : {bottom: +window.config.debug > 4 ? 56 : 40, right: 16},
             maximizedPosition: {left: 'calc(var(--zt-menu-width) + 4px)', top: 4, bottom: 'calc(var(--zt-apps-bar-height) + 4px)', right: 16},
             langData         : zaiLang,
-            getAvatar        : (info, props) =>
-            {
-                if(info.role === 'user')
-                {
-                    if(userAvatarProps) return userAvatarProps;
-                    const $avatar = $.apps.getLastApp().iframe?.contentWindow.$('#userMenu-toggle>.avatar');
-                    if($avatar?.length)
-                    {
-                        userAvatarProps =
-                        {
-                            text      : $avatar.find('.avatar-text').text(),
-                            code      : window.config.account,
-                            src       : $avatar.find('img').attr('src'),
-                            icon      : undefined,
-                            background: $avatar.css('backgroundColor'),
-                            foreColor : $avatar.css('color'),
-                        };
-                        return userAvatarProps;
-                    }
-                }
-                return props;
-            },
             getErrorContent: (error) =>
             {
                 let html = '';
@@ -560,6 +565,10 @@ $(() =>
                 if(html.length) return {html: `<div class="row gap-3"><i class="mt-1 icon icon-exclamation text-warning"></i><div class="text-left pr-8">${html}</div></div>`};
                 return error.message;
             },
+            tabs: isOpenVersion ? undefined : [
+                {key: 'RECENTS', title: zaiLang.recentChats, chatTypes: ['chat']},
+                {key: 'TASKS', title: zaiLang.aiTeammateTasks, chatsFetcher: (store) => store.getTasks()},
+            ]
         });
 
         $(document).on('updatepage.app openapp.apps openOldPage.apps', (e, args) =>
