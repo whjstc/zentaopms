@@ -231,6 +231,27 @@ window.callZentaoAgent = async function(agentID, objectID)
     return executeZentaoPrompt(res.callback.params[0], res.callback.params[1]);
 };
 
+/* 加载数字员工列表，并注册菜单 */
+function loadAndRegisterAiTeammates(lang, plugin)
+{
+    $.ajax({
+        url: $.createLink('ai', 'ajaxGetTeammates'),
+        dataType: 'json',
+        success: (res) => {
+            if (res && res.result === 'success' && res.data)
+            {
+
+                plugin.defineContextProvider({
+                    code: 'ai-teammate',
+                    title: lang.teammate,
+                    icon: 'hand-right',
+                    items,
+                });
+            }
+        },
+    });
+}
+
 function registerZentaoAIPlugin(lang)
 {
     const plugin = zui.AIPlugin.define('zentao', {name: lang.name, icon: 'zentao'});
@@ -375,6 +396,8 @@ function registerZentaoAIPlugin(lang)
             },
         });
     }
+
+    loadAndRegisterAiTeammates(lang, plugin);
 
     plugin.defineSuggestion(
     {

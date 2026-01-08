@@ -860,6 +860,33 @@ class ai extends control
 
         foreach($teammates as $teammate)
         {
+            $roleName = '';
+            if(!empty($teammate->role) && isset($this->lang->user->roleList[$teammate->role])) $roleName = $this->lang->user->roleList[$teammate->role];
+
+            $klibIDs   = array();
+            $klibNames = array();
+            if(!empty($teammate->klibs))
+            {
+                $klibIDs = array_filter(explode(',', $teammate->klibs));
+                if(!empty($klibIDs))
+                {
+                    $this->loadModel('ai');
+                    $knowledgeLibs = $this->ai->getKnowledgeLibsByIDs($klibIDs);
+                    foreach($knowledgeLibs as $klib)
+                    {
+                        if(!empty($klib->name)) $klibNames[] = $klib->name;
+                    }
+                }
+            }
+            $result[] = array(
+                'id'        => $teammate->id,
+                'name'      => $teammate->name,
+                'desc'      => $teammate->desc,
+                'roleName'  => $roleName,
+                'llm'       => $teammate->llm,
+                'klibs'     => $klibIDs,
+                'klibNames' => $klibNames
+            );
         }
         $this->send(array('result' => 'success', 'data' => $result));
     }
