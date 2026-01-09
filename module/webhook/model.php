@@ -144,14 +144,14 @@ class webhookModel extends model
             ->andWhere('objectType')->eq('webhook')
             ->andWhere('(sendTime IS NULL OR sendTime <= "' . $now . '")')
             ->orderBy('id')
-            ->fetchAll('id');
+            ->fetchAll('id', false);
         $threeHoursAgo = date('Y-m-d H:i:s', time() - 3 * 3600);
         $dataList += $this->dao->select('*')->from(TABLE_NOTIFY)
             ->where('status')->eq('senting')
             ->andWhere('objectType')->eq('webhook')
             ->andWhere('(sendTime IS NULL OR (sendTime <= "' . $now . '" AND sendTime >= "' . $threeHoursAgo . '"))')
             ->orderBy('id')
-            ->fetchAll('id');
+            ->fetchAll('id', false);
         return $dataList;
     }
 
@@ -333,7 +333,7 @@ class webhookModel extends model
             }
 
             $result = $this->fetchHook($webhook, $postData, $actionID);
-            if(!empty($result)) $this->saveLog($webhook, $actionID, $postData, $result);
+            if(!empty($result)) $this->saveLog($webhook, $actionID, $postData, (string)$result);
         }
         return !dao::isError();
     }
@@ -825,14 +825,14 @@ class webhookModel extends model
      * 保存发送日志。
      * Save log.
      *
-     * @param  object $webhook
-     * @param  int    $actionID
-     * @param  string $data
-     * @param  string $result
+     * @param  object      $webhook
+     * @param  int         $actionID
+     * @param  string      $data
+     * @param  string|int  $result
      * @access public
      * @return bool
      */
-    public function saveLog(object $webhook, int $actionID, string $data, string $result): bool
+    public function saveLog(object $webhook, int $actionID, string $data, string|int $result): bool
     {
         $log = new stdclass();
         $log->objectType  = 'webhook';
@@ -852,13 +852,13 @@ class webhookModel extends model
      * 设置消息发送状态。
      * Set sent status.
      *
-     * @param  array|string $idList
-     * @param  string       $status
-     * @param  string       $time
+     * @param  array|int|string $idList
+     * @param  string           $status
+     * @param  string           $time
      * @access public
      * @return void
      */
-    public function setSentStatus(array|string $idList, string $status, string $time = '')
+    public function setSentStatus(array|int|string $idList, string $status, string $time = '')
     {
         $this->dao->update(TABLE_NOTIFY)
             ->set('status')->eq($status)
