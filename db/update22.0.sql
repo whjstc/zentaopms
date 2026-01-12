@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS `zt_ai_teammate` (
 ) ENGINE=InnoDB;
 
 INSERT INTO `zt_ai_teammate` (`id`, `name`, `desc`, `llm`, `role`, `avatar`, `agents`, `klibs`, `disabled`, `createdBy`, `createdDate`, `editedBy`, `editedDate`, `deleted`) VALUES
-(1, '向前', '专注于项目全周期管理与资源协调，擅长将复杂业务目标高效转化为可执行的项目计划与交付成果。', '', 'pm', '/static/images/ai/ai-teammate-pm.jpg', '', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
-(2, '李娟', '专注于测试用例设计与自动化脚本开发，擅长将业务场景高效转化为可执行的测试方案与质量保障体系。', '', 'qa', '/static/images/ai/ai-teammate-qa.jpg', 'zt_story_to_testcase,zt_bug_polishing', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
+(1, '向前', '专注于项目全周期管理与资源协调，擅长将复杂业务目标高效转化为可执行的项目计划与交付成果。', '', 'pm', '/static/images/ai/ai-teammate-pm.jpg', 'zt_project_proposal,zt_project_finalreport', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
+(2, '李娟', '专注于测试用例设计与自动化脚本开发，擅长将业务场景高效转化为可执行的测试方案与质量保障体系。', '', 'qa', '/static/images/ai/ai-teammate-qa.jpg', 'zt_story_to_testcase,zt_bug_polishing,zt_automatic_test', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
 (3, '阿道', '专注于后端架构设计与系统性能优化，擅长将业务需求高效转化为稳定可靠的代码实现。', '', 'td', '/static/images/ai/ai-teammate-td.jpg', 'zt_task_polishing,zt_story_to_task,zt_create_doc', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0),
 (4, '阿禅', '专注于产品全流程体验设计与用户需求挖掘，擅长将抽象业务逻辑高效转化为可落地的产品方案。', '', 'po', '/static/images/ai/ai-teammate-po.jpg', 'zt_story_polishing,zt_story_prototype,zt_release_newsletter,zt_bug_to_story,zt_split_productplan', '', 0, 'system', '2025-12-29 08:42:37', '', NULL, 0);
 
@@ -145,5 +145,14 @@ WHERE `name` = '绘制需求原型图智能体' AND `createdBy` = 'system';
 UPDATE `zt_ai_agent`
 SET `code` = 'zt_release_newsletter'
 WHERE `name` = '编写发布新闻稿' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_project_proposal'
+WHERE `name` = '编写立项报告' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_project_finalreport'
+WHERE `name` = '编写结项报告' AND `createdBy` = 'system';
+UPDATE `zt_ai_agent`
+SET `code` = 'zt_automatic_test'
+WHERE `name` = '编写自动化测试脚本' AND `createdBy` = 'system';
 
 INSERT INTO `zt_cron` (`m`, `h`, `dom`, `mon`, `dow`, `command`, `remark`, `type`, `buildin`, `status`) VALUES ('*/1','*','*','*','*','moduleName=aitask&methodName=exec', '执行数字人任务','zentao', 1, 'normal');
