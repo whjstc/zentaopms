@@ -12,9 +12,19 @@ namespace zin;
 
 $labelWidth = $method == 'db' ? '80px' : '100px';
 
+$title = $lang->convert->jira->importFromDB;
+if($method == 'file')
+{
+    $title = $lang->convert->jira->importFromFile;
+}
+elseif($method == 'api')
+{
+    $title = $lang->convert->jira->importFromAPI;
+}
+
 formPanel
 (
-    set::title($method == 'db' ? $lang->convert->jira->importFromDB : $lang->convert->jira->importFromFile),
+    set::title($title),
     set::headingClass('justify-start'),
     set::bodyClass('px-0'),
     set::submitBtnText($lang->convert->jira->next),
@@ -56,13 +66,13 @@ formPanel
         set::labelWidth($labelWidth),
         html(sprintf($lang->convert->jira->importSteps[$method][4], $app->getTmpRoot()))
     ),
-    formGroup
+    $method != 'api' ? formGroup
     (
         setStyle(array('align-items' => 'center')),
         set::label('5.'),
         set::labelWidth($labelWidth),
         $lang->convert->jira->importSteps[$method][5]
-    ),
+    ) : null,
     $method == 'file' ? formGroup
     (
         setStyle(array('align-items' => 'center')),
@@ -82,7 +92,7 @@ formPanel
             set::placeholder($lang->convert->jira->dbNameNotice)
         )
     ) : null,
-    $method == 'file' ? formGroup
+    in_array($method, ['file', 'api']) ? formGroup
     (
         set::label($lang->convert->jira->domain),
         set::labelWidth($labelWidth),
@@ -93,7 +103,7 @@ formPanel
             set::value(zget($jiraApi, 'domain', ''))
         )
     ) : null,
-    $method == 'file' ? formGroup
+    in_array($method, ['file', 'api']) ? formGroup
     (
         set::label($lang->convert->jira->admin),
         set::labelWidth($labelWidth),
@@ -104,7 +114,7 @@ formPanel
             set::value(zget($jiraApi, 'admin', ''))
         )
     ) : null,
-    $method == 'file' ? formGroup
+    in_array($method, ['file', 'api']) ? formGroup
     (
         set::label($lang->convert->jira->token),
         set::labelWidth($labelWidth),
