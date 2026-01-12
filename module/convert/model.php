@@ -153,10 +153,41 @@ class convertModel extends model
             $this->dao->dbh($originDBH);
             return $result;
         }
-        else
+        elseif($method == 'file')
         {
             return $this->getJiraDataFromFile($module, $lastID, $limit);
         }
+        else
+        {
+            return $this->getJiraDataFromAPI($module, $lastID, $limit);
+        }
+    }
+
+    /**
+     * 从接口获取jira数据。
+     * Get jira data from jiraAPI.
+     *
+     * @param  string $module
+     * @param  int    $lastID
+     * @param  int    $limit
+     * @access public
+     * @return array
+     */
+    public function getJiraDataFromAPI(string $module = '', int $lastID = 0, int $limit = 0): array
+    {
+        if(empty($_SESSION['jiraApi'])) return array();
+        $jiraApi = json_decode($this->session->jiraApi, true);
+        if(empty($jiraApi['domain'])) return array();
+
+        $dataList = array();
+        $this->app->loadClass('jira', true);
+
+        $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
+
+        // 根据moduel调用不同的接口函数。
+        $dataList = $jiraApi->getIssueTypes();
+
+        return $dataList;
     }
 
     /**

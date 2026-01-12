@@ -2,6 +2,50 @@
 class jira
 {
     /**
+     * Jira接口的域名。
+     * Jira api domain.
+     *
+     * @var string
+     * @access public
+     */
+    public $jiraDomain;
+
+    /**
+     * Jira接口的用户名。
+     * Jira api account.
+     *
+     * @var string
+     * @access public
+     */
+    public $jiraAccount;
+
+    /**
+     * Jira接口的Token。
+     * Jira api token.
+     *
+     * @var string
+     * @access public
+     */
+    public $jiraToken;
+
+    /**
+     * 构造方法。
+     * The construct function.
+     *
+     * @param  string $jiraDomain
+     * @param  string $jiraAccount
+     * @param  string $jiraToken
+     * @access public
+     * @return void
+     */
+    public function __construct(string $jiraDomain, string $jiraAccount, string $jiraToken)
+    {
+        $this->jiraDomain  = $jiraDomain;
+        $this->jiraAccount = $jiraAccount;
+        $this->jiraToken   = $jiraToken;
+    }
+
+    /**
      * 获取Jira中所有项目。
      *
      * @param string $url      Jira地址
@@ -11,9 +55,9 @@ class jira
      */
     public function getProjectList(string $url = '', string $account = '', string $password = ''): array
     {
-        $url      = $url ? $url : $this->config->jira->url;
-        $account  = $account ? $account : $this->config->jira->account;
-        $password = $password ? $password : openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $url ? $url : $this->jiraDomain;
+        $account  = $account ? $account : $this->jiraAccount;
+        $password = $password ? $password : $this->jiraToken;
 
         $url .= '/rest/api/2/project';
         $header = array('Authorization: Basic ' . base64_encode($account . ':' . $password));
@@ -32,9 +76,9 @@ class jira
      */
     public function getIssueTypes(): array
     {
-        $url      = $this->config->jira->url . '/rest/api/2/issuetype/';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/issuetype/';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -60,9 +104,9 @@ class jira
      */
     public function getIssues($projectID, $issueTypeID, $startAt = 0, $maxResults = 50)
     {
-        $url      = $this->config->jira->url . '/rest/api/2/search';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/search';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -84,9 +128,9 @@ class jira
      */
     public function getUsers($startAt = 0, $maxResults = 50)
     {
-        $url      = $this->config->jira->url . '/rest/api/2/user/search?username=.&startAt=' . $startAt . '&maxResults=' . $maxResults;
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/user/search?username=.&startAt=' . $startAt . '&maxResults=' . $maxResults;
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -103,9 +147,9 @@ class jira
      */
     public function getBoardId($projectID)
     {
-        $url      = $this->config->jira->url . '/rest/agile/1.0/board?projectKeyOrId=' . $projectID;
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/agile/1.0/board?projectKeyOrId=' . $projectID;
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -121,9 +165,9 @@ class jira
      */
     public function getIssuesByEpic($epicID, $startAt = 0, $maxResults = 50)
     {
-        $url      = $this->config->jira->url . "/rest/agile/1.0/epic/$epicID/issue";
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . "/rest/agile/1.0/epic/$epicID/issue";
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $url .= '?fields=id&startAt=' . $startAt . '&maxResults=' . $maxResults;
 
@@ -142,9 +186,9 @@ class jira
      */
     public function createSprint($sprint)
     {
-        $url      = $this->config->jira->url . '/rest/agile/1.0/sprint';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/agile/1.0/sprint';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -162,9 +206,9 @@ class jira
      */
     public function moveIssuesToSprint($sprintID, $issues)
     {
-        $url      = $this->config->jira->url . '/rest/agile/1.0/sprint/' . $sprintID . '/issue';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/agile/1.0/sprint/' . $sprintID . '/issue';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -190,9 +234,9 @@ class jira
         if(isset($issue->estimate) and $storyPointField) $body['update'][$storyPointField] = array(array('set' => (int)$issue->estimate));
         if(isset($issue->pri)) $body['update']['priority'] = array(array('set' => array('id' => (string)$issue->pri, 'name' => $this->lang->story->priList[$issue->pri])));
 
-        $url      = $this->config->jira->url . '/rest/api/2/issue/' . $issueID;
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/issue/' . $issueID;
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -212,9 +256,9 @@ class jira
     {
         $body = $assignee ? array('name' => $assignee) : array('name' => null);
 
-        $url      = $this->config->jira->url . '/rest/api/2/issue/' . $issueID . '/assignee';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/issue/' . $issueID . '/assignee';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -230,9 +274,9 @@ class jira
      */
     public function getPriority()
     {
-        $url      = $this->config->jira->url . '/rest/api/2/priority';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/priority';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
@@ -248,9 +292,9 @@ class jira
      */
     public function getStatus()
     {
-        $url      = $this->config->jira->url . '/rest/api/2/status';
-        $account  = $this->config->jira->account;
-        $password = openssl_decrypt($this->config->jira->password, 'AES-128-ECB', $this->config->jira->encryptKey);
+        $url      = $this->jiraDomain . '/rest/api/2/status';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
