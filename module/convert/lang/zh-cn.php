@@ -231,6 +231,11 @@ $lang->convert->jira->importSteps['file'][4] = "将Jira附件目录<strong class
 $lang->convert->jira->importSteps['file'][5] = "为了保证导入数据的完整性，请输入当前Jira环境的域名、管理员帐号、密码/Token。";
 $lang->convert->jira->importSteps['file'][6] = "上述步骤完成后，点击下一步。";
 
+$lang->convert->jira->importSteps['api'][1] = '备份禅道数据库。';
+$lang->convert->jira->importSteps['api'][2] = '导入数据时使用禅道会给服务器造成性能压力，请尽量保证导入数据时无人使用禅道。';
+$lang->convert->jira->importSteps['api'][3] = '填写当前Jira环境的域名、管理员帐号、密码/Token。';
+$lang->convert->jira->importSteps['api'][4] = "上述步骤完成后，点击下一步。";
+
 $lang->convert->jira->objectList['user']       = '用户';
 $lang->convert->jira->objectList['project']    = '项目';
 $lang->convert->jira->objectList['issue']      = 'Issue';
