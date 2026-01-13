@@ -179,33 +179,52 @@ class convertModel extends model
         $jiraApi = json_decode($this->session->jiraApi, true);
         if(empty($jiraApi['domain'])) return array();
 
-        $dataList = array();
         $this->app->loadClass('jira', true);
 
         $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
 
         $functionMap = array(
-            'issue' => 'getIssues',
+            'issue'         => 'getIssues',
             'issuelinktype' => 'getIssueLinkTypes',
-            'issuetype' => 'getIssueTypes',
-            'user' => 'getUsers',
-            'project' => 'getProjects',
-            'build' => 'getBuilds',
-            'workflow' => 'getWorkflows',
-            'resolution' => 'getResolutions',
-            'status' => 'getStatus',
-            'customfield' => 'getCustomFields'
+            'issuetype'     => 'getIssueTypes',
+            'user'          => 'getUsers',
+            'project'       => 'getProjects',
+            'build'         => 'getBuilds',
+            'workflow'      => 'getWorkflows',
+            'resolution'    => 'getResolutions',
+            'status'        => 'getStatus',
+            'customfield'   => 'getCustomFields'
         );
 
-        $function = $functionMap[$module];
-        $dataList = $jiraApi->$function();
+        global $comments, $changeItems, $changeGroups;
+
+        $dataList = array();
+        if($module == 'changegroup')
+        {
+            $dataList = !empty($changeGroups) ? $changeGroups : array();
+        }
+        elseif($module == 'changeitem')
+        {
+            $dataList = !empty($changeItems) ? $changeItems : array();
+        }
+        else
+        {
+            $function = $functionMap[$module];
+            $dataList = $jiraApi->$function();
+        }
 
         if(in_array($module, array_keys($this->config->convert->objectTables)))
         {
             foreach($dataList as $key => $data)
             {
-                $buildFunction  = 'build' . ucfirst($module) . 'Data';
-                $dataList[$key] = $this->$buildFunction($data);
+                if($module == 'issue')
+                {
+                    if(!empty($data['comment']['comments'])) $comments[$data['id']] = $data['comment']['comments'];
+                    if(!empty($data['changeGroups'])) $changeGroups = $data['changeGroups'];
+                    if(!empty($data['changeItems']))  $changeItems  = $data['changeItems'];
+                }
+                $buildfunction  = 'build' . ucfirst($module) . 'data';
+                $dataList[$key] = $this->$buildfunction($data);
             }
         }
 

@@ -131,7 +131,7 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $jql        = 'created<=' . date('Y-m-d', strtotime('+1 day'));
         $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment';
-        $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken";
+        $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
         $result = json_decode($result, true);
@@ -145,13 +145,48 @@ class jira
                 foreach($issue['fields'] as $field => $value) $issue[$field] = $value;
                 unset($issue['fields']);
             }
-            if(!empty($issue['priority']['id']))        $issue['priority']   = $issue['priority']['id'];
-            if(!empty($issue['project']['id']))         $issue['project']    = $issue['project']['id'];
-            if(!empty($issue['status']['id']))          $issue['status']     = $issue['status']['id'];
-            if(!empty($issue['creator']['accountId']))  $issue['creator']    = $issue['creator']['accountId'];
-            if(!empty($issue['issuetype']['id']))       $issue['issuetype']  = $issue['issuetype']['id'];
-            if(!empty($issue['assignee']['accountId'])) $issue['assignee']   = $issue['assignee']['accountId'];
-            if(!empty($issue['resolution']['id']))      $issue['resolution'] = $issue['resolution']['id'];
+            if(!empty($issue['priority']['id']))                $issue['priority']    = $issue['priority']['id'];
+            if(!empty($issue['project']['id']))                 $issue['project']     = $issue['project']['id'];
+            if(!empty($issue['status']['id']))                  $issue['status']      = $issue['status']['id'];
+            if(!empty($issue['creator']['accountId']))          $issue['creator']     = $issue['creator']['accountId'];
+            if(!empty($issue['issuetype']['id']))               $issue['issuetype']   = $issue['issuetype']['id'];
+            if(!empty($issue['assignee']['accountId']))         $issue['assignee']    = $issue['assignee']['accountId'];
+            if(!empty($issue['resolution']['id']))              $issue['resolution']  = $issue['resolution']['id'];
+            if(!empty($issue['renderedFields']['description'])) $issue['description'] = $issue['renderedFields']['description'];
+            if(!empty($issue['renderedFields']['comment']))     $issue['comment']     = $issue['renderedFields']['comment'];
+            if(!empty($issue['renderedFields'])) unset($issue['renderedFields']);
+
+            if(!empty($issue['changelog']['histories']))
+            {
+                $changeGroups = array();
+                $changeItems  = array();
+                foreach($issue['changelog']['histories'] as $history)
+                {
+                    $changeGroup = array();
+                    $changeGroup['id']      = $history['id'];
+                    $changeGroup['issue']   = $issue['id'];
+                    $changeGroup['author']  = $history['author']['accountId'];
+                    $changeGroup['created'] = $history['created'];
+                    $changeGroups[$changeGroup['id']] = $changeGroup;
+
+                    foreach($history['items'] as $index => $item)
+                    {
+                        $changeItem = array();
+                        $changeItem['id']        = $changeGroup['id'] . '_' . $index;
+                        $changeItem['group']     = $changeGroup['id'];
+                        $changeItem['fieldtype'] = $item['fieldtype'];
+                        $changeItem['field']     = $item['fieldId'];
+                        $changeItem['oldvalue']  = $item['from'];
+                        $changeItem['oldstring'] = $item['fromString'];
+                        $changeItem['newvalue']  = $item['to'];
+                        $changeItem['newstring'] = $item['toString'];
+                        $changeItems[$changeItem['id']] = $changeItem;
+                    }
+                }
+                $issue['changeGroups'] = $changeGroups;
+                $issue['changeItems']  = $changeItems;
+                unset($issue['changelog']);
+            }
             $issueList[$issue['id']] = $issue;
         }
 
