@@ -272,7 +272,8 @@ class jira
 
         if(!isset($result['values'])) return array();
         $fields = $result['values'];
-        $fields = array_filter($fields, function($field) {
+        $fields = array_filter($fields, function($field)
+        {
             return $field['isLocked'] != 1; // 只返回用户自定义的字段
         });
 
