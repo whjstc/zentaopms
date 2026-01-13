@@ -94,6 +94,27 @@ class jira
     }
 
     /**
+     * 获取Jira中所有的Issue链接类型。
+     *
+     * @return array
+     */
+    public function getIssueLinkTypes()
+    {
+        $url      = $this->jiraDomain . '/rest/api/2/issueLinkType';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+
+        $linkTypes = json_decode($result, true);
+        if(!$linkTypes) return array();
+
+        return $linkTypes['issueLinkTypes'];
+    }
+
+    /**
      * 获取Jira中指定项目的Issue。
      *
      * @param int     $startAt     开始位置
@@ -161,9 +182,14 @@ class jira
         return json_decode($result, true);
     }
 
-    public function getWorkflows()
+    /**
+     * 获取Jira中的解决方式。
+     *
+     * @return array
+     */
+    public function getResolutions()
     {
-        $url      = $this->jiraDomain . '/rest/workflowDesigner/latest/workflows?name=WORKFLOW_NAME';
+        $url      = $this->jiraDomain . '/rest/api/2/resolution';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
@@ -175,112 +201,21 @@ class jira
     }
 
     /**
-     * 获取Jira中的Epic.
+     * 获取Jira中的工作流。
      *
-     * @return string
+     * @return array
      */
-    public function getIssuesByEpic($epicID, $startAt = 0, $maxResults = 50)
+    public function getWorkflows()
     {
-        $url      = $this->jiraDomain . "/rest/agile/1.0/epic/$epicID/issue";
+        $url      = $this->jiraDomain . '/rest/workflowDesigner/latest/workflows?name=WORKFLOW_NAME';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
-
-        $url .= '?fields=id&startAt=' . $startAt . '&maxResults=' . $maxResults;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result);
-    }
-
-    /**
-     * 将迭代同步到Jira中。
-     *
-     * @param  object  $sprint 迭代信息
-     * @return string
-     */
-    public function createSprint($sprint)
-    {
-        $url      = $this->jiraDomain . '/rest/agile/1.0/sprint';
-        $account  = $this->jiraAccount;
-        $password = $this->jiraToken;
-
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $result     = common::http($url, $sprint, array(), $header, 'json', 'POST');
-
-        return json_decode($result);
-    }
-
-    /**
-     * 将Issue移动到指定迭代中。
-     *
-     * @param  int    $sprintID 迭代ID
-     * @param  array  $issues   Issue列表
-     * @return string
-     */
-    public function moveIssuesToSprint($sprintID, $issues)
-    {
-        $url      = $this->jiraDomain . '/rest/agile/1.0/sprint/' . $sprintID . '/issue';
-        $account  = $this->jiraAccount;
-        $password = $this->jiraToken;
-
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $result     = common::http($url, $issues, array(), $header, 'json', 'POST');
-
-        return json_decode($result);
-    }
-
-    /**
-     * 编辑Jira中的Issue。
-     *
-     * @param  int    $issueID IssueID
-     * @param  object $issue
-     * @return string
-     */
-    public function editIssue($issueID, $issue)
-    {
-        $this->app->loadLang('story');
-        $storyPointField = isset($this->config->jira->storyPoint) ? $this->config->jira->storyPoint : '';
-        $body = array();
-        $body['update']['summary']      = array(array('set' => $issue->title));
-        $body['update']['description']  = array(array('set' => strip_tags($issue->spec)));
-        if(isset($issue->estimate) and $storyPointField) $body['update'][$storyPointField] = array(array('set' => (int)$issue->estimate));
-        if(isset($issue->pri)) $body['update']['priority'] = array(array('set' => array('id' => (string)$issue->pri, 'name' => $this->lang->story->priList[$issue->pri])));
-
-        $url      = $this->jiraDomain . '/rest/api/2/issue/' . $issueID;
-        $account  = $this->jiraAccount;
-        $password = $this->jiraToken;
-
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $result     = common::http($url, $body, array(), $header, 'json', 'PUT');
-
-        return json_decode($result);
-    }
-
-    /**
-     * 指派Issue给指定用户。
-     *
-     * @param  int    $issueID  IssueID
-     * @param  string $assignee 用户名
-     * @return string
-     */
-    public function assignIssue($issueID, $assignee)
-    {
-        $body = $assignee ? array('name' => $assignee) : array('name' => null);
-
-        $url      = $this->jiraDomain . '/rest/api/2/issue/' . $issueID . '/assignee';
-        $account  = $this->jiraAccount;
-        $password = $this->jiraToken;
-
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $result     = common::http($url, $body, array(), $header, 'json', 'PUT');
-
-        return json_decode($result);
+        return json_decode($result, true);
     }
 
     /**
@@ -316,23 +251,24 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result);
+        return json_decode($result, true);
     }
 
     /**
-     * 导入Jira中的优先级。
-     * Import priority from Jira.
+     * 获取Jira中的自定义字段。
      *
-     * @param  int $boardID BoardID
      * @return array
      */
-    public function importPri($priList)
+    public function getCustomFields()
     {
-        if(!$priList) return;
-        $this->loadModel('custom');
-        foreach($priList as $pri)
-        {
-            $this->custom->setItem("all.story.priList.{$pri->id}", $pri->name);
-        }
+        $url      = $this->jiraDomain . '/rest/api/2/field';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+
+        return json_decode($result, true);
     }
 }

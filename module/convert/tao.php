@@ -109,7 +109,7 @@ class convertTao extends convertModel
     {
         $issueLinkType = new stdclass();
         $issueLinkType->id       = $data['id'];
-        $issueLinkType->linkname = $data['linkname'];
+        $issueLinkType->linkname = zget($data, 'name', zget($data, 'outward', ''));
         $issueLinkType->inward   = zget($data, 'inward', '');
         $issueLinkType->outward  = zget($data, 'outward', '');
         $issueLinkType->pstyle   = zget($data, 'style', '');
@@ -129,7 +129,7 @@ class convertTao extends convertModel
     {
         $resolution = new stdclass();
         $resolution->id          = $data['id'];
-        $resolution->sequence    = $data['sequence'];
+        $resolution->sequence    = zget($data, 'sequence', '');
         $resolution->pname       = $data['name'];
         $resolution->description = zget($data, 'description', '');
 
@@ -148,7 +148,7 @@ class convertTao extends convertModel
     {
         $status = new stdclass();
         $status->id          = $data['id'];
-        $status->sequence    = $data['sequence'];
+        $status->sequence    = zget($data, 'sequence', '');
         $status->pname       = $data['name'];
         $status->description = zget($data, 'description', '');
 
