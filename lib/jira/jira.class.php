@@ -121,7 +121,7 @@ class jira
      * @param int     $maxResults  最大返回数量
      * @return string
      */
-    public function getIssues($startAt = 0, $maxResults = 50)
+    public function getIssuesByProject($projectID, $issueTypeID, $startAt = 0, $maxResults = 50)
     {
         $url      = $this->jiraDomain . '/rest/api/2/search';
         $account  = $this->jiraAccount;
@@ -141,6 +141,52 @@ class jira
         }
 
         return $issues;
+    }
+
+    /**
+     * 获取Jira中的所有issue。
+     *
+     * @param  string $nextPageToken
+     * @param  int    $maxResults
+     * @return string
+     */
+    public function getIssues($maxResults = 5000, $nextPageToken = '')
+    {
+        $url      = $this->jiraDomain . '/rest/api/3/search/jql';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $jql        = 'created<=' . date('Y-m-d', strtotime('+1 day'));
+        $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment';
+        $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken";
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+
+        $result = json_decode($result, true);
+        if(!$result || empty($result['issues'])) return array();
+
+        $issueList = array();
+        foreach($result['issues'] as $issue)
+        {
+            if(!empty($issue['fields']))
+            {
+                foreach($issue['fields'] as $field => $value) $issue[$field] = $value;
+                unset($issue['fields']);
+            }
+            if(!empty($issue['priority']['id']))        $issue['priority']   = $issue['priority']['id'];
+            if(!empty($issue['project']['id']))         $issue['project']    = $issue['project']['id'];
+            if(!empty($issue['status']['id']))          $issue['status']     = $issue['status']['id'];
+            if(!empty($issue['creator']['accountId']))  $issue['creator']    = $issue['creator']['accountId'];
+            if(!empty($issue['issuetype']['id']))       $issue['issuetype']  = $issue['issuetype']['id'];
+            if(!empty($issue['assignee']['accountId'])) $issue['assignee']   = $issue['assignee']['accountId'];
+            if(!empty($issue['resolution']['id']))      $issue['resolution'] = $issue['resolution']['id'];
+            $issueList[$issue['id']] = $issue;
+        }
+
+        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $moreIssues = $this->getIssues($maxResults, $result['nextPageToken']);
+
+        return arrayUnion($issueList, $moreIssues);
     }
 
     /**
