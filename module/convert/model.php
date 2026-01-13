@@ -185,7 +185,17 @@ class convertModel extends model
         $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
 
         // 根据moduel调用不同的接口函数。
-        $dataList = $jiraApi->getIssueTypes();
+        if($module == 'issue')     $dataList = $jiraApi->getIssues();
+        if($module == 'issuetype') $dataList = $jiraApi->getIssueTypes();
+
+        if(in_array($module, array_keys($this->config->convert->objectTables)))
+        {
+            foreach($dataList as $key => $data)
+            {
+                $buildFunction  = 'build' . ucfirst($module) . 'Data';
+                $dataList[$key] = $this->$buildFunction($data);
+            }
+        }
 
         return $dataList;
     }
@@ -683,18 +693,7 @@ EOT;
      */
     public function getJiraTypeList(): array
     {
-        $issues   = $this->getJiraData($this->session->jiraMethod, 'issue');
-        $typeList = $this->getJiraData($this->session->jiraMethod, 'issuetype');
-
-        $jiraTypeList = array();
-        foreach($issues as $issue)
-        {
-            if(empty($issue->issuetype) || empty($typeList[$issue->issuetype])) continue;
-
-            $issueType = $typeList[$issue->issuetype];
-            $jiraTypeList[$issue->issuetype] = $issueType;
-        }
-        return $jiraTypeList;
+        return $this->getJiraData($this->session->jiraMethod, 'issuetype');
     }
 
     /**
