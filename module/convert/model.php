@@ -192,6 +192,9 @@ class convertModel extends model
             'project' => 'getProjects',
             'build' => 'getBuilds',
             'workflow' => 'getWorkflows',
+            'resolution' => 'getResolutions',
+            'status' => 'getStatus',
+            'customfield' => 'getCustomFields'
         );
 
         $function = $functionMap[$module];
@@ -747,11 +750,24 @@ EOT;
         if($this->config->edition == 'open') return array();
         if(empty($relations['zentaoObject']) || !in_array($step, array_keys($relations['zentaoObject']))) return array();
 
-        $issues      = $this->getJiraData($this->session->jiraMethod, 'issue');
-        $fields      = $this->getJiraData($this->session->jiraMethod, 'customfield');
-        $fieldValue  = $this->getJiraData($this->session->jiraMethod, 'customfieldvalue');
-
         $jiraFields = array();
+        $fields     = $this->getJiraData($this->session->jiraMethod, 'customfield');
+        if($this->session->jiraMethod == 'api')
+        {
+            foreach($fields as $field)
+            {
+                if(strpos($field->id, 'customfield_') === false) continue;
+                $fieldID = str_replace('customfield_', '', $field->id);
+                $fieldID = intval($fieldID);
+                $jiraFields[$fieldID] = $field->cfname;
+            }
+
+            return $jiraFields;
+        }
+
+        $issues     = $this->getJiraData($this->session->jiraMethod, 'issue');
+        $fieldValue = $this->getJiraData($this->session->jiraMethod, 'customfieldvalue');
+
         foreach($fieldValue as $value)
         {
             if(empty($issues[$value->issue]) || empty($fields[$value->customfield])) continue;
