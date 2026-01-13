@@ -53,7 +53,7 @@ class jira
      * @param string $password Jira密码
      * @return array
      */
-    public function getProjectList(string $url = '', string $account = '', string $password = ''): array
+    public function getProjects(string $url = '', string $account = '', string $password = ''): array
     {
         $url      = $url ? $url : $this->jiraDomain;
         $account  = $account ? $account : $this->jiraAccount;
@@ -96,13 +96,11 @@ class jira
     /**
      * 获取Jira中指定项目的Issue。
      *
-     * @param int     $projectID   项目ID
-     * @param int     $issueTypeID Issue类型ID
      * @param int     $startAt     开始位置
      * @param int     $maxResults  最大返回数量
      * @return string
      */
-    public function getIssues($projectID, $issueTypeID, $startAt = 0, $maxResults = 50)
+    public function getIssues($startAt = 0, $maxResults = 50)
     {
         $url      = $this->jiraDomain . '/rest/api/2/search';
         $account  = $this->jiraAccount;
@@ -110,13 +108,18 @@ class jira
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
-        $jql        = 'project = ' . $projectID . ' AND issuetype = ' . $issueTypeID . ' AND status != closed';
-        $fields     = 'id,summary,description,timeestimate,priority,status,creator,created,assignee,issuelinks';
-        if(isset($this->config->jira->storyPoint)) $fields .= ',' . $this->config->jira->storyPoint;
-        $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&startAt=" . $startAt . '&maxResults=' . $maxResults;
+        $jql        = 'order by created desc';
+        $url       .= '?jql=' . urlencode($jql) . "&startAt=" . $startAt . '&maxResults=' . $maxResults;
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
+        $result     = json_decode($result, true);
+        $issues     = $result['issues'];
 
-        return json_decode($result);
+        foreach($issues as $index => $issue)
+        {
+            $issues[$index]['issuetype'] = $issue['fields']['issuetype']['id'];
+        }
+
+        return $issues;
     }
 
     /**
@@ -136,7 +139,7 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result);
+        return json_decode($result, true);
     }
 
     /**
@@ -155,7 +158,21 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result);
+        return json_decode($result, true);
+    }
+
+    public function getWorkflows()
+    {
+        $url      = $this->jiraDomain . '/rest/workflowDesigner/latest/workflows?name=WORKFLOW_NAME';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+        a($result);die;
+
+        return json_decode($result, true);
     }
 
     /**

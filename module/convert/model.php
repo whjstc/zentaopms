@@ -184,9 +184,18 @@ class convertModel extends model
 
         $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
 
-        // 根据moduel调用不同的接口函数。
-        if($module == 'issue')     $dataList = $jiraApi->getIssues();
-        if($module == 'issuetype') $dataList = $jiraApi->getIssueTypes();
+        $functionMap = array(
+            'issue' => 'getIssues',
+            'issuelinktype' => 'getIssueLinkTypes',
+            'issuetype' => 'getIssueTypes',
+            'user' => 'getUsers',
+            'project' => 'getProjects',
+            'build' => 'getBuilds',
+            'workflow' => 'getWorkflows',
+        );
+
+        $function = $functionMap[$module];
+        $dataList = $jiraApi->$function();
 
         if(in_array($module, array_keys($this->config->convert->objectTables)))
         {
