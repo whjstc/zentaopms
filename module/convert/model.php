@@ -752,11 +752,12 @@ EOT;
 
         $jiraFields = array();
         $fields     = $this->getJiraData($this->session->jiraMethod, 'customfield');
+
         if($this->session->jiraMethod == 'api')
         {
             foreach($fields as $field)
             {
-                if(strpos($field->id, 'customfield_') === false) continue;
+                if(!in_array($step, $field->issueTypeIds)) continue; // 没有使用过的自定义字段不导入
                 $fieldID = str_replace('customfield_', '', $field->id);
                 $fieldID = intval($fieldID);
                 $jiraFields[$fieldID] = $field->cfname;

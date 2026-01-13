@@ -261,14 +261,21 @@ class jira
      */
     public function getCustomFields()
     {
-        $url      = $this->jiraDomain . '/rest/api/2/field';
+        $url      = $this->jiraDomain . '/rest/api/2/customFields';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
+        $result     = json_decode($result, true);
 
-        return json_decode($result, true);
+        if(!isset($result['values'])) return array();
+        $fields = $result['values'];
+        $fields = array_filter($fields, function($field) {
+            return $field['isLocked'] != 1; // 只返回用户自定义的字段
+        });
+
+        return $fields;
     }
 }
