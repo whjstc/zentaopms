@@ -115,35 +115,6 @@ class jira
     }
 
     /**
-     * 获取Jira中指定项目的Issue。
-     *
-     * @param int     $startAt     开始位置
-     * @param int     $maxResults  最大返回数量
-     * @return string
-     */
-    public function getIssuesByProject($projectID, $issueTypeID, $startAt = 0, $maxResults = 50)
-    {
-        $url      = $this->jiraDomain . '/rest/api/2/search';
-        $account  = $this->jiraAccount;
-        $password = $this->jiraToken;
-
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $jql        = 'order by created desc';
-        $url       .= '?jql=' . urlencode($jql) . "&startAt=" . $startAt . '&maxResults=' . $maxResults;
-        $result     = common::http($url, null, array(), $header, 'data', 'GET');
-        $result     = json_decode($result, true);
-        $issues     = $result['issues'];
-
-        foreach($issues as $index => $issue)
-        {
-            $issues[$index]['issuetype'] = $issue['fields']['issuetype']['id'];
-        }
-
-        return $issues;
-    }
-
-    /**
      * 获取Jira中的所有issue。
      *
      * @param  string $nextPageToken
