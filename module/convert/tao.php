@@ -272,6 +272,7 @@ class convertTao extends convertModel
         $field->description            = isset($data['description'])            ? $data['description']            : '';
         $field->customfieldtypekey     = isset($data['customfieldtypekey'])     ? $data['customfieldtypekey']     : '';
         $field->customfieldsearcherkey = isset($data['customfieldsearcherkey']) ? $data['customfieldsearcherkey'] : '';
+        $field->issueTypeIds           = isset($data['issueTypeIds'])           ? $data['issueTypeIds']           : array();
 
         return $field;
     }
