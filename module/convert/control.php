@@ -432,7 +432,7 @@ class convert extends control
         $this->view->zentaoObjects  = $this->convert->getZentaoObjectList();
         $this->view->fieldList      = $jiraFields;
         $this->view->statusList     = $statusList;
-        $this->view->jiraActions    = $this->convert->getJiraWorkflowActions();
+        $this->view->jiraActions    = array();//$this->convert->getJiraWorkflowActions();
         $this->view->resolutionList = $resolutionList;
         $this->view->defaultValue   = $this->convert->getObjectDefaultValue($step);
         $this->view->linkTypeList   = $linkTypeList;
