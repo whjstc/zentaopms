@@ -170,7 +170,6 @@ class jira
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
-        a($result);die;
 
         return json_decode($result, true);
     }
