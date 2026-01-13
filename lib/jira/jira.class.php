@@ -84,13 +84,13 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        $issueTypes = json_decode($result);
+        $issueTypes = json_decode($result, true);
         if(!$issueTypes) return array();
 
-        $pairs = array();
-        foreach ($issueTypes as $issueType) $pairs[$issueType->id] = $issueType->name;
+        $typeList = array();
+        foreach($issueTypes as $issueType) $typeList[$issueType['id']] = $issueType;
 
-        return $pairs;
+        return $typeList;
     }
 
     /**
