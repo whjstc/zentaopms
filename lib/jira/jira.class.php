@@ -130,7 +130,7 @@ class jira
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
         $jql        = 'created<=' . date('Y-m-d', strtotime('+1 day'));
-        $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment';
+        $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog';
         $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
@@ -198,6 +198,23 @@ class jira
                     $comments[$commentItem['id']] = $commentItem;
                 }
                 $issue['comments'] = $comments;
+            }
+
+            if(!empty($issue['worklog']['worklogs']))
+            {
+                $worklogs = array();
+                foreach($issue['worklog']['worklogs'] as $index => $work)
+                {
+                    $worklog = array();
+                    $worklog['id']         = $work['id'];
+                    $worklog['issue']      = $issue['id'];
+                    $worklog['body']       = !empty($issue['renderedFields']['worklog']['worklogs'][$index]['comment']) ? $issue['renderedFields']['worklog']['worklogs'][$index]['comment'] : '';
+                    $worklog['author']     = $work['author']['accountId'];
+                    $worklog['timeworked'] = $work['timeSpentSeconds'];
+                    $worklog['created']    = date('Y-m-d H:i:s', strtotime($work['created']));
+                    $worklogs[$worklog['id']] = $worklog;
+                }
+                $issue['worklogs'] = $worklogs;
             }
 
             $issue['created'] = date('Y-m-d H:i:s', strtotime($issue['created']));
