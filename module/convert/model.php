@@ -197,7 +197,7 @@ class convertModel extends model
             'customfield' => 'getCustomFields'
         );
 
-        global $comments, $changeItems, $changeGroups, $worklogs;
+        global $comments, $changeItems, $changeGroups, $worklogs, $files;
 
         $dataList = array();
         if($module == 'changegroup')
@@ -216,6 +216,10 @@ class convertModel extends model
         {
             $dataList = !empty($worklogs) ? $worklogs : array();
         }
+        elseif($module == 'file')
+        {
+            $dataList = !empty($files) ? $files : array();
+        }
         else
         {
             $function = $functionMap[$module];
@@ -232,6 +236,7 @@ class convertModel extends model
                     if(!empty($data['changeGroups'])) $changeGroups = $data['changeGroups'];
                     if(!empty($data['changeItems']))  $changeItems  = $data['changeItems'];
                     if(!empty($data['worklogs']))     $worklogs     = $data['worklogs'];
+                    if(!empty($data['files']))        $files        = $data['files'];
                 }
                 $buildfunction  = 'build' . ucfirst($module) . 'data';
                 $dataList[$key] = $this->$buildfunction($data);

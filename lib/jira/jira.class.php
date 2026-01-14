@@ -175,16 +175,17 @@ class jira
      * @param  int    $maxResults
      * @return string
      */
-    public function getIssues($maxResults = 5000, $nextPageToken = '')
+    public function getIssues($lastID = 0, $maxResults = 5000, $nextPageToken = '')
     {
         $url      = $this->jiraDomain . '/rest/api/3/search/jql';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
+        $maxResults = $maxResults ?: 5000;
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
         $jql        = 'created<=' . date('Y-m-d', strtotime('+1 day'));
-        $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog';
+        $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog,attachment';
         $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
@@ -271,11 +272,29 @@ class jira
                 $issue['worklogs'] = $worklogs;
             }
 
+            if(!empty($issue['attachment']))
+            {
+                $files = array();
+                foreach($issue['attachment'] as $index => $attachment)
+                {
+                    $file = array();
+                    $file['issue']    = $issue['id'];
+                    $file['id']       = $attachment['id'];
+                    $file['filename'] = $attachment['filename'];
+                    $file['mimetype'] = $attachment['mimeType'];
+                    $file['filesize'] = $attachment['size'];
+                    $file['author']   = $attachment['author']['accountId'];
+                    $file['created']  = date('Y-m-d H:i:s', strtotime($attachment['created']));
+                    $files[$file['id']] = $file;
+                }
+                $issue['files'] = $files;
+            }
+
             $issue['created'] = date('Y-m-d H:i:s', strtotime($issue['created']));
             $issueList[$issue['id']] = $issue;
         }
 
-        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $issueList = arrayUnion($issueList, $this->getIssues($maxResults, $result['nextPageToken']));
+        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $issueList = arrayUnion($issueList, $this->getIssues($lastID, $maxResults, $result['nextPageToken']));
 
         return $issueList;
     }
