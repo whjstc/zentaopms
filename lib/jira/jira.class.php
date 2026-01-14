@@ -128,7 +128,7 @@ class jira
      *
      * @return array
      */
-    public function getIssueTypes(): array
+    public function getIssueTypes($startAt = 0, $maxResults = 50): array
     {
         $url      = $this->jiraDomain . '/rest/api/2/issuetype/';
         $account  = $this->jiraAccount;
@@ -152,7 +152,7 @@ class jira
      *
      * @return array
      */
-    public function getIssueLinkTypes()
+    public function getIssueLinkTypes($startAt = 0, $maxResults = 50)
     {
         $url      = $this->jiraDomain . '/rest/api/2/issueLinkType';
         $account  = $this->jiraAccount;
@@ -394,7 +394,7 @@ class jira
      */
     public function getWorkflows()
     {
-        $url      = $this->jiraDomain . '/rest/workflowDesigner/latest/workflows?name=WORKFLOW_NAME';
+        $url      = $this->jiraDomain . '/rest/api/3/workflow';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
@@ -402,7 +402,7 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result, true);
+        return array();
     }
 
     /**
