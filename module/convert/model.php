@@ -207,6 +207,10 @@ class convertModel extends model
         {
             $dataList = !empty($changeItems) ? $changeItems : array();
         }
+        elseif($module == 'action')
+        {
+            $dataList = !empty($comments) ? $comments : array();
+        }
         else
         {
             $function = $functionMap[$module];
@@ -219,7 +223,7 @@ class convertModel extends model
             {
                 if($module == 'issue')
                 {
-                    if(!empty($data['comment']['comments'])) $comments[$data['id']] = $data['comment']['comments'];
+                    if(!empty($data['comments']))     $comments     = $data['comments'];
                     if(!empty($data['changeGroups'])) $changeGroups = $data['changeGroups'];
                     if(!empty($data['changeItems']))  $changeItems  = $data['changeItems'];
                 }
