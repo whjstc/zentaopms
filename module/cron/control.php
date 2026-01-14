@@ -139,7 +139,7 @@ class cron extends control
         set_time_limit(0);
         session_write_close();
 
-        $execId = mt_rand();
+        $execId = getmypid();
         if($restart)
         {
             $this->cron->restartCron($execId);
@@ -156,8 +156,16 @@ class cron extends control
                 return;
             }
 
-            if(in_array('scheduler', $roles)) $this->schedule($execId);
-            if(in_array('consumer', $roles))  $this->consumeTasks($execId);
+            try
+            {
+                if(in_array('scheduler', $roles)) $this->schedule($execId);
+                if(in_array('consumer', $roles))  $this->consumeTasks($execId);
+                $this->cron->logCron($execId . " finished job at " . date("Y-m-d H:i:s") . "\n", true);
+            }
+            catch(Exception $e)
+            {
+                $this->cron->logCron($execId . " error: " . $e->getMessage());
+            }
 
             sleep(20);
         }
@@ -255,34 +263,42 @@ class cron extends control
     {
         $roles = array();
 
-        $settings = $this->dao->select('*')->from(TABLE_CONFIG)->where('owner')->eq('system')->andWhere('module')->eq('cron')->fetchAll();
+        $settings = $this->dao->select('id,section,`key`,value')->from(TABLE_CONFIG)->where('owner')->eq('system')->andWhere('module')->eq('cron')->fetchAll();
 
         $scheduler = array('execId' => 0, 'lastTime' => '');
-        $consumerCount = 0;
+        $consumers = [];
 
+        /* 生成scheduler和consumer的配置信息。 Set scheduler config and consumers. */
         $expirDate = date('Y-m-d H:i:s', strtotime('-1 minute'));
         foreach($settings as $setting)
         {
-            if($setting->section == 'scheduler' && $setting->key == 'lastTime') $scheduler['lastTime'] = $setting->value;
-            if($setting->section == 'scheduler' && $setting->key == 'execId')   $scheduler['execId']   = $setting->value;
-
-            if($setting->section == 'consumer')
+            if($setting->section == 'scheduler')
             {
-                if($setting->value > $expirDate)
+                if($setting->key == 'lastTime')
                 {
-                    $consumerCount ++;
-                    if($consumerCount < $this->config->cron->maxConsumer && $setting->key == strval($execId)) $roles[] = 'consumer';
+                    if($setting->value < $expirDate) continue;
+                    $scheduler['lastTime'] = $setting->value;
                 }
-                else
+                if($setting->key == 'execId') $scheduler['execId'] = $setting->value;
+            }
+            elseif($setting->section == 'consumer')
+            {
+                if($setting->value < $expirDate)
                 {
                     $this->dao->delete()->from(TABLE_CONFIG)->where('id')->eq($setting->id)->exec();
+                    continue;
                 }
+                $consumers[$setting->key] = $setting->key;
             }
         }
 
-        if(in_array($scheduler['execId'], array(0, $execId)) || $scheduler['lastTime'] < $expirDate) $roles[] = 'scheduler';
-        if($consumerCount < $this->config->cron->maxConsumer) $roles[] = 'consumer';
+        /* 如果当前进程ID是scheduler，或者没有活动的scheduler，该进程抢占为scheduler. */
+        if($scheduler['execId'] == $execId || $scheduler['lastTime'] < $expirDate) $roles[] = 'scheduler';
 
+        /* 如果当前进程ID是consumer，或者consumer数量不足，该进程抢占为consumer. */
+        if(in_array($execId, $consumers) || count($consumers) < $this->config->cron->maxConsumer) $roles[] = 'consumer';
+
+        $this->cron->logCron("$execId apply roles: [" . implode(',', $roles). "]\n", true);
         return $roles;
     }
 
