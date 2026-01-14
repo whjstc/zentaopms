@@ -143,7 +143,6 @@ class jira
             if(!empty($issue['fields']))
             {
                 foreach($issue['fields'] as $field => $value) $issue[$field] = $value;
-                unset($issue['fields']);
             }
             if(!empty($issue['priority']['id']))                $issue['priority']    = $issue['priority']['id'];
             if(!empty($issue['project']['id']))                 $issue['project']     = $issue['project']['id'];
@@ -153,8 +152,6 @@ class jira
             if(!empty($issue['assignee']['accountId']))         $issue['assignee']    = $issue['assignee']['accountId'];
             if(!empty($issue['resolution']['id']))              $issue['resolution']  = $issue['resolution']['id'];
             if(!empty($issue['renderedFields']['description'])) $issue['description'] = $issue['renderedFields']['description'];
-            if(!empty($issue['renderedFields']['comment']))     $issue['comment']     = $issue['renderedFields']['comment'];
-            if(!empty($issue['renderedFields'])) unset($issue['renderedFields']);
 
             if(!empty($issue['changelog']['histories']))
             {
@@ -166,7 +163,7 @@ class jira
                     $changeGroup['id']      = $history['id'];
                     $changeGroup['issue']   = $issue['id'];
                     $changeGroup['author']  = $history['author']['accountId'];
-                    $changeGroup['created'] = $history['created'];
+                    $changeGroup['created'] = date('Y-m-d H:i:s', strtotime($history['created']));
                     $changeGroups[$changeGroup['id']] = $changeGroup;
 
                     foreach($history['items'] as $index => $item)
@@ -175,7 +172,7 @@ class jira
                         $changeItem['id']        = $changeGroup['id'] . '_' . $index;
                         $changeItem['group']     = $changeGroup['id'];
                         $changeItem['fieldtype'] = $item['fieldtype'];
-                        $changeItem['field']     = $item['fieldId'];
+                        $changeItem['field']     = $item['field'];
                         $changeItem['oldvalue']  = $item['from'];
                         $changeItem['oldstring'] = $item['fromString'];
                         $changeItem['newvalue']  = $item['to'];
@@ -185,8 +182,25 @@ class jira
                 }
                 $issue['changeGroups'] = $changeGroups;
                 $issue['changeItems']  = $changeItems;
-                unset($issue['changelog']);
             }
+
+            if(!empty($issue['comment']['comments']))
+            {
+                $comments = array();
+                foreach($issue['comment']['comments'] as $index => $comment)
+                {
+                    $commentItem = array();
+                    $commentItem['id']      = $comment['id'];
+                    $commentItem['issue']   = $issue['id'];
+                    $commentItem['body']    = $issue['renderedFields']['comment']['comments'][$index]['body'];
+                    $commentItem['author']  = $comment['author']['accountId'];
+                    $commentItem['created'] = date('Y-m-d H:i:s', strtotime($comment['created']));
+                    $comments[$commentItem['id']] = $commentItem;
+                }
+                $issue['comments'] = $comments;
+            }
+
+            $issue['created'] = date('Y-m-d H:i:s', strtotime($issue['created']));
             $issueList[$issue['id']] = $issue;
         }
 
