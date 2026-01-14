@@ -747,7 +747,7 @@ class convertTao extends convertModel
         $this->app->loadConfig('execution');
         $this->app->loadLang('doc');
 
-        $projectRoleActor    = $this->getJiraProjectRoleActor();
+        $projectRoleActor    = $this->session->jiraMethod == 'api' ? array() : $this->getJiraProjectRoleActor();
         $archivedProject     = $this->getJiraArchivedProject($dataList);
         $sprintGroup         = $this->getJiraSprint(array_keys($dataList));
         $jiraProjectRelation = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('jproject')->fetchAll('AID');
