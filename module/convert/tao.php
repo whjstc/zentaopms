@@ -41,6 +41,7 @@ class convertTao extends convertModel
         $project->lead        = isset($data['lead'])        ? $data['lead']        : '';
         $project->pstatus     = isset($data['status'])      ? $data['status']      : '';
         $project->created     = isset($data['created'])     ? $data['created']     : null;
+        $project->archived    = isset($data['archived'])    ? $data['archived']    : false;
 
         return $project;
     }
@@ -749,7 +750,7 @@ class convertTao extends convertModel
         $this->app->loadLang('doc');
 
         $projectRoleActor    = $this->session->jiraMethod == 'api' ? array() : $this->getJiraProjectRoleActor();
-        $archivedProject     = $this->getJiraArchivedProject($dataList);
+        $archivedProject     = $this->session->jiraMethod == 'api' ? array() : $this->getJiraArchivedProject($dataList);
         $sprintGroup         = $this->getJiraSprint(array_keys($dataList));
         $jiraProjectRelation = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('jproject')->fetchAll('AID');
         foreach($dataList as $id => $data)
@@ -762,7 +763,7 @@ class convertTao extends convertModel
                 continue;
             }
 
-            $data->status = in_array($data->id, $archivedProject) ? 'closed' : 'doing';
+            $data->status = in_array($data->id, $archivedProject) || !empty($data->archived) ? 'closed' : 'doing';
 
             $project    = $this->createProject($data, $projectRoleActor);
             $executions = $this->createExecution($id, $project, $sprintGroup, $projectRoleActor);

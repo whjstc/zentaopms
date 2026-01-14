@@ -194,7 +194,7 @@ class convertModel extends model
             'workflow' => 'getWorkflows',
             'resolution' => 'getResolutions',
             'status' => 'getStatus',
-            'customfield' => 'getCustomFields'
+            'customfield' => 'getCustomFields',
         );
 
         global $comments, $changeItems, $changeGroups, $worklogs, $files;
@@ -220,10 +220,14 @@ class convertModel extends model
         {
             $dataList = !empty($files) ? $files : array();
         }
-        else
+        elseif(isset($functionMap[$module]))
         {
             $function = $functionMap[$module];
             $dataList = $jiraApi->$function($lastID, $limit);
+        }
+        else
+        {
+            return array();
         }
 
         if(in_array($module, array_keys($this->config->convert->objectTables)))
