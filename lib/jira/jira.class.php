@@ -285,6 +285,7 @@ class jira
                     $file['filesize'] = $attachment['size'];
                     $file['author']   = $attachment['author']['accountId'];
                     $file['created']  = date('Y-m-d H:i:s', strtotime($attachment['created']));
+                    $file['content']  = $attachment['content'];
                     $files[$file['id']] = $file;
                 }
                 $issue['files'] = $files;
@@ -330,6 +331,24 @@ class jira
 
         if(count($result) == $maxResults) $users = arrayUnion($users, $this->getUsers($startAt + $maxResults, $maxResults));
         return $users;
+    }
+
+    /**
+     * 从jira接口下载文件内容。
+     * Download jira File.
+     *
+     * @param  string $fileURL
+     * @access public
+     * @return void
+     */
+    public function downloadFile(string $fileURL)
+    {
+        $account    = $this->jiraAccount;
+        $password   = $this->jiraToken;
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($fileURL, null, array(), $header, 'data', 'GET');
+        return $result;
     }
 
     /**

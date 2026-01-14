@@ -235,6 +235,7 @@ class convertTao extends convertModel
         $file->filesize = isset($data['filesize']) ? $data['filesize'] : '';
         $file->created  = isset($data['created'])  ? $data['created']  : '';
         $file->author   = isset($data['author'])   ? $data['author']   : '';
+        $file->content  = isset($data['content'])  ? $data['content']  : '';
 
         return $file;
     }
@@ -1142,8 +1143,14 @@ class convertTao extends convertModel
      */
     protected function importJiraFile(array $dataList): bool
     {
-        $this->loadModel('file');
+        if($this->session->jiraMethod == 'api')
+        {
+            $this->app->loadClass('jira');
+            $jiraApi = json_decode($this->session->jiraApi, true);
+            $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
+        }
 
+        $this->loadModel('file');
         $issueList = $this->getIssueData();
 
         $filePaths = $this->dao->dbh($this->dbh)->select('AID,extra')->from(JIRA_TMPRELATION)
@@ -1168,12 +1175,22 @@ class convertTao extends convertModel
             $fileName  = $fileAttachment->filename;
             $parts     = explode('.', $fileName);
             $extension = array_pop($parts);
+            $pathname  = $this->file->setPathName((int)$fileID, $extension);
 
-            $jiraFile = $this->app->getTmpRoot() . 'attachments/' . $filePaths[$issueID] .  $fileID;
-            if(!is_file($jiraFile)) continue;
+            if($this->session->jiraMethod == 'api')
+            {
+                $fileContent = $jiraApi->downloadFile($file->content);
+                file_put_contents($this->file->savePath . $pathname, $fileContent);
+                if(!is_file($this->file->savePath . $pathname) || filesize($this->file->savePath . $pathname) == 0) continue;
+            }
+            else
+            {
+                $jiraFile = $this->app->getTmpRoot() . 'attachments/' . $filePaths[$issueID] .  $fileID;
+                if(!is_file($jiraFile)) continue;
+            }
 
             $file = new stdclass();
-            $file->pathname   = $this->file->setPathName((int)$fileID, $extension);
+            $file->pathname   = $pathname;
             $file->title      = $fileName;
             $file->extension  = substr($extension, 0, 30); // 防止超长报错
             $file->size       = $fileAttachment->filesize;
@@ -1185,7 +1202,7 @@ class convertTao extends convertModel
             $this->dao->dbh($this->dbh)->insert(TABLE_FILE)->data($file)->exec();
 
             $fileID = $this->dao->dbh($this->dbh)->lastInsertID();
-            copy($jiraFile, $this->file->savePath . $file->pathname);
+            if($this->session->jiraMethod != 'api') copy($jiraFile, $this->file->savePath . $file->pathname);
 
             if(in_array($file->objectType, array('epic', 'requirement', 'story')))
             {
