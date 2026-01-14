@@ -185,7 +185,7 @@ class cron extends control
         set_time_limit(0);
         session_write_close();
 
-        $execId = mt_rand();
+        $execId = getmypid();
         $this->cron->restartCron($execId);
 
         $this->loadModel('common');
@@ -220,7 +220,7 @@ class cron extends control
 
         $this->loadModel('common');
 
-        $execId = mt_rand();
+        $execId = getmypid();
         while(true)
         {
             if(empty($this->config->global->cron))
