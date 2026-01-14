@@ -235,11 +235,11 @@ class convertModel extends model
             {
                 if($module == 'issue')
                 {
-                    if(!empty($data['comments']))     $comments     = $data['comments'];
-                    if(!empty($data['changeGroups'])) $changeGroups = $data['changeGroups'];
-                    if(!empty($data['changeItems']))  $changeItems  = $data['changeItems'];
-                    if(!empty($data['worklogs']))     $worklogs     = $data['worklogs'];
-                    if(!empty($data['files']))        $files        = $data['files'];
+                    if(!empty($data['comments']))     $comments     = arrayUnion($comments,     $data['comments']);
+                    if(!empty($data['changeGroups'])) $changeGroups = arrayUnion($changeGroups, $data['changeGroups']);
+                    if(!empty($data['changeItems']))  $changeItems  = arrayUnion($changeItems,  $data['changeItems']);
+                    if(!empty($data['worklogs']))     $worklogs     = arrayUnion($worklogs,     $data['worklogs']);
+                    if(!empty($data['files']))        $files        = arrayUnion($files,        $data['files']);
                 }
                 $buildfunction  = 'build' . ucfirst($module) . 'data';
                 $dataList[$key] = $this->$buildfunction($data);

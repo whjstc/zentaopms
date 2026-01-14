@@ -169,23 +169,31 @@ class jira
     /**
      * 获取Jira中的所有issue。
      *
-     * @param  string $nextPageToken
+     * @param  int    $lastID
      * @param  int    $maxResults
      * @return string
      */
-    public function getIssues($lastID = 0, $maxResults = 5000, $nextPageToken = '')
+    public function getIssues($lastID = 0, $maxResults = 5000)
     {
+        if(!$lastID) unset($_SESSION['nextPageToken']);
+        if(!empty($_SESSION['nextPageToken']) && $_SESSION['nextPageToken'] == 'isLast')
+        {
+            unset($_SESSION['nextPageToken']);
+            return array();
+        }
+
         $url      = $this->jiraDomain . '/rest/api/3/search/jql';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
-        $maxResults = $maxResults ?: 5000;
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $jql        = 'created<=' . date('Y-m-d', strtotime('+1 day'));
-        $fields     = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog,attachment';
-        $url       .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
-        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+        $maxResults    = $maxResults ?: 5000;
+        $nextPageToken = !empty($_SESSION['nextPageToken']) ? $_SESSION['nextPageToken'] : '';
+        $authHeader    = base64_encode($account . ':' . $password);
+        $header        = array('Authorization: Basic ' . $authHeader);
+        $jql           = 'created<=' . date('Y-m-d', strtotime('+1 day'));
+        $fields        = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog,attachment';
+        $url          .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
+        $result        = common::http($url, null, array(), $header, 'data', 'GET');
 
         $result = json_decode($result, true);
         if(!$result || empty($result['issues'])) return array();
@@ -293,7 +301,8 @@ class jira
             $issueList[$issue['id']] = $issue;
         }
 
-        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $issueList = arrayUnion($issueList, $this->getIssues($lastID, $maxResults, $result['nextPageToken']));
+        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $_SESSION['nextPageToken'] = $result['nextPageToken'];
+        if(!empty($result['isLast'])) $_SESSION['nextPageToken'] = 'isLast';
 
         return $issueList;
     }
