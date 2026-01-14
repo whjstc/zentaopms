@@ -388,26 +388,6 @@ class jira
     }
 
     /**
-     * 获取Jira中的工作流。
-     *
-     * @return array
-     */
-    public function getWorkflows()
-    {
-        return array();
-
-        $url      = $this->jiraDomain . '/rest/api/3/workflow';
-        $account  = $this->jiraAccount;
-        $password = $this->jiraToken;
-
-        $authHeader = base64_encode($account . ':' . $password);
-        $header     = array('Authorization: Basic ' . $authHeader);
-        $result     = common::http($url, null, array(), $header, 'data', 'GET');
-
-        return json_decode($result, true);
-    }
-
-    /**
      * 获取Jira中所有的优先级。
      *
      * @return array
