@@ -55,7 +55,9 @@ class jira
      */
     public function getProjects($startAt = 0, $maxResults = 50): array
     {
-        $url      = $this->jiraDomain . '/rest/api/2/project?startAt=' . $startAt . '&maxResults=' . $maxResults;
+        if($startAt > 0) return array(); // 项目没有分页，第二次直接返回空数组
+
+        $url      = $this->jiraDomain . '/rest/api/3/project';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
@@ -65,10 +67,6 @@ class jira
 
         $projects = json_decode($result, true);
         if(!$projects) return array();
-
-        if(count($projects) == $maxResults) $projects = arrayUnion($projects, $this->getProjects($startAt + $maxResults, $maxResults));
-
-        if($startAt > 0 && count($projects) < $maxResults) return array(); // 项目即使传入startAt也会获取到数据
 
         return $projects;
     }
