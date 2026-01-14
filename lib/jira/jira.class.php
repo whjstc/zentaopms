@@ -347,8 +347,7 @@ class jira
         $password   = $this->jiraToken;
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
-        $result     = common::http($fileURL, null, array(), $header, 'data', 'GET');
-        return $result;
+        return common::http($fileURL, null, array(), $header, 'data', 'GET');
     }
 
     /**
