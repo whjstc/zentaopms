@@ -186,14 +186,15 @@ class convertModel extends model
         $functionMap = array(
             'issue'         => 'getIssues',
             'issuelinktype' => 'getIssueLinkTypes',
-            'issuetype'     => 'getIssueTypes',
-            'user'          => 'getUsers',
-            'project'       => 'getProjects',
-            'build'         => 'getBuilds',
-            'workflow'      => 'getWorkflows',
-            'resolution'    => 'getResolutions',
-            'status'        => 'getStatus',
-            'customfield'   => 'getCustomFields'
+            'issuelink' => 'getIssueLinks',
+            'issuetype' => 'getIssueTypes',
+            'user' => 'getUsers',
+            'project' => 'getProjects',
+            'build' => 'getBuilds',
+            'workflow' => 'getWorkflows',
+            'resolution' => 'getResolutions',
+            'status' => 'getStatus',
+            'customfield' => 'getCustomFields'
         );
 
         global $comments, $changeItems, $changeGroups, $worklogs;
@@ -218,7 +219,7 @@ class convertModel extends model
         else
         {
             $function = $functionMap[$module];
-            $dataList = $jiraApi->$function();
+            $dataList = $jiraApi->$function($lastID, $limit);
         }
 
         if(in_array($module, array_keys($this->config->convert->objectTables)))
@@ -1145,7 +1146,7 @@ EOT;
     public function getJiraSprint(array $projectList): array
     {
         $sprintGroup = array();
-        if($this->session->jiraMethod == 'file')
+        if($this->session->jiraMethod == 'file' || $this->session->jiraMethod == 'api')
         {
             foreach($projectList as $projectID)
             {
@@ -1206,6 +1207,8 @@ EOT;
      */
     public function getJiraArchivedProject($dataList): array
     {
+        if($this->session->jiraMethod == 'api') return array();
+
         $archivedProject = array();
         $auditLog = $this->getJiraData($this->session->jiraMethod, 'auditlog');
         if($auditLog)

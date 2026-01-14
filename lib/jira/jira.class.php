@@ -53,20 +53,74 @@ class jira
      * @param string $password Jira密码
      * @return array
      */
-    public function getProjects(string $url = '', string $account = '', string $password = ''): array
+    public function getProjects($startAt = 0, $maxResults = 50): array
     {
-        $url      = $url ? $url : $this->jiraDomain;
-        $account  = $account ? $account : $this->jiraAccount;
-        $password = $password ? $password : $this->jiraToken;
+        $url      = $this->jiraDomain . '/rest/api/2/project?startAt=' . $startAt . '&maxResults=' . $maxResults;
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
 
-        $url .= '/rest/api/2/project';
-        $header = array('Authorization: Basic ' . base64_encode($account . ':' . $password));
-        $result = common::http($url, null, array(), $header, 'data', 'GET');
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        $projects = json_decode($result);
+        $projects = json_decode($result, true);
         if(!$projects) return array();
 
+        if(count($projects) == $maxResults) $projects = arrayUnion($projects, $this->getProjects($startAt + $maxResults, $maxResults));
+
+        if($startAt > 0 && count($projects) < $maxResults) return array(); // 项目即使传入startAt也会获取到数据
+
         return $projects;
+    }
+
+    /**
+     * 获取Jira中所有的版本。
+     *
+     * @param  int $startAt    开始位置
+     * @param  int $maxResults 最大返回数量
+     * @return array
+     */
+    public function getBuilds($startAt = 0, $maxResults = 50): array
+    {
+        $url      = $this->jiraDomain . '/rest/api/2/version?startAt=' . $startAt . '&maxResults=' . $maxResults;
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+
+        $versions = json_decode($result, true);
+        if(!$versions) return array();
+
+        if(count($versions) == $maxResults) $versions = arrayUnion($versions, $this->getBuilds($startAt + $maxResults, $maxResults));
+
+        return $versions;
+    }
+
+    /**
+     * 获取Jira中所有的Issue链接。
+     *
+     * @param  int $startAt    开始位置
+     * @param  int $maxResults 最大返回数量
+     * @return array
+     */
+    public function getIssueLinks($startAt = 0, $maxResults = 50): array
+    {
+        $url      = $this->jiraDomain . '/rest/api/2/issueLink?startAt=' . $startAt . '&maxResults=' . $maxResults;
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+
+        $issueLinks = json_decode($result, true);
+        if(!$issueLinks) return array();
+
+        if(count($issueLinks) == $maxResults) $issueLinks = arrayUnion($issueLinks, $this->getIssueLinks($startAt + $maxResults, $maxResults));
+
+        return $issueLinks;
     }
 
     /**
@@ -221,9 +275,9 @@ class jira
             $issueList[$issue['id']] = $issue;
         }
 
-        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $moreIssues = $this->getIssues($maxResults, $result['nextPageToken']);
+        if(empty($result['isLast']) && !empty($result['nextPageToken'])) $issueList = arrayUnion($issueList, $this->getIssues($maxResults, $result['nextPageToken']));
 
-        return arrayUnion($issueList, $moreIssues);
+        return $issueList;
     }
 
     /**
@@ -235,15 +289,28 @@ class jira
      */
     public function getUsers($startAt = 0, $maxResults = 50)
     {
-        $url      = $this->jiraDomain . '/rest/api/2/user/search?username=.&startAt=' . $startAt . '&maxResults=' . $maxResults;
+        $url      = $this->jiraDomain . '/rest/api/2/user/search?query=.&startAt=' . $startAt . '&maxResults=' . $maxResults;
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
         $authHeader = base64_encode($account . ':' . $password);
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
+        $result     = json_decode($result, true);
 
-        return json_decode($result, true);
+        $users = array();
+        foreach($result as $index => $user)
+        {
+            $user['id'] = $index;
+            $user['lowerUserName']    = $user['accountId'];
+            $user['lowerDisplayName'] = $user['displayName'];
+            $user['createdDate']      = '';
+
+            $users[$index] = $user;
+        }
+
+        if(count($result) == $maxResults) $users = arrayUnion($users, $this->getUsers($startAt + $maxResults, $maxResults));
+        return $users;
     }
 
     /**
