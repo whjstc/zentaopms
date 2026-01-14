@@ -191,10 +191,9 @@ class convertModel extends model
             'user' => 'getUsers',
             'project' => 'getProjects',
             'build' => 'getBuilds',
-            'workflow' => 'getWorkflows',
             'resolution' => 'getResolutions',
             'status' => 'getStatus',
-            'customfield' => 'getCustomFields',
+            'customfield' => 'getCustomFields'
         );
 
         global $comments, $changeItems, $changeGroups, $worklogs, $files;
