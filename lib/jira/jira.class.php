@@ -196,7 +196,7 @@ class jira
         $authHeader    = base64_encode($account . ':' . $password);
         $header        = array('Authorization: Basic ' . $authHeader);
         $jql           = 'created<=' . date('Y-m-d', strtotime('+1 day'));
-        $fields        = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog,attachment';
+        $fields        = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog,attachment,fixVersions';
         $url          .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
         $result        = common::http($url, null, array(), $header, 'data', 'GET');
 
