@@ -1148,7 +1148,7 @@ EOT;
     {
         $issueGroup     = array();
         $sprintRelation = $this->dao->dbh($this->dbh)->select('AID,BID')->from(JIRA_TMPRELATION)->where('AType')->eq('jsprint')->andWhere('BType')->eq('zexecution')->fetchPairs();
-        if($this->session->jiraMethod == 'file')
+        if($this->session->jiraMethod != 'db')
         {
             foreach($sprintRelation as $sprintID => $executionID)
             {
