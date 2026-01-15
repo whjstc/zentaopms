@@ -3039,6 +3039,7 @@ class convertTao extends convertModel
     {
         if(empty($content)) return '';
 
+        /* 旧版jira匹配规则。 */
         preg_match_all('/!(.*?)!/', $content, $matches);
         if(!empty($matches[0]))
         {
@@ -3051,9 +3052,22 @@ class convertTao extends convertModel
                 $url     = helper::createLink('file', 'read', "t={$file->extension}&fileID={$file->id}");
                 $content = str_replace($matches[0][$key], "<img src=\"{{$file->id}.{$file->extension}}\" alt=\"{$url}\"/>", $content);
             }
-            return $content;
         }
 
-        return '';
+        /* 新版jira匹配规则。 */
+        preg_match_all('/<img[^>]*alt="([^"]*)"[^>]*>/i', $content, $matches);
+        if(!empty($matches[0]))
+        {
+            foreach($matches[1] as $key => $fileName)
+            {
+                if(empty($fileList[$fileName])) continue;
+
+                $file    = $fileList[$fileName];
+                $url     = helper::createLink('file', 'read', "t={$file->extension}&fileID={$file->id}");
+                $content = str_replace($matches[0][$key], "<img src=\"{{$file->id}.{$file->extension}}\" alt=\"{$url}\"/>", $content);
+            }
+        }
+
+        return $content;
     }
 }

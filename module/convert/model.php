@@ -190,7 +190,6 @@ class convertModel extends model
             'issuetype'     => 'getIssueTypes',
             'user'          => 'getUsers',
             'project'       => 'getProjects',
-            'build'         => 'getBuilds',
             'resolution'    => 'getResolutions',
             'status'        => 'getStatus',
             'customfield'   => 'getCustomFields'
