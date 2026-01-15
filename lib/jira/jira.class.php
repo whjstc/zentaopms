@@ -69,11 +69,10 @@ class jira
         if(!$result) return array();
 
         $projects = array();
-        foreach($result as $project) $projects[$project['id']] = $project;
-
-        foreach($projects as $index => $project)
+        foreach($result as $project)
         {
-            $projects[$index]['versions'] = $this->getBuilds($project['id']);
+            $project['versions']      = $this->getBuilds($project['id']);
+            $projects[$project['id']] = $project;
         }
 
         return $projects;
