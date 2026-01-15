@@ -68,6 +68,11 @@ class jira
         $projects = json_decode($result, true);
         if(!$projects) return array();
 
+        foreach($projects as $index => $project)
+        {
+            $projects[$index]['versions'] = $this->getBuilds($project['id']);
+        }
+
         return $projects;
     }
 
@@ -78,9 +83,9 @@ class jira
      * @param  int $maxResults 最大返回数量
      * @return array
      */
-    public function getBuilds($startAt = 0, $maxResults = 50): array
+    public function getBuilds($projectID = 0, $startAt = 0, $maxResults = 50): array
     {
-        $url      = $this->jiraDomain . '/rest/api/2/version?startAt=' . $startAt . '&maxResults=' . $maxResults;
+        $url      = $this->jiraDomain . '/rest/api/3/project/' . $projectID . '/versions?startAt=' . $startAt . '&maxResults=' . $maxResults;
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 

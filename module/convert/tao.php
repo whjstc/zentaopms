@@ -42,6 +42,7 @@ class convertTao extends convertModel
         $project->pstatus     = isset($data['status'])      ? $data['status']      : '';
         $project->created     = isset($data['created'])     ? $data['created']     : null;
         $project->archived    = isset($data['archived'])    ? $data['archived']    : false;
+        $project->versions    = isset($data['versions'])    ? $data['versions']    : array();
 
         return $project;
     }
@@ -772,6 +773,26 @@ class convertTao extends convertModel
             $this->createTmpRelation('jproject', $id, 'zproject', $project->id);
             $this->createTmpRelation('jproject', $id, 'zproduct', $productID);
             $this->createTmpRelation('joldkey', $data->originalkey, 'jnewkey', $data->pkey, $data->id);
+
+            /* 如果是api方式，则在此刻插入版本信息。 */
+            if($this->session->jiraMethod == 'api' && !empty($data->versions))
+            {
+                foreach($data->versions as $version)
+                {
+                    $zentaoBuild = new stdclass();
+                    $zentaoBuild->id           = $version['id'];
+                    $zentaoBuild->vname        = $version['name'];
+                    $zentaoBuild->releasedDate = isset($version['releasedDate']) ? $version['releasedDate'] : null;
+                    $zentaoBuild->archived     = isset($version['archived']) ? $version['archived'] : 0;
+                    $zentaoBuild->released     = isset($version['released']) ? $version['released'] : 0;
+                    $zentaoBuild->startdate    = null;
+
+                    $build = $this->createBuild((int)$productID, (int)$project->id, 0, $zentaoBuild, array(), array());
+
+                    $this->createRelease($build, $zentaoBuild, array(), array());
+                    $this->createTmpRelation('jversion', $version['id'], 'zversion', $build->id);
+                }
+            }
         }
 
         return true;
