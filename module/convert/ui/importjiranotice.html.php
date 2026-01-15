@@ -10,7 +10,7 @@ declare(strict_types=1);
  */
 namespace zin;
 
-$labelWidth = $method == 'db' ? '80px' : '100px';
+$labelWidth = $method == 'db' ? '80px' : '120px';
 
 $title = $lang->convert->jira->importFromDB;
 if($method == 'file')
@@ -95,6 +95,7 @@ formPanel
     in_array($method, ['file', 'api']) ? formGroup
     (
         set::label($lang->convert->jira->domain),
+        set::required($method == 'api'),
         set::labelWidth($labelWidth),
         input
         (
@@ -106,6 +107,7 @@ formPanel
     in_array($method, ['file', 'api']) ? formGroup
     (
         set::label($lang->convert->jira->admin),
+        set::required($method == 'api'),
         set::labelWidth($labelWidth),
         input
         (
@@ -117,6 +119,7 @@ formPanel
     in_array($method, ['file', 'api']) ? formGroup
     (
         set::label($lang->convert->jira->token),
+        set::required($method == 'api'),
         set::labelWidth($labelWidth),
         input
         (
