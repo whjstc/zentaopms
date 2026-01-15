@@ -186,40 +186,17 @@ class convertModel extends model
         $functionMap = array(
             'issue'         => 'getIssues',
             'issuelinktype' => 'getIssueLinkTypes',
-            'issuelink' => 'getIssueLinks',
-            'issuetype' => 'getIssueTypes',
-            'user' => 'getUsers',
-            'project' => 'getProjects',
-            'build' => 'getBuilds',
-            'resolution' => 'getResolutions',
-            'status' => 'getStatus',
-            'customfield' => 'getCustomFields'
+            'issuelink'     => 'getIssueLinks',
+            'issuetype'     => 'getIssueTypes',
+            'user'          => 'getUsers',
+            'project'       => 'getProjects',
+            'build'         => 'getBuilds',
+            'resolution'    => 'getResolutions',
+            'status'        => 'getStatus',
+            'customfield'   => 'getCustomFields'
         );
 
-        global $comments, $changeItems, $changeGroups, $worklogs, $files;
-
-        $dataList = array();
-        if($module == 'changegroup')
-        {
-            $dataList = !empty($changeGroups) ? $changeGroups : array();
-        }
-        elseif($module == 'changeitem')
-        {
-            $dataList = !empty($changeItems) ? $changeItems : array();
-        }
-        elseif($module == 'action')
-        {
-            $dataList = !empty($comments) ? $comments : array();
-        }
-        elseif($module == 'worklog')
-        {
-            $dataList = !empty($worklogs) ? $worklogs : array();
-        }
-        elseif($module == 'file')
-        {
-            $dataList = !empty($files) ? $files : array();
-        }
-        elseif(isset($functionMap[$module]))
+        if(isset($functionMap[$module]))
         {
             $function = $functionMap[$module];
             $dataList = $jiraApi->$function($lastID, $limit);
@@ -233,14 +210,6 @@ class convertModel extends model
         {
             foreach($dataList as $key => $data)
             {
-                if($module == 'issue')
-                {
-                    if(!empty($data['comments']))     $comments     = arrayUnion($comments,     $data['comments']);
-                    if(!empty($data['changeGroups'])) $changeGroups = arrayUnion($changeGroups, $data['changeGroups']);
-                    if(!empty($data['changeItems']))  $changeItems  = arrayUnion($changeItems,  $data['changeItems']);
-                    if(!empty($data['worklogs']))     $worklogs     = arrayUnion($worklogs,     $data['worklogs']);
-                    if(!empty($data['files']))        $files        = arrayUnion($files,        $data['files']);
-                }
                 $buildfunction  = 'build' . ucfirst($module) . 'data';
                 $dataList[$key] = $this->$buildfunction($data);
             }
@@ -971,22 +940,8 @@ EOT;
     {
         if(empty($userKey)) return '';
 
-        $users = $this->getJiraData($this->session->jiraMethod, 'user');
-
-        if(strpos($userKey, 'JIRAUSER') !== false)
-        {
-            $userID = str_replace('JIRAUSER', '', $userKey);
-            if(!isset($users[$userID])) return '';
-            return $this->processJiraUser($users[$userID]->account, $users[$userID]->email);
-        }
-        else
-        {
-            foreach($users as $user)
-            {
-                if($user->account == $userKey) return $this->processJiraUser($user->account, $user->email);
-            }
-        }
-        return $userKey;
+        $users = $this->getJiraUser();
+        return zget($users, $userKey);
     }
 
     /**
