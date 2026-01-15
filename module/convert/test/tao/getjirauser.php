@@ -15,9 +15,7 @@ cid=15854
 
 */
 
-// 1. 导入依赖（路径固定，不可修改）
 include dirname(__FILE__, 5) . '/test/lib/init.php';
-include dirname(__FILE__, 2) . '/lib/convert.unittest.class.php';
 
 // 2. 创建临时表
 global $tester;
@@ -40,11 +38,9 @@ try {
     // 表可能已存在，忽略错误
 }
 
-// 3. 用户登录（选择合适角色）
 su('admin');
-
-// 4. 创建测试实例（变量名与模块名一致）
-$convertTest = new convertTest();
+global $tester;
+$tester->loadModel('convert');
 
 try {
     $tester->dbh->exec("DELETE FROM jiratmprelation");
@@ -53,7 +49,7 @@ try {
     // 忽略可能的数据库错误
 }
 
-r(count($convertTest->getJiraUserTest())) && p() && e('1'); // 步骤1：正常情况，返回1条记录
+r(count($tester->convert->getJiraUser())) && p() && e('1'); // 步骤1：正常情况，返回1条记录
 
 try {
     $tester->dbh->exec("DELETE FROM jiratmprelation");
@@ -61,7 +57,7 @@ try {
 } catch (Exception $e) {
     // 忽略可能的数据库错误
 }
-r($convertTest->getJiraUserTest()) && p('aabbccdd') && e('user1'); // 步骤5：验证返回结果中AID为aabbccdd的记录的键值
-r($convertTest->getJiraUserTest()) && p('eeffgghh') && e('user2'); // 步骤5：验证返回结果中AID为eeffgghh的记录的键值
-r($convertTest->getJiraUserTest()) && p('ddd')      && e('~~');    // 步骤5：验证返回结果中AID为ddd的记录的键值
-r($convertTest->getJiraUserTest()) && p('fff')      && e('~~');    // 步骤5：验证返回结果中AID为fff的记录的键值
+r($tester->convert->getJiraUser()) && p('aabbccdd') && e('user1'); // 步骤5：验证返回结果中AID为aabbccdd的记录的键值
+r($tester->convert->getJiraUser()) && p('eeffgghh') && e('user2'); // 步骤5：验证返回结果中AID为eeffgghh的记录的键值
+r($tester->convert->getJiraUser()) && p('ddd')      && e('~~');    // 步骤5：验证返回结果中AID为ddd的记录的键值
+r($tester->convert->getJiraUser()) && p('fff')      && e('~~');    // 步骤5：验证返回结果中AID为fff的记录的键值
