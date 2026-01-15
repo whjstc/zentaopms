@@ -53,7 +53,7 @@ class jira
      * @param string $password Jira密码
      * @return array
      */
-    public function getProjects($startAt = 0, $maxResults = 50): array
+    public function getProjects($startAt = 0): array
     {
         if($startAt > 0) return array(); // 项目没有分页，第二次直接返回空数组
 
@@ -68,7 +68,7 @@ class jira
         $result = json_decode($result, true);
         if(!$result) return array();
 
-        $proejcts = array();
+        $projects = array();
         foreach($result as $project) $projects[$project['id']] = $project;
 
         foreach($projects as $index => $project)
