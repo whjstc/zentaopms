@@ -1397,5 +1397,48 @@ class convertTaoTest extends baseTest
         $result = $this->invokeArgs('updateSubTask', [$taskLink, $issueList]);
         if(dao::isError()) return dao::getError();
         return $result;
+
+    }
+
+    /*
+     * Test getJiraUser method.
+     *
+     * @access public
+     * @return array
+     */
+    public function getJiraUserTest(): array
+    {
+        return $this->instance->getJiraUser();
+    }
+
+    /**
+     * Test createWorkflowAction method.
+     *
+     * @param  array   $relations
+     * @param  array   $actions
+     * @access public
+     * @return array
+     */
+    public function createWorkflowActionTest(array $relations, array $actions): array
+    {
+        $sql = <<<EOT
+            CREATE TABLE IF NOT EXISTS `jiratmprelation`(
+              `id` int(8) NOT NULL AUTO_INCREMENT,
+              `AType` char(30) NOT NULL,
+              `AID` char(100) NOT NULL,
+              `BType` char(30) NOT NULL,
+              `BID` char(100) NOT NULL,
+              `extra` char(100) NULL,
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `relation` (`AType`,`BType`,`AID`,`BID`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+            EOT;
+
+        try {
+            $this->instance->dbh->exec($sql);
+            $this->instance->dbh->exec('TRUNCATE TABLE jiratmprelation');
+        } catch (Exception $e) {}
+
+        return $this->invokeArgs('createWorkflowAction', array($relations, $actions));
     }
 }
