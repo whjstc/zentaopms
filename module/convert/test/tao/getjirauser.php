@@ -16,6 +16,7 @@ cid=15854
 */
 
 include dirname(__FILE__, 5) . '/test/lib/init.php';
+include dirname(__FILE__, 2) . '/lib/tao.class.php';
 
 // 2. 创建临时表
 global $tester;
@@ -39,8 +40,7 @@ try {
 }
 
 su('admin');
-global $tester;
-$tester->loadModel('convert');
+$convertTest = new convertTaoTest();
 
 try {
     $tester->dbh->exec("DELETE FROM jiratmprelation");
@@ -49,7 +49,7 @@ try {
     // 忽略可能的数据库错误
 }
 
-r(count($tester->convert->getJiraUser())) && p() && e('1'); // 步骤1：正常情况，返回1条记录
+r(count($convertTest->getJiraUserTest())) && p() && e('1'); // 步骤1：正常情况，返回1条记录
 
 try {
     $tester->dbh->exec("DELETE FROM jiratmprelation");
@@ -57,7 +57,7 @@ try {
 } catch (Exception $e) {
     // 忽略可能的数据库错误
 }
-r($tester->convert->getJiraUser()) && p('aabbccdd') && e('user1'); // 步骤5：验证返回结果中AID为aabbccdd的记录的键值
-r($tester->convert->getJiraUser()) && p('eeffgghh') && e('user2'); // 步骤5：验证返回结果中AID为eeffgghh的记录的键值
-r($tester->convert->getJiraUser()) && p('ddd')      && e('~~');    // 步骤5：验证返回结果中AID为ddd的记录的键值
-r($tester->convert->getJiraUser()) && p('fff')      && e('~~');    // 步骤5：验证返回结果中AID为fff的记录的键值
+r($convertTest->getJiraUserTest()) && p('aabbccdd') && e('user1'); // 步骤5：验证返回结果中AID为aabbccdd的记录的键值
+r($convertTest->getJiraUserTest()) && p('eeffgghh') && e('user2'); // 步骤5：验证返回结果中AID为eeffgghh的记录的键值
+r($convertTest->getJiraUserTest()) && p('ddd')      && e('~~');    // 步骤5：验证返回结果中AID为ddd的记录的键值
+r($convertTest->getJiraUserTest()) && p('fff')      && e('~~');    // 步骤5：验证返回结果中AID为fff的记录的键值
