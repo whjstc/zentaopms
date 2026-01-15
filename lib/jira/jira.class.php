@@ -65,8 +65,11 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        $projects = json_decode($result, true);
-        if(!$projects) return array();
+        $result = json_decode($result, true);
+        if(!$result) return array();
+
+        $proejcts = array();
+        foreach($result as $project) $projects[$project['id']] = $project;
 
         foreach($projects as $index => $project)
         {
@@ -214,7 +217,7 @@ class jira
             if(!empty($issue['project']['id']))                 $issue['project']     = $issue['project']['id'];
             if(!empty($issue['status']['id']))                  $issue['status']      = $issue['status']['id'];
             if(!empty($issue['creator']['accountId']))          $issue['creator']     = $issue['creator']['accountId'];
-            if(!empty($issue['issuetype']['id']))               $issue['issuetype']   = $issue['issuetype']['id'];
+            if(!empty($issue['issuetype']['id']))               $issue['type']        = $issue['issuetype']['id'];
             if(!empty($issue['assignee']['accountId']))         $issue['assignee']    = $issue['assignee']['accountId'];
             if(!empty($issue['resolution']['id']))              $issue['resolution']  = $issue['resolution']['id'];
             if(!empty($issue['renderedFields']['description'])) $issue['description'] = $issue['renderedFields']['description'];
@@ -432,7 +435,13 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result, true);
+        $result = json_decode($result, true);
+        if(!$result) return array();
+
+        $statusList = array();
+        foreach($result as $status) $statusList[$status['id']] = $status;
+
+        return $statusList;
     }
 
     /**

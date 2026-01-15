@@ -75,6 +75,11 @@ class convertTao extends convertModel
         $issue->description          = isset($data['description'])          ? $data['description']          : '';
         $issue->duedate              = isset($data['duedate '])             ? $data['duedate']              : '';
         $issue->fixVersions          = isset($data['fixVersions'])          ? $data['fixVersions']          : array();
+        $issue->comments             = !empty($data['comments'])            ? $data['comments']             : array();
+        $issue->changeGroups         = !empty($data['changeGroups'])        ? $data['changeGroups']         : array();
+        $issue->changeItems          = !empty($data['changeItems'])         ? $data['changeItems']          : array();
+        $issue->worklogs             = !empty($data['worklogs'])            ? $data['worklogs']             : array();
+        $issue->files                = !empty($data['files'])               ? $data['files']                : array();
 
         return $issue;
     }
@@ -661,6 +666,18 @@ class convertTao extends convertModel
     }
 
     /**
+     * 获取Jira用户与禅道用户的关联关系。
+     * Get Jira users.
+     *
+     * @access public
+     * @return void
+     */
+    public function getJiraUser(): array
+    {
+        return $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('juser')->fetchPairs('AID', 'BID');
+    }
+
+    /**
      * 导入user数据。
      * Import jira user.
      *
@@ -833,6 +850,8 @@ class convertTao extends convertModel
         $relations = $this->createWorkflowGroup($relations, $projectRelation, $productRelation);
         $relations = $this->createResolution($relations);
         $workflows = $this->dao->dbh($this->dbh)->select('module,`table`')->from(TABLE_WORKFLOW)->where('buildin')->eq('0')->fetchPairs();
+
+        $comments = $changeGroups = $changeItems = $worklogs = $files = array();
         foreach($dataList as $id => $data)
         {
             if(!empty($issueList[$data->id])) continue;
@@ -906,8 +925,30 @@ class convertTao extends convertModel
             $newKey   = zget($projectKeys[$issueProject], 'BID', '');
             $issueKey = $oldKey ? $oldKey . '-' . $data->issuenum : $newKey . '-' . $data->issuenum;
             $this->createTmpRelation('jissueid', $data->id, 'jfilepath', '', "{$oldKey}/10000/{$issueKey}/");
+
+            if($this->session->jiraMethod == 'api')
+            {
+                if(!empty($data->comments))     $comments     = arrayUnion($comments,     $data->comments);
+                if(!empty($data->changeGroups)) $changeGroups = arrayUnion($changeGroups, $data->changeGroups);
+                if(!empty($data->changeItems))  $changeItems  = arrayUnion($changeItems,  $data->changeItems);
+                if(!empty($data->worklogs))     $worklogs     = arrayUnion($worklogs,     $data->worklogs);
+                if(!empty($data->files))        $files        = arrayUnion($files,        $data->files);
+            }
         }
 
+        if($this->session->jiraMethod == 'api')
+        {
+            foreach($worklogs     as $index => $worklog) $worklogs[$index]     = $this->buildWorklogData($worklog);
+            foreach($comments     as $index => $comment) $comments[$index]     = $this->buildActionData($comment);
+            foreach($changeItems  as $index => $item)    $changeItems[$index]  = $this->buildChangeItemData($item);
+            foreach($changeGroups as $index => $group)   $changeGroups[$index] = $this->buildChangeGroupData($group);
+            foreach($files        as $index => $file)    $files[$index]        = $this->buildFileData($file);
+
+            $this->importJiraWorkLog($worklogs);
+            $this->importJiraAction($comments);
+            $this->importJiraChangeItem($changeItems, $changeGroups);
+            $this->importJiraFile($files);
+        }
         return true;
     }
 
@@ -1118,14 +1159,15 @@ class convertTao extends convertModel
      * Import jira issue change item.
      *
      * @param  array     $dataList
+     * @param  array     $changeGroups
      * @access protected
      * @return bool
      */
-    protected function importJiraChangeItem(array $dataList): bool
+    protected function importJiraChangeItem(array $dataList, array $changeGroups = array()): bool
     {
         $issueList = $this->getIssueData();
 
-        $changeGroup    = $this->getJiraData($this->session->jiraMethod, 'changegroup');
+        $changeGroup    = $changeGroups ?: $this->getJiraData($this->session->jiraMethod, 'changegroup');
         $changeRelation = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('jchangeitem')->fetchAll('AID');
         foreach($dataList as $data)
         {
@@ -1168,7 +1210,7 @@ class convertTao extends convertModel
     {
         if($this->session->jiraMethod == 'api')
         {
-            $this->app->loadClass('jira');
+            $this->app->loadClass('jira', true);
             $jiraApi = json_decode($this->session->jiraApi, true);
             $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
         }
@@ -1202,7 +1244,7 @@ class convertTao extends convertModel
 
             if($this->session->jiraMethod == 'api')
             {
-                $fileContent = $jiraApi->downloadFile($file->content);
+                $fileContent = $jiraApi->downloadFile($fileAttachment->content);
                 file_put_contents($this->file->savePath . $pathname, $fileContent);
                 if(!is_file($this->file->savePath . $pathname) || filesize($this->file->savePath . $pathname) == 0) continue;
             }
