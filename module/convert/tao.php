@@ -74,6 +74,7 @@ class convertTao extends convertModel
         $issue->issuenum             = isset($data['number'])               ? $data['number']               : '';
         $issue->description          = isset($data['description'])          ? $data['description']          : '';
         $issue->duedate              = isset($data['duedate '])             ? $data['duedate']              : '';
+        $issue->fixVersions          = isset($data['fixVersions'])          ? $data['fixVersions']          : array();
 
         return $issue;
     }
@@ -1643,6 +1644,17 @@ class convertTao extends convertModel
                     ->exec();
             }
 
+            /* 通过Api 导入时，Issue关联的版本在Issue中体现。 */
+            if(!empty($data->fixVersions))
+            {
+                foreach($data->fixVersions as $version)
+                {
+                    $versionID = $version['id'];
+                    $zentaoVersionID = $this->dao->dbh($this->dbh)->select('BID')->from(TABLE_TMPRELATION)->where('AType')->eq('jversion')->andWhere('BType')->eq('zversion')->andWhere('AID')->eq($versionID)->fetch('BID');
+                    if($zentaoVersionID) $this->dao->dbh($this->dbh)->update(TABLE_BUILD)->set('stories')->eq("CONCAT(stories,',',{$storyID})")->where('id')->eq($zentaoVersionID)->exec();
+                }
+            }
+
             /* Create opened action from openedDate. */
             $action = new stdclass();
             $action->product    = ",$productID,";
@@ -1785,6 +1797,17 @@ class convertTao extends convertModel
         $action->date       = $bug->openedDate;
         $this->dao->dbh($this->dbh)->insert(TABLE_ACTION)->data($action)->exec();
         $this->action->saveIndex($action->objectType, $action->objectID, $action->action);
+
+        /* 通过Api 导入时，Issue关联的版本在Issue中体现。 */
+        if(!empty($data->fixVersions))
+        {
+            foreach($data->fixVersions as $version)
+            {
+                $versionID = $version['id'];
+                $zentaoVersionID = $this->dao->dbh($this->dbh)->select('BID')->from(TABLE_TMPRELATION)->where('AType')->eq('jversion')->andWhere('BType')->eq('zversion')->andWhere('AID')->eq($versionID)->fetch('BID');
+                if($zentaoVersionID) $this->dao->dbh($this->dbh)->update(TABLE_BUILD)->set('bugs')->eq("CONCAT(bugs,',',{$bugID})")->where('id')->eq($zentaoVersionID)->exec();
+            }
+        }
 
         $this->createTmpRelation('jbug', $data->id, 'zbug', $bugID, 'issue');
         $this->createTmpRelation('jissueid', $data->id, 'zissuetype', '', 'bug');
