@@ -726,6 +726,38 @@ EOT;
     {
         if(empty($relations['zentaoObject']) || !in_array($step, array_keys($relations['zentaoObject']))) return array();
 
+        if($this->session->jiraMethod == 'api')
+        {
+            $schemes   = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
+            $workflows = $this->callJiraAPI('/rest/api/3/workflow/search?expand=statuses,projects&maxResults=1000');
+            $projects  = array();
+            foreach($schemes as $scheme)
+            {
+                if(empty($scheme->issueTypes->values) || empty($scheme->projects->values)) continue;
+                foreach($scheme->issueTypes->values as $issueType)
+                {
+                    if($issueType->id == $step)
+                    {
+                        foreach($scheme->projects->values as $project) $projects[$project->id] = $project->id;
+                    }
+                }
+            }
+
+            $statusList = array();
+            foreach($workflows as $workflow)
+            {
+                if(empty($workflow->statuses) || empty($workflow->projects)) continue;
+                foreach($workflow->projects as $project)
+                {
+                    if(in_array($project->id, $projects))
+                    {
+                        foreach($workflow->statuses as $status) $statusList[$status->id] = $status->name;
+                    }
+                }
+            }
+            return $statusList;
+        }
+
         $issues     = $this->getJiraData($this->session->jiraMethod, 'issue');
         $statusList = $this->getJiraData($this->session->jiraMethod, 'status');
 
@@ -762,7 +794,7 @@ EOT;
         {
             foreach($fields as $field)
             {
-                if(!in_array($step, $field->issueTypeIds)) continue; // 没有使用过的自定义字段不导入
+                //if(!in_array($step, $field->issueTypeIds)) continue; // 没有使用过的自定义字段不导入
                 $fieldID = str_replace('customfield_', '', $field->id);
                 $fieldID = intval($fieldID);
                 $jiraFields[$fieldID] = $field->cfname;
