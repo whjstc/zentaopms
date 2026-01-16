@@ -205,7 +205,7 @@ class convertModel extends model
             return array();
         }
 
-        if(in_array($module, array_keys($this->config->convert->objectTables)))
+        if(in_array($module, array_keys($this->config->convert->objectTables)) && $module != 'customfield')
         {
             foreach($dataList as $key => $data)
             {
@@ -789,19 +789,7 @@ EOT;
 
         $jiraFields = array();
         $fields     = $this->getJiraData($this->session->jiraMethod, 'customfield');
-
-        if($this->session->jiraMethod == 'api')
-        {
-            foreach($fields as $field)
-            {
-                //if(!in_array($step, $field->issueTypeIds)) continue; // 没有使用过的自定义字段不导入
-                $fieldID = str_replace('customfield_', '', $field->id);
-                $fieldID = intval($fieldID);
-                $jiraFields[$fieldID] = $field->cfname;
-            }
-
-            return $jiraFields;
-        }
+        if($this->session->jiraMethod == 'api') return zget($fields, $step, array());
 
         $issues     = $this->getJiraData($this->session->jiraMethod, 'issue');
         $fieldValue = $this->getJiraData($this->session->jiraMethod, 'customfieldvalue');
