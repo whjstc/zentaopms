@@ -207,7 +207,8 @@
 
 [lang^='en'] {--zt-menu-width: 196px!important;}
 
-#menu #menuNav { background-color: var(--color-secondary-900); left: 6px; right: 6px; top: 6px; border-radius: 6px; }
+#menu #menuNav {background-color: var(--color-secondary-900); border-radius: 6px 6px 0 0; position: static; margin: 6px 6px 0}
+#menuFooter {position: static!important; background-color: var(--color-secondary-900); margin: 0 6px 6px; border-radius: 0 0 6px 6px;}
 #menu .nav > li > a.active {background-color: var(--color-primary-500)!important}
 
 #toolbar > .toolbar {gap: 8px!important}
