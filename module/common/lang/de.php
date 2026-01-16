@@ -538,6 +538,7 @@ $lang->themes['blue']       = 'Young Blue';
 $lang->themes['green']      = 'Grün';
 $lang->themes['red']        = 'Rot';
 $lang->themes['purple']     = 'Lila';
+$lang->themes['blackberry'] = 'Blackberry';
 
 /* Error info. */
 $lang->error = new stdclass();
