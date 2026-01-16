@@ -450,7 +450,7 @@ class jira
      */
     public function getCustomFields()
     {
-        $url      = $this->jiraDomain . '/rest/api/3/field';
+        $url      = $this->jiraDomain . '/rest/api/3/issue/createmeta?expand=projects.issuetypes.fields';
         $account  = $this->jiraAccount;
         $password = $this->jiraToken;
 
@@ -459,17 +459,22 @@ class jira
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
         $result = json_decode($result, true);
-        if(!$result) return array();
+        if(!$result['projects']) return array();
 
-        $fields = array();
-        foreach($result as $field)
+        $customFields = array();
+        foreach($result['projects'] as $project)
         {
-            if(empty($field['custom'])) continue;
-
-            $customID = str_replace('customfield_', '', $field['id']);
-            $fields[$customID] = $field;
+            if(empty($project['issuetypes'])) continue;
+            foreach($project['issuetypes'] as $issuetype)
+            {
+                foreach($issuetype['fields'] as $key => $field)
+                {
+                    if(strpos($key, 'customfield_') === false)  continue;
+                    $customFields[$issuetype['id']][str_replace('customfield_', '', $key)] = $field['name'];
+                }
+            }
         }
 
-        return $fields;
+        return $customFields;
     }
 }
