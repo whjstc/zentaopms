@@ -3954,25 +3954,6 @@ $config->group->package->aiConversation->subset = 'aiapp';
 $config->group->package->aiConversation->privs  = array();
 $config->group->package->aiConversation->privs['aiapp-conversation'] = array('edition' => 'open,biz,max,ipd', 'vision' => 'rnd', 'order' => 60, 'depend' => array(), 'recommend' => array());
 
-$config->group->package->manageAITeammate = new stdclass();
-$config->group->package->manageAITeammate->order  = 2032;
-$config->group->package->manageAITeammate->subset = 'aiapp';
-$config->group->package->manageAITeammate->privs  = array();
-$config->group->package->manageAITeammate->privs['aiteammate-browse']      = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 10, 'depend' => array(), 'recommend' => array());
-$config->group->package->manageAITeammate->privs['aiteammate-create']      = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 15, 'depend' => array('aiteammate-browse'), 'recommend' => array());
-$config->group->package->manageAITeammate->privs['aiteammate-edit']        = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 20, 'depend' => array('aiteammate-browse'), 'recommend' => array());
-$config->group->package->manageAITeammate->privs['aiteammate-enable']      = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 25, 'depend' => array('aiteammate-browse'), 'recommend' => array());
-$config->group->package->manageAITeammate->privs['aiteammate-disable']     = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 30, 'depend' => array('aiteammate-browse'), 'recommend' => array());
-$config->group->package->manageAITeammate->privs['aiteammate-delete']      = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 35, 'depend' => array('aiteammate-browse'), 'recommend' => array());
-$config->group->package->manageAITeammate->privs['aiteammate-assignagent'] = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 40, 'depend' => array('ai-promptExecute', 'ai-promptExecutionReset'), 'recommend' => array());
-
-$config->group->package->manageAITask = new stdclass();
-$config->group->package->manageAITask->order  = 2033;
-$config->group->package->manageAITask->subset = 'aiapp';
-$config->group->package->manageAITask->privs  = array();
-$config->group->package->manageAITask->privs['aitask-browse'] = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 10, 'depend' => array(), 'recommend' => array());
-$config->group->package->manageAITask->privs['aitask-view']   = array('edition' => 'biz,max,ipd', 'vision' => 'rnd', 'order' => 15, 'depend' => array('aitask-browse'), 'recommend' => array());
-
 $config->group->package->applyZentaoAgent = new stdclass();
 $config->group->package->applyZentaoAgent->order  = 2040;
 $config->group->package->applyZentaoAgent->subset = 'aiapp';
