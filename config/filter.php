@@ -216,7 +216,6 @@ $filter->admin->sendcode                = new stdclass();
 $filter->admin->giftpackage             = new stdclass();
 $filter->install->step5                 = new stdclass();
 $filter->ai->prompts                    = new stdclass();
-$filter->ai->task                       = new stdclass();
 
 $filter->index->index->get['open'] = 'reg::base64';
 
@@ -466,7 +465,6 @@ $filter->misc->installevent->cookie['sn'] = 'string';
 $filter->install->step5->cookie['sn'] = 'string';
 
 $filter->ai->prompts->cookie['aiPromptsViewType'] = 'code';
-$filter->ai->task->cookie['involved']             = 'code';
 
 $filter->sso->getbindusers->get['hash'] = 'reg::md5';
 $filter->sso->gettodolist->get['hash']  = 'reg::md5';
