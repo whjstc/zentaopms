@@ -11,11 +11,6 @@
  */
 $lang->ai->common = 'AI Configuration';
 
-$lang->ai->teammate                = 'Teammate';
-$lang->ai->teammatePromptPrefix    = 'You are a';
-$lang->ai->teammateKnowledgePrefix = 'with knowledge of';
-$lang->ai->teammateKnowledgeSuffix = '';
-
 /* Definitions of table columns, used to sprintf error messages to dao::$errors. */
 $lang->prompt  = new stdclass();
 $lang->prompt->name             = 'Name';
