@@ -2347,11 +2347,14 @@ class convertTao extends convertModel
                 $relations["jiraStatus{$jiraCode}"][] = $id;
                 $relations["zentaoStatus{$jiraCode}"][$id] = 'add_flow_status';
             }
-            foreach($jiraActions['actions'] as $id => $action)
+            if(isset($jiraActions['actions']))
             {
-                if(!empty($action['name']) && $action['name'] == 'Create') continue;
-                $relations["jiraAction{$jiraCode}"][] = $id;
-                $relations["zentaoAction{$jiraCode}"][$id] = 'add_action';
+                foreach($jiraActions['actions'] as $id => $action)
+                {
+                    if(!empty($action['name']) && $action['name'] == 'Create') continue;
+                    $relations["jiraAction{$jiraCode}"][] = $id;
+                    $relations["zentaoAction{$jiraCode}"][$id] = 'add_action';
+                }
             }
         }
 

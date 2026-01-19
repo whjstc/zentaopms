@@ -461,9 +461,15 @@ class jira
         $result = json_decode($result, true);
         if(!$result) return array();
 
-        return array_filter($result, function($field)
+        $fields = array();
+        foreach($result as $field)
         {
-            return !empty($field['custom']); // 只返回用户自定义的字段
-        });
+            if(empty($field['custom'])) continue;
+
+            $customID = str_replace('customfield_', '', $field['id']);
+            $fields[$customID] = $field;
+        }
+
+        return $fields;
     }
 }
