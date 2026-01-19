@@ -207,7 +207,7 @@
 
 [lang^='en'] {--zt-menu-width: 196px!important;}
 
-#menu #menuNav {background-color: var(--color-secondary-900); border-radius: 6px 6px 0 0; position: static; margin: 6px 6px 0}
+#menu #menuNav {background-color: var(--color-secondary-900); border-radius: 6px 6px 0 0; position: static; margin: 6px 6px 0; max-height: calc(100% - 50px);}
 #menuFooter {position: static!important; background-color: var(--color-secondary-900); margin: 0 6px 6px; border-radius: 0 0 6px 6px; border-top: 1px solid rgba(var(--color-canvas-rgb), .12)}
 #menu .nav > li > a.active {background-color: var(--color-primary-500)!important}
 #menuToggleMenu .menu-toggle .icon-menu-arrow-left::before {content: "\e980"}
@@ -233,3 +233,6 @@
 
 .search-box > .form-control {--form-control-border: transparent; background-color: var(--color-secondary-50)!important;}
 .search-box > .form-control:focus {background-color: var(--color-canvas)!important;}
+
+.dtable-check-info {color: var(--color-secondary-600)}
+.pager {color: var(--color-secondary-600)}
