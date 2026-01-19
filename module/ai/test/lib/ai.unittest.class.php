@@ -1444,7 +1444,7 @@ class aiTest
         if(dao::isError()) return dao::getError();
 
         $fields = $this->objectModel->dao->select('*')
-            ->from(TABLE_AI_PROMPTFIELD)
+            ->from(TABLE_AI_AGENTFIELD)
             ->where('appID')->eq($promptID)
             ->fetchAll();
 
