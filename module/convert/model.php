@@ -866,10 +866,10 @@ EOT;
 
         if($this->session->jiraMethod == 'api')
         {
-            $schemes      = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
-            $workflows    = $this->callJiraAPI('/rest/api/3/workflow/search?expand=transitions,projects&maxResults=1000');
+            $schemeList   = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
+            $workflowList = $this->callJiraAPI('/rest/api/3/workflow/search?expand=transitions,projects&maxResults=1000');
             $projectGroup = array();
-            foreach($schemes as $scheme)
+            foreach($schemeList as $scheme)
             {
                 if(empty($scheme->issueTypes->values) || empty($scheme->projects->values)) continue;
                 foreach($scheme->issueTypes->values as $issueType)
@@ -879,7 +879,7 @@ EOT;
             }
 
             $workflowActions = array();
-            foreach($workflows as $workflow)
+            foreach($workflowList as $workflow)
             {
                 if(empty($workflow->transitions) || empty($workflow->projects)) continue;
                 foreach($workflow->projects as $project)
