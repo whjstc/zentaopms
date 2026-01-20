@@ -2306,7 +2306,7 @@ class convertTao extends convertModel
      * @access protected
      * @return array
      */
-    protected function createWorkflow(array $relations, array $jiraActions, array $jiraResolutions, array $jiraPriList, array $jiraStatusList): array
+    protected function createWorkflow(array $relations, array $jiraActions, array $jiraResolutions, array $jiraPriList, array $jiraStatusList = array()): array
     {
         if($this->config->edition == 'open') return $relations;
         $this->loadModel('workflow');
