@@ -1217,7 +1217,7 @@ class product extends control
      * @access public
      * @return void
      */
-    public function ajaxGetDropMenu(int $productID, string $module, string $method, string $extra = '', string $from = '', int $useLink = 1)
+    public function ajaxGetDropMenu(int $productID, string $module = 'product', string $method = 'browse', string $extra = '', string $from = '', int $useLink = 1)
     {
         $shadow = '0';
         if($this->app->tab == 'qa' || $from == 'qa') $shadow = 'all';
