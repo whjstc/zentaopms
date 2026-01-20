@@ -424,6 +424,8 @@ CSS;
 
     protected function buildMain()
     {
+        global $config;
+
         return div
         (
             setClass('detail-main flex-auto col gap-2 min-w-0'),
@@ -435,7 +437,7 @@ CSS;
                 $this->block('main')
             ),
             $this->block('sections'),
-            !empty($this->config->enableAITeammate) && hasPriv('aitask', 'browse') ? $this->buildAITasks() : null,
+            !empty($config->enableAITeammate) && hasPriv('aitask', 'browse') ? $this->buildAITasks() : null,
             $this->children(),
             $this->buildHistory(),
             $this->buildActions()
