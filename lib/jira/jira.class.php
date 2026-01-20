@@ -198,8 +198,7 @@ class jira
         $authHeader    = base64_encode($account . ':' . $password);
         $header        = array('Authorization: Basic ' . $authHeader);
         $jql           = 'created<=' . date('Y-m-d', strtotime('+1 day'));
-        $fields        = 'id,summary,priority,project,status,created,creator,issuetype,assignee,resolution,timeoriginalestimate,timeestimate,timespent,description,duedate,comment,worklog,attachment,fixVersions';
-        $url          .= '?jql=' . urlencode($jql) . "&fields=$fields&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
+        $url          .= '?jql=' . urlencode($jql) . "&fields=*all&maxResults=$maxResults&nextPageToken=$nextPageToken&expand=renderedFields,changelog";
         $result        = common::http($url, null, array(), $header, 'data', 'GET');
 
         $result = json_decode($result, true);
@@ -302,6 +301,22 @@ class jira
                     $files[$file['id']] = $file;
                 }
                 $issue['files'] = $files;
+            }
+
+
+            if(!empty($issue['issuelinks']))
+            {
+                $links = array();
+                foreach($issue['issuelinks'] as $index => $issueLink)
+                {
+                    $link = array();
+                    $link['id']          = $issueLink['id'];
+                    $link['linktype']    = $issueLink['type']['id'];
+                    $link['source']      = $issue['id'];
+                    $link['destination'] = !empty($issueLink['inwardIssue']['id']) ? $issueLink['inwardIssue']['id'] : '';
+                    $links[$link['id']] = $link;
+                }
+                $issue['links'] = $links;
             }
 
             $issue['created'] = date('Y-m-d H:i:s', strtotime($issue['created']));
@@ -416,7 +431,7 @@ class jira
         $header     = array('Authorization: Basic ' . $authHeader);
         $result     = common::http($url, null, array(), $header, 'data', 'GET');
 
-        return json_decode($result);
+        return json_decode($result, true);
     }
 
     /**
@@ -469,12 +484,64 @@ class jira
             {
                 foreach($issuetype['fields'] as $key => $field)
                 {
-                    if(strpos($key, 'customfield_') === false)  continue;
-                    $customFields[$issuetype['id']][str_replace('customfield_', '', $key)] = $field['name'];
+                    if(strpos($key, 'customfield_') === false) continue;
+
+                    $customField = array();
+                    $customField['id']                     = str_replace('customfield_', '', $key);
+                    $customField['name']                   = $field['name'];
+                    $customField['description']            = '';
+                    $customField['customfieldtypekey']     = $field['schema']['custom'];
+                    $customField['customfieldsearcherkey'] = '';
+                    $customField['issueTypeIds']           = '';
+                    $customFields[$issuetype['id']][$customField['id']] = $customField;
                 }
             }
         }
 
         return $customFields;
+    }
+
+    /**
+     * 获取Jira中的自定义字段选项。
+     *
+     * @return array
+     */
+    public function getCustomFieldOption()
+    {
+        $url      = $this->jiraDomain . '/rest/api/3/issue/createmeta?expand=projects.issuetypes.fields';
+        $account  = $this->jiraAccount;
+        $password = $this->jiraToken;
+
+        $authHeader = base64_encode($account . ':' . $password);
+        $header     = array('Authorization: Basic ' . $authHeader);
+        $result     = common::http($url, null, array(), $header, 'data', 'GET');
+
+        $result = json_decode($result, true);
+        if(!$result['projects']) return array();
+
+        $customFieldOptions = array();
+        foreach($result['projects'] as $project)
+        {
+            if(empty($project['issuetypes'])) continue;
+            foreach($project['issuetypes'] as $issuetype)
+            {
+                foreach($issuetype['fields'] as $key => $field)
+                {
+                    if(strpos($key, 'customfield_') === false || empty($field['allowedValues']))  continue;
+                    foreach($field['allowedValues'] as $allowedValue)
+                    {
+                        $customFieldOption = array();
+                        $customFieldOption['id']                = str_replace('customfield_', '', $key);
+                        $customFieldOption['customfield']       = str_replace('customfield_', '', $key);
+                        $customFieldOption['customfieldconfig'] = $field['schema']['custom'];
+                        $customFieldOption['value']             = $allowedValue['value'];
+                        $customFieldOption['disabled']          = false;
+                        $customFieldOptions[$allowedValue['id']] = $customFieldOption;
+                    }
+                }
+            }
+        }
+
+        return $customFieldOptions;
     }
 }

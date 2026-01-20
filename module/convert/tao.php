@@ -81,6 +81,36 @@ class convertTao extends convertModel
         $issue->worklogs             = !empty($data['worklogs'])            ? $data['worklogs']             : array();
         $issue->files                = !empty($data['files'])               ? $data['files']                : array();
 
+        /* 获取自定义字段的值。 */
+        foreach($data as $fieldKey => $fieldValue)
+        {
+            if(strpos($fieldKey, 'customfield_') === false) continue;
+            if(is_array($fieldValue))
+            {
+                if(!empty($fieldValue['content']) && !empty($fieldValue['renderedFields'][$fieldKey]))
+                {
+                    $issue->{$fieldKey} = $fieldValue['renderedFields'][$fieldKey];
+                }
+                elseif(!empty($fieldValue['id']))
+                {
+                    $issue->{$fieldKey} = $fieldValue['id'];
+                }
+                else
+                {
+                    $issue->{$fieldKey} = '';
+                    foreach($fieldValue as $field)
+                    {
+                        if(!empty($field['id'])) $issue->{$fieldKey} .= $field['id'] . ',';
+                    }
+                    $issue->{$fieldKey} = rtrim($issue->{$fieldKey}, ',');
+                }
+            }
+            else
+            {
+                $issue->{$fieldKey} = $fieldValue;
+            }
+        }
+
         return $issue;
     }
 
@@ -837,21 +867,22 @@ class convertTao extends convertModel
         $issueList        = $this->getIssueData();
         $jiraSprintList   = $this->getJiraSprintIssue();
         $jiraActions      = $this->getJiraWorkflowActions();
+        $jiraStatusList   = $this->getJiraStatusList();
         $customFields     = $this->getJiraData($this->session->jiraMethod, 'customfield');
         $fieldValues      = $this->getJiraData($this->session->jiraMethod, 'customfieldvalue');
         $fieldOptions     = $this->getJiraData($this->session->jiraMethod, 'customfieldoption');
         $jiraResolutions  = $this->getJiraData($this->session->jiraMethod, 'resolution');
         $jiraPriList      = $this->getJiraData($this->session->jiraMethod, 'priority');
 
-        $relations = $this->createWorkflow($relations, $jiraActions, $jiraResolutions, $jiraPriList);
+        $relations = $this->createWorkflow($relations, $jiraActions, $jiraResolutions, $jiraPriList, $jiraStatusList);
         $relations = $this->createWorkflowField($relations, $customFields, $fieldOptions, $jiraResolutions, $jiraPriList);
-        $relations = $this->createWorkflowStatus($relations);
+        $relations = $this->createWorkflowStatus($relations, $jiraStatusList);
         $relations = $this->createWorkflowAction($relations, $jiraActions);
         $relations = $this->createWorkflowGroup($relations, $projectRelation, $productRelation);
         $relations = $this->createResolution($relations);
         $workflows = $this->dao->dbh($this->dbh)->select('module,`table`')->from(TABLE_WORKFLOW)->where('buildin')->eq('0')->fetchPairs();
 
-        $comments = $changeGroups = $changeItems = $worklogs = $files = array();
+        $comments = $changeGroups = $changeItems = $worklogs = $files = $links = array();
         foreach($dataList as $id => $data)
         {
             if(!empty($issueList[$data->id])) continue;
@@ -859,31 +890,35 @@ class convertTao extends convertModel
             $issueProject = $data->project;
             if(!isset($projectRelation[$issueProject])) continue;
 
-            /* 将自定义字段数据赋值给issue对象。 */
             $data->execution = !empty($jiraSprintList[$data->id]) ? $jiraSprintList[$data->id] : '';
-            foreach($fieldValues as $fieldValue)
-            {
-                if($fieldValue->issue == $data->id)
-                {
-                    if(!empty($fieldValue->datevalue))
-                    {
-                        $data->{$fieldValue->customfield} = date('Y-m-d H:i:s', strtotime($fieldValue->datevalue)); // 日期类型是datevalue
-                    }
-                    elseif(!empty($fieldValue->numbervalue))
-                    {
-                        $data->{$fieldValue->customfield} = $fieldValue->numbervalue; // 数字类型是numbervalue
-                    }
-                    elseif(isset($data->{$fieldValue->customfield}))
-                    {
-                        $data->{$fieldValue->customfield} .= ',' . $fieldValue->stringvalue; // 多选的情况
-                    }
-                    else
-                    {
-                        $data->{$fieldValue->customfield} = $fieldValue->stringvalue;
-                    }
 
-                    $fieldKey = !empty($customFields[$fieldValue->customfield]) ? $customFields[$fieldValue->customfield]->customfieldtypekey : '';
-                    if($fieldKey == 'com.pyxis.greenhopper.jira:gh-sprint' && !empty($sprintRelation[$fieldValue->stringvalue])) $data->execution = $sprintRelation[$fieldValue->stringvalue];
+            /* 将自定义字段数据赋值给issue对象。 */
+            if($this->session->jiraMethod != 'api')
+            {
+                foreach($fieldValues as $fieldValue)
+                {
+                    if($fieldValue->issue == $data->id)
+                    {
+                        if(!empty($fieldValue->datevalue))
+                        {
+                            $data->{$fieldValue->customfield} = date('Y-m-d H:i:s', strtotime($fieldValue->datevalue)); // 日期类型是datevalue
+                        }
+                        elseif(!empty($fieldValue->numbervalue))
+                        {
+                            $data->{$fieldValue->customfield} = $fieldValue->numbervalue; // 数字类型是numbervalue
+                        }
+                        elseif(isset($data->{$fieldValue->customfield}))
+                        {
+                            $data->{$fieldValue->customfield} .= ',' . $fieldValue->stringvalue; // 多选的情况
+                        }
+                        else
+                        {
+                            $data->{$fieldValue->customfield} = $fieldValue->stringvalue;
+                        }
+
+                        $fieldKey = !empty($customFields[$fieldValue->customfield]) ? $customFields[$fieldValue->customfield]->customfieldtypekey : '';
+                        if($fieldKey == 'com.pyxis.greenhopper.jira:gh-sprint' && !empty($sprintRelation[$fieldValue->stringvalue])) $data->execution = $sprintRelation[$fieldValue->stringvalue];
+                    }
                 }
             }
 
@@ -928,22 +963,25 @@ class convertTao extends convertModel
 
             if($this->session->jiraMethod == 'api')
             {
-                if(!empty($data->comments))     $comments     = arrayUnion($comments,     $data->comments);
-                if(!empty($data->changeGroups)) $changeGroups = arrayUnion($changeGroups, $data->changeGroups);
-                if(!empty($data->changeItems))  $changeItems  = arrayUnion($changeItems,  $data->changeItems);
+                if(!empty($data->links))        $links        = arrayUnion($links,        $data->links);
                 if(!empty($data->worklogs))     $worklogs     = arrayUnion($worklogs,     $data->worklogs);
+                if(!empty($data->comments))     $comments     = arrayUnion($comments,     $data->comments);
+                if(!empty($data->changeItems))  $changeItems  = arrayUnion($changeItems,  $data->changeItems);
+                if(!empty($data->changeGroups)) $changeGroups = arrayUnion($changeGroups, $data->changeGroups);
                 if(!empty($data->files))        $files        = arrayUnion($files,        $data->files);
             }
         }
 
         if($this->session->jiraMethod == 'api')
         {
+            foreach($links        as $index => $link)    $links[$index]        = $this->buildIssuelinkData($link);
             foreach($worklogs     as $index => $worklog) $worklogs[$index]     = $this->buildWorklogData($worklog);
             foreach($comments     as $index => $comment) $comments[$index]     = $this->buildActionData($comment);
             foreach($changeItems  as $index => $item)    $changeItems[$index]  = $this->buildChangeItemData($item);
             foreach($changeGroups as $index => $group)   $changeGroups[$index] = $this->buildChangeGroupData($group);
             foreach($files        as $index => $file)    $files[$index]        = $this->buildFileData($file);
 
+            $this->importJiraIssueLink($links);
             $this->importJiraWorkLog($worklogs);
             $this->importJiraAction($comments);
             $this->importJiraChangeItem($changeItems, $changeGroups);
@@ -2264,18 +2302,19 @@ class convertTao extends convertModel
      * @param  array     $jiraActions
      * @param  array     $jiraResolutions
      * @param  array     $jiraPriList
+     * @param  array     $jiraStatusList
      * @access protected
      * @return array
      */
-    protected function createWorkflow(array $relations, array $jiraActions, array $jiraResolutions, array $jiraPriList): array
+    protected function createWorkflow(array $relations, array $jiraActions, array $jiraResolutions, array $jiraPriList, array $jiraStatusList): array
     {
         if($this->config->edition == 'open') return $relations;
         $this->loadModel('workflow');
         $this->loadModel('workflowfield');
 
-        $issueTypeList   = $this->getJiraData($this->session->jiraMethod, 'issuetype');
-        $statusList      = $this->getJiraData($this->session->jiraMethod, 'status');
-        $flowRelation    = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('jissuetype')->andWhere('BType')->eq('zworkflow')->fetchAll('AID');
+        $issueTypeList = $this->getJiraData($this->session->jiraMethod, 'issuetype');
+        $customFields  = $this->getJiraCustomField();
+        $flowRelation  = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('jissuetype')->andWhere('BType')->eq('zworkflow')->fetchAll('AID');
         foreach($relations['zentaoObject'] as $jiraCode => $zentaoCode)
         {
             if($zentaoCode != 'add_custom') continue;
@@ -2336,25 +2375,34 @@ class convertTao extends convertModel
                 $relations['zentaoObject'][$jiraCode] = $flowRelation[$jiraCode]->BID;
             }
 
-            $customField = $this->getJiraCustomField($jiraCode, $relations);
+            $customField = zget($customFields, $jiraCode, array());
             foreach($customField as $id => $field)
             {
                 $relations["jiraField{$jiraCode}"][] = $id;
                 $relations["zentaoField{$jiraCode}"][$id] = 'add_field';
             }
+
+            $statusList = zget($jiraStatusList, $jiraCode, array());
             foreach($statusList as $id => $status)
             {
                 $relations["jiraStatus{$jiraCode}"][] = $id;
                 $relations["zentaoStatus{$jiraCode}"][$id] = 'add_flow_status';
             }
-            if(isset($jiraActions['actions']))
+
+            if($this->session->jiraMethod == 'api')
             {
-                foreach($jiraActions['actions'] as $id => $action)
-                {
-                    if(!empty($action['name']) && $action['name'] == 'Create') continue;
-                    $relations["jiraAction{$jiraCode}"][] = $id;
-                    $relations["zentaoAction{$jiraCode}"][$id] = 'add_action';
-                }
+                $jiraAction = !empty($jiraActions[$jiraCode]['actions']) ? $jiraActions[$jiraCode]['actions'] : array();
+            }
+            else
+            {
+                $jiraAction = $jiraActions['actions'];
+            }
+
+            foreach($jiraAction as $id => $action)
+            {
+                if(!empty($action['name']) && $action['name'] == 'Create') continue;
+                $relations["jiraAction{$jiraCode}"][] = $id;
+                $relations["zentaoAction{$jiraCode}"][$id] = 'add_action';
             }
         }
 
@@ -2397,7 +2445,8 @@ class convertTao extends convertModel
 
                 if(empty($fieldRelation[$module][$jiraField]))
                 {
-                    $controlCode = !empty($fields[$jiraField]->customfieldtypekey) ? $fields[$jiraField]->customfieldtypekey : 'com.atlassian.jira.plugin.system.customfieldtypes:textfield';
+                    $jiraFields  = $this->session->jiraMethod == 'api' ? zget($fields, $jiraCode, array()) : $fields;
+                    $controlCode = !empty($jiraFields[$jiraField]->customfieldtypekey) ? $jiraFields[$jiraField]->customfieldtypekey : 'com.atlassian.jira.plugin.system.customfieldtypes:textfield';
 
                     $options = array('code' => array(), 'name' => array());
                     foreach($fieldOptions as $optionID => $fieldOption)
@@ -2410,7 +2459,7 @@ class convertTao extends convertModel
                     if(empty($jiraFieldControl[$controlCode])) $controlCode = !empty($options['code']) ? 'com.atlassian.jira.plugin.system.customfieldtypes:select' : 'com.atlassian.jira.plugin.system.customfieldtypes:textfield';
 
                     $field = new stdclass();
-                    $field->name          = substr(zget($fields[$jiraField], 'cfname', ''), 0, 60);
+                    $field->name          = substr(zget($jiraFields[$jiraField], 'cfname', ''), 0, 60);
                     $field->field         = 'jirafield' . str_replace(range(0, 9), range('a', 'z'), uniqid());
                     $field->control       = $jiraFieldControl[$controlCode]['control'];
                     $field->type          = $jiraFieldControl[$controlCode]['type'];
@@ -2452,16 +2501,16 @@ class convertTao extends convertModel
      * Create workflow status.
      *
      * @param  array     $relations
+     * @param  array     $jiraStatusList
      * @access protected
      * @return array
      */
-    protected function createWorkflowStatus(array $relations): array
+    protected function createWorkflowStatus(array $relations, array $jiraStatusList): array
     {
         if($this->config->edition == 'open') return $relations;
 
         $this->loadModel('custom');
-        $currentLang    = $this->app->getClientLang();
-        $jiraStatusList = $this->getJiraData($this->session->jiraMethod, 'status');
+        $currentLang = $this->app->getClientLang();
         foreach($relations as $stepKey => $statusList)
         {
             if(strpos($stepKey, 'zentaoStatus') === false) continue;
@@ -2481,14 +2530,14 @@ class convertTao extends convertModel
                         $items = $this->lang->testcase->statusList;
                         foreach($items as $key => $value) $this->custom->setItem("{$currentLang}.testcase.statusList.$key.1", $value);
                     }
-                    $this->custom->setItem("{$currentLang}.testcase.statusList.$zentaoCode.0", zget($jiraStatusList[$jiraStatus], 'pname', ''));
+                    $this->custom->setItem("{$currentLang}.testcase.statusList.$zentaoCode.0", zget($jiraStatusList[$jiraCode][$jiraStatus], 'pname', ''));
                 }
                 elseif($zentaoStatus == 'add_flow_status')
                 {
                     $fieldOptions = $this->dao->select('options')->from(TABLE_WORKFLOWFIELD)->where('module')->eq($module)->andWhere('field')->eq('status')->fetch('options');
                     $fieldOptions = json_decode($fieldOptions);
                     if(!$fieldOptions) $fieldOptions = new stdclass();
-                    $fieldOptions->{$zentaoCode} = zget($jiraStatusList[$jiraStatus], 'pname', '');
+                    $fieldOptions->{$zentaoCode} = zget($jiraStatusList[$jiraCode][$jiraStatus], 'pname', '');
                     $this->dao->update(TABLE_WORKFLOWFIELD)->set('options')->eq(json_encode($fieldOptions))->where('module')->eq($module)->andWhere('field')->eq('status')->exec();
                 }
                 $relations[$stepKey][$jiraStatus] = $zentaoCode;
@@ -2509,15 +2558,22 @@ class convertTao extends convertModel
      */
     protected function processWorkflowHooks(array $jiraAction, array $jiraStepList, string $module): array
     {
-        if(empty($jiraAction['results']['unconditional-result']['@attributes']['step'])) return array();
+        if($this->session->jiraMethod != 'api' && empty($jiraAction['results']['unconditional-result']['@attributes']['step'])) return array();
 
-        $hooks    = array();
-        $jiraStep = $jiraAction['results']['unconditional-result']['@attributes']['step'];
-
+        $hooks = array();
         $field = new stdclass();
         $field->field     = 'status';
         $field->paramType = 'custom';
-        $field->param     = is_array($jiraStepList[$jiraStep]) ? $jiraStepList[$jiraStep][0] : $jiraStepList[$jiraStep];
+
+        if($this->session->jiraMethod == 'api')
+        {
+            $field->param = $jiraAction['to'];
+        }
+        else
+        {
+            $jiraStep     = $jiraAction['results']['unconditional-result']['@attributes']['step'];
+            $field->param = is_array($jiraStepList[$jiraStep]) ? $jiraStepList[$jiraStep][0] : $jiraStepList[$jiraStep];
+        }
 
         $where = new stdclass();
         $where->field           = 'id';
@@ -2576,10 +2632,11 @@ class convertTao extends convertModel
 
                 if(empty($flowActionRelation[$module][$jiraAction]))
                 {
-                    $hooks = $this->processWorkflowHooks($jiraActions['actions'][$jiraAction], $jiraActions['steps'], $module);
+                    $actionGroup = $this->session->jiraMethod == 'api' ? zget($jiraActions, $jiraCode, array()) : $jiraActions;
+                    if(!empty($actionGroup['actions'])) $hooks = $this->processWorkflowHooks($actionGroup['actions'][$jiraAction], !empty($actionGroup['steps']) ? $actionGroup['steps'] : array(), $module);
 
                     $action = new stdclass();
-                    $action->name          = $jiraActions['actions'][$jiraAction]['name'];
+                    $action->name          = $actionGroup['actions'][$jiraAction]['name'];
                     $action->action        = $module . 'action' . $jiraAction;
                     $action->type          = 'single';
                     $action->batchMode     = 'same';
@@ -2631,11 +2688,10 @@ class convertTao extends convertModel
      * @param  int       $zentaoProjectID
      * @param  array     $productRelations
      * @param  array     $projectFieldList
-     * @param  array     $archivedProject
      * @access protected
      * @return bool
      */
-    protected function createGroup(string $type, string $name, array $objectList, int $jiraProjectID, int $zentaoProjectID, array $productRelations, array $projectFieldList, array $archivedProject): bool
+    protected function createGroup(string $type, string $name, array $objectList, int $jiraProjectID, int $zentaoProjectID, array $productRelations, array $projectFieldList): bool
     {
         $group = new stdclass();
         $group->name            = substr($name, 0, 80) . $this->lang->workflowgroup->template;
@@ -2713,7 +2769,6 @@ class convertTao extends convertModel
         $projectList          = $this->getJiraData($this->session->jiraMethod, 'project');
         $projectIssueTypeList = $this->getIssueTypeList($relations);
         $projectFieldList     = $this->getJiraFieldGroupByProject($relations);
-        $archivedProject      = $this->getJiraArchivedProject($projectList);
         foreach($projectRelations as $jiraProjectID => $zentaoProjectID)
         {
             if(!empty($groupRelations[$jiraProjectID])) continue;
@@ -2722,8 +2777,8 @@ class convertTao extends convertModel
             $project       = $projectList[$jiraProjectID];
             $issueTypeList = !empty($projectIssueTypeList[$jiraProjectID]) ? $projectIssueTypeList[$jiraProjectID] : array();
 
-            $this->createGroup('project', $project->pname, $issueTypeList, (int)$jiraProjectID, (int)$zentaoProjectID, $productRelations, $projectFieldList, $archivedProject);
-            $this->createGroup('product', $project->pname, $issueTypeList, (int)$jiraProjectID, (int)$zentaoProjectID, $productRelations, $projectFieldList, $archivedProject);
+            $this->createGroup('project', $project->pname, $issueTypeList, (int)$jiraProjectID, (int)$zentaoProjectID, $productRelations, $projectFieldList);
+            $this->createGroup('product', $project->pname, $issueTypeList, (int)$jiraProjectID, (int)$zentaoProjectID, $productRelations, $projectFieldList);
         }
 
         return $relations;
