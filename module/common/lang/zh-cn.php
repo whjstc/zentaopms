@@ -632,8 +632,19 @@ $lang->noticePasteImg    = "可以在编辑器直接贴图。";
 $lang->pasteImgFail      = "贴图失败，请稍后重试。";
 $lang->pasteImgUploading = "正在上传图片，请稍后...";
 
-$lang->visionTips = "您可以在这里切换界面";
-$lang->IKnow      = "我知道了";
+/* 工作界面。 */
+$lang->visionTips      = "您可以在这里切换界面";
+$lang->IKnow           = "我知道了";
+$lang->switchVision    = '切换工作界面';
+$lang->switchWorkspace = '切换工作空间';
+$lang->enterWorkspace  = '进入空间';
+$lang->exitWorkspace   = '退出空间';
+
+/* 工作空间列表。 */
+$lang->workspaceList = [];
+$lang->workspaceList['product']   = "{$lang->productCommon}空间";
+$lang->workspaceList['project']   = "{$lang->projectCommon}空间";
+$lang->workspaceList['execution'] = "{$lang->executionCommon}空间";
 
 /* 时间格式设置。*/
 if(!defined('DT_DATETIME1'))  define('DT_DATETIME1',  'Y-m-d H:i:s');

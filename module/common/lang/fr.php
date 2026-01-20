@@ -631,8 +631,19 @@ $lang->noticePasteImg     = "Vous pouvez déposer des images dans l'éditeur.";
 $lang->pasteImgFail       = "Echec lors de la dépose des images. Essayez plus tard.";
 $lang->pasteImgUploading  = "Chargement...";
 
-$lang->visionTips = "You can switch vision here";
-$lang->IKnow      = "I know";
+/* Work visions. */
+$lang->visionTips      = "You can switch vision here";
+$lang->IKnow           = "I know";
+$lang->switchVision    = 'Switch to vision';
+$lang->switchWorkspace = 'Switch to workspace';
+$lang->enterWorkspace  = 'Enter space';
+$lang->exitWorkspace   = 'Exit space';
+
+/* Workspace list. */
+$lang->workspaceList = [];
+$lang->workspaceList['product']   = "{$lang->productCommon} space";
+$lang->workspaceList['project']   = "{$lang->projectCommon} space";
+$lang->workspaceList['execution'] = "{$lang->executionCommon} space";
 
 /* Time formats settings. */
 if(!defined('DT_DATETIME1'))  define('DT_DATETIME1',  'Y-m-d H:i:s');
