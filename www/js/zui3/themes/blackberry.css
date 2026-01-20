@@ -225,7 +225,7 @@
 #navbar>.nav>.nav-item>a.active>.text {box-shadow: inset 0 -2px 0 var(--color-primary-500);}
 #navbar .nav li.nav-divider.divider {height: 8px; opacity: 1; background-color: var(--color-gray-400)!important;}
 
-#versionMenu-toggle {color: var(--color-secondary-500)}
+#versionSwitchBtn {color: var(--color-secondary-500)}
 
 .nav-feature {--nav-active-bg: var(--color-primary-500)!important; --nav-active-color: var(--color-canvas)!important;}
 #featureBar .search-form-toggle {--skin-color: transparent!important; --skin-bg: var(--color-secondary-50)!important;}
