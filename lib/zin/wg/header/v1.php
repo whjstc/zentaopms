@@ -41,6 +41,7 @@ class header extends wg
             $toolbar = new toolbar
             (
                 setClass('gap-4'),
+                static::workspaceEntry(),
                 static::quickAddMenu(),
                 static::messageBar(),
                 static::userBar()
@@ -473,6 +474,25 @@ class header extends wg
             set::strategy('fixed'),
             set::arrow(true),
             set::items($items)
+        );
+    }
+
+    public static function workspaceEntry()
+    {
+        global $app, $lang, $config;
+
+        if(!empty($config->noWorkspace)) return null;
+
+        return array(
+            btn
+            (
+                set::type('ghost text-secondary'),
+                set::size('sm'),
+                set::icon('import rotate-270'),
+                set::hint($lang->enterWorkspace),
+                on::click()->call('enterWorkspace')
+            ),
+            html('<div class="divider" style="margin-left:0;margin-right:0"></div>')
         );
     }
 }
