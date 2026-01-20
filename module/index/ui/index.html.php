@@ -244,16 +244,23 @@ $zaiConfigUrl = createLink('zai', 'setting');
 $zaiLang->zaiConfigNotValid = str_replace('{zaiConfigUrl}', $zaiConfigUrl, $lang->aiapp->langData->zaiConfigNotValid);
 if(isset($zaiLang->unauthorizedError)) $zaiLang->unauthorizedError = str_replace('{zaiConfigUrl}', $zaiConfigUrl, $lang->aiapp->langData->unauthorizedError);
 
+$enableAITeammate = !empty($config->enableAITeammate);
+h::jsVar('window.enableAITeammate', $enableAITeammate);
 if($config->edition != 'open' && $zaiConfig)
 {
     $this->app->loadLang('ai');
-    $zaiLang->knowledgeLib            = $lang->ai->knowledgeLib;
-    $zaiLang->teammate                = $lang->ai->teammate;
-    $zaiLang->teammatePromptPrefix    = $lang->ai->teammatePromptPrefix;
-    $zaiLang->teammateKnowledgePrefix = $lang->ai->teammateKnowledgePrefix;
-    $zaiLang->teammateKnowledgeSuffix = $lang->ai->teammateKnowledgeSuffix;
+    $zaiLang->knowledgeLib = $lang->ai->knowledgeLib;
 
-    $zaiConfig->teammateMap = $this->loadModel('aiteammate')->getMap();
+    $zaiConfig->teammateMap = array();
+    if($enableAITeammate)
+    {
+        $zaiLang->teammate                = $lang->ai->teammate;
+        $zaiLang->teammatePromptPrefix    = $lang->ai->teammatePromptPrefix;
+        $zaiLang->teammateKnowledgePrefix = $lang->ai->teammateKnowledgePrefix;
+        $zaiLang->teammateKnowledgeSuffix = $lang->ai->teammateKnowledgeSuffix;
+
+        $zaiConfig->teammateMap = $this->loadModel('aiteammate')->getMap();
+    }
 }
 
 to::head

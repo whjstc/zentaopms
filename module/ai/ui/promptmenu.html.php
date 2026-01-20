@@ -54,7 +54,7 @@ $promptMenuInject = function()
     $btnName     = $this->lang->ai->prompts->common;
 
     $promptIds = array_column($prompts, 'id');
-    $canAssign = hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
+    $canAssign = !empty($this->config->enableAITeammate) && hasPriv('aiteammate', 'assignagent') && $this->config->edition != 'open';
     $teammates = array();
     if(!empty($prompts) && $canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
 
