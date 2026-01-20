@@ -184,15 +184,17 @@ class convertModel extends model
         $jiraApi = new jira($jiraApi['domain'], $jiraApi['admin'], $jiraApi['token']);
 
         $functionMap = array(
-            'issue'         => 'getIssues',
-            'issuelinktype' => 'getIssueLinkTypes',
-            'issuelink'     => 'getIssueLinks',
-            'issuetype'     => 'getIssueTypes',
-            'user'          => 'getUsers',
-            'project'       => 'getProjects',
-            'resolution'    => 'getResolutions',
-            'status'        => 'getStatus',
-            'customfield'   => 'getCustomFields'
+            'issue'             => 'getIssues',
+            'issuelinktype'     => 'getIssueLinkTypes',
+            'issuetype'         => 'getIssueTypes',
+            'user'              => 'getUsers',
+            'project'           => 'getProjects',
+            'resolution'        => 'getResolutions',
+            'priority'          => 'getPriority',
+            'status'            => 'getStatus',
+            'customfield'       => 'getCustomFields',
+            'customfieldoption' => 'getCustomFieldOption',
+            'workflow'          => 'getWorkflowActions'
         );
 
         if(isset($functionMap[$module]))
@@ -205,12 +207,26 @@ class convertModel extends model
             return array();
         }
 
-        if(in_array($module, array_keys($this->config->convert->objectTables)) && $module != 'customfield')
+        if(in_array($module, array_keys($this->config->convert->objectTables)) && $module != 'workflow')
         {
-            foreach($dataList as $key => $data)
+            if($module == 'customfield')
             {
-                $buildfunction  = 'build' . ucfirst($module) . 'data';
-                $dataList[$key] = $this->$buildfunction($data);
+                foreach($dataList as $issueType => $datas)
+                {
+                    foreach($datas as $key => $data)
+                    {
+                        $buildfunction  = 'build' . ucfirst($module) . 'data';
+                        $dataList[$issueType][$key] = $this->$buildfunction($data);
+                    }
+                }
+            }
+            else
+            {
+                foreach($dataList as $key => $data)
+                {
+                    $buildfunction  = 'build' . ucfirst($module) . 'data';
+                    $dataList[$key] = $this->$buildfunction($data);
+                }
             }
         }
 
@@ -717,29 +733,22 @@ EOT;
      * 获取Jira状态列表。
      * Get jira status list.
      *
-     * @param  string|int $step
-     * @param  array      $relations
      * @access public
      * @return array
      */
-    public function getJiraStatusList(string|int $step, array $relations): array
+    public function getJiraStatusList(): array
     {
-        if(empty($relations['zentaoObject']) || !in_array($step, array_keys($relations['zentaoObject']))) return array();
-
         if($this->session->jiraMethod == 'api')
         {
-            $schemes   = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
-            $workflows = $this->callJiraAPI('/rest/api/3/workflow/search?expand=statuses,projects&maxResults=1000');
-            $projects  = array();
+            $schemes      = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
+            $workflows    = $this->callJiraAPI('/rest/api/3/workflow/search?expand=statuses,projects&maxResults=1000');
+            $projectGroup = array();
             foreach($schemes as $scheme)
             {
                 if(empty($scheme->issueTypes->values) || empty($scheme->projects->values)) continue;
                 foreach($scheme->issueTypes->values as $issueType)
                 {
-                    if($issueType->id == $step)
-                    {
-                        foreach($scheme->projects->values as $project) $projects[$project->id] = $project->id;
-                    }
+                    foreach($scheme->projects->values as $project) $projectGroup[$issueType->id][$project->id] = $project->id;
                 }
             }
 
@@ -749,9 +758,12 @@ EOT;
                 if(empty($workflow->statuses) || empty($workflow->projects)) continue;
                 foreach($workflow->projects as $project)
                 {
-                    if(in_array($project->id, $projects))
+                    foreach($projectGroup as $issueType => $projects)
                     {
-                        foreach($workflow->statuses as $status) $statusList[$status->id] = $status->name;
+                        if(in_array($project->id, $projects))
+                        {
+                            foreach($workflow->statuses as $status) $statusList[$issueType][$status->id] = $status->name;
+                        }
                     }
                 }
             }
@@ -764,11 +776,11 @@ EOT;
         $jiraStatusList = array();
         foreach($issues as $issue)
         {
-            if($issue->issuetype != $step || empty($issue->issuestatus)) continue;
+            if(empty($issue->issuestatus)) continue;
             if(empty($statusList[$issue->issuestatus])) continue;
 
             $status = $statusList[$issue->issuestatus];
-            $jiraStatusList[$issue->issuestatus] = $status->pname;
+            $jiraStatusList[$issue->issuetype][$issue->issuestatus] = $status->pname;
         }
         return $jiraStatusList;
     }
@@ -777,19 +789,22 @@ EOT;
      * 获取Jira自定义字段列表。
      * Get jira custom fields.
      *
-     * @param  string|int $step
-     * @param  array      $relations
      * @access public
      * @return array
      */
-    public function getJiraCustomField(string|int $step, array $relations): array
+    public function getJiraCustomField(): array
     {
         if($this->config->edition == 'open') return array();
-        if(empty($relations['zentaoObject']) || !in_array($step, array_keys($relations['zentaoObject']))) return array();
 
         $jiraFields = array();
         $fields     = $this->getJiraData($this->session->jiraMethod, 'customfield');
-        if($this->session->jiraMethod == 'api') return zget($fields, $step, array());
+        if($this->session->jiraMethod == 'api')
+        {
+            foreach($fields as $issueType => $fieldList)
+            {
+                foreach($fieldList as $fieldID => $field) $fields[$issueType][$fieldID] = $field->cfname;
+            }
+        }
 
         $issues     = $this->getJiraData($this->session->jiraMethod, 'issue');
         $fieldValue = $this->getJiraData($this->session->jiraMethod, 'customfieldvalue');
@@ -800,10 +815,9 @@ EOT;
 
             $issue = $issues[$value->issue];
             $field = $fields[$value->customfield];
-            if($issue->issuetype != $step) continue;
 
             if(in_array($field->customfieldtypekey, array('com.pyxis.greenhopper.jira:gh-sprint', 'com.pyxis.greenhopper.jira:gh-epic-label', 'com.pyxis.greenhopper.jira:gh-epic-status', 'com.pyxis.greenhopper.jira:gh-epic-color'))) continue;
-            $jiraFields[$value->customfield] = $field->cfname;
+            $jiraFields[$issue->issuetype][$value->customfield] = $field->cfname;
         }
         return $jiraFields;
     }
@@ -850,7 +864,41 @@ EOT;
     {
         if($this->config->edition == 'open') return array();
 
-        $workflows       = $this->getJiraData($this->session->jiraMethod, 'workflow');
+        if($this->session->jiraMethod == 'api')
+        {
+            $schemes      = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
+            $workflows    = $this->callJiraAPI('/rest/api/3/workflow/search?expand=transitions,projects&maxResults=1000');
+            $projectGroup = array();
+            foreach($schemes as $scheme)
+            {
+                if(empty($scheme->issueTypes->values) || empty($scheme->projects->values)) continue;
+                foreach($scheme->issueTypes->values as $issueType)
+                {
+                    foreach($scheme->projects->values as $project) $projectGroup[$issueType->id][$project->id] = $project->id;
+                }
+            }
+
+            $workflowActions = array();
+            foreach($workflows as $workflow)
+            {
+                if(empty($workflow->transitions) || empty($workflow->projects)) continue;
+                foreach($workflow->projects as $project)
+                {
+                    foreach($projectGroup as $issueType => $projects)
+                    {
+                        if(in_array($project->id, $projects))
+                        {
+                            foreach($workflow->transitions as $action) $workflowActions[$issueType]['actions'][$action->id] = (array)$action;
+                        }
+                    }
+                }
+            }
+
+            return $workflowActions;
+        }
+
+        $workflows = $this->getJiraData($this->session->jiraMethod, 'workflow');
+
         $workflowActions = array();
         $actionNameList  = array();
         foreach($workflows as $workflowID => $workflow)
@@ -1132,10 +1180,10 @@ EOT;
         {
             foreach($projectList as $projectID)
             {
-                $boardList = $this->callJiraAPI("/rest/agile/1.0/board?projectKeyOrId={$projectID}&maxResults=50");
+                $boardList = $this->callJiraAPI("/rest/agile/1.0/board?projectKeyOrId={$projectID}&maxResults=1000");
                 foreach($boardList as $board)
                 {
-                    $sprintList = $this->callJiraAPI("/rest/agile/1.0/board/$board->id/sprint?maxResults=50");
+                    $sprintList = $this->callJiraAPI("/rest/agile/1.0/board/$board->id/sprint?maxResults=1000");
                     foreach($sprintList as $sprint)
                     {
                         $sprintGroup[$projectID][$sprint->id] = $sprint;
@@ -1171,7 +1219,7 @@ EOT;
         {
             foreach($sprintRelation as $sprintID => $executionID)
             {
-                $issueList = $this->callJiraAPI("/rest/agile/1.0/sprint/{$sprintID}/issue?maxResults=50");
+                $issueList = $this->callJiraAPI("/rest/agile/1.0/sprint/{$sprintID}/issue?maxResults=1000");
                 foreach($issueList as $issue) $issueGroup[$issue->id] = $executionID;
             }
         }

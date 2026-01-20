@@ -414,8 +414,8 @@ class convert extends control
         $this->loadModel('task');
         $objectRelation = !empty($jiraRelation['zentaoObject']) && in_array($step, array_keys($jiraRelation['zentaoObject']));
         $resolutionList = $objectRelation ? $this->convert->getJiraData($method, 'resolution')       : array();
-        $statusList     = $objectRelation ? $this->convert->getJiraStatusList($step, $jiraRelation)  : array();
-        $jiraFields     = $objectRelation ? $this->convert->getJiraCustomField($step, $jiraRelation) : array();
+        $statusList     = $objectRelation ? zget($this->convert->getJiraStatusList(),  $step, array()) : array();
+        $jiraFields     = $objectRelation ? zget($this->convert->getJiraCustomField(), $step, array()) : array();
         $issueTypeList  = $this->convert->getJiraTypeList();
         $linkTypeList   = $step == 'relation' ? $this->convert->getJiraData($method, 'issuelinktype') : array();
         $stepList       = $this->convert->getJiraStepList($jiraRelation, $issueTypeList);
