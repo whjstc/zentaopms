@@ -100,11 +100,10 @@ class visionSwitcher extends wg
             $visions[] = ['key' => $vision, 'icon' => $this->getVisionIcon($vision), 'text' => isset($lang->visionList[$vision]) ? $lang->visionList[$vision] : $vision];
         }
 
-        $app->loadLang('index');
         $spaces = [];
-        if(hasPriv('product', 'all'))    $spaces[] = ['key' => 'product', 'icon' => 'product', 'text' => $lang->index->workspaceList['product'], 'fetcher' => createLink('product', 'ajaxGetDropMenu', 'productID=0')];
-        if(hasPriv('project', 'browse')) $spaces[] = ['key' => 'project', 'icon' => 'project', 'text' => $lang->index->workspaceList['project'], 'fetcher' => createLink('project', 'ajaxGetDropMenu', 'projectID=0')];
-        if(hasPriv('execution', 'task')) $spaces[] = ['key' => 'execution', 'icon' => 'run', 'text' => $lang->index->workspaceList['execution'], 'fetcher' => createLink('execution', 'ajaxGetDropMenu', 'objectID=0')];
+        if(hasPriv('product', 'all'))    $spaces[] = ['key' => 'product', 'icon' => 'product', 'text' => $lang->workspaceList['product'], 'fetcher' => createLink('product', 'ajaxGetDropMenu', 'productID=0')];
+        if(hasPriv('project', 'browse')) $spaces[] = ['key' => 'project', 'icon' => 'project', 'text' => $lang->workspaceList['project'], 'fetcher' => createLink('project', 'ajaxGetDropMenu', 'projectID=0')];
+        if(hasPriv('execution', 'task')) $spaces[] = ['key' => 'execution', 'icon' => 'run', 'text' => $lang->workspaceList['execution'], 'fetcher' => createLink('execution', 'ajaxGetDropMenu', 'objectID=0')];
 
         return array
         (
@@ -129,8 +128,8 @@ class visionSwitcher extends wg
                 set::visions($visions),
                 set::currentVision($currentVision),
                 set::spaces($spaces),
-                set::switchVisionText($lang->index->switchVision),
-                set::switchWorkspaceText($lang->index->switchWorkspace)
+                set::switchVisionText($lang->switchVision),
+                set::switchWorkspaceText($lang->switchWorkspace)
             ),
             pageJS(<<<JS
                 window.getUserVisions = () => '{$user->visions}'.split(',');
