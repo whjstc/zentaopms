@@ -175,7 +175,7 @@ $promptMenuInject = function()
             foreach($showTeammates as $teammate)
             {
                 $name     = sprintf($this->lang->ai->promptMenu->assignedTo, $teammate->name);
-                $url      = helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$objectID&pageInfo=$pageInfo");
+                $url      = helper::createLink('aiteammate', 'assignagent', "teammateID=$teammate->id&objectType=$objectVarName&objectID=$objectID&pageInfo=$pageInfo&from=global");
                 $btnProps = (object)['data-url' => $url, 'data-toggle' => 'modal', 'data-size' => 'sm'];
                 $aiSuggestions[] = (object)['id' => "zt_teammate_$teammate->id", 'title' => $name, 'hint' => $teammate->desc, 'type' => 'zentao', 'page' => $page, 'btnProps' => $btnProps];
             }
