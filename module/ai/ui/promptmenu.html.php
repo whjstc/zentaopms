@@ -20,7 +20,35 @@ h::css("
 .detail-view > .detail-body > .detail-main > .detail-sections:first-child > .detail-section:first-child {z-index: 2;}
 ");
 
-$promptMenuInject = function()
+$generateAgents = function($agents)
+{
+    $agentIds   = array();
+    $agentCodes = array();
+    $agentList  = explode(',', $agents);
+    foreach($agentList as $agent)
+    {
+        $agent = trim($agent);
+        if($agent === '') continue;
+
+        if(strpos($agent, 'zt_') === 0)
+        {
+            $agentCodes[] = $agent;
+        }
+        elseif(is_numeric($agent))
+        {
+            $agentIds[] = $agent;
+        }
+    }
+
+    if(!empty($agentCodes))
+    {
+        $codeAgents = $this->ai->getAgentsByCodes($agentCodes, 'active');
+        foreach($codeAgents as $codeAgent) $agentIds[] = $codeAgent->id;
+    }
+    return $agentIds;
+};
+
+$promptMenuInject = function() use ($generateAgents)
 {
     if(isInModal()) return;
 
@@ -58,10 +86,10 @@ $promptMenuInject = function()
     $teammates = array();
     if(!empty($prompts) && $canAssign) $teammates = $this->loadModel('aiteammate')->browse('0');
 
-    $showTeammates = array_filter($teammates, function($item) use ($promptIds)
+    $showTeammates = array_filter($teammates, function($item) use ($promptIds, $generateAgents)
     {
         if(empty($item->agents)) return false;
-        $agents = array_map('intval', explode(',', $item->agents));
+        $agents = $generateAgents($item->agents);
         return !empty(array_intersect($promptIds, $agents));
     });
     if(!empty($showTeammates)) $showTeammates = array_values($showTeammates);
