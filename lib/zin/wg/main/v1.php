@@ -122,8 +122,11 @@ class main extends wg
      * @access protected
      * @return array
      */
-    protected function buildMainNavbar(): array|mainNavbar
+    protected function buildMainNavbar(): array|mainNavbar|null
     {
+        $workspace = commonModel::getWorkspaceInfo();
+        if($workspace['opened']) return null;
+
         $navbar = $this->block('navbar');
         if(!$navbar) return mainNavbar();
         return $navbar;
