@@ -24,7 +24,6 @@ su('admin');
 
 // 3. 设置应用程序上下文
 global $app, $config, $lang;
-// $config->edition = 'open';
 if(empty($app->control))
 {
     $app->control = $tester;
