@@ -413,14 +413,14 @@
     function updateNavbar(data)
     {
         const $navbar = $('#navbar');
-
         const $newNav = $(data);
         if(
-            $newNav.find('.item').length !== $navbar.find('.item').length
+            $newNav.attr('zui-init')
+            || $newNav.find('.item').length !== $navbar.find('.item').length
             || $newNav.find('.item[data-hidden]').length !== $navbar.find('.item[data-hidden]').length
             || $newNav.text().trim() !== $navbar.text().trim()
             || $newNav.find('.nav-item>a').map((_, element) => element.href).get().join(' ') !== $navbar.find('.nav-item>a').map((_, element) => element.href).get().join(' ')
-        ) return $navbar.empty().append($newNav);
+        ) return $navbar.empty().append($newNav).zuiInit();
 
         activeNav($newNav.find('.nav-item>a.active').data('id'), $navbar);
         layoutNavbar();
@@ -1968,13 +1968,27 @@
         if($firstControl) $firstControl[0]?.focus();
     }
 
-    function enterWorkspace(code)
+    function enterWorkspace(code, url)
     {
         $.cookie.set('workspace', code || currentCode, {expires: config.cookieLife, path: config.webRoot});
+        if(url) openUrl(url);
+        else setTimeout(reloadPage, 500);
+    }
+
+    function exitWorkspace()
+    {
+        $.cookie.remove('workspace', {path: config.webRoot});
         setTimeout(reloadPage, 500);
     }
 
-    $.extend(window, {registerRender: registerRender, fetchContent: fetchContent, loadTable: loadTable, loadPage: loadPage, postAndLoadPage: postAndLoadPage, loadCurrentPage: loadCurrentPage, parseSelector: parseSelector, toggleLoading: toggleLoading, openUrl: openUrl, openPage: openPage, goBack: goBack, registerTimer: registerTimer, loadModal: loadModal, loadTarget: loadTarget, loadComponent: loadComponent, loadPartial: loadPartial, reloadPage: reloadPage, selectLang: selectLang, selectTheme: selectTheme, selectVision: selectVision, changeAppLang, changeAppTheme: changeAppTheme, waitDom: waitDom, fetchMessage: fetchMessage, setImageSize: setImageSize, showMoreImage: showMoreImage, autoLoad: autoLoad, loadForm: loadForm, showValidateMessage: showValidateMessage, getPageInfo: getPageInfo, getPerfData: getPerfData, applyFormData: applyFormData, zinCallbacks: zinCallbacks, registerZinCallback: registerZinCallback, getVisions: getVisions, enterWorkspace: enterWorkspace});
+    function updateWorkspaceUI(info)
+    {
+        $('body').toggleClass('in-workspace', !!info);
+        if(info) info.name = $('#dropmenu').first().attr('data-text');
+        $.apps.updateSpaceMenu && $.apps.updateSpaceMenu(info);
+    }
+
+    $.extend(window, {registerRender: registerRender, fetchContent: fetchContent, loadTable: loadTable, loadPage: loadPage, postAndLoadPage: postAndLoadPage, loadCurrentPage: loadCurrentPage, parseSelector: parseSelector, toggleLoading: toggleLoading, openUrl: openUrl, openPage: openPage, goBack: goBack, registerTimer: registerTimer, loadModal: loadModal, loadTarget: loadTarget, loadComponent: loadComponent, loadPartial: loadPartial, reloadPage: reloadPage, selectLang: selectLang, selectTheme: selectTheme, selectVision: selectVision, changeAppLang, changeAppTheme: changeAppTheme, waitDom: waitDom, fetchMessage: fetchMessage, setImageSize: setImageSize, showMoreImage: showMoreImage, autoLoad: autoLoad, loadForm: loadForm, showValidateMessage: showValidateMessage, getPageInfo: getPageInfo, getPerfData: getPerfData, applyFormData: applyFormData, zinCallbacks: zinCallbacks, registerZinCallback: registerZinCallback, getVisions: getVisions, enterWorkspace: enterWorkspace, exitWorkspace: exitWorkspace, updateWorkspaceUI: updateWorkspaceUI});
     $.extend($.apps, {openUrl: openUrl, getAppUrl: () => currentAppUrl});
     $.extend($, {ajaxSendScore: ajaxSendScore, selectLang: selectLang});
 
