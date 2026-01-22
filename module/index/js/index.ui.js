@@ -697,9 +697,10 @@ function refreshMenu()
     const $mainNav       = $('#menuMainNav');
     const $list          = $('#menuMoreList');
     const $menuNav       = $('#menuNav');
-    const $menuItems     = $mainNav.children('li');
+    const hasSpace       = $('body').hasClass('has-space');
+    const $menuItems     = $mainNav.children(hasSpace ? '.is-space' : '.is-original');
     const itemHeight     = $menuItems.first().outerHeight();
-    const maxHeight      = $menuNav.outerHeight() - 12;
+    const maxHeight      = $('#menu').outerHeight() - ($('#menuFooter').outerHeight() || 0) - ($('body').hasClass('has-space') ? (($('#spaceHeading').outerHeight() || 0) + 16) : 0) - 12;
     const dividerHeight  = 13;
     let showMoreMenu     = false;
     let currentHeight    = itemHeight;
@@ -784,7 +785,7 @@ function initAppsMenu(items)
     (items || appsItems).forEach(function(item)
     {
         const oldItem = apps.map[item.code];
-        if(item === 'divider') return $menuMainNav.append('<li class="divider"></li>');
+        if(item === 'divider') return $menuMainNav.append('<li class="divider is-original"></li>');
         if(oldItem !== item && oldItem) item = $.extend({}, oldItem, item, {active: oldItem.active});
         item.external = item.external || item.url && item.url.includes('://');
 
@@ -801,7 +802,7 @@ function initAppsMenu(items)
         if(['devops', 'bi', 'safe'].includes(item.code)) $link.find('.text').addClass('font-brand');
         apps.map[item.code] = item;
 
-        $('<li class="hint-right"></li>')
+        $('<li class="hint-right is-original"></li>')
             .attr({'data-app': item.code, 'data-hint': item.text})
             .append($link)
             .appendTo($menuMainNav);
@@ -1016,25 +1017,19 @@ function updateSpaceMenu(info)
     const $menuMainNav = $('#menuMainNav');
 
     currentApp.workspace = info;
-    $('body').toggleClass('has-space', hasSpaceNav);
     $('#menu').attr('data-space', spaceType);
+    $('body').toggleClass('has-space', hasSpaceNav);
 
-    if(!hasSpaceNav)
-    {
-        const originHtml = $menuMainNav.data('originHtml');
-        if(originHtml) $menuMainNav.html(originHtml);
-        $menuMainNav.data('originHtml', null);
-        return;
-    }
+    $menuMainNav.children('.is-space').remove();
+    if(!hasSpaceNav) return;
 
     $('#spaceHeading').find('.text').text(info.name).attr('title', info.name);
-    $('#spaceHeading').find('.icon').attr('class', `icon icon-${spaceType}`);
+    $('#spaceHeading').find('.icon').attr('class', `icon icon-${info.icon || spaceType}`);
 
-    $menuMainNav.data('originHtml', $menuMainNav.html()).empty();
     info.items.forEach(function(item)
     {
         item.code = item['data-id'];
-        if(item === 'divider' || item.type === 'divider') return $menuMainNav.append('<li class="divider"></li>');
+        if(item === 'divider' || item.type === 'divider') return $menuMainNav.append('<li class="divider is-space"></li>');
 
         const $link= $('<a data-pos="menu"></a>')
             .attr('data-app', currentCode)
@@ -1047,7 +1042,7 @@ function updateSpaceMenu(info)
         $link.html('<i class="icon ' + item.icon + '"></i><span class="text">' + item.text + '</span>', false);
         if(['devops', 'bi', 'safe'].includes(item.code)) $link.find('.text').addClass('font-brand');
 
-        $('<li class="hint-right"></li>')
+        $('<li class="hint-right is-space"></li>')
             .attr({'data-app': currentCode, 'data-hint': item.text})
             .append($link)
             .appendTo($menuMainNav);
