@@ -83,7 +83,7 @@ class mainNavbar extends nav
         $itemProps    = $this->prop('itemProps');
         $activeItem   = $this->prop('active') ?: data('activeMenuItem');
 
-        $items = self::getItems(array('badgeMap' => $badgeMap, 'onRenderItem' => $onRenderItem, 'itemProps' => $itemProps, 'active' => $activeItem));
+        $items = static::getItems(array('badgeMap' => $badgeMap, 'onRenderItem' => $onRenderItem, 'itemProps' => $itemProps, 'active' => $activeItem));
         if(!$items) return;
 
         $this->setProp('items', $items);
