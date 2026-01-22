@@ -18,6 +18,13 @@ class header extends wg
         'toolbar'         => array('map' => 'btn')
     );
 
+    public static function getPageCSS(): ?string
+    {
+        return <<<'CSS'
+        .in-workspace #heading {display: none;}
+        CSS;
+    }
+
     protected function buildHeading()
     {
         if($this->hasBlock('heading')) return $this->block('heading');
@@ -41,7 +48,6 @@ class header extends wg
             $toolbar = new toolbar
             (
                 setClass('gap-4'),
-                static::workspaceEntry(),
                 static::quickAddMenu(),
                 static::messageBar(),
                 static::userBar()
@@ -54,10 +60,21 @@ class header extends wg
             div
             (
                 setID('pageToolbar'),
-                setClass('btn-group mr-2'),
-                $pageToolbar ? html($pageToolbar) : null
+                setClass('toolbar mr-2'),
+                $pageToolbar ? html($pageToolbar) : null,
+                static::workspaceEntry()
             ),
             $toolbar
+        );
+    }
+
+    protected function buildWorkspaceHeader(string $workspace)
+    {
+        return h::header
+        (
+            setID('header'),
+            commonModel::isTutorialMode() ? setStyle('min-width', 'fit-content') : null,
+            $this->buildHeading(),
         );
     }
 
@@ -479,20 +496,22 @@ class header extends wg
 
     public static function workspaceEntry()
     {
-        global $app, $lang, $config;
+        global $lang;
 
-        if(!empty($config->noWorkspace)) return null;
+        $workspace = commonModel::getWorkspaceInfo();
+        if(empty($workspace['type'])) return null;
 
+        $opened = $workspace['opened'];
         return array(
             btn
             (
                 set::type('ghost text-secondary'),
                 set::size('sm'),
-                set::icon('import rotate-270'),
-                set::hint($lang->enterWorkspace),
-                on::click()->call('enterWorkspace')
+                set::icon($opened ? 'export rotate-90' : 'import rotate-270'),
+                set::hint($opened ? $lang->exitWorkspace : $lang->enterWorkspace),
+                on::click()->call($opened ? 'exitWorkspace' : 'enterWorkspace')
             ),
-            html('<div class="divider" style="margin-left:0;margin-right:0"></div>')
+            html('<div class="divider" style="margin:0;height:8px;align-self:center;"></div>')
         );
     }
 }
