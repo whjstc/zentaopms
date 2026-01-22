@@ -15,6 +15,7 @@ class visionSwitcher extends wg
         #versionSwitchBtn > .icon::before, .vision-icon::before {transform: scale(.8);}
 
         #visionSwitchMenu {display: none; min-width: 240px; border-radius: var(--radius-md); --menu-bg: transparent}
+        .vision-vision-menu-main {width: 240px}
         #visionSwitchMenu.show {display: block;}
         #visionSwitchMenu .vision-icon {width: 20px; height: 20px; opacity: 1}
         #visionSwitchMenu .menu-heading {font-weight: normal}
@@ -101,7 +102,7 @@ class visionSwitcher extends wg
         }
 
         $spaces = [];
-        if(hasPriv('product', 'all'))    $spaces[] = ['key' => 'product', 'icon' => 'product', 'text' => $lang->workspaceList['product'], 'fetcher' => createLink('product', 'ajaxGetDropMenu', 'productID=0')];
+        if(hasPriv('product', 'all'))    $spaces[] = ['key' => 'product', 'icon' => 'product', 'text' => $lang->workspaceList['product'], 'fetcher' => createLink('product', 'ajaxGetDropMenu', 'productID=0&module=product&method=browse&extra=story')];
         if(hasPriv('project', 'browse')) $spaces[] = ['key' => 'project', 'icon' => 'project', 'text' => $lang->workspaceList['project'], 'fetcher' => createLink('project', 'ajaxGetDropMenu', 'projectID=0')];
         if(hasPriv('execution', 'task')) $spaces[] = ['key' => 'execution', 'icon' => 'run', 'text' => $lang->workspaceList['execution'], 'fetcher' => createLink('execution', 'ajaxGetDropMenu', 'objectID=0')];
 
@@ -110,7 +111,6 @@ class visionSwitcher extends wg
             dropdown
             (
                 set::placement('top-start'),
-                set::arrow(),
                 set::target('#visionSwitchMenu'),
                 btn
                 (
