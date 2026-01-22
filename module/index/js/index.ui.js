@@ -257,13 +257,16 @@ function openApp(url, code, options)
     $.cookie.set('tab', code, {expires: config.cookieLife, path: config.webRoot});
 
     /* Highlight on left menu */
-    const $menuNav  = $('#menuMainNav,#menuMoreNav');
-    const $lastItem = $menuNav.find('li>a.active');
-    if($lastItem.data('app') !== code)
+    if(!openedApp.workspace)
     {
-        $lastItem.removeClass('active');
-        $menuNav.find('li[data-app="' + code + '"]>a').addClass('active');
-        openedApp.$app.trigger('showapp', openedApp);
+        const $menuNav  = $('#menuMainNav,#menuMoreNav');
+        const $lastItem = $menuNav.find('li>a.active');
+        if($lastItem.data('app') !== code)
+        {
+            $lastItem.removeClass('active');
+            $menuNav.find('li[data-app="' + code + '"]>a').addClass('active');
+            openedApp.$app.trigger('showapp', openedApp);
+        }
     }
 
     /* Show and load app */
@@ -1001,6 +1004,54 @@ function generateAddMenuNavItems($item, onClick)
     return items;
 }
 
+function updateSpaceMenu(info)
+{
+    const spaceType    = info ? info.type : '';
+    const currentApp   = getLastApp();
+    const currentCode  = currentApp.code;
+    const hasSpaceNav  = spaceType === currentCode;
+    const $menuMainNav = $('#menuMainNav');
+
+    currentApp.workspace = info;
+    $('body').toggleClass('has-space', hasSpaceNav);
+    $menuMainNav.attr('data-space', spaceType);
+
+    if(!hasSpaceNav)
+    {
+        const originHtml = $menuMainNav.data('originHtml');
+        if(originHtml) $menuMainNav.html(originHtml);
+        $menuMainNav.data('originHtml', null);
+        return;
+    }
+
+    $('#spaceHeading').find('.text').text(info.name);
+    $('#spaceHeading').find('.icon').attr('class', `icon icon-${spaceType}`);
+
+    $menuMainNav.data('originHtml', $menuMainNav.html()).empty();
+    info.items.forEach(function(item)
+    {
+        item.code = item['data-id'];
+        if(item === 'divider' || item.type === 'divider') return $menuMainNav.append('<li class="divider"></li>');
+
+        const $link= $('<a data-pos="menu"></a>')
+            .attr('data-app', currentCode)
+            .attr('href', item.url || '#')
+            .attr('target', item.notApp ? '_blank' : undefined)
+            .toggleClass('active', item.code === info.active)
+            .addClass('rounded' + (item.notApp ? '' : ' open-in-app'));
+
+        item.icon = item.icon || 'icon-docspace';
+        $link.html('<i class="icon ' + item.icon + '"></i><span class="text">' + item.text + '</span>', false);
+        if(['devops', 'bi', 'safe'].includes(item.code)) $link.find('.text').addClass('font-brand');
+
+        $('<li class="hint-right"></li>')
+            .attr({'data-app': currentCode, 'data-hint': item.text})
+            .append($link)
+            .appendTo($menuMainNav);
+    });
+    refreshMenu();
+}
+
 $(document).on('contextmenu', '#menuMainNav .divider', function(event)
 {
     const $divider = $(this);
@@ -1263,6 +1314,7 @@ $.apps = $.extend(apps,
     getApps:           getApps,
     getVisibleApps:    getVisibleApps,
     getOpenedApps:     getOpenedApps,
+    updateSpaceMenu:   updateSpaceMenu,
 });
 
 window.notifyMessage = function(data)
