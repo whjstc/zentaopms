@@ -9,6 +9,7 @@
 [lang^='en'] {--zt-menu-width: 106px;}
 
 #menu {position: fixed; left: 0; top: 0; bottom: 0; background: var(--zt-menu-bg); width: var(--zt-menu-width); color: rgba(var(--color-canvas-rgb), .8); transition: width .1s; user-select: none; z-index: 1120;}
+.has-space {--zt-menu-width: 196px!important;}
 #menu .nav {flex-direction: column; align-items: stretch;}
 #menu .nav > li {display: block; height: var(--zt-menu-height, 38px); padding: 4px 8px; transition: padding .2s;}
 #menu .nav > .divider {background: var(--color-canvas); opacity: .12; height: 1px; padding: 6px 4px; align-self: stretch; background-clip: content-box; box-sizing: content-box; border: none;}
@@ -24,12 +25,20 @@
 #spaceHeading {display: none;}
 #spaceHeading {align-items: center; flex-wrap: nowrap; gap: 4px; margin: 8px; background-color: rgba(var(--color-canvas-rgb), .1); border-radius: var(--radius-md); padding: 8px;}
 .has-space #spaceHeading {display: flex;}
-#spaceHeading > .text {max-width: calc(100% - 64px); overflow: hidden; white-space: nowrap; flex: auto}
+#spaceHeading > .text {min-width: 0; overflow: hidden; white-space: nowrap; flex: auto}
+#spaceHeading > .label {flex: none}
+.hide-menu #spaceHeading > .text, .hide-menu #spaceHeading > .label {display: none;}
+.hide-menu #spaceHeading {justify-content: center;}
+.has-space #menuNav {top: 46px}
 
 #menuNav {padding: 6px 0; position: absolute; left: 0; right: 0; top: 0; bottom: 46px;}
 #menuMainNav a {cursor: pointer;}
 #menuFooter {position: absolute; bottom: 0; left: 0; right: 0;}
 .show-menu #menuFooter [data-hint]::after {content: attr(data-collapse-text)}
+
+#menuMainNav .is-space,
+.has-space #menuMainNav .is-original {display: none;}
+.has-space #menuMainNav .is-space {display: block;}
 
 #menuMoreNav {display: none;}
 .show-more-nav #menuMoreNav {display: block;}
