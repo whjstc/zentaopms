@@ -505,7 +505,7 @@ class header extends wg
         return array(
             btn
             (
-                set::type('ghost text-secondary'),
+                set::type('ghost'),
                 set::size('sm'),
                 set::icon($opened ? 'export rotate-90' : 'import rotate-270'),
                 set::hint($opened ? $lang->exitWorkspace : $lang->enterWorkspace),
