@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace zin;
 
 require_once dirname(__DIR__) . DS . 'nav' . DS . 'v1.php';
+require_once dirname(__DIR__) . DS . 'mainnavbar' . DS . 'v1.php';
 
 class navbar extends wg
 {
@@ -13,9 +14,12 @@ class navbar extends wg
     public static function getPageCSS(): ?string
     {
         return <<<'CSS'
+        #navbar {position: relative;}
         #navbar .nav[z-use-sortable] > li:hover {cursor: grab !important;}
         #navbar .nav[z-use-sortable] > li > a:hover {cursor: grab !important;}
         #navbar .nav li.nav-divider.divider {border: none; width: 1px; background: currentColor; margin: 0; padding-left: var(--nav-divider-margin); padding-right: var(--nav-divider-margin); box-sizing: content-box; background-clip: content-box;}
+
+        #navbarHeading {position: absolute; top: 0; left: 0; bottom: 0; display: flex; align-items: center; justify-content: center;}
         CSS;
     }
 
@@ -358,12 +362,45 @@ class navbar extends wg
 
         /* Set active menu to global data, make it accessible to other widgets */
         data('activeMenu', $activeMenu);
-        jsVar('allNavbarItems', $items);
-        jsVar('isTutorialMode', commonModel::isTutorialMode());
-
-        $items = array_filter($items, function($item) { return empty($item['hidden']); });
 
         return $items;
+    }
+
+    protected function getWorkspaceItems()
+    {
+        return mainNavbar::getItems();
+    }
+
+    protected function buildWorkspaceNavbar(string $workspace)
+    {
+        $originItems  = $this->getItems();
+        $items        = $this->getWorkspaceItems();
+        $activeID     = data('activeMenu');
+        $activeItem   = array('data-id' => $activeID);
+
+        foreach($originItems as $item)
+        {
+            if($item['data-id'] != $activeID) continue;
+            $activeItem = $item;
+            break;
+        }
+
+        return h::nav
+        (
+            set::id('navbar'),
+            div
+            (
+                setID('navbarHeading'),
+                setClass('text-lg'),
+                $activeItem['text']
+            ),
+            new nav
+            (
+                on::init()->call('initPageNavbar', $originItems, $workspace, $activeID),
+                set::items($items),
+                $this->children()
+            )
+        );
     }
 
     /**
@@ -373,12 +410,19 @@ class navbar extends wg
      */
     protected function build()
     {
+        $workspace = commonModel::getWorkspaceInfo();
+        if($workspace['opened']) return $this->buildWorkspaceNavbar($workspace['type']);
+
         $items = $this->getItems();
+        $items = array_filter($items, function($item) {return empty($item['hidden']);});
+
         return h::nav
         (
             set::id('navbar'),
+            commonModel::isTutorialMode() ? null : on::contextmenu()->call('handleNavbarContextmenu', jsRaw('event')),
             new nav
             (
+                on::init()->call('initPageNavbar', $items),
                 set::items($items),
                 $this->children()
             )
