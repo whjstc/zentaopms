@@ -78,137 +78,15 @@ class mainNavbar extends nav
 
     protected function created()
     {
-        global $app;
+        $badgeMap     = $this->prop('badgeMap');
+        $onRenderItem = $this->prop('onRenderItem');
+        $itemProps    = $this->prop('itemProps');
+        $activeItem   = $this->prop('active') ?: data('activeMenuItem');
 
-        $currentModule = $app->getModuleName();
-        $currentMethod = $app->getMethodName();
-        if($app->tab == 'admin')
-        {
-            $groupID = data('groupID');
-            $app->control->loadModel('admin')->setMenu((int)$groupID);
-        }
+        $items = self::getItems(array('badgeMap' => $badgeMap, 'onRenderItem' => $onRenderItem, 'itemProps' => $itemProps, 'active' => $activeItem));
+        if(!$items) return;
 
-        /* When use workflow then set rawModule to moduleName. */
-        if($currentModule == 'flow') $currentModule = $app->rawModule;
-
-        \commonModel::replaceMenuLang();
-        \commonModel::setMainMenu();
-        $activeMenu = \commonModel::getActiveMainMenu();
-        if(empty($activeMenu)) return false;
-
-        $menu = \customModel::getModuleMenu($activeMenu);
-        if($menu)
-        {
-            $menu         = json_decode(json_encode($menu), true);
-            $items        = array();
-            $badgeMap     = $this->prop('badgeMap');
-            $onRenderItem = $this->prop('onRenderItem');
-            $itemProps    = $this->prop('itemProps');
-            $activeItem   = $this->prop('active') ?: data('activeMenuItem');
-
-            foreach($menu as $key => $menuItem)
-            {
-                if(empty($menuItem['link']))
-                {
-                    unset($menu[$key]);
-                    continue;
-                }
-                if(empty($menuItem['alias']))   $menuItem['alias'] = '';
-                if(empty($menuItem['exclude'])) $menuItem['exclude'] = '';
-
-                $item = array();
-                $link = $menuItem['link'];
-                $name = $menuItem['name'];
-                $item['text']       = $menuItem['text'];
-                $item['url']        = commonModel::createMenuLink((object)$menuItem, $app->tab);
-                $item['hidden']     = !empty($menuItem['hidden']);
-                $item['data-id']    = $name;
-                $item['data-app']   = $app->tab;
-                $item['data-group'] = $app->tab . '-' . $activeMenu;
-
-                $active = '';
-                if($activeItem && $activeItem == $name)
-                {
-                    $active = 'active';
-                }
-                else
-                {
-                    $subModule = isset($menuItem['subModule']) ? explode(',', $menuItem['subModule']) : array();
-                    if($subModule && in_array($currentModule, $subModule)) $active = 'active';
-                    if($link['module'] == $currentModule && $link['method'] == $currentMethod) $active = 'active';
-                    if($link['module'] == $currentModule && strpos(",{$menuItem['alias']},", ",{$currentMethod},") !== false) $active = 'active';
-                    if(strpos(",{$menuItem['exclude']},", ",{$currentModule}-{$currentMethod},") !== false || strpos(",{$menuItem['exclude']},", ",{$currentModule},") !== false) $active = '';
-                }
-                $item['class'] = $active;
-
-                if($badgeMap && isset($badgeMap[$name])) $item['badge'] = array('text' => $badgeMap[$name], 'class' => 'label rounded gray-pale size-sm');
-                if($itemProps) $item = array_merge($item, $itemProps);
-                if(is_callable($onRenderItem)) $item = $onRenderItem($item, $menuItem);
-
-                if(isset($menuItem['dropMenu']))
-                {
-                    $dropItems  = array();
-                    $label      = $menuItem['text'];
-                    $menuActive = '';
-                    foreach($menuItem['dropMenu'] as $dropMenuKey => $dropMenuItem)
-                    {
-                        if(isset($dropMenuItem['hidden']) && $dropMenuItem['hidden']) continue;
-
-                        if(empty($dropMenuItem['alias']))   $dropMenuItem['alias'] = '';
-                        if(empty($dropMenuItem['exclude'])) $dropMenuItem['exclude'] = '';
-
-                        list($dropMenuName, $dropMenuModule, $dropMenuMethod, $dropMenuParams) = explode('|', $dropMenuItem['link']);
-                        $dropActive = '';
-                        $dropModule = isset($dropMenuModule) ? $dropMenuModule : '';
-                        $dropMethod = isset($dropMenuMethod) ? $dropMenuMethod : '';
-                        $dropParams = isset($dropMenuParams) ? $dropMenuParams : '';
-                        $dropLabel  = isset($dropMenuName) ? $dropMenuName : '';
-                        $dropLink   = helper::createLink($dropModule, $dropMethod, $dropParams);
-
-                        $subModule = isset($dropMenuItem['subModule']) ? explode(',', $dropMenuItem['subModule']) : array();
-                        if($subModule && in_array($currentModule, $subModule)) $dropActive = 'active';
-                        if($dropModule == $currentModule && $dropMethod == $currentMethod) $dropActive = 'active';
-                        if($dropModule == $currentModule && strpos(",{$dropMenuItem['alias']},", ",{$currentMethod},") !== false) $dropActive = 'active';
-                        if(strpos(",{$dropMenuItem['exclude']},", ",{$currentModule}-{$currentMethod},") !== false || strpos(",{$dropMenuItem['exclude']},", ",{$currentModule},") !== false) $dropActive = '';
-                        if($dropActive)
-                        {
-                            $label      = $dropLabel;
-                            $menuActive = 'active';
-                        }
-
-                        $dropItems[] = array(
-                            'active'   => $dropActive ? true : false,
-                            'data-id'  => $dropMenuKey,
-                            'url'      => $dropLink,
-                            'text'     => $dropLabel,
-                            'data-app' => $app->tab
-                        );
-                    }
-
-                    if(empty($dropItems)) continue;
-                    $items[] = array
-                    (
-                        'type'     => 'dropdown',
-                        'items'    => $dropItems,
-                        'text'     => $label,
-                        'data-id'  => $name,
-                        'data-app' => $app->tab,
-                        'trigger'  => 'hover',
-                        'class'    => $menuActive
-                    );
-                }
-                else
-                {
-                    $items[] = $item;
-                }
-            }
-
-            jsVar('allMainNavbarItems', $items);
-            jsVar('isTutorialMode', commonModel::isTutorialMode());
-            $items = array_filter($items, function($item) { return empty($item['hidden']); });
-
-            $this->setProp('items', $items);
-        }
+        $this->setProp('items', $items);
     }
 
     /**
@@ -229,6 +107,9 @@ class mainNavbar extends nav
         $leftBlock  = $this->block('left');
         $rightBlock = $this->block('right');
         if(empty($leftBlock)) $leftBlock = $this->buildSwitcher();
+
+        jsVar('allMainNavbarItems', $this->prop('items'));
+        jsVar('isTutorialMode', commonModel::isTutorialMode());
 
         return div
         (
@@ -279,5 +160,137 @@ class mainNavbar extends nav
         }
 
         return null;
+    }
+
+    public static function getItems(array $props = array()): array|false
+    {
+        global $app;
+
+        $currentModule = $app->getModuleName();
+        $currentMethod = $app->getMethodName();
+        if($app->tab == 'admin')
+        {
+            $groupID = data('groupID');
+            $app->control->loadModel('admin')->setMenu((int)$groupID);
+        }
+
+        /* When use workflow then set rawModule to moduleName. */
+        if($currentModule == 'flow') $currentModule = $app->rawModule;
+
+        \commonModel::replaceMenuLang();
+        \commonModel::setMainMenu();
+        $activeMenu = \commonModel::getActiveMainMenu();
+        if(empty($activeMenu)) return false;
+
+        $menu = \customModel::getModuleMenu($activeMenu);
+        if(!$menu) return false;
+
+        $menu         = json_decode(json_encode($menu), true);
+        $items        = array();
+        $badgeMap     = $props['badgeMap'] ?? array();
+        $onRenderItem = $props['onRenderItem'] ?? null;
+        $itemProps    = $props['itemProps'] ?? array();
+        $activeItem   = $props['active'] ?? data('activeMenuItem');
+
+        foreach($menu as $key => $menuItem)
+        {
+            if(empty($menuItem['link']))
+            {
+                unset($menu[$key]);
+                continue;
+            }
+            if(empty($menuItem['alias']))   $menuItem['alias'] = '';
+            if(empty($menuItem['exclude'])) $menuItem['exclude'] = '';
+
+            $item = array();
+            $link = $menuItem['link'];
+            $name = $menuItem['name'];
+            $item['text']       = $menuItem['text'];
+            $item['url']        = commonModel::createMenuLink((object)$menuItem, $app->tab);
+            $item['hidden']     = !empty($menuItem['hidden']);
+            $item['data-id']    = $name;
+            $item['data-app']   = $app->tab;
+            $item['data-group'] = $app->tab . '-' . $activeMenu;
+
+            $active = '';
+            if($activeItem && $activeItem == $name)
+            {
+                $active = 'active';
+            }
+            else
+            {
+                $subModule = isset($menuItem['subModule']) ? explode(',', $menuItem['subModule']) : array();
+                if($subModule && in_array($currentModule, $subModule)) $active = 'active';
+                if($link['module'] == $currentModule && $link['method'] == $currentMethod) $active = 'active';
+                if($link['module'] == $currentModule && strpos(",{$menuItem['alias']},", ",{$currentMethod},") !== false) $active = 'active';
+                if(strpos(",{$menuItem['exclude']},", ",{$currentModule}-{$currentMethod},") !== false || strpos(",{$menuItem['exclude']},", ",{$currentModule},") !== false) $active = '';
+            }
+            $item['class'] = $active;
+
+            if($badgeMap && isset($badgeMap[$name])) $item['badge'] = array('text' => $badgeMap[$name], 'class' => 'label rounded gray-pale size-sm');
+            if($itemProps) $item = array_merge($item, $itemProps);
+            if(is_callable($onRenderItem)) $item = $onRenderItem($item, $menuItem);
+
+            if(isset($menuItem['dropMenu']))
+            {
+                $dropItems  = array();
+                $label      = $menuItem['text'];
+                $menuActive = '';
+                foreach($menuItem['dropMenu'] as $dropMenuKey => $dropMenuItem)
+                {
+                    if(isset($dropMenuItem['hidden']) && $dropMenuItem['hidden']) continue;
+
+                    if(empty($dropMenuItem['alias']))   $dropMenuItem['alias'] = '';
+                    if(empty($dropMenuItem['exclude'])) $dropMenuItem['exclude'] = '';
+
+                    list($dropMenuName, $dropMenuModule, $dropMenuMethod, $dropMenuParams) = explode('|', $dropMenuItem['link']);
+                    $dropActive = '';
+                    $dropModule = isset($dropMenuModule) ? $dropMenuModule : '';
+                    $dropMethod = isset($dropMenuMethod) ? $dropMenuMethod : '';
+                    $dropParams = isset($dropMenuParams) ? $dropMenuParams : '';
+                    $dropLabel  = isset($dropMenuName) ? $dropMenuName : '';
+                    $dropLink   = helper::createLink($dropModule, $dropMethod, $dropParams);
+
+                    $subModule = isset($dropMenuItem['subModule']) ? explode(',', $dropMenuItem['subModule']) : array();
+                    if($subModule && in_array($currentModule, $subModule)) $dropActive = 'active';
+                    if($dropModule == $currentModule && $dropMethod == $currentMethod) $dropActive = 'active';
+                    if($dropModule == $currentModule && strpos(",{$dropMenuItem['alias']},", ",{$currentMethod},") !== false) $dropActive = 'active';
+                    if(strpos(",{$dropMenuItem['exclude']},", ",{$currentModule}-{$currentMethod},") !== false || strpos(",{$dropMenuItem['exclude']},", ",{$currentModule},") !== false) $dropActive = '';
+                    if($dropActive)
+                    {
+                        $label      = $dropLabel;
+                        $menuActive = 'active';
+                    }
+
+                    $dropItems[] = array(
+                        'active'   => $dropActive ? true : false,
+                        'data-id'  => $dropMenuKey,
+                        'url'      => $dropLink,
+                        'text'     => $dropLabel,
+                        'data-app' => $app->tab
+                    );
+                }
+
+                if(empty($dropItems)) continue;
+                $items[] = array
+                (
+                    'type'     => 'dropdown',
+                    'items'    => $dropItems,
+                    'text'     => $label,
+                    'data-id'  => $name,
+                    'data-app' => $app->tab,
+                    'trigger'  => 'hover',
+                    'class'    => $menuActive
+                );
+            }
+            else
+            {
+                $items[] = $item;
+            }
+        }
+
+        $items = array_filter($items, function($item) { return empty($item['hidden']); });
+
+        return $items;
     }
 }
