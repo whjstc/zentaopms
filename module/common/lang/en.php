@@ -635,6 +635,7 @@ $lang->pasteImgUploading  = "Uploading...";
 $lang->visionTips      = "You can switch vision here";
 $lang->IKnow           = "I know";
 $lang->switchVision    = 'Switch to vision';
+$lang->workspaceAbbr   = 'Space';
 $lang->switchWorkspace = 'Switch to workspace';
 $lang->enterWorkspace  = 'Enter space';
 $lang->exitWorkspace   = 'Exit space';

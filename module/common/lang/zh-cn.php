@@ -636,6 +636,7 @@ $lang->pasteImgUploading = "正在上传图片，请稍后...";
 $lang->visionTips      = "您可以在这里切换界面";
 $lang->IKnow           = "我知道了";
 $lang->switchVision    = '切换工作界面';
+$lang->workspaceAbbr   = '空间';
 $lang->switchWorkspace = '切换工作空间';
 $lang->enterWorkspace  = '进入空间';
 $lang->exitWorkspace   = '退出空间';
