@@ -285,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `zt_autocache` (
   `fields` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
-CREATE UNIQUE INDEX `cache` ON `zt_autocache`(`code`, `fields`);
+CREATE UNIQUE INDEX `cache` ON `zt_autocache`(`code`, `fields`(190));
 
 -- DROP TABLE IF EXISTS `zt_block`;
 CREATE TABLE IF NOT EXISTS `zt_block` (
