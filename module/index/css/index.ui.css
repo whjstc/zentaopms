@@ -21,6 +21,11 @@
 @supports not (gap: 1px) {#menu .nav > li > a > .icon {margin-right: 4px;}}
 .show-menu #menuNav [data-hint]::before, .show-menu #menuNav [data-hint]::after {display: none;}
 
+#spaceHeading {display: none;}
+#spaceHeading {align-items: center; flex-wrap: nowrap; gap: 4px; margin: 8px; background-color: rgba(var(--color-canvas-rgb), .1); border-radius: var(--radius-md); padding: 8px;}
+.has-space #spaceHeading {display: flex;}
+#spaceHeading > .text {max-width: calc(100% - 64px); overflow: hidden; white-space: nowrap; flex: auto}
+
 #menuNav {padding: 6px 0; position: absolute; left: 0; right: 0; top: 0; bottom: 46px;}
 #menuMainNav a {cursor: pointer;}
 #menuFooter {position: absolute; bottom: 0; left: 0; right: 0;}
