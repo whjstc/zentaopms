@@ -1984,7 +1984,11 @@
     function updateWorkspaceUI(info)
     {
         $('body').toggleClass('in-workspace', !!info);
-        if(info) info.name = $('#dropmenu').first().attr('data-text');
+        if(info)
+        {
+            info.name = $('#dropmenu').first().attr('data-text');
+            info.icon = $('#heading>.toolbar>.btn>.icon').attr('class').replace('icon icon-', '');
+        }
         $.apps.updateSpaceMenu && $.apps.updateSpaceMenu(info);
     }
 
