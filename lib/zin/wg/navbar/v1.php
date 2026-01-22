@@ -19,7 +19,8 @@ class navbar extends wg
         #navbar .nav[z-use-sortable] > li > a:hover {cursor: grab !important;}
         #navbar .nav li.nav-divider.divider {border: none; width: 1px; background: currentColor; margin: 0; padding-left: var(--nav-divider-margin); padding-right: var(--nav-divider-margin); box-sizing: content-box; background-clip: content-box;}
 
-        #navbarHeading {position: absolute; top: 0; left: 0; bottom: 0; display: flex; align-items: center; justify-content: center;}
+        #navbarHeading {position: absolute; top: 0; left: 1rem; bottom: 0; display: flex; align-items: center; justify-content: center;}
+        @media (min-width: 1400px) {#navbarHeading{left: 0}}
         CSS;
     }
 
