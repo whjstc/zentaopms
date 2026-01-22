@@ -323,6 +323,9 @@ function openApp(url, code, options)
 
     changeApp();
 
+    const spaceType = openedApp.workspace ? openedApp.workspace.type : '';
+    if(spaceType !== $('#menu').attr('data-space')) updateSpaceMenu(openedApp.workspace);
+
     return openedApp;
 }
 
@@ -1014,7 +1017,7 @@ function updateSpaceMenu(info)
 
     currentApp.workspace = info;
     $('body').toggleClass('has-space', hasSpaceNav);
-    $menuMainNav.attr('data-space', spaceType);
+    $('#menu').attr('data-space', spaceType);
 
     if(!hasSpaceNav)
     {
@@ -1024,7 +1027,7 @@ function updateSpaceMenu(info)
         return;
     }
 
-    $('#spaceHeading').find('.text').text(info.name);
+    $('#spaceHeading').find('.text').text(info.name).attr('title', info.name);
     $('#spaceHeading').find('.icon').attr('class', `icon icon-${spaceType}`);
 
     $menuMainNav.data('originHtml', $menuMainNav.html()).empty();
