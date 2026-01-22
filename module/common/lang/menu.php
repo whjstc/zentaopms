@@ -186,18 +186,18 @@ $lang->product->homeMenu->list   = array('link' => $lang->product->list . '|prod
 $lang->product->homeMenu->kanban = array('link' => "{$lang->product->kanban}|product|kanban|");
 
 $lang->product->menu              = new stdclass();
-$lang->product->menu->dashboard   = array('link' => "{$lang->dashboard}|product|dashboard|productID=%s");
-$lang->product->menu->epic        = array('link' => "{$lang->ERCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=epic", 'subModule' => 'story');
-$lang->product->menu->requirement = array('link' => "{$lang->URCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=requirement", 'alias' => 'batchedit', 'subModule' => 'story');
-$lang->product->menu->story       = array('link' => "{$lang->SRCommon}|product|browse|productID=%s", 'alias' => 'batchedit', 'subModule' => 'story', 'exclude' => (isset($_GET['storyType']) ? ($_GET['storyType'] == 'requirement' ? 'browse,story-report,story-create,story-batchcreate' : '') : '') . ',batchtotask');
-$lang->product->menu->plan        = array('link' => "{$lang->productplan->shortCommon}|productplan|browse|productID=%s", 'subModule' => 'productplan,bug');
-$lang->product->menu->project     = array('link' => "{$lang->projectCommon}|product|project|status=all&productID=%s");
-$lang->product->menu->release     = array('link' => "{$lang->release->common}|release|browse|productID=%s", 'subModule' => 'release,system');
-$lang->product->menu->roadmap     = array('link' => "{$lang->roadmap}|product|roadmap|productID=%s");
-$lang->product->menu->track       = array('link' => "{$lang->track}|product|track|productID=%s");
-$lang->product->menu->doc         = array('link' => "{$lang->doc->common}|doc|productSpace|objectID=%s", 'subModule' => 'doc,api');
-$lang->product->menu->dynamic     = array('link' => "{$lang->dynamic}|product|dynamic|productID=%s");
-$lang->product->menu->settings    = array('link' => "{$lang->settings}|product|view|productID=%s", 'subModule' => 'tree,branch', 'alias' => 'edit,whitelist,addwhitelist');
+$lang->product->menu->dashboard   = array('link' => "{$lang->dashboard}|product|dashboard|productID=%s", 'icon' => 'icon-cards-view');
+$lang->product->menu->epic        = array('link' => "{$lang->ERCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=epic", 'subModule' => 'story', 'icon' => 'icon-book');
+$lang->product->menu->requirement = array('link' => "{$lang->URCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=requirement", 'alias' => 'batchedit', 'subModule' => 'story', 'icon' => 'icon-book');
+$lang->product->menu->story       = array('link' => "{$lang->SRCommon}|product|browse|productID=%s", 'alias' => 'batchedit', 'subModule' => 'story', 'exclude' => (isset($_GET['storyType']) ? ($_GET['storyType'] == 'requirement' ? 'browse,story-report,story-create,story-batchcreate' : '') : '') . ',batchtotask', 'icon' => 'icon-book' );
+$lang->product->menu->plan        = array('link' => "{$lang->productplan->shortCommon}|productplan|browse|productID=%s", 'subModule' => 'productplan,bug', 'icon' => 'icon-productplan');
+$lang->product->menu->project     = array('link' => "{$lang->projectCommon}|product|project|status=all&productID=%s", 'icon' => 'icon-project');
+$lang->product->menu->release     = array('link' => "{$lang->release->common}|release|browse|productID=%s", 'subModule' => 'release,system', 'icon' => 'icon-tag');
+$lang->product->menu->roadmap     = array('link' => "{$lang->roadmap}|product|roadmap|productID=%s", 'icon' => 'icon-blame');
+$lang->product->menu->track       = array('link' => "{$lang->track}|product|track|productID=%s", 'icon' => 'icon-target');
+$lang->product->menu->doc         = array('link' => "{$lang->doc->common}|doc|productSpace|objectID=%s", 'subModule' => 'doc,api', 'icon' => 'icon-file-text');
+$lang->product->menu->dynamic     = array('link' => "{$lang->dynamic}|product|dynamic|productID=%s", 'icon' => 'icon-clock');
+$lang->product->menu->settings    = array('link' => "{$lang->settings}|product|view|productID=%s", 'subModule' => 'tree,branch', 'alias' => 'edit,whitelist,addwhitelist', 'icon' => 'icon-cog-outline');
 
 /* Product menu order. */
 $lang->product->menuOrder[5]  = 'dashboard';
