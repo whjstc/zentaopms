@@ -643,9 +643,9 @@ $lang->exitWorkspace   = '退出空间';
 
 /* 工作空间列表。 */
 $lang->workspaceList = [];
-$lang->workspaceList['product']   = "{$lang->productCommon}空间";
-$lang->workspaceList['project']   = "{$lang->projectCommon}空间";
-$lang->workspaceList['execution'] = "{$lang->executionCommon}空间";
+$lang->workspaceList['product']   = "{$lang->product->common}空间";
+$lang->workspaceList['project']   = "{$lang->project->common}空间";
+$lang->workspaceList['execution'] = "{$lang->execution->common}空间";
 
 /* 时间格式设置。*/
 if(!defined('DT_DATETIME1'))  define('DT_DATETIME1',  'Y-m-d H:i:s');
