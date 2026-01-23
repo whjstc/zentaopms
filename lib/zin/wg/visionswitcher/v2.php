@@ -19,7 +19,8 @@ class visionSwitcher extends wg
         #visionSwitchMenu.show {display: block;}
         #visionSwitchMenu .vision-icon {width: 20px; height: 20px; opacity: 1}
         #visionSwitchMenu .menu-heading {font-weight: normal}
-        #visionSwitchMenu .vision-workspace-menu {width: 280px;}
+        #visionSwitchMenu .vision-workspace-menu {width: 280px; display: flex; align-items: stretch;}
+        #visionSwitchMenu .vision-workspace-menu.is-expanded {width: 560px;}
         CSS;
     }
 
