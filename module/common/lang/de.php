@@ -642,9 +642,9 @@ $lang->exitWorkspace   = 'Exit space';
 
 /* Workspace list. */
 $lang->workspaceList = [];
-$lang->workspaceList['product']   = "{$lang->productCommon} space";
-$lang->workspaceList['project']   = "{$lang->projectCommon} space";
-$lang->workspaceList['execution'] = "{$lang->executionCommon} space";
+$lang->workspaceList['product']   = "{$lang->product->common} space";
+$lang->workspaceList['project']   = "{$lang->project->common} space";
+$lang->workspaceList['execution'] = "{$lang->execution->common} space";
 
 /* Time formats settings. */
 if(!defined('DT_DATETIME1'))  define('DT_DATETIME1',  'Y-m-d H:i:s');
