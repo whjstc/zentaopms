@@ -254,7 +254,7 @@ class myZen extends my
         {
             if(!empty($this->config->enableAITeammate))
             {
-                $this->loadModel('aitask')->getList(0, 'done', 'id_desc', $pager);
+                $this->loadModel('aitask')->getList(0, 'done', 'id_desc', $pager, $this->app->user->account);
                 $count['aitask'] = $pager->recTotal;
             }
 
