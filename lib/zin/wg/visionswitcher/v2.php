@@ -102,9 +102,9 @@ class visionSwitcher extends wg
         }
 
         $spaces = [];
-        if(hasPriv('product', 'all'))    $spaces[] = ['key' => 'product', 'icon' => 'product', 'text' => $lang->workspaceList['product'], 'fetcher' => createLink('product', 'ajaxGetDropMenu', 'productID=0&module=product&method=browse&extra=story')];
+        if($currentVision == 'rnd' && hasPriv('product', 'all'))    $spaces[] = ['key' => 'product', 'icon' => 'product', 'text' => $lang->workspaceList['product'], 'fetcher' => createLink('product', 'ajaxGetDropMenu', 'productID=0&module=product&method=browse&extra=story')];
         if(hasPriv('project', 'browse')) $spaces[] = ['key' => 'project', 'icon' => 'project', 'text' => $lang->workspaceList['project'], 'fetcher' => createLink('project', 'ajaxGetDropMenu', 'projectID=0')];
-        if(hasPriv('execution', 'task')) $spaces[] = ['key' => 'execution', 'icon' => 'run', 'text' => $lang->workspaceList['execution'], 'fetcher' => createLink('execution', 'ajaxGetDropMenu', 'objectID=0')];
+        if($currentVision == 'rnd' && hasPriv('execution', 'task')) $spaces[] = ['key' => 'execution', 'icon' => 'run', 'text' => $lang->workspaceList['execution'], 'fetcher' => createLink('execution', 'ajaxGetDropMenu', 'objectID=0')];
 
         return array
         (
