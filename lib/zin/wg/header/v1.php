@@ -21,6 +21,7 @@ class header extends wg
     public static function getPageCSS(): ?string
     {
         return <<<'CSS'
+        #heading {z-index: 5}
         .in-workspace #heading {display: none;}
         CSS;
     }
