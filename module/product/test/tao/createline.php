@@ -21,7 +21,7 @@ include dirname(__FILE__, 2) . '/lib/tao.class.php';
 
 zenData('module')->gen(1);
 
-$product = new productTest('admin');
+$product = new productTaoTest();
 
 r($product->createLineTest('1',  'test line1')) && p('root,name') && e('1,test line1');
 r($product->createLineTest('-1', 'test line1')) && p() && e('0');
