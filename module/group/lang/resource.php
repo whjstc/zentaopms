@@ -2237,7 +2237,8 @@ if(!$inUpgrade)
         unset($lang->resource->sonarqube);
         unset($lang->resource->mr);
     }
-    if(!helper::hasFeature('kanban')) unset($lang->resource->kanban);
+    if(!helper::hasFeature('kanban'))  unset($lang->resource->kanban);
+    if(!helper::hasFeature('program')) unset($lang->resource->program);
 
     if(!$config->systemScore) unset($lang->resource->my->score);
 }
