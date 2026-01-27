@@ -212,7 +212,7 @@ $generateData = function() use ($lang, $groupID, $pivotName, $pivot, $data, $con
                 setID('exportData'),
                 setClass('hidden'),
                 rawContent(),
-                $this->pivot->buildPivotTable($data, $configs),
+                html($this->pivot->buildPivotTable($data, $configs)),
             )
         )
     );
