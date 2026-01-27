@@ -415,7 +415,7 @@
         const $navbar = $('#navbar');
         const $newNav = $(data);
         if(
-            $newNav.attr('zui-init')
+            $newNav.filter('.nav').attr('zui-init')
             || $newNav.find('.item').length !== $navbar.find('.item').length
             || $newNav.find('.item[data-hidden]').length !== $navbar.find('.item[data-hidden]').length
             || $newNav.text().trim() !== $navbar.text().trim()
@@ -1986,8 +1986,10 @@
         $('body').toggleClass('in-workspace', !!info);
         if(info)
         {
-            info.name = $('#dropmenu').first().attr('data-text');
-            info.icon = $('#heading>.toolbar>.btn>.icon').attr('class').replace('icon icon-', '');
+            const $dropmenu = $('#dropmenu').first();
+            info.name     = $dropmenu.attr('data-text');
+            info.dropmenu = $dropmenu.attr('zui-create-dropmenu');
+            info.icon     = $('#heading>.toolbar>.btn>.icon').attr('class').replace('icon icon-', '');
         }
         $.apps.updateSpaceMenu && $.apps.updateSpaceMenu(info);
     }
