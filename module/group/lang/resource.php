@@ -2239,7 +2239,7 @@ if(!$inUpgrade)
     }
     if(!helper::hasFeature('kanban'))  unset($lang->resource->kanban);
     if(!helper::hasFeature('program')) unset($lang->resource->program);
-
+    if(!helper::hasFeature('caselib')) unset($lang->resource->caselib, $lang->resource->testcase->confirmLibcaseChange, $lang->resource->testcase->ignoreLibcaseChange, $lang->resource->testcase->importFromLib, $lang->resource->testcase->importToLib);
     if(!$config->systemScore) unset($lang->resource->my->score);
 }
 
