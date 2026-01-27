@@ -387,3 +387,5 @@ $config->project->categoryStages['IPD']       = array('concept', 'plan', 'develo
 $config->project->categoryStages['TPD']       = array('concept', 'plan', 'develop', 'qualify');
 $config->project->categoryStages['CBB']       = array('concept', 'plan', 'develop', 'qualify');
 $config->project->categoryStages['CPD']       = array('plan', 'develop', 'qualify', 'launch');
+
+if(!helper::hasFeature('program')) unset($config->project->search['fields']['parent']);

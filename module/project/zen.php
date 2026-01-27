@@ -1767,7 +1767,7 @@ class projectZen extends project
     protected function getKanbanData()
     {
         list($kanbanGroup, $latestExecutions) = $this->project->getStats4Kanban();
-        $programPairs = array(0 => $this->lang->project->noProgram) + $this->loadModel('program')->getPairs(true, 'order_asc');
+        $programPairs = array(0 => helper::hasFeature('program') ? $this->lang->project->noProgram : '') + $this->loadModel('program')->getPairs(true, 'order_asc');
 
         $kanbanList = array();
         foreach($kanbanGroup as $regionKey => $region)
