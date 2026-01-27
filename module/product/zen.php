@@ -640,6 +640,11 @@ class productZen extends product
         foreach($data->modules as $id => $name)
         {
             if(empty($name)) continue;
+            if(!helper::hasFeature('program'))
+            {
+                 $lines[0][$id] = $name;
+                 continue;
+            }
 
             $programID = $data->programs[$id];
             if(!isset($lines[$programID])) $lines[$programID] = array();
