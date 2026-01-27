@@ -1023,8 +1023,20 @@ function updateSpaceMenu(info)
     $menuMainNav.children('.is-space').remove();
     if(!hasSpaceNav) return;
 
-    $('#spaceHeading').find('.text').text(info.name).attr('title', info.name);
-    $('#spaceHeading').find('.icon').attr('class', `icon icon-${info.icon || spaceType}`);
+    const $spaceHeading = $('#spaceHeading').toggleClass('has-dropmenu', !!info.dropmenu);
+    if(info.dropmenu)
+    {
+        const $dropmenu = $('<div id="spaceDropmenu"></div>');
+        $spaceHeading.find('.text').empty().append($dropmenu);
+        const $label = $spaceHeading.find('.label');
+        const options = zui.evalValue(info.dropmenu, ['_element', $dropmenu[0]], ['_$dropmenu', $dropmenu]);
+        zui.create('dropmenu', $dropmenu[0], $.extend({icon: info.icon || spaceType, display: zui.jsx`<span class="text" title=${info.name}>${info.name}</span><span class=${$label.attr('class')}>${$label.text()}</span>`}, options, {leadingAngle: false}));
+    }
+    else
+    {
+        $spaceHeading.find('.text').text(info.name).attr('title', info.name);
+    }
+    $spaceHeading.find('.icon').attr('class', `icon icon-${info.icon || spaceType}`);
 
     info.items.forEach(function(item)
     {
