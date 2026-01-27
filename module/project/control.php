@@ -285,7 +285,7 @@ class project extends control
 
         if($objectType == 'program')
         {
-            $withProgram = $this->config->systemMode == 'ALM' ? true : false;
+            $withProgram = $this->config->systemMode == 'ALM' && helper::hasFeature('program') ? true : false;
             $allProducts = array('') + $this->loadModel('program')->getProductPairs($selectedProgramID, 'all', 'noclosed', '', 0, $withProgram);
             $projectFormInfo['allProducts'] = html::select('products[]', $allProducts, '', "class='form-control chosen' onchange='loadBranches(this)'");
             $projectFormInfo['plans']       = html::select('plans[][][]', '', '', 'class=\'form-control chosen\' multiple');
