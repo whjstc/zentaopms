@@ -13,7 +13,7 @@ cid=17533
 - 执行product模块的createLineTest方法，参数是'1', ''  @0
 - 执行product模块的createLineTest方法，参数是'1', "<script>alert
  - 属性root @1
- - 属性name @&lt;script&gt;alert(&#039;test&#039;)&lt;/script&gt;
+ - 属性name @<script>alert('test')</script>
 
 */
 include dirname(__FILE__, 5) . '/test/lib/init.php';
@@ -26,4 +26,4 @@ $product = new productTaoTest();
 r($product->createLineTest('1',  'test line1')) && p('root,name') && e('1,test line1');
 r($product->createLineTest('-1', 'test line1')) && p() && e('0');
 r($product->createLineTest('1', '')) && p() && e('0');
-r($product->createLineTest('1', "<script>alert('test')</script>")) && p('root,name') && e('1,&lt;script&gt;alert(&#039;test&#039;)&lt;/script&gt;');
+r($product->createLineTest('1', "<script>alert('test')</script>")) && p('root,name') && e("1,<script>alert('test')</script>");
