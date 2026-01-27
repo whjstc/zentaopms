@@ -80,19 +80,14 @@ class productModel extends model
     {
         $this->loadModel('search')->setQuery('product', $queryID);
 
-        $productQuery = $this->session->productQuery;
-        $productQuery = preg_replace('/`(\w+)`/', 't1.`$1`', $productQuery);
-
-        return $this->dao->select('t1.id as id,t1.*')->from(TABLE_PRODUCT)->alias('t1')
-            ->leftJoin(TABLE_PROGRAM)->alias('t2')->on('t1.program = t2.id')
-            ->where($productQuery)
-            ->andWhere('t1.deleted')->eq(0)
-            ->andWhere('t1.shadow')->eq(0)
-            ->beginIF(!$this->app->user->admin)->andWhere('t1.id')->in($this->app->user->view->products)->fi()
-            ->beginIF($this->config->vision != 'or')->andWhere("FIND_IN_SET('{$this->config->vision}', t1.vision)")->fi()
+        return $this->dao->select('*')->from(TABLE_PRODUCT)->where($this->session->productQuery)
+            ->andWhere('deleted')->eq(0)
+            ->andWhere('shadow')->eq(0)
+            ->beginIF(!$this->app->user->admin)->andWhere('id')->in($this->app->user->view->products)->fi()
+            ->beginIF($this->config->vision != 'or')->andWhere("FIND_IN_SET('{$this->config->vision}', vision)")->fi()
             ->filterTpl('skip')
-            ->orderBy('t1.order_asc')
-            ->fetchAll('id');
+            ->orderBy('order_asc')
+            ->fetchAll('id', false);
     }
 
     /**
