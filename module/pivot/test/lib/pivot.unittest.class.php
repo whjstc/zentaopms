@@ -849,10 +849,7 @@ class pivotTest
      */
     public function buildPivotTableTest($data, $configs = array())
     {
-        ob_start();
-        $this->objectModel->buildPivotTable($data, $configs);
-        $result = ob_get_contents();
-        ob_end_clean();
+        $result = $this->objectModel->buildPivotTable($data, $configs);
 
         if(dao::isError()) return dao::getError();
 

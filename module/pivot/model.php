@@ -2517,7 +2517,7 @@ class pivotModel extends model
      * @param  object $data
      * @param  array  $configs
      * @access public
-     * @return void
+     * @return string
      *
      */
     public function buildPivotTable($data, $configs)
@@ -2645,7 +2645,7 @@ class pivotModel extends model
         $table .= "</tbody>";
         $table .= "</table></div>";
 
-        echo $table;
+        return $table;
     }
 
 
