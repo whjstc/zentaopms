@@ -836,8 +836,8 @@ class productModel extends model
 
         if(in_array($this->config->systemMode, array('ALM', 'PLM')))
         {
-            $this->config->product->all->search['params']['program']['values'] = $this->loadModel('program')->getTopPairs('noclosed');
-            $this->config->product->all->search['params']['line']['values']    = $this->getLinePairs();
+            if(helper::hasFeature('program')) $this->config->product->all->search['params']['program']['values'] = $this->loadModel('program')->getTopPairs('noclosed');
+            $this->config->product->all->search['params']['line']['values'] = $this->getLinePairs();
         }
 
         $this->loadModel('search')->setSearchParams($this->config->product->all->search);

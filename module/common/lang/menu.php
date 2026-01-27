@@ -812,6 +812,8 @@ if(empty($_SESSION['tutorialMode']) && !helper::hasFeature('product_track'))
     $lang->product->dividerMenu = str_replace(',track,', ',doc,', $lang->product->dividerMenu);
 }
 
+if(!helper::hasFeature('program')) unset($lang->mainNav->program, $lang->mainNav->menuOrder[10]);
+
 if(!helper::hasFeature('devops'))
 {
     unset($lang->mainNav->devops,         $lang->mainNav->menuOrder[35]);

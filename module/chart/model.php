@@ -203,7 +203,11 @@ class chartModel extends model
             /* Only the name of the second-level group is displayed in the menu tree. */
             if($group->grade == 2) $treeMenu[] = (object)array('id' => $group->id, 'parent' => 0, 'name' => $group->name);
 
-            foreach($chartGroups[$group->id] as $chart) $treeMenu[] = (object)array('id' => $group->id . '_' . $chart->id, 'parent' => $group->id, 'name' => $chart->name);
+            foreach($chartGroups[$group->id] as $chart)
+            {
+                if(!helper::hasFeature('program') && strpos($chart->name, $this->lang->program->common) !== false) continue;
+                $treeMenu[] = (object)array('id' => $group->id . '_' . $chart->id, 'parent' => $group->id, 'name' => $chart->name);
+            }
         }
 
         return $treeMenu;
