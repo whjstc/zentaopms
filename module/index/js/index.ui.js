@@ -700,7 +700,7 @@ function refreshMenu()
     const hasSpace       = $('body').hasClass('has-space');
     const $menuItems     = $mainNav.children(hasSpace ? '.is-space' : '.is-original');
     const itemHeight     = $menuItems.first().outerHeight();
-    const maxHeight      = $('#menu').outerHeight() - ($('#menuFooter').outerHeight() || 0) - ($('body').hasClass('has-space') ? (($('#spaceHeading').outerHeight() || 0) + 16) : 0) - 12;
+    const maxHeight      = $('#menu').outerHeight() - ($('#menuFooter').outerHeight() || 0) - ($('body').hasClass('has-space') ? (($('#spaceHeading').outerHeight() || 0) + 16) : 0) - 28;
     const dividerHeight  = 13;
     let showMoreMenu     = false;
     let currentHeight    = itemHeight;
