@@ -105,19 +105,22 @@ class transferModel extends model
         $rows = $this->getRows($module, $fieldList);
         if($module == 'story')
         {
-            $parentList = array_map(function($row)
-            {
-                return $row->parent;
-            }, $rows);
-            $parentList  = array_filter($parentList);
-            $parentList  = array_unique($parentList);
+            $parentList  = array_unique(array_filter(array_column($rows, 'parent')));
             $parentPairs = $this->dao->select('id,title')->from(TABLE_STORY)->where('id')->in($parentList)->fetchPairs();
-            $product    = $this->loadModel('product')->getByID((int)$this->session->storyTransferParams['productID']);
+            $product     = $this->loadModel('product')->fetchByID((int)$this->session->storyTransferParams['productID']);
 
-            foreach($rows as $id => $row)
+            $storyIdList = array_unique(array_column($rows, 'id'));
+            $storyTasks  = $this->loadModel('task')->getStoryTaskCounts($storyIdList);
+            $storyBugs   = $this->loadModel('bug')->getStoryBugCounts($storyIdList);
+            $storyCases  = $this->loadModel('testcase')->getStoryCaseCounts($storyIdList);
+
+            foreach($rows as $row)
             {
-                $rows[$id]->parent = $row->parent ? '#' . $row->parent . ' ' . $parentPairs[$row->parent] : '';
-                if(!empty($product->shadow)) $rows[$id]->product = '';
+                $row->taskCountAB = zget($storyTasks, $row->id, 0);
+                $row->bugCountAB  = zget($storyBugs,  $row->id, 0);
+                $row->caseCountAB = zget($storyCases, $row->id, 0);
+                $row->parent      = $row->parent ? '#' . $row->parent . ' ' . $parentPairs[$row->parent] : '';
+                if(!empty($product->shadow)) $row->product = '';
             }
         }
 
