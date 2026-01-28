@@ -28,12 +28,13 @@ class nav extends wg
     protected function build()
     {
         list($items, $type, $stacked, $justified, $compact, $responsive) = $this->prop(array('items', 'type', 'stacked', 'justified', 'compact', 'responsive'));
+        $responsiveOptions = is_array($responsive) ? $responsive : null;
         return h::menu
         (
             setClass('nav', $type ? "nav-$type" : null, $stacked ? 'nav-stacked' : '', $justified ? 'nav-justified' : '', $compact ? 'nav-compact' : ''),
             set($this->getRestProps()),
             is_array($items) ? array_map(array($this, 'onBuildItem'), $items) : null,
-            ($responsive || is_array($responsive)) ? zui::create('ResponsiveNavHelper', is_array($responsive) ? $responsive : null) : null,
+            ($responsive || is_array($responsive)) ? zui::create('ResponsiveNavHelper', $responsiveOptions) : null,
             $this->children()
         );
     }
