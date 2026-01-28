@@ -145,10 +145,8 @@ class testtaskZen extends testtask
         }
         else
         {
-            $branchName = $this->loadModel('branch')->getById($task->branch);
-            $branches   = array('' => '', BRANCH_MAIN => $this->lang->branch->main, $task->branch => $branchName);
             $searchConfig['fields']['branch'] = sprintf($this->lang->product->branch, $this->lang->product->branchName[$product->type]);
-            $searchConfig['params']['branch']['values'] = $branches;
+            $searchConfig['params']['branch']['values'] = $this->testtask->getBranchesByTask($task);;
         }
         if(!$this->config->testcase->needReview) unset($searchConfig['params']['status']['values']['wait']);
         unset($searchConfig['fields']['product']);
