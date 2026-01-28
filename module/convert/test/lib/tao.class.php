@@ -994,11 +994,6 @@ class convertTaoTest extends baseTest
     {
         global $tester;
 
-        if(!isset($this->instance->workflowfield))
-        {
-            $this->instance->workflowfield = $this->createMockWorkflowField();
-        }
-
         $reflection = new ReflectionClass($this->instance);
         $method = $reflection->getMethod('createWorkflowField');
         $method->setAccessible(true);
