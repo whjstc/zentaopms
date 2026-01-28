@@ -812,8 +812,10 @@ if(empty($_SESSION['tutorialMode']) && !helper::hasFeature('product_track'))
     $lang->product->dividerMenu = str_replace(',track,', ',doc,', $lang->product->dividerMenu);
 }
 
-if(!helper::hasFeature('program')) unset($lang->mainNav->program, $lang->mainNav->menuOrder[10]);
-if(!helper::hasFeature('caselib')) unset($lang->qa->menu->caselib, $lang->qa->menuOrder[40]);
+if(!helper::hasFeature('program'))   unset($lang->mainNav->program,     $lang->mainNav->menuOrder[10]);
+if(!helper::hasFeature('caselib'))   unset($lang->qa->menu->caselib,    $lang->qa->menuOrder[40]);
+if(!helper::hasFeature('automated')) unset($lang->qa->menu->automation, $lang->qa->menuOrder[45]);
+if(!helper::hasFeature('testsuite')) unset($lang->qa->menu->testsuite,  $lang->qa->menuOrder[25]);
 
 if(!helper::hasFeature('devops'))
 {
