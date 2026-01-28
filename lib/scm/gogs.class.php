@@ -2,7 +2,10 @@
 class gogsRepo
 {
     public $client;
+    public $projectID;
     public $root;
+    public $token;
+    public $branch;
     public $repo;
 
     /**
