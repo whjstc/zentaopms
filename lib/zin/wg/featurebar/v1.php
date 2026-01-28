@@ -160,6 +160,7 @@ class featureBar extends wg
             set::compact(),
             set::className('nav-feature'),
             set::items($this->getItems()),
+            zui::create('ResponsiveNavHelper', ['container' => 'parent']),
             divorce($this->children())
         );
     }
