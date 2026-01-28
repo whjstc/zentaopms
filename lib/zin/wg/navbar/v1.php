@@ -417,6 +417,12 @@ class navbar extends wg
         $items = $this->getItems();
         $items = array_filter($items, function($item) {return empty($item['hidden']);});
 
+        global $lang;
+        $responsiveNavOptions = [];
+        $responsiveNavOptions['container']        = 'parent';
+        $responsiveNavOptions['more']             = ['text' => $lang->more, 'caret' => true];
+        $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
+
         return h::nav
         (
             set::id('navbar'),
@@ -425,6 +431,7 @@ class navbar extends wg
             (
                 on::init()->call('initPageNavbar', $items),
                 set::items($items),
+                zui::create('ResponsiveNavHelper', $responsiveNavOptions),
                 $this->children()
             )
         );

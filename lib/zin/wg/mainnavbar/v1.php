@@ -28,7 +28,12 @@ class mainNavbar extends nav
         'itemProps'    => '?array',
         'badgeMap'     => '?array',
         'active'       => '?string',
-        'onRenderItem' => '?callback'
+        'onRenderItem' => '?callback',
+    );
+
+    protected static array $defaultProps = array
+    (
+        'responsive' => true
     );
 
     /**
