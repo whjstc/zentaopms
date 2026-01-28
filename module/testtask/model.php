@@ -2473,4 +2473,40 @@ class testtaskModel extends model
             ->andWhere('deleted')->eq('0')
             ->fetch();
     }
+
+    /**
+     * 获取测试单的所属分支信息。
+     *
+     * @param  object $task
+     * @param  int    $productID
+     * @access public
+     * @return array
+     */
+    public function getBranchesByTask(object $task, int $productID = 0): array
+    {
+        $this->app->loadLang('branch');
+
+        $branchPairs = array();
+        if(!empty($task->joint))
+        {
+            $branches = $this->dao->select('t2.id,t2.branch')->from(TABLE_TESTTASKPRODUCT)->alias('t1')
+                ->leftJoin(TABLE_BUILD)->alias('t2')->on('t1.build=t2.id')
+                ->where('t1.task')->eq($task->id)
+                ->beginIF(!empty($productID))->andWhere('t1.product')->eq($productID)->fi()
+                ->fetchPairs();
+        }
+        else
+        {
+            $branches = $this->dao->select('id,branch')->from(TABLE_BUILD)->where('id')->eq($task->build)->fetchPairs();
+        }
+        if(empty($branches)) return array(BRANCH_MAIN => $this->lang->branch->main);
+
+        $branchIdList = '';
+        foreach($branches as $branch) $branchIdList .= $branch . ',';
+        $branchIdList = trim($branchIdList, ',');
+        if(empty($branchIdList)) return array(BRANCH_MAIN => $this->lang->branch->main);
+
+        $branchPairs = $this->dao->select('id,name')->from(TABLE_BRANCH)->where('id')->in($branchIdList)->fetchPairs();
+        return arrayUnion(array(BRANCH_MAIN => $this->lang->branch->main), $branchPairs);
+    }
 }
