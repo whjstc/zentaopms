@@ -38,14 +38,12 @@ class navbar extends wg
 
         $project          = $app->dbh->query('SELECT id,`model` FROM ' . TABLE_PROJECT . " WHERE `id` = '{$object->project}'")->fetch();
         $executionPairs   = array();
-        $userCondition    = !$app->user->admin ? " AND `id` " . helper::dbIN($app->user->view->sprints) : '';
-        $orderBy          = in_array($project->model, array('waterfall', 'waterfallplus')) ? 'ORDER BY `order` ASC' : 'ORDER BY `id` DESC';
-        $executionList    = $app->dbh->query("SELECT id,name,parent,grade FROM " . TABLE_EXECUTION . " WHERE `project` = '{$object->project}' AND `deleted` = '0' $userCondition $orderBy")->fetchAll();
-        $parentExecutions = array_flip(array_column($executionList, 'parent'));
-        $topExecutions    = array();
+        $orderBy          = in_array($project->model, array('waterfall', 'waterfallplus')) ? '`order` ASC' : '`id` DESC';
+        $executionList    = $app->control->dao->select("id,name,parent,grade,path")->from(TABLE_EXECUTION)->where('project')->eq($object->project)->andWhere('deleted')->eq('0')->orderBy($orderBy)->fetchAll('id');
+        $parentExecutions = array_column($executionList, 'parent', 'parent');
         foreach($executionList as $execution)
         {
-            if($execution->grade == 1) $topExecutions[$execution->id] = $execution->id;
+            if(!$app->user->admin && strpos(",{$app->user->view->sprints},", ",{$execution->id},") === false) continue;
             if($execution->id == $executionID || isset($parentExecutions[$execution->id])) continue;
             $executionPairs[$execution->id] = $execution->name;
         }
@@ -53,20 +51,17 @@ class navbar extends wg
         if(empty($executionPairs)) return;
         if(in_array($project->model, array('waterfall', 'waterfallplus')))
         {
-            $allExecutions     = $app->control->dao->select('id,name,path,grade')->from(TABLE_EXECUTION)->where('project')->eq($object->project)->andWhere('deleted')->eq('0')->fetchAll('id');
-            $orderedExecutions = $app->control->loadModel('execution')->resetExecutionSorts($executionPairs, $topExecutions);
-            $executionPairs    = array();
-            foreach($orderedExecutions as $executionID => $executionName)
+            $orderedExecutions = $app->control->loadModel('execution')->resetExecutionSorts($executionList);
+            foreach(array_keys($orderedExecutions) as $executionID)
             {
-                $execution     = zget($allExecutions, $executionID, null);
-                $paths         = array_slice(explode(',', trim($execution->path, ',')), 1);
-                $executionName = array();
-                foreach($paths as $path)
-                {
-                    if(isset($allExecutions[$path])) $executionName[] = $allExecutions[$path]->name;
-                }
+                if(!isset($executionPairs[$executionID]) || !isset($executionList[$executionID])) continue;
 
-                $executionPairs[$executionID] = implode('/', $executionName);
+                $executionName = array_map(function($executionID) use ($executionList)
+                {
+                    if(isset($executionList[$executionID])) return $executionList[$executionID]->name;
+                }, array_slice(explode(',', trim($executionList[$executionID]->path, ',')), 1));
+
+                $executionPairs[$executionID] = implode('/', array_filter($executionName));
             }
         }
 
