@@ -140,5 +140,6 @@ if(!helper::hasFeature('caselib'))
 {
     unset($config->testcase->search['fields']['lib']);
     $config->testcase->actions->view['mainActions'] = array_diff($config->testcase->actions->view['mainActions'], array('importToLib'));
-
 }
+
+if(!helper::hasFeature('automated')) unset($config->testcase->search['fields']['auto']);
