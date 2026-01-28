@@ -6,13 +6,13 @@
     },
     "zentaoext": {
       "gitRepo": "zentao/zentaoext",
-      "gitVersion": "feature/jira"
+      "gitVersion": "feature/sanplex"
     },
     "zentaomax": {
-      "gitVersion": "feature/jira"
+      "gitVersion": "feature/sanplex"
     },
     "zentaoipd": {
-      "gitVersion": "feature/jira"
+      "gitVersion": "feature/sanplex"
     },
     "devops": {
       "gitRepo": "zentao/devops"
