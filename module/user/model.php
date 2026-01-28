@@ -1692,7 +1692,7 @@ class userModel extends model
         if(!$stakeholders || $force)
         {
             $stakeholders  = array();
-            $cachedHolders = $this->mao->select('objectID, objectType, user')->from(TABLE_STAKEHOLDER)->fetchAll();
+            $cachedHolders = $this->mao->select('objectID, objectType, user')->from(TABLE_STAKEHOLDER)->where('deleted')->eq('0')->fetchAll();
             foreach($cachedHolders as $holder) $stakeholders[$holder->objectType][$holder->objectID][$holder->user] = $holder->user;
         }
 
