@@ -2244,6 +2244,8 @@ if(!$inUpgrade)
     if(!helper::hasFeature('caselib'))   unset($lang->resource->caselib, $lang->resource->testcase->confirmLibcaseChange, $lang->resource->testcase->ignoreLibcaseChange, $lang->resource->testcase->importFromLib, $lang->resource->testcase->importToLib);
     if(!helper::hasFeature('automated')) unset($lang->resource->zanode, $lang->resource->ci, $lang->resource->testcase->showScript, $lang->resource->testcase->automation);
     if(!helper::hasFeature('testsuite')) unset($lang->resource->testsuite);
+    if(!helper::hasFeature('AI'))        unset($lang->resource->aiapp, $lang->resource->zai, $lang->resource->ai);
+    if(!helper::hasFeature('BI'))        unset($lang->resource->screen, $lang->resource->pivot, $lang->resource->chart, $lang->resource->metric, $lang->resource->dimension);
     if(!$config->systemScore) unset($lang->resource->my->score);
 }
 
