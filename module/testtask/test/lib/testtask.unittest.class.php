@@ -1083,4 +1083,25 @@ class testtaskTest
 
         return $processedResult;
     }
+
+    /**
+     * 获取测试单的所属分支信息。
+     * Get the branch information of the test task.
+     *
+     * @param  object $task
+     * @param  int    $productID
+     * @access public
+     * @return array
+     */
+    public function getBranchesByTaskTest(object $task, int $productID = 0): array
+    {
+        $reflection = new ReflectionClass($this->instance);
+        $method = $reflection->getMethod('getBranchesByTask');
+        $method->setAccessible(true);
+
+        $result = $method->invokeArgs($this->instance, [$task, $productID]);
+        if(dao::isError()) return dao::getError();
+
+        return $result;
+    }
 }
