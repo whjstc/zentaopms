@@ -6,10 +6,10 @@
     },
     "zentaoext": {
       "gitRepo": "zentao/zentaoext",
-      "gitVersion": "feature/sanplex"
+      "gitVersion": "release/22.0.beta"
     },
     "zentaomax": {
-      "gitVersion": "feature/sanplex"
+      "gitVersion": "release/13.0.beta"
     },
     "zentaoipd": {
       "gitVersion": "release/5.0.beta"
