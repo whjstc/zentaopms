@@ -788,7 +788,7 @@ class fileModel extends model
 
         $fh   = fopen($csvFile, "r");
         $data = array();
-        while(($row = fgetcsv($fh, 0, ",", "\"", "\\"))) !== false) $data[] = $row;
+        while(($row = fgetcsv($fh, 0, ",", "\"", "\\")) !== false) $data[] = $row;
         fclose($fh);
 
         return $data;
