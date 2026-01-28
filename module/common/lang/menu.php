@@ -633,6 +633,23 @@ $lang->system->menuOrder[10] = 'calendar';
 $lang->system->menuOrder[15] = 'dynamic';
 $lang->system->menuOrder[20] = 'view';
 
+/* AI menu. */
+$lang->aiapp->menu = new stdclass();
+$lang->aiapp->menu->conversation = array('link' => "{$lang->aiapp->conversation}|aiapp|conversation|");
+$lang->aiapp->menu->zentaoAgent  = array('link' => "{$lang->aiapp->zentaoAgent}|ai|prompts|", 'alias' => 'promptview,promptassignrole,promptselectdatasource,promptsetpurpose,promptsettargetform,promptfinalize');
+$lang->aiapp->menu->generalAgent = array('link' => "{$lang->aiapp->generalAgent}|aiapp|square|", 'alias' => 'view,miniprograms,editMiniProgramCategory,miniprogramview,createMiniProgram,editminiprogram,configuredMiniProgram');
+$lang->aiapp->menu->models       = array('link' => "{$lang->aiapp->models}|aiapp|models|");
+$lang->aiapp->menu->config       = array('link' => "{$lang->aiapp->config}|zai|setting|", 'alias' => 'vectorized');
+
+$lang->aiapp->dividerMenu = ',zentaoAgent,models,';
+
+/* AI menu order. */
+$lang->aiapp->menuOrder[5]  = 'conversation';
+$lang->aiapp->menuOrder[10] = 'zentaoAgent';
+$lang->aiapp->menuOrder[15] = 'generalAgent';
+$lang->aiapp->menuOrder[20] = 'models';
+$lang->aiapp->menuOrder[25] = 'config';
+
 /* Nav group.*/
 $lang->navGroup = new stdclass();
 $lang->navGroup->my               = 'my';
@@ -816,6 +833,8 @@ if(!helper::hasFeature('program'))   unset($lang->mainNav->program,     $lang->m
 if(!helper::hasFeature('caselib'))   unset($lang->qa->menu->caselib,    $lang->qa->menuOrder[40]);
 if(!helper::hasFeature('automated')) unset($lang->qa->menu->automation, $lang->qa->menuOrder[45]);
 if(!helper::hasFeature('testsuite')) unset($lang->qa->menu->testsuite,  $lang->qa->menuOrder[25]);
+if(!helper::hasFeature('AI'))        unset($lang->mainNav->aiapp,       $lang->mainNav->menuOrder[40]);
+if(!helper::hasFeature('BI'))        unset($lang->mainNav->bi,          $lang->mainNav->menuOrder[45]);
 
 if(!helper::hasFeature('devops'))
 {
@@ -831,20 +850,3 @@ if(!helper::hasFeature('kanban'))
     unset($lang->mainNav->kanban, $lang->mainNav->menuOrder[50]);
     $lang->dividerMenu = str_replace(',kanban,' , ',doc,', $lang->dividerMenu);
 }
-
-/* AI menu. */
-$lang->aiapp->menu = new stdclass();
-$lang->aiapp->menu->conversation = array('link' => "{$lang->aiapp->conversation}|aiapp|conversation|");
-$lang->aiapp->menu->zentaoAgent  = array('link' => "{$lang->aiapp->zentaoAgent}|ai|prompts|", 'alias' => 'promptview,promptassignrole,promptselectdatasource,promptsetpurpose,promptsettargetform,promptfinalize');
-$lang->aiapp->menu->generalAgent = array('link' => "{$lang->aiapp->generalAgent}|aiapp|square|", 'alias' => 'view,miniprograms,editMiniProgramCategory,miniprogramview,createMiniProgram,editminiprogram,configuredMiniProgram');
-$lang->aiapp->menu->models       = array('link' => "{$lang->aiapp->models}|aiapp|models|");
-$lang->aiapp->menu->config       = array('link' => "{$lang->aiapp->config}|zai|setting|", 'alias' => 'vectorized');
-
-$lang->aiapp->dividerMenu = ',zentaoAgent,models,';
-
-/* AI menu order. */
-$lang->aiapp->menuOrder[5]  = 'conversation';
-$lang->aiapp->menuOrder[10] = 'zentaoAgent';
-$lang->aiapp->menuOrder[15] = 'generalAgent';
-$lang->aiapp->menuOrder[20] = 'models';
-$lang->aiapp->menuOrder[25] = 'config';
