@@ -1266,74 +1266,14 @@ class convertTaoTest extends baseTest
     }
 
     /**
-     * Test processBuildinFieldData method.
-     *
-     * @param  string $module
-     * @param  object $data
-     * @param  object $object
-     * @param  array  $relations
-     * @param  bool   $buildinFlow
-     * @access public
-     * @return mixed
-     */
-    public function processBuildinFieldDataTest($module = null, $data = null, $object = null, $relations = array(), $buildinFlow = false)
-    {
-        if($module === null || $data === null || $object === null) return false;
-
-        $result = $this->invokeArgs('processBuildinFieldData', [$module, $data, $object, $relations, $buildinFlow]);
-        if(dao::isError()) return dao::getError();
-        return $result;
-    }
-
-    /**
-     * Test processBuildinFieldData method.
-     *
-     * @param  string $module
-     * @param  object $data
-     * @param  object $object
-     * @param  array  $relations
-     * @param  bool   $buildinFlow
-     * @access public
-     * @return mixed
-     */
-    public function processBuildinFieldDataTest($module = null, $data = null, $object = null, $relations = array(), $buildinFlow = false)
-    {
-        if($module === null || $data === null || $object === null) return false;
-
-        $result = $this->invokeArgs('processBuildinFieldData', [$module, $data, $object, $relations, $buildinFlow]);
-        if(dao::isError()) return dao::getError();
-        return $result;
-    }
-
-    /**
-     * Test processBuildinFieldData method.
-     *
-     * @param  string $module
-     * @param  object $data
-     * @param  object $object
-     * @param  array  $relations
-     * @param  bool   $buildinFlow
-     * @access public
-     * @return mixed
-     */
-    public function processBuildinFieldDataTest($module = null, $data = null, $object = null, $relations = array(), $buildinFlow = false)
-    {
-        if($module === null || $data === null || $object === null) return false;
-
-        $result = $this->invokeArgs('processBuildinFieldData', [$module, $data, $object, $relations, $buildinFlow]);
-        if(dao::isError()) return dao::getError();
-        return $result;
-    }
-
-    /**
      * Test processJiraIssueContent method.
      *
-     * @param  array $issueList
      * @access public
      * @return mixed
      */
-    public function processJiraIssueContentTest($issueList = array())
+    public function processJiraIssueContentTest()
     {
+        $issueList = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('BID')->ne('')->andWhere('extra')->eq('issue')->fetchAll('AID');
         $result = $this->invokeArgs('processJiraIssueContent', [$issueList]);
         if(dao::isError()) return dao::getError();
         return $result;
