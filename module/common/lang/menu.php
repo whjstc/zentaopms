@@ -813,6 +813,7 @@ if(empty($_SESSION['tutorialMode']) && !helper::hasFeature('product_track'))
 }
 
 if(!helper::hasFeature('program')) unset($lang->mainNav->program, $lang->mainNav->menuOrder[10]);
+if(!helper::hasFeature('caselib')) unset($lang->qa->menu->caselib, $lang->qa->menuOrder[40]);
 
 if(!helper::hasFeature('devops'))
 {
