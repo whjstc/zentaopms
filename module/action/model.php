@@ -1875,15 +1875,15 @@ class actionModel extends model
 
          /* 只保留允许的标签。 */
          /* Keep only allowed tags. */
-         $action->comment = trim(strip_tags($newComment->lastComment, $this->config->allowedTags));
+         $newComment->comment = fixer::stripDataTags($newComment->lastComment);
 
          /* 处理评论内的图片。*/
          /* Handle images in comment. */
-         $action = $this->loadModel('file')->processImgURL($action, 'comment', $newComment->uid);
+         $newComment = $this->loadModel('file')->processImgURL($newComment, 'comment', $newComment->uid);
 
          $this->dao->update(TABLE_ACTION)
              ->set('date')->eq(helper::now())
-             ->set('comment')->eq($newComment->lastComment)
+             ->set('comment')->eq($newComment->comment)
              ->where('id')->eq($actionID)
              ->exec();
 
