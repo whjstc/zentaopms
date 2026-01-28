@@ -9,6 +9,12 @@ title=测试 convertTao::processJiraIssueContent();
 timeout=0
 cid=15871
 
+- 执行 @1
+- 执行$testcaseIssue @1
+- 执行$storyIssue @1
+- 执行$bugIssue @1
+- 执行$taskIssue @1
+
 */
 
 // 简化测试实现，避免ZenTao框架初始化问题
