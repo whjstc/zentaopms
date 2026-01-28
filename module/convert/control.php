@@ -307,6 +307,11 @@ class convert extends control
                 if(!$this->convert->dbExists($dbName)) return $this->send(array('result' => 'fail', 'message' => array('dbName' => $this->lang->convert->jira->invalidDB)));
                 if(!$this->convert->tableExistsOfJira($dbName, 'nodeassociation')) return $this->send(array('result' => 'fail', 'message' => array('dbName' => $this->lang->convert->jira->invalidTable)));
             }
+            elseif($method == 'api')
+            {
+                $this->convert->checkJiraApi();
+                if(dao::isError()) return $this->send(array('result' => 'fail', 'message' => dao::getError()));
+            }
             else
             {
                 if($domain)
@@ -409,8 +414,8 @@ class convert extends control
         $this->loadModel('task');
         $objectRelation = !empty($jiraRelation['zentaoObject']) && in_array($step, array_keys($jiraRelation['zentaoObject']));
         $resolutionList = $objectRelation ? $this->convert->getJiraData($method, 'resolution')       : array();
-        $statusList     = $objectRelation ? $this->convert->getJiraStatusList($step, $jiraRelation)  : array();
-        $jiraFields     = $objectRelation ? $this->convert->getJiraCustomField($step, $jiraRelation) : array();
+        $statusList     = $objectRelation ? zget($this->convert->getJiraStatusList(),  $step, array()) : array();
+        $jiraFields     = $objectRelation ? zget($this->convert->getJiraCustomField(), $step, array()) : array();
         $issueTypeList  = $this->convert->getJiraTypeList();
         $linkTypeList   = $step == 'relation' ? $this->convert->getJiraData($method, 'issuelinktype') : array();
         $stepList       = $this->convert->getJiraStepList($jiraRelation, $issueTypeList);
@@ -427,7 +432,7 @@ class convert extends control
         $this->view->zentaoObjects  = $this->convert->getZentaoObjectList();
         $this->view->fieldList      = $jiraFields;
         $this->view->statusList     = $statusList;
-        $this->view->jiraActions    = $this->convert->getJiraWorkflowActions();
+        $this->view->jiraActions    = array();//$this->convert->getJiraWorkflowActions();
         $this->view->resolutionList = $resolutionList;
         $this->view->defaultValue   = $this->convert->getObjectDefaultValue($step);
         $this->view->linkTypeList   = $linkTypeList;

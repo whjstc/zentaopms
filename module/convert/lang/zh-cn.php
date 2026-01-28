@@ -132,6 +132,7 @@ $lang->convert->jira->back             = '上一步';
 $lang->convert->jira->next             = '下一步';
 $lang->convert->jira->importFromDB     = '从数据库导入';
 $lang->convert->jira->importFromFile   = '从文件导入';
+$lang->convert->jira->importFromAPI    = '从接口导入';
 $lang->convert->jira->mapJira2Zentao   = '设置Jira与禅道数据对应关系';
 $lang->convert->jira->database         = 'Jira数据库';
 $lang->convert->jira->domain           = 'Jira域名';
@@ -144,6 +145,7 @@ $lang->convert->jira->userExceeds      = '当前系统授权人数为%s，请确
 $lang->convert->jira->apiError         = '无法连接到JiraAPI接口，请检查您的Jira域名和帐号、密码/Token信息。';
 $lang->convert->jira->dbDesc           = '如果您的Jira是本地部署版本, 请选择此方式';
 $lang->convert->jira->fileDesc         = '如果您的Jira是云版本或不方便获取数据库, 请选择此方式';
+$lang->convert->jira->apiDesc          = '如果您的Jira是云版本或不方便获取数据库和文件，请选择此方式';
 $lang->convert->jira->jiraObject       = 'Jira Issues';
 $lang->convert->jira->zentaoObject     = '禅道对象';
 $lang->convert->jira->jiraLinkType     = 'Jira 关联关系';
@@ -228,6 +230,11 @@ $lang->convert->jira->importSteps['file'][3] = "将Jira的备份文件 <strong c
 $lang->convert->jira->importSteps['file'][4] = "将Jira附件目录<strong class='text-danger'> attachments</strong> 放到 <strong class='text-danger'>%s</strong> 下，确保禅道服务器磁盘空间足够。";
 $lang->convert->jira->importSteps['file'][5] = "为了保证导入数据的完整性，请输入当前Jira环境的域名、管理员帐号、密码/Token。";
 $lang->convert->jira->importSteps['file'][6] = "上述步骤完成后，点击下一步。";
+
+$lang->convert->jira->importSteps['api'][1] = '备份禅道数据库。';
+$lang->convert->jira->importSteps['api'][2] = '导入数据时使用禅道会给服务器造成性能压力，请尽量保证导入数据时无人使用禅道。';
+$lang->convert->jira->importSteps['api'][3] = '填写当前Jira环境的域名、管理员帐号、密码/Token。';
+$lang->convert->jira->importSteps['api'][4] = "上述步骤完成后，点击下一步。";
 
 $lang->convert->jira->objectList['user']       = '用户';
 $lang->convert->jira->objectList['project']    = '项目';
