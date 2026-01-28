@@ -53,6 +53,16 @@ cid=19164
  - 属性desc @这是测试单描述4
  - 属性status @blocked
  - 属性auto @no
+- 获取 ID 为 5 的测试单的详细信息。
+ - 属性project @15
+ - 属性name @测试单5
+ - 属性product @5
+ - 属性execution @105
+ - 属性build @15
+ - 属性owner @user7
+ - 属性desc @这是测试单描述5
+ - 属性status @wait
+ - 属性auto @no
 
 */
 
