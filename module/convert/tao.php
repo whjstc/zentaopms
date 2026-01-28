@@ -2595,7 +2595,7 @@ class convertTao extends convertModel
         $hook->recordVars    = array($where->param);
         $hook->formulaVars   = array();
 
-        list($sql, $error) = $this->loadModel('workflowhook')->check($hook);
+        list($sql) = $this->loadModel('workflowhook')->check($hook);
         $hook->sql = $sql;
 
         $hooks[] = $hook;
