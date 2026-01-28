@@ -62,6 +62,7 @@ try {
 } catch (Exception $e) {
     // 忽略更新错误
 }
+$_SESSION['jiraUser'] = array('password' => '123456', 'mode' => 'email');
 
 $usergroup = zenData('usergroup');
 $usergroup->account->range('admin,existing1,testuser');
