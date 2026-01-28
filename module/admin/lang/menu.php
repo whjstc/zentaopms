@@ -195,3 +195,5 @@ if($config->vision == 'lite')
 
     $lang->admin->menuList->feature['menuOrder']['15'] = 'project';
 }
+
+if(!helper::hasFeature('testsuite')) unset($lang->admin->menuList->feature['tabMenu']['qa']['testsuite'], $lang->admin->menuList->feature['tabMenu']['menuOrder']['qa']['15']);

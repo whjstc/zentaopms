@@ -1767,6 +1767,7 @@ class convertTao extends convertModel
     protected function createTask(int $projectID, int $executionID, object $data, array $relations): bool
     {
         $this->app->loadLang('task');
+        $this->loadModel('action');
 
         $task = new stdclass();
         $task = $this->processBuildinFieldData('task', $data, $task, $relations);
@@ -1810,6 +1811,7 @@ class convertTao extends convertModel
         $action->action     = 'opened';
         $action->date       = $task->openedDate;
         $this->dao->dbh($this->dbh)->insert(TABLE_ACTION)->data($action)->exec();
+        $this->action->saveIndex($action->objectType, $action->objectID, $action->action);
 
         $this->createTmpRelation('jtask', $data->id, 'ztask', $taskID, 'issue');
         $this->createTmpRelation('jissueid', $data->id, 'zissuetype', '', 'task');

@@ -265,3 +265,4 @@ if(!defined('DEFAULT_CARDCOUNT')) define('DEFAULT_CARDCOUNT', '2');
 if(!defined('MAX_CARDCOUNT'))     define('MAX_CARDCOUNT', '100');
 
 if(!helper::hasFeature('program')) unset($lang->createIcons['program']);
+if(!helper::hasFeature('kanban'))  unset($lang->createIcons['kanban'], $lang->createIcons['kanbanspace']);

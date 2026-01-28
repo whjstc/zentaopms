@@ -12,7 +12,7 @@
       "gitVersion": "feature/sanplex"
     },
     "zentaoipd": {
-      "gitVersion": "release/5.0.beta"
+      "gitVersion": "feature/sanplex"
     },
     "devops": {
       "gitRepo": "zentao/devops"
