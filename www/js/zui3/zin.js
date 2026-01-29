@@ -412,17 +412,7 @@
 
     function updateNavbar(data)
     {
-        const $navbar = $('#navbar');
-        const $newNav = $(data);
-        if(
-            $newNav.filter('.nav').attr('zui-init')
-            || $newNav.find('.item').length !== $navbar.find('.item').length
-            || $newNav.find('.item[data-hidden]').length !== $navbar.find('.item[data-hidden]').length
-            || $newNav.text().trim() !== $navbar.text().trim()
-            || $newNav.find('.nav-item>a').map((_, element) => element.href).get().join(' ') !== $navbar.find('.nav-item>a').map((_, element) => element.href).get().join(' ')
-        ) return $navbar.empty().append($newNav).zuiInit();
-
-        activeNav($newNav.find('.nav-item>a.active').data('id'), $navbar);
+        $('#navbar').morphInner(`<div>${data}</div>`);
         layoutNavbar();
     }
 
