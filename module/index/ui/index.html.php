@@ -163,7 +163,7 @@ div
                     span(setClass('text'), $lang->more),
                     toggle::dropdown(array('placement' => 'right-end', 'offset' => 12))
                 ),
-                ul(setClass('dropdown-menu nav'), setID('menuMoreList'))
+                ul(setClass('dropdown-menu menu'), setID('menuMoreList'))
             )
         )
     ),
