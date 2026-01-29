@@ -160,7 +160,7 @@ class featureBar extends wg
             set::compact(),
             set::className('nav-feature'),
             set::items($this->getItems()),
-            zui::create('ResponsiveNavHelper', ['container' => 'parent']),
+            zui::create('ResponsiveNavHelper', ['container' => 'parent', 'fixedItems' => jsRaw('(_,ele) => $(ele).find(".search-form-toggle").length')]),
             divorce($this->children())
         );
     }
