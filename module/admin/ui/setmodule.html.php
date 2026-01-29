@@ -44,7 +44,7 @@ foreach($config->featureGroup as $group => $features)
         $items = array();
         foreach($features as $feature)
         {
-            $code = $group. ucfirst($feature);
+            $code = $group . ucfirst($feature);
             if(strpos(",$disabledFeatures,", ",$code,") !== false) continue;
 
             $value = strpos(",$closedFeatures,", ",$code,") === false ? '1' : '0';
@@ -53,7 +53,7 @@ foreach($config->featureGroup as $group => $features)
             $items[] = checkbox
             (
                 setID("module{$code}"),
-                set::rootClass('w-40'),
+                set::rootClass('w-40', !empty($config->hiddenFeature) && in_array($code, $config->hiddenFeature) ? 'hidden' : ''),
                 set::name("module[{$code}]"),
                 set::value(1),
                 set::checked($value == 1),
@@ -71,7 +71,7 @@ foreach($config->featureGroup as $group => $features)
         }
         $rows[] = h::tr
         (
-            setClass('border-t'),
+            setClass('border-t', !empty($config->hiddenGroup) && in_array($group, $config->hiddenGroup) ? 'hidden' : ''),
             h::td
             (
                 setClass('p-2.5'),
