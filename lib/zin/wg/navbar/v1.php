@@ -409,13 +409,19 @@ class navbar extends wg
         $workspace = commonModel::getWorkspaceInfo();
         if($workspace['opened']) return $this->buildWorkspaceNavbar($workspace['type']);
 
-        $items = $this->getItems();
-        $items = array_filter($items, function($item) {return empty($item['hidden']);});
+        $items    = $this->getItems();
+        $navItems = [];
+
+        foreach($items as $item)
+        {
+            if(!empty($item['hidden'])) continue;
+            $navItems[] = array_merge($item, ['icon' => null]);
+        }
 
         global $lang;
         $responsiveNavOptions = [];
         $responsiveNavOptions['container']        = 'parent';
-        $responsiveNavOptions['more']             = ['text' => $lang->more, 'caret' => true];
+        $responsiveNavOptions['more']             = ['text' => $lang->other, 'caret' => true];
         $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
 
         return h::nav
@@ -425,7 +431,7 @@ class navbar extends wg
             new nav
             (
                 on::init()->call('initPageNavbar', $items),
-                set::items($items),
+                set::items($navItems),
                 zui::create('ResponsiveNavHelper', $responsiveNavOptions),
                 $this->children()
             )
