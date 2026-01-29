@@ -1502,6 +1502,7 @@ class projectModel extends model
         /* 如果没有传入项目管理方式，则用之前的管理方式。*/
         /* If no project management method is passed, the project management method is used. */
         if(empty($project->model)) $project->model = $oldProject->model;
+        if($project->model != $oldProject->model && !$this->checkCanChangeModel($projectID, $oldProject->model)) $project->model = $oldProject->model;
 
         /* 更新项目表。*/
         /* Update project table. */
