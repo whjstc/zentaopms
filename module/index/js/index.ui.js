@@ -192,8 +192,15 @@ function openApp(url, code, options)
         return zui.Modal.alert(appNotFound);
     }
 
-    /* Create iframe for app */
     let openedApp = apps.openedMap[code];
+    if($.apps.workspace && $.apps.workspace !== code)
+    {
+        url = url || (openedApp ? openedApp.currentUrl : app.url);
+        if(url) window.open(url, '_blank');
+        return;
+    }
+
+    /* Create iframe for app */
     if(!openedApp)
     {
         if(!url) url = app.url;
@@ -314,8 +321,8 @@ function openApp(url, code, options)
     const $lastTab = $tabs.find('li>a.active');
     if($lastTab.data('app') !== code)
     {
-        $lastTab.removeClass('active');
-        $tabs.find('li[data-app="' + code + '"]>a').addClass('active');
+        $lastTab.removeClass('active').parent().removeClass('active');
+        $tabs.find('li[data-app="' + code + '"]>a').addClass('active').parent().addClass('active');
     }
 
     if(DEBUG) showLog(code, 'Open', getUrlID(url), openedApp, {options, forceReload, needLoad});
@@ -1016,6 +1023,7 @@ function updateSpaceMenu(info)
     const hasSpaceNav  = spaceType === currentCode;
     const $menuMainNav = $('#menuMainNav');
 
+    $.apps.workspace = spaceType;
     currentApp.workspace = info;
     $('#menu').attr('data-space', spaceType);
     $('body').toggleClass('has-space', hasSpaceNav);
