@@ -172,9 +172,10 @@ class caseBasicInfo extends wg
         $items = array();
         if($isLibCase)
         {
-            $libName = $this->prop('libName',    data('libName'));
+            $libName = $this->prop('libName', data('libName'));
             $items[$lang->testcase->fromCase] = array('children' => wg($this->getFromCase($case)));
             $items[$lang->testcase->lib]      = hasPriv('caselib', 'browse') ? array('control' => 'link', 'url' => createLink('caselib', 'browse', "libID={$case->lib}"), 'text' => $libName) : $libName;
+            $items[$lang->testcase->module]   = array('children' => wg($this->getModule($case)));
         }
         else
         {
