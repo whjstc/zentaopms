@@ -198,6 +198,7 @@ div
         chatBtn(),
         item
         (
+            setID('version'),
             setClass('ghost btn-zentao px-1'),
             set::icon('zentao text-2xl'),
             set::url($lang->website),
