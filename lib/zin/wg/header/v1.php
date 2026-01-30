@@ -162,7 +162,16 @@ class header extends wg
         $manualUrl = ((!empty($config->isINT)) ? $config->manualUrl['int'] : $config->manualUrl['home']) . '&theme=' . $_COOKIE['theme'];
         $helpItems[] = array('text' => $lang->manual, 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
         $helpItems[] = array('text' => $lang->changeLog, 'url' => createLink('misc', 'changeLog'), 'data-toggle' => 'modal', 'innerClass' => $modalClass);
-        $items[] = array('text' => $lang->help, 'icon' => 'help', 'items' => $helpItems);
+
+        /* 禅道国际版帮助样式调整。 */
+        if(!empty($config->sanplexVersion))
+        {
+            $items[] = array('text' => $lang->help, 'icon' => 'help', 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
+        }
+        else
+        {
+            $items[] = array('text' => $lang->help, 'icon' => 'help', 'items' => $helpItems);
+        }
 
         $items[] = array('type' => 'divider');
 
@@ -193,12 +202,8 @@ class header extends wg
         );
 
         $langItems = array();
-        foreach($app->config->langs as $key => $value)
-        {
-            $langItems[] = array('text' => $value, 'data-value' => $key, 'url' => "javascript:selectLang(\"$key\")", 'active' => $app->cookie->lang == $key);
-        }
+        foreach($app->config->langs as $key => $value) $langItems[] = array('text' => $value, 'data-value' => $key, 'url' => "javascript:selectLang(\"$key\")", 'active' => $app->cookie->lang == $key);
         $items[] = array('text' => $lang->lang, 'icon' => 'lang', 'items' => $langItems);
-
         $items[] = array('type' => 'divider');
 
         /* Zentao desktop client menu. */
@@ -211,12 +216,15 @@ class header extends wg
         }
 
         $mobileSubMenu[] = array('content' => array('html' => "<img src='{$config->webRoot}static/images/app-qrcode.png' />", 'style' => 'width: 100px; heigth: 100px;'));
-        $items[]         = array('icon' => 'mobile', 'text' => $lang->downloadMobile, 'items' => $mobileSubMenu);
 
-        $items[] = array('text' => $lang->aboutZenTao, 'icon' => 'about', 'url' => createLink('misc', 'about'), 'data-toggle' => 'modal', 'innerClass' => $modalClass);
-        $items[] = array('type' => 'html', 'className' => 'menu-item', 'html' => $lang->designedByAIUX);
-
-        $items[] = array('type' => 'divider');
+        /* 禅道国际版隐藏该内容。 */
+        if(empty($config->sanplexVersion))
+        {
+            $items[] = array('icon' => 'mobile', 'text' => $lang->downloadMobile, 'items' => $mobileSubMenu);
+            $items[] = array('text' => $lang->aboutZenTao, 'icon' => 'about', 'url' => createLink('misc', 'about'), 'data-toggle' => 'modal', 'innerClass' => $modalClass);
+            $items[] = array('type' => 'html', 'className' => 'menu-item', 'html' => $lang->designedByAIUX);
+            $items[] = array('type' => 'divider');
+        }
 
         if($isGuest)
         {
