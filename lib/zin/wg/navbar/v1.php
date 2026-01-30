@@ -427,7 +427,7 @@ class navbar extends wg
         return h::nav
         (
             set::id('navbar'),
-            commonModel::isTutorialMode() ? null : on::contextmenu()->call('handleNavbarContextmenu', jsRaw('event')),
+            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
             new nav
             (
                 on::init()->call('initPageNavbar', $items),
