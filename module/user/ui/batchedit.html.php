@@ -32,6 +32,11 @@ elseif($type == 'outside')
     $items['join']['hidden']     = true;
 }
 
+foreach(explode(',', $config->user->edit->requiredFields) as $requiredField)
+{
+    if(isset($items[$requiredField])) $items[$requiredField]['required'] = true;
+}
+
 formBatchPanel
 (
     set::title($lang->user->batchEdit),
