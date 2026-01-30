@@ -1046,6 +1046,12 @@ function updateSpaceMenu(info)
     }
     $spaceHeading.find('.icon').attr('class', `icon icon-${info.icon || spaceType}`);
 
+    if(info.items[info.items.length -1]['data-id'] === 'more')
+    {
+        info.items.pop();
+        if(info.items[info.items.length -1]['type'] === 'divider') info.items.pop();
+    }
+
     info.items.forEach(function(item)
     {
         item.code = item['data-id'];
