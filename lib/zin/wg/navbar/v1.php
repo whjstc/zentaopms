@@ -36,34 +36,34 @@ class navbar extends wg
         $object = $app->dbh->query('SELECT project,`type` FROM ' . TABLE_EXECUTION . " WHERE `id` = '$executionID'")->fetch();
         if(empty($object)) return;
 
-        $project          = $app->dbh->query('SELECT id,`model` FROM ' . TABLE_PROJECT . " WHERE `id` = '{$object->project}'")->fetch();
-        $executionPairs   = array();
-        $orderBy          = in_array($project->model, array('waterfall', 'waterfallplus')) ? '`order` ASC' : '`id` DESC';
-        $executionList    = $app->control->dao->select("id,name,parent,grade,path")->from(TABLE_EXECUTION)->where('project')->eq($object->project)->andWhere('deleted')->eq('0')->orderBy($orderBy)->fetchAll('id');
-        $parentExecutions = array_column($executionList, 'parent', 'parent');
-        foreach($executionList as $execution)
+        $project     = $app->dbh->query('SELECT id,`model` FROM ' . TABLE_PROJECT . " WHERE `id` = '{$object->project}'")->fetch();
+        $isWaterfall = in_array($project->model, array('waterfall', 'waterfallplus'));
+        $orderBy     = $isWaterfall ? '`order` ASC' : '`id` DESC';
+
+        $executionPairs    = array();
+        $executionList     = $app->control->dao->select("id,name,parent,grade,path")->from(TABLE_EXECUTION)->where('project')->eq($object->project)->andWhere('deleted')->eq('0')->orderBy($orderBy)->fetchAll('id');
+        $orderedExecutions = $app->control->loadModel('execution')->resetExecutionSorts($executionList);
+        foreach(array_keys($orderedExecutions) as $currentID)
         {
+            if(!isset($executionList[$currentID])) continue;
+
+            $execution = $executionList[$currentID];
+            if(isset($executionPairs[$execution->parent])) unset($executionPairs[$execution->parent]);
             if(!$app->user->admin && strpos(",{$app->user->view->sprints},", ",{$execution->id},") === false) continue;
-            if($execution->id == $executionID || isset($parentExecutions[$execution->id])) continue;
-            $executionPairs[$execution->id] = $execution->name;
-        }
+            if($execution->id == $executionID) continue;
 
-        if(empty($executionPairs)) return;
-        if(in_array($project->model, array('waterfall', 'waterfallplus')))
-        {
-            $orderedExecutions = $app->control->loadModel('execution')->resetExecutionSorts($executionList);
-            foreach(array_keys($orderedExecutions) as $executionID)
+            $executionPairs[$currentID] = $execution->name;
+            if($isWaterfall)
             {
-                if(!isset($executionPairs[$executionID]) || !isset($executionList[$executionID])) continue;
-
                 $executionName = array_map(function($executionID) use ($executionList)
                 {
                     if(isset($executionList[$executionID])) return $executionList[$executionID]->name;
-                }, array_slice(explode(',', trim($executionList[$executionID]->path, ',')), 1));
+                }, array_slice(explode(',', trim($execution->path, ',')), 1));
 
-                $executionPairs[$executionID] = implode('/', array_filter($executionName));
+                $executionPairs[$currentID] = implode('/', array_filter($executionName));
             }
         }
+        if(empty($executionPairs)) return;
 
         $dropItems = array();
         foreach($executionPairs as $executionID => $executionName)
