@@ -106,15 +106,13 @@ class mainNavbar extends nav
 
         $moduleName = $app->rawModule;
         $methodName = $app->rawMethod;
+        $items      = $this->prop('items');
 
-        if(!$this->prop('items') && !in_array("$moduleName-$methodName", $config->hasMainNavBar)) return null;
+        if(!$items && !in_array("$moduleName-$methodName", $config->hasMainNavBar)) return null;
 
         $leftBlock  = $this->block('left');
         $rightBlock = $this->block('right');
         if(empty($leftBlock)) $leftBlock = $this->buildSwitcher();
-
-        jsVar('allMainNavbarItems', $this->prop('items'));
-        jsVar('isTutorialMode', commonModel::isTutorialMode());
 
         return div
         (
@@ -127,7 +125,8 @@ class mainNavbar extends nav
                 parent::build(),
                 empty($rightBlock) ? null : div(setClass('main-navbar-right'), $rightBlock)
             ),
-            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item > a')->call('handleMainNavbarContextmenu', jsRaw('event'), jsRaw('this'))
+            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item > a')->call('handleMainNavbarContextmenu', jsRaw('event'), jsRaw('this')),
+            on::init()->call('window.initPageMainNavbar', $items)
         );
     }
 
