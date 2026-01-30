@@ -932,12 +932,13 @@ toggleMenu(!$('body').hasClass('hide-menu'));
  */
 function getMenuNavData()
 {
-    const data = [];
-    const $nav = $('#menuMainNav');
-    $nav.children().each(function(index, element) {
+    const data      = [];
+    const $nav      = $('#menuMainNav');
+    const workspace = $.apps.workspace;
+    $nav.children($.apps.workspace ? '.is-space' : '.is-original').each(function(index, element) {
         const $elm     = $(element);
         const menuItem = {};
-        menuItem.name  = $elm.is('.divider') ? 'divider' : $elm.data('app');
+        menuItem.name  = $elm.is('.divider') ? 'divider' : $elm.data(workspace ? 'name' : 'app');
         menuItem.order = index * 5;
         if(typeof $elm.data('hidden') != 'undefined') menuItem.hidden = true;
 
@@ -954,7 +955,15 @@ function saveMenuNavToServer()
 {
     const url = $.createLink('custom', 'ajaxSetMenu');
     const data = getMenuNavData();
-    $.ajaxSubmit({url, data: {menu: 'nav', items: JSON.stringify(data)}});
+    let   menu = 'nav';
+
+    if($.apps.workspace)
+    {
+        const currentApp = getLastApp();
+        if(currentApp.workspace.type === $.apps.workspace) menu = currentApp.workspace.menuGroup;
+    }
+
+    $.ajaxSubmit({url, data: {menu: menu, items: JSON.stringify(data)}});
 }
 
 /**
@@ -1069,7 +1078,7 @@ function updateSpaceMenu(info)
         if(['devops', 'bi', 'safe'].includes(item.code)) $link.find('.text').addClass('font-brand');
 
         $('<li class="hint-right is-space"></li>')
-            .attr({'data-app': currentCode, 'data-hint': item.text})
+            .attr({'data-app': currentCode, 'data-hint': item.text, 'data-name': item.code})
             .append($link)
             .appendTo($menuMainNav);
     });
