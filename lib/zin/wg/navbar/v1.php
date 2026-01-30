@@ -374,6 +374,7 @@ class navbar extends wg
 
     protected function buildWorkspaceNavbar(string $workspace)
     {
+        global $app;
         $originItems  = $this->getItems();
         $items        = $this->getWorkspaceItems();
         $activeID     = data('activeMenu');
@@ -397,6 +398,8 @@ class navbar extends wg
             ),
             new nav
             (
+                setData('workspace', $workspace),
+                setData('mainNavbarGroup', $app->tab . '-' . $activeID),
                 on::init()->call('initPageNavbar', $originItems, $workspace, $activeID, "__WORKSPACE_{$workspace}__"),
                 set::items($items),
                 $this->children()
