@@ -1990,9 +1990,10 @@
         if(info)
         {
             const $dropmenu = $('#dropmenu').first();
-            info.name     = $dropmenu.attr('data-text');
-            info.dropmenu = $dropmenu.attr('zui-create-dropmenu');
-            info.icon     = $('#heading>.toolbar>.btn>.icon').attr('class').replace('icon icon-', '');
+            info.name      = $dropmenu.attr('data-text');
+            info.dropmenu  = $dropmenu.attr('zui-create-dropmenu');
+            info.icon      = $('#heading>.toolbar>.btn>.icon').attr('class').replace('icon icon-', '');
+            info.menuGroup = $('#navbar>.nav').attr('data-navbar-group');
         }
         workspaceType = info ? info.type : null;
         $.apps.updateSpaceMenu && $.apps.updateSpaceMenu(info);
