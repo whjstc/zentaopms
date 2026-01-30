@@ -392,7 +392,7 @@ class navbar extends wg
             ),
             new nav
             (
-                on::init()->call('initPageNavbar', $originItems, $workspace, $activeID),
+                on::init()->call('initPageNavbar', $originItems, $workspace, $activeID, "__WORKSPACE_{$workspace}__"),
                 set::items($items),
                 $this->children()
             )
