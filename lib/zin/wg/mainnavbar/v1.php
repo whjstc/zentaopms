@@ -126,7 +126,8 @@ class mainNavbar extends nav
                 empty($leftBlock) ? null : div(setClass('main-navbar-left'), $leftBlock),
                 parent::build(),
                 empty($rightBlock) ? null : div(setClass('main-navbar-right'), $rightBlock)
-            )
+            ),
+            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item > a')->call('handleMainNavbarContextmenu', jsRaw('event'), jsRaw('this'))
         );
     }
 
