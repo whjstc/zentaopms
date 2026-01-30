@@ -407,6 +407,7 @@ class navbar extends wg
             new nav
             (
                 setData('workspace', $workspace),
+                setData('navbarGroup', data('mainNavbarGroup')),
                 setData('mainNavbarGroup', $app->tab . '-' . $activeID),
                 on::init()->call('initPageNavbar', $originItems, $workspace, $activeID, "__WORKSPACE_{$workspace}__"),
                 set::items($items),
@@ -447,7 +448,7 @@ class navbar extends wg
             commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
             new nav
             (
-                setData('mainNavbarGroup', data('mainNavbarGroup')),
+                setData('navbarGroup', data('mainNavbarGroup')),
                 on::init()->call('initPageNavbar', $items),
                 set::items($navItems),
                 zui::create('ResponsiveNavHelper', $responsiveNavOptions),
