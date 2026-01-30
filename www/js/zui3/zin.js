@@ -45,6 +45,7 @@
     const isTutorial  = top.config.currentModule === 'tutorial';
     let openedOldPage = false;
     let oldPageCofnig = null;
+    let workspaceType = '';
     const zinCallbacks = {
         onSelectLang: null,
         onSelectVision: null,
@@ -710,6 +711,16 @@
                 }
                 if(Array.isArray(data))
                 {
+                    if(workspaceType)
+                    {
+                        const navbarData = data.find(x => x.name === 'navbar');
+                        if(navbarData && !navbarData.data.includes(`__WORKSPACE_${workspaceType}__`))
+                        {
+                            window.open(response.url, '_blank');
+                            ajax.canceled = true;
+                            return;
+                        }
+                    }
 
                     if(!options.partial && !hasFatal) currentAppUrl = (response && response.url) ? (response.url.split('?zin=')[0].split('&zin=')[0]) : url;
                     let newCacheData = (cacheKey && !hasFatal) ? rawData : null;
@@ -834,19 +845,19 @@
             },
             complete: () =>
             {
-                if(!options.partial) $('body').removeClass('loading-page');
-                if(ajax.canceled) return;
-                if(onFinish) onFinish();
-                $(document).data('zinCache', null);
-                if(options.loadingTarget !== false) toggleLoading(options.loadingTarget || target, false, options.loadingClass);
-                callCallback('complete', []);
-                $(document).trigger('pageload.app');
                 const frameElement = window.frameElement;
                 if(frameElement)
                 {
                     frameElement.classList.remove('loading');
                     frameElement.classList.add('in');
                 }
+                if(!options.partial) $('body').removeClass('loading-page');
+                if(options.loadingTarget !== false) toggleLoading(options.loadingTarget || target, false, options.loadingClass);
+                if(ajax.canceled) return;
+                if(onFinish) onFinish();
+                $(document).data('zinCache', null);
+                callCallback('complete', []);
+                $(document).trigger('pageload.app');
             }
         });
         ajax.sendedAgain = true; // Disable the request again.
@@ -1960,6 +1971,7 @@
 
     function enterWorkspace(code, url)
     {
+        workspaceType = code;
         $.cookie.set('workspace', code || currentCode, {expires: config.cookieLife, path: config.webRoot});
         if(url) openUrl(url);
         else setTimeout(reloadPage, 500);
@@ -1967,6 +1979,7 @@
 
     function exitWorkspace()
     {
+        workspaceType = '';
         $.cookie.remove('workspace', {path: config.webRoot});
         setTimeout(reloadPage, 500);
     }
@@ -1981,6 +1994,7 @@
             info.dropmenu = $dropmenu.attr('zui-create-dropmenu');
             info.icon     = $('#heading>.toolbar>.btn>.icon').attr('class').replace('icon icon-', '');
         }
+        workspaceType = info ? info.type : null;
         $.apps.updateSpaceMenu && $.apps.updateSpaceMenu(info);
     }
 
