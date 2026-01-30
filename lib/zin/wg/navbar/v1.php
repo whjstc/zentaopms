@@ -151,12 +151,12 @@ class navbar extends wg
         if(!empty($items)) return $items;
 
         global $app, $lang, $config;
+        $adminMenuKey = '';
         if($app->tab == 'admin')
         {
             $groupID = data('groupID') ? data('groupID') : 0;
             $app->control->loadModel('admin')->setMenu($groupID);
             $adminMenuKey = $app->control->loadModel('admin')->getMenuKey();
-            jsVar('adminMenuKey', $adminMenuKey);
         }
 
         commonModel::replaceMenuLang();
@@ -178,6 +178,8 @@ class navbar extends wg
         $activeMenuID = data('activeMenuID');
         $items        = array();
         $flows        = $config->edition != 'open' ? $app->control->loadModel('my')->getFlowPairs() : array();
+        $projectModel = '';
+
         foreach($menu as $menuItem)
         {
             if(isset($menuItem->class) && strpos($menuItem->class, 'automation-menu'))
@@ -216,8 +218,8 @@ class navbar extends wg
             if($menuItem->link['module'] == 'project' and $menuItem->link['method'] == 'index')
             {
                 $projectID    = str_replace('project=', '', $menuItem->link['vars']);
-                $projectModel = $app->dbh->query("SELECT `model` FROM " . TABLE_PROJECT . " WHERE `id` = '$projectID'")->fetch();
-                if($projectModel) jsVar('projectModel', $projectModel->model);
+                $projectInfo  = $app->dbh->query("SELECT `model` FROM " . TABLE_PROJECT . " WHERE `id` = '$projectID'")->fetch();
+                if($projectInfo) $projectModel = $projectModel->model;
             }
 
             if($menuItem->link['module'] == 'execution' and $menuItem->link['method'] == 'more')
@@ -359,6 +361,12 @@ class navbar extends wg
         /* Set active menu to global data, make it accessible to other widgets */
         data('activeMenu', $activeMenu);
 
+        $menuGroup = $tab;
+        if(!empty($projectModel)) $menuGroup = "project-$projectModel";
+        elseif($isHomeMenu)       $menuGroup = "{$tab}-home";
+        elseif($tab == 'admin')   $menuGroup = "admin-$adminMenuKey";
+        data('mainNavbarGroup', $menuGroup);
+
         return $items;
     }
 
@@ -434,6 +442,7 @@ class navbar extends wg
             commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
             new nav
             (
+                setData('mainNavbarGroup', data('mainNavbarGroup')),
                 on::init()->call('initPageNavbar', $items),
                 set::items($navItems),
                 zui::create('ResponsiveNavHelper', $responsiveNavOptions),
