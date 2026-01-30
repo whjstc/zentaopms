@@ -400,7 +400,8 @@ class navbar extends wg
                 on::init()->call('initPageNavbar', $originItems, $workspace, $activeID, "__WORKSPACE_{$workspace}__"),
                 set::items($items),
                 $this->children()
-            )
+            ),
+            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
         );
     }
 
