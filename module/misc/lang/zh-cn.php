@@ -115,7 +115,8 @@ $lang->misc->feature->promptExecImage   = 'theme/default/images/main/prompt_exec
 $lang->misc->feature->promptLearnMore   = 'https://www.zentao.net/book/zentaopms/1097.html';
 
 /* Release Date. */
-$lang->misc->releaseDate['21.7.8']        = '2025-12-15';
+$lang->misc->releaseDate['21.7.9']      = '2026-02-02';
+$lang->misc->releaseDate['21.7.8']      = '2025-12-15';
 $lang->misc->releaseDate['21.7.7']      = '2025-10-29';
 $lang->misc->releaseDate['21.7.6']      = '2025-09-29';
 $lang->misc->releaseDate['21.7.5']      = '2025-09-11';
@@ -257,6 +258,7 @@ $lang->misc->releaseDate['7.1.stable']  = '2015-03-07';
 $lang->misc->releaseDate['6.3.stable']  = '2014-11-07';
 
 /* Release Detail. */
+$lang->misc->feature->all['21.7.9'][]        = array('title' => '修复Bug修复Bug修复Bug修复Bug', 'desc' => '');
 $lang->misc->feature->all['21.7.8'][]      = array('title' => 'API 2.0AI知识库兼容企业版兼容旗舰版。', 'desc' => '');
 $lang->misc->feature->all['21.7.7'][]      = array('title' => 'API2.0新版一键安装包第三方类库更新瀚高数据库适配。.兼容旗舰版。', 'desc' => '');
 $lang->misc->feature->all['21.7.6'][]      = array('title' => '..报告模板和项目报告功能。.兼容旗舰版。', 'desc' => '');
