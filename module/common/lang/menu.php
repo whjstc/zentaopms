@@ -186,17 +186,17 @@ $lang->product->homeMenu->list   = array('link' => $lang->product->list . '|prod
 $lang->product->homeMenu->kanban = array('link' => "{$lang->product->kanban}|product|kanban|");
 
 $lang->product->menu              = new stdclass();
-$lang->product->menu->dashboard   = array('link' => "{$lang->dashboard}|product|dashboard|productID=%s", 'icon' => 'icon-cards-view');
-$lang->product->menu->epic        = array('link' => "{$lang->ERCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=epic", 'subModule' => 'story', 'icon' => 'icon-book');
-$lang->product->menu->requirement = array('link' => "{$lang->URCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=requirement", 'alias' => 'batchedit', 'subModule' => 'story', 'icon' => 'icon-book');
-$lang->product->menu->story       = array('link' => "{$lang->SRCommon}|product|browse|productID=%s", 'alias' => 'batchedit', 'subModule' => 'story', 'exclude' => (isset($_GET['storyType']) ? ($_GET['storyType'] == 'requirement' ? 'browse,story-report,story-create,story-batchcreate' : '') : '') . ',batchtotask', 'icon' => 'icon-book' );
+$lang->product->menu->dashboard   = array('link' => "{$lang->dashboard}|product|dashboard|productID=%s", 'icon' => 'icon-dashboard');
+$lang->product->menu->epic        = array('link' => "{$lang->ERCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=epic", 'subModule' => 'story', 'icon' => 'icon-epic');
+$lang->product->menu->requirement = array('link' => "{$lang->URCommon}|product|browse|productID=%s&branch=&browseType=unclosed&param=0&storyType=requirement", 'alias' => 'batchedit', 'subModule' => 'story', 'icon' => 'icon-requirement');
+$lang->product->menu->story       = array('link' => "{$lang->SRCommon}|product|browse|productID=%s", 'alias' => 'batchedit', 'subModule' => 'story', 'exclude' => (isset($_GET['storyType']) ? ($_GET['storyType'] == 'requirement' ? 'browse,story-report,story-create,story-batchcreate' : '') : '') . ',batchtotask', 'icon' => 'icon-story' );
 $lang->product->menu->plan        = array('link' => "{$lang->productplan->shortCommon}|productplan|browse|productID=%s", 'subModule' => 'productplan,bug', 'icon' => 'icon-productplan');
 $lang->product->menu->project     = array('link' => "{$lang->projectCommon}|product|project|status=all&productID=%s", 'icon' => 'icon-project');
 $lang->product->menu->release     = array('link' => "{$lang->release->common}|release|browse|productID=%s", 'subModule' => 'release,system', 'icon' => 'icon-tag');
-$lang->product->menu->roadmap     = array('link' => "{$lang->roadmap}|product|roadmap|productID=%s", 'icon' => 'icon-blame');
-$lang->product->menu->track       = array('link' => "{$lang->track}|product|track|productID=%s", 'icon' => 'icon-target');
+$lang->product->menu->roadmap     = array('link' => "{$lang->roadmap}|product|roadmap|productID=%s", 'icon' => 'icon-roadmap');
+$lang->product->menu->track       = array('link' => "{$lang->track}|product|track|productID=%s", 'icon' => 'icon-kanban-box');
 $lang->product->menu->doc         = array('link' => "{$lang->doc->common}|doc|productSpace|objectID=%s", 'subModule' => 'doc,api', 'icon' => 'icon-file-text');
-$lang->product->menu->dynamic     = array('link' => "{$lang->dynamic}|product|dynamic|productID=%s", 'icon' => 'icon-clock');
+$lang->product->menu->dynamic     = array('link' => "{$lang->dynamic}|product|dynamic|productID=%s", 'icon' => 'icon-news');
 $lang->product->menu->settings    = array('link' => "{$lang->settings}|product|view|productID=%s", 'subModule' => 'tree,branch', 'alias' => 'edit,whitelist,addwhitelist', 'icon' => 'icon-cog-outline');
 
 /* Product menu order. */
@@ -230,16 +230,16 @@ $lang->project->homeMenu->kanban = array('link' => "{$lang->project->kanban}|pro
 
 /* Scrum menu. */
 $lang->scrum->menu              = new stdclass();
-$lang->scrum->menu->index       = array('link' => "{$lang->dashboard}|project|index|project=%s", 'icon' => 'icon-cards-view');
+$lang->scrum->menu->index       = array('link' => "{$lang->dashboard}|project|index|project=%s", 'icon' => 'icon-dashboard');
 $lang->scrum->menu->execution   = array('link' => "$lang->executionCommon|project|execution|status=undone&projectID=%s", 'exclude' => 'execution-testreport', 'subModule' => 'task', 'icon' => 'icon-run');
-$lang->scrum->menu->story       = array('link' => "{$lang->common->story}|projectstory|story|projectID=%s", 'subModule' => 'projectstory,tree,epic,requirement', 'alias' => 'story,track', 'exclude' => 'tree-browse', 'icon' => 'icon-book');
+$lang->scrum->menu->story       = array('link' => "{$lang->common->story}|projectstory|story|projectID=%s", 'subModule' => 'projectstory,tree,epic,requirement', 'alias' => 'story,track', 'exclude' => 'tree-browse', 'icon' => 'icon-story');
 $lang->scrum->menu->projectplan = array('link' => "{$lang->productplan->shortCommon}|projectplan|browse|productID=%s", 'subModule' => 'productplan');
 $lang->scrum->menu->doc         = array('link' => "{$lang->doc->common}|doc|projectSpace|objectID=%s", 'subModule' => 'doc,api', 'icon' => 'icon-file-text');
 $lang->scrum->menu->qa          = array('link' => "{$lang->qa->common}|project|bug|projectID=%s", 'subModule' => 'testcase,testtask,bug,testreport', 'alias' => 'bug,testtask,testcase,testreport', 'exclude' => 'execution-create,execution-batchedit', 'icon' => 'icon-test');
 if(helper::hasFeature('devops')) $lang->scrum->menu->devops      = array('link' => "{$lang->devops->common}|repo|browse|repoID=0&branchID=&objectID=%s", 'subModule' => 'repo,mr', 'icon' => 'icon-devops');
 $lang->scrum->menu->build       = array('link' => "{$lang->build->common}|projectbuild|browse|project=%s", 'subModule' => 'projectbuild', 'icon' => 'icon-wrench');
-$lang->scrum->menu->release     = array('link' => "{$lang->release->common}|projectrelease|browse|project=%s", 'subModule' => 'projectrelease,system', 'icon' => 'icon-flag');
-$lang->scrum->menu->dynamic     = array('link' => "$lang->dynamic|project|dynamic|project=%s", 'icon' => 'icon-clock');
+$lang->scrum->menu->release     = array('link' => "{$lang->release->common}|projectrelease|browse|project=%s", 'subModule' => 'projectrelease,system', 'icon' => 'icon-tag');
+$lang->scrum->menu->dynamic     = array('link' => "$lang->dynamic|project|dynamic|project=%s", 'icon' => 'icon-news');
 $lang->scrum->menu->settings    = array('link' => "$lang->settings|project|view|project=%s", 'subModule' => 'tree,stakeholder', 'alias' => 'edit,manageproducts,group,managemembers,manageview,managepriv,whitelist,addwhitelist,team,workflowgroup', 'exclude' => 'tree-browsetask', 'icon' => 'icon-cog-outline');
 
 $lang->scrum->dividerMenu = ',execution,programplan,doc,settings,';
@@ -288,16 +288,16 @@ $lang->scrum->menu->devops['menuOrder'][25] = 'mr';
 
 /* Waterfall menu. */
 $lang->waterfall->menu = new stdclass();
-$lang->waterfall->menu->index      = array('link' => "$lang->dashboard|project|index|project=%s", 'icon' => 'icon-cards-view');
+$lang->waterfall->menu->index      = array('link' => "$lang->dashboard|project|index|project=%s", 'icon' => 'icon-dashboard');
 $lang->waterfall->menu->execution  = array('link' => "{$lang->stage->common}|project|execution|status=undone&projectID=%s", 'subModule' => 'programplan,task', 'icon' => 'icon-waterfall');
-$lang->waterfall->menu->story      = array('link' => "{$lang->common->story}|projectstory|story|projectID=%s", 'subModule' => 'projectstory,tree,epic,requirement', 'alias' => 'story', 'exclude' => 'projectstory-track,tree-browse', 'icon' => 'icon-book');
+$lang->waterfall->menu->story      = array('link' => "{$lang->common->story}|projectstory|story|projectID=%s", 'subModule' => 'projectstory,tree,epic,requirement', 'alias' => 'story', 'exclude' => 'projectstory-track,tree-browse', 'icon' => 'icon-story');
 $lang->waterfall->menu->design     = array('link' => "{$lang->design->common}|design|browse|project=%s", 'icon' => 'icon-design');
 $lang->waterfall->menu->qa         = array('link' => "{$lang->qa->common}|project|bug|projectID=%s", 'subModule' => 'testcase,testtask,bug,testreport', 'alias' => 'bug,testtask,testcase,testreport', 'icon' => 'icon-test');
 $lang->waterfall->menu->doc        = array('link' => "{$lang->doc->common}|doc|projectSpace|objectID=%s", 'icon' => 'icon-file-text');
 if(helper::hasFeature('devops')) $lang->waterfall->menu->devops = array('link' => "{$lang->devops->common}|repo|browse|repoID=0&branchID=&objectID=%s", 'subModule' => 'repo,mr', 'icon' => 'icon-devops');
 $lang->waterfall->menu->build      = array('link' => "{$lang->build->common}|projectbuild|browse|project=%s", 'subModule' => 'projectbuild', 'icon' => 'icon-wrench');
-$lang->waterfall->menu->release    = array('link' => "{$lang->release->common}|projectrelease|browse|project=%s", 'subModule' => 'projectrelease,system', 'icon' => 'icon-flag');
-$lang->waterfall->menu->dynamic    = array('link' => "$lang->dynamic|project|dynamic|project=%s", 'icon' => 'icon-clock');
+$lang->waterfall->menu->release    = array('link' => "{$lang->release->common}|projectrelease|browse|project=%s", 'subModule' => 'projectrelease,system', 'icon' => 'icon-tag');
+$lang->waterfall->menu->dynamic    = array('link' => "$lang->dynamic|project|dynamic|project=%s", 'icon' => 'icon-news');
 
 $lang->waterfall->menu->settings = $lang->scrum->menu->settings;
 $lang->waterfall->dividerMenu    = ',programplan,build,dynamic,';
@@ -374,17 +374,17 @@ $lang->execution->homeMenu->executionkanban = array('link' => "{$lang->execution
 $lang->execution->menu = new stdclass();
 $lang->execution->menu->task   = array('link' => "{$lang->task->common}|execution|task|executionID=%s", 'subModule' => 'task,tree', 'alias' => 'importtask,importbug', 'exclude' => 'tree-browse', 'icon' => 'icon-task-list');
 $lang->execution->menu->kanban = array('link' => "$lang->executionKanban|execution|taskkanban|executionID=%s", 'icon' => 'icon-kanban');
-$lang->execution->menu->burn   = array('link' => "$lang->burn|execution|burn|executionID=%s", 'icon' => 'icon-data-structure flip-x');
+$lang->execution->menu->burn   = array('link' => "$lang->burn|execution|burn|executionID=%s", 'icon' => 'icon-chart-line-down flip-x');
 $lang->execution->menu->view   = array('link' => "$lang->view|execution|grouptask|executionID=%s", 'alias' => 'grouptask,tree,taskeffort,gantt,calendar,relation,maintainrelation,createrelation,batcheditrelation', 'icon' => 'icon-group-view');
 
 if($config->edition != 'open') $lang->execution->menu->view = array('link' => "$lang->view|execution|gantt|executionID=%s", 'alias' => 'grouptask,tree,taskeffort,gantt,calendar,relation,maintainrelation,createrelation,batcheditrelation', 'icon' => 'icon-group-view');
 
-$lang->execution->menu->story      = array('link' => "{$lang->common->story}|execution|story|executionID=%s", 'subModule' => 'story,requirement,epic', 'alias' => 'storyview,storykanban,linkstory,batchtotask', 'icon' => 'icon-file-text');
+$lang->execution->menu->story      = array('link' => "{$lang->common->story}|execution|story|executionID=%s", 'subModule' => 'story,requirement,epic', 'alias' => 'storyview,storykanban,linkstory,batchtotask', 'icon' => 'icon-story');
 $lang->execution->menu->qa         = array('link' => "{$lang->qa->common}|execution|bug|executionID=%s", 'subModule' => 'bug,testcase,testtask,testreport', 'alias' => 'qa,bug,testcase,testtask,testreport', 'icon' => 'icon-test');
 if(helper::hasFeature('devops')) $lang->execution->menu->devops = array('link' => "{$lang->devops->common}|repo|browse|repoID=0&branchID=&objectID=%s", 'subModule' => 'repo,mr', 'alias' => 'create', 'icon' => 'icon-devops');
 $lang->execution->menu->doc        = array('link' => "{$lang->doc->common}|execution|doc|objectID=%s", 'subModule' => 'doc', 'icon' => 'icon-file-text');
 $lang->execution->menu->build      = array('link' => "{$lang->build->common}|execution|build|executionID=%s", 'subModule' => 'build', 'icon' => 'icon-wrench');
-$lang->execution->menu->action     = array('link' => "$lang->dynamic|execution|dynamic|executionID=%s", 'icon' => 'icon-volume-up', 'icon' => 'icon-clock');
+$lang->execution->menu->action     = array('link' => "$lang->dynamic|execution|dynamic|executionID=%s", 'icon' => 'icon-volume-up', 'icon' => 'icon-news');
 $lang->execution->menu->settings   = array('link' => "$lang->settings|execution|view|executionID=%s", 'subModule' => 'personnel', 'alias' => 'edit,manageproducts,team,whitelist,addwhitelist,managemembers', 'class' => 'dropdown dropdown-hover', 'icon' => 'icon-cog-outline');
 $lang->execution->menu->more       = array('link' => "$lang->more|execution|more|%s", 'icon' => 'icon-more-vertical');
 
