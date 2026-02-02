@@ -140,6 +140,7 @@ $lang->homepage        = '设为模块首页';
 $lang->noviceTutorial  = '新手教程';
 $lang->changeLog       = '修改日志';
 $lang->manual          = '手册';
+$lang->site            = '站点管理';
 $lang->customMenu      = '自定义导航';
 $lang->customField     = '自定义表单项';
 $lang->lineNumber      = '行号';

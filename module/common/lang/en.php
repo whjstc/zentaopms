@@ -140,6 +140,7 @@ $lang->homepage        = 'Set Home';
 $lang->noviceTutorial  = 'ZenTao Tutorial';
 $lang->changeLog       = 'Change Log';
 $lang->manual          = 'User Manual';
+$lang->site            = 'Site Manage';
 $lang->customMenu      = 'Custom Menu';
 $lang->customField     = 'Custom Field';
 $lang->lineNumber      = 'Line No.';
