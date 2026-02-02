@@ -194,6 +194,34 @@ class taskModel extends model
                 $this->loadModel('common')->syncPPEStatus($oldTask->id);
             }
 
+            if($this->config->edition != 'open')
+            {
+                if($task->story != $oldTask->story)
+                {
+                    if($oldTask->story > 0)
+                    {
+                        $this->dao->delete()->from(TABLE_RELATION)
+                            ->where('relation')->eq('generated')
+                            ->andWhere('AID')->eq($oldTask->story)
+                            ->andWhere('AType')->eq('story')
+                            ->andWhere('BID')->eq($oldTask->id)
+                            ->andWhere('BType')->eq('task')
+                            ->exec();
+                    }
+
+                    if($task->story > 0)
+                    {
+                        $relation = new stdClass();
+                        $relation->relation = 'generated';
+                        $relation->AID      = $task->story;
+                        $relation->AType    = 'story';
+                        $relation->BID      = $oldTask->id;
+                        $relation->BType    = 'task';
+                        $relation->product  = 0;
+                        $this->dao->replace(TABLE_RELATION)->data($relation)->exec();
+                    }
+                }
+            }
         }
 
         return !dao::isError();
