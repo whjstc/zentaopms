@@ -95,8 +95,16 @@ class testtaskZen extends testtask
 
         if(!$this->config->testcase->needReview) unset($searchConfig['params']['status']['values']['wait']);
         if($product->shadow) unset($searchConfig['fields']['product']);
-        unset($searchConfig['fields']['branch']);
-        unset($searchConfig['params']['branch']);
+        if($product->type == 'normal')
+        {
+            unset($searchConfig['fields']['branch']);
+            unset($searchConfig['params']['branch']);
+        }
+        else
+        {
+            $searchConfig['fields']['branch'] = sprintf($this->lang->product->branch, $this->lang->product->branchName[$product->type]);
+            $searchConfig['params']['branch']['values'] = $this->testtask->getBranchesByTask($testtask);
+        }
 
         $this->config->testcase->search = $searchConfig;
         $this->loadModel('search')->setSearchParams($searchConfig);
