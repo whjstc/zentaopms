@@ -241,7 +241,7 @@ class product extends control
             $productID = $this->product->create($productData, (string) $this->post->lineName);
             if(dao::isError()) return $this->sendError(dao::getError());
 
-            $response = $this->productZen->responseAfterCreate($productID, $productData->program);
+            $response = $this->productZen->responseAfterCreate($productID, !empty($productData->program) ? $productData->program : 0);
             return $this->send($response);
         }
 
