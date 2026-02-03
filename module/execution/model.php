@@ -5489,6 +5489,8 @@ class executionModel extends model
      */
     public function updateProjectHours(int $newProjectID, int $oldProjectID, int $executionID): bool
     {
+        if(empty($newProjectID) || empty($oldProjectID) || empty($executionID)) return true;
+
         $this->dao->update(TABLE_EFFORT)->set('project')->eq($newProjectID)->where('execution')->eq($executionID)->exec();
 
         $executionHours  = $this->dao->select('estimate,`left`,consumed')->from(TABLE_EXECUTION)->where('id')->eq($executionID)->fetch();
