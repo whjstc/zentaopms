@@ -2773,6 +2773,9 @@ class executionModel extends model
         $this->dao->update(TABLE_TESTREPORT)->set('project')->eq($newProjectID)->where('project')->eq($oldProjectID)->andWhere('execution')->eq($executionID)->exec();
         $this->dao->update(TABLE_TESTTASK)->set('project')->eq($newProjectID)->where('project')->eq($oldProjectID)->andWhere('execution')->eq($executionID)->exec();
 
+        /* Update the hours and efforts. */
+        $this->updateProjectHours($newProjectID, $oldProjectID, $executionID);
+
         /* Update the team members and whitelist of the project. */
         $addedAccounts = $this->updateProjectUsers($executionID, $newProjectID);
         if($addedAccounts) $this->loadModel('user')->updateUserView(array($newProjectID), 'project', $addedAccounts);
@@ -5474,4 +5477,46 @@ class executionModel extends model
         return true;
     }
 
+    /**
+     * 更新项目的工时。
+     * Update project hours.
+     *
+     * @param  int    $newProjectID
+     * @param  int    $oldProjectID
+     * @param  int    $executionID
+     * @access public
+     * @return bool
+     */
+    public function updateProjectHours(int $newProjectID, int $oldProjectID, int $executionID): bool
+    {
+        $this->dao->update(TABLE_EFFORT)->set('project')->eq($newProjectID)->where('execution')->eq($executionID)->exec();
+
+        $executionHours  = $this->dao->select('estimate,`left`,consumed')->from(TABLE_EXECUTION)->where('id')->eq($executionID)->fetch();
+        $oldProjectHours = $this->dao->select('estimate,`left`,consumed')->from(TABLE_PROJECT)->where('id')->eq($oldProjectID)->fetch();
+        $newProjectHours = $this->dao->select('estimate,`left`,consumed')->from(TABLE_PROJECT)->where('id')->eq($newProjectID)->fetch();
+
+        if(!empty($executionHours->estimate))
+        {
+            $oldProjectHours->estimate -= $executionHours->estimate;
+            $newProjectHours->estimate += $executionHours->estimate;
+        }
+        if(!empty($executionHours->left))
+        {
+            $oldProjectHours->left -= $executionHours->left;
+            $newProjectHours->left += $executionHours->left;
+        }
+        if(!empty($executionHours->consumed))
+        {
+            $oldProjectHours->consumed -= $executionHours->consumed;
+            $newProjectHours->consumed += $executionHours->consumed;
+        }
+
+        $oldProjectHours->progress = ($oldProjectHours->consumed + $oldProjectHours->left) > 0 ? floor($oldProjectHours->consumed / ($oldProjectHours->consumed + $oldProjectHours->left) * 1000) / 1000 * 100 : 0;
+        $newProjectHours->progress = ($newProjectHours->consumed + $newProjectHours->left) > 0 ? floor($newProjectHours->consumed / ($newProjectHours->consumed + $newProjectHours->left) * 1000) / 1000 * 100 : 0;
+
+        $this->dao->update(TABLE_PROJECT)->data($oldProjectHours)->where('id')->eq($oldProjectID)->exec();
+        $this->dao->update(TABLE_PROJECT)->data($newProjectHours)->where('id')->eq($newProjectID)->exec();
+
+        return !dao::isError();
+    }
 }
