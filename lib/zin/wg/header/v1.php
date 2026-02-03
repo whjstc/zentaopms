@@ -169,7 +169,7 @@ class header extends wg
         /* 禅道国际版帮助样式调整。 */
         if(!empty($config->sanplexVersion))
         {
-            $items[] = array('text' => $lang->help, 'icon' => 'help', 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
+            $items[] = array('text' => $lang->manual, 'icon' => 'help', 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
         }
         else
         {
