@@ -260,6 +260,7 @@ class customModel extends model
             $prev = '';
             foreach($customMenu as $customMenuItem)
             {
+                if(empty($customMenuItem->name)) continue;
                 $name = $customMenuItem->name;
                 if(!isset($customMenuItem->order)) $customMenuItem->order = $order;
                 if($prev == 'divider') $customMenuItem->divider = true;
