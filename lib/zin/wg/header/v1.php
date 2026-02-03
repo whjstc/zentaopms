@@ -136,6 +136,9 @@ class header extends wg
                 );
             }
 
+            /* 禅道国际版增加站点管理。 */
+            if(!empty($config->sanplexVersion) && $app->user->admin) $items[] = array('text' => $lang->site, 'url' => createLink('admin', 'subscription'), 'icon' => 'sitemap');
+
             $items[] = array('type' => 'divider');
 
             if($app->config->vision === 'rnd' && !commonModel::isTutorialMode())
