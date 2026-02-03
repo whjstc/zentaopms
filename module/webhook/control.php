@@ -221,11 +221,7 @@ class webhook extends control
     public function chooseDept(int $id)
     {
         $webhook = $this->webhook->getById($id);
-        if(!in_array($webhook->type, array('dinguser', 'wechatuser', 'feishuuser')))
-        {
-            echo js::alert($this->lang->webhook->note->bind);
-            return print(js::locate($this->createLink('webhook', 'browse')));
-        }
+        if(!in_array($webhook->type, array('dinguser', 'wechatuser', 'feishuuser'))) return $this->send(array('result' => 'fail', 'message' => $this->lang->webhook->note->bind, 'load' => $this->createLink('webhook', 'browse')));
 
         $webhook->secret = json_decode($webhook->secret);
 
@@ -238,18 +234,13 @@ class webhook extends control
 
         if($webhook->type == 'feishuuser') $response = array('result' => 'success', 'data' => array());
 
-        if($response['result'] == 'fail')
-        {
-            echo js::error($response['message']);
-            return print(js::locate($this->createLink('webhook', 'browse')));
-        }
-
+        if($response['result'] == 'fail') return $this->send(array('result' => 'fail', 'message' => $response['message'], 'load' => $this->createLink('webhook', 'browse')));
         if($response['result'] == 'selected')
         {
             $locateLink  = $this->createLink('webhook', 'bind', "id={$id}");
             $locateLink .= strpos($locateLink, '?') !== false ? '&' : '?';
             $locateLink .= 'selectedDepts=' . join(',', $response['data']);
-            return print(js::locate($locateLink));
+            return $this->send(array('result' => 'success', 'load' => $locateLink));
         }
 
         $this->view->title       = $this->lang->webhook->chooseDept;
