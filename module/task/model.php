@@ -186,7 +186,7 @@ class taskModel extends model
                 $this->feedback->updateStatus('task', $oldTask->feedback, $task->status, $oldTask->status, $taskID);
             }
 
-            if(!empty($task->story) && !empty($task->isParent) && $this->post->syncChildren) $this->syncStoryToChildren($task);
+            if(!empty($task->story) && !empty($oldTask->isParent) && $this->post->syncChildren) $this->syncStoryToChildren($task);
 
             if(!$syncStatus && $oldTask->status == 'wait' && $task->status == 'doing')
             {
