@@ -29,6 +29,7 @@ class menuViewSwitcher extends wg
      */
     protected function build()
     {
+        navbar::getItems();
         $workspace = commonModel::getWorkspaceInfo();
         if($workspace['opened']) return null;
 
@@ -62,24 +63,26 @@ class menuViewSwitcher extends wg
         $navbarInMainMenu = data('navbarInMainMenu');
         if(empty($navbarInMainMenu)) return null;
 
-        $selectedItem = null;
-        $items        = [];
-        $lastItem     = null;
+        $selectedID = '';
+        $items      = [];
+        $lastID     = null;
         if($navbarInMainMenu)
         {
-            $addItem = function($item) use (&$items, &$lastItem, &$selectedItem, $lang)
+            $addItem = function($item) use (&$items, &$lastID, &$selectedID, $lang)
             {
-                if(is_array($lastItem) && ($lastItem['data-id'] === 'kanban' || $lastItem['data-id'] === 'burn')) $items[] = ['type' => 'divider'];
-                if($item['data-id'] === 'task') $item['text'] = $lang->execution->list;
+                $itemID = isset($item['data-id']) ? $item['data-id'] : '';
+                if($lastID && ($lastID === 'kanban' || $lastID === 'burn')) $items[] = ['type' => 'divider'];
+                if($itemID  === 'task') $item['text'] = $lang->execution->list;
                 if($item['active'])
                 {
+                    if($selectedID && !empty($items[$selectedID]['selected'])) $items[$selectedID]['selected'] = false;
                     $item['active']   = false;
                     $item['selected'] = true;
-                    $selectedItem = $item;
+                    $selectedID = $itemID ;
                 }
-                $item['icon'] = null;
-                $items[] = $item;
-                $lastItem = $item;
+                $item['icon']    = null;
+                $items[$itemID] = $item;
+                $lastID = $itemID ;
             };
             foreach($navbarInMainMenu as $item)
             {
@@ -98,15 +101,16 @@ class menuViewSwitcher extends wg
                 if(!empty($items)) $items[] = ['type' => 'divider'];
                 $browseType = data('browseType');
                 $active     = $app->moduleName === 'task' && $app->methodName === 'report';
-                $items[] = [
+                $addItem([
                     'active'   => $active,
                     'text'     => $lang->task->report->common,
+                    'data-id'  => 'report',
                     'data-app' => $app->tab,
                     'url'      => createLink('task', 'report', "execution={$execution->id}&browseType={$browseType}")
-                ];
+                ]);
             }
         }
 
-        return [$items, $selectedItem];
+        return [array_values($items), $items[$selectedID]];
     }
 }
