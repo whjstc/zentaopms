@@ -128,11 +128,7 @@ else
         formGroup
         (
             set::label($lang->comment),
-            editor
-            (
-                set::name('comment'),
-                set::rows('5')
-            )
+            editor(set::name('comment'), set::rows('5'))
         )
     );
     hr();
