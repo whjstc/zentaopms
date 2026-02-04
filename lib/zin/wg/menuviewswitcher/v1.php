@@ -29,7 +29,6 @@ class menuViewSwitcher extends wg
      */
     protected function build()
     {
-        navbar::getItems();
         $workspace = commonModel::getWorkspaceInfo();
         if($workspace['opened']) return null;
 
@@ -60,6 +59,7 @@ class menuViewSwitcher extends wg
     {
         global $lang, $app;
 
+        navbar::getItems();
         $navbarInMainMenu = data('navbarInMainMenu');
         if(empty($navbarInMainMenu)) return null;
 
