@@ -23,7 +23,7 @@ class icon extends wg
         list($name, $size) = $this->prop(array('name', 'size'));
         return h::i
         (
-            setClass('icon', empty($name) ? null : "icon-$name"),
+            empty($name) ? null : setClass('icon', str_starts_with($name, 'icon-') ? $name : "icon-$name"),
             is_numeric($size)
                 ? setStyle('font-size', "{$size}px")
                 : (is_string($size)
