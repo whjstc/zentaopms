@@ -1104,12 +1104,15 @@ class bug extends control
             $bug = form::data($this->config->bug->form->assignTo)->remove('mailto')->get();
             foreach($bugIdList as $bugID)
             {
+                $oldBug = $oldBugList[$bugID];
+                if($oldBug->status == 'closed') continue;
+
                 /* 构建 bug。 */
                 /* Build bug. */
                 $bug->id         = (int)$bugID;
                 $bug->assignedTo = $assignedTo;
 
-                $this->bug->assign($bug, $oldBugList[$bugID]);
+                $this->bug->assign($bug, $oldBug);
             }
 
             if(dao::isError()) return $this->send(array('result' => 'fail', 'message' => dao::getError()));
