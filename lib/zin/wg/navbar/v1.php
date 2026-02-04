@@ -33,7 +33,111 @@ class navbar extends wg
         return file_get_contents(__DIR__ . DS . 'js' . DS . 'v1.js');
     }
 
-    protected function getExecutionMoreItem($executionID)
+    protected function getOriginItems()
+    {
+        $items = $this->prop('items');
+        if($items !== null) return $items;
+
+        return static::getItems();
+    }
+
+    protected function buildWorkspaceNavbar(string $workspace)
+    {
+        global $app, $config;
+        $originItems      = $this->getOriginItems();
+        $showViewSwitcher = $app->rawModule === 'execution' && data('activeMenu') === 'task' && !empty($config->sanplexVersion) && $config->vision === 'rnd';
+        $items            = static::getWorkspaceItems($showViewSwitcher);
+        $activeID         = data('activeMenu');
+        $activeItem       = array('data-id' => $activeID);
+
+        foreach($originItems as $item)
+        {
+            if($item['data-id'] != $activeID) continue;
+            $activeItem = $item;
+            break;
+        }
+
+        return h::nav
+        (
+            set::id('navbar'),
+            div
+            (
+                setID('navbarHeading'),
+                setClass('text-lg'),
+                $activeItem['text']
+            ),
+            new nav
+            (
+                setData('workspace', $workspace),
+                setData('navbarGroup', data('mainNavbarGroup')),
+                setData('mainNavbarGroup', $app->tab . '-' . $activeID),
+                on::init()->call('initPageNavbar', $originItems, $workspace, $activeID, "__WORKSPACE_{$workspace}__"),
+                set::items($items),
+                $this->children()
+            ),
+            $showViewSwitcher ? css('#actionBar>a[href^="' . str_replace('.html', '', createLink('task', 'report')) . '"]{display: none;}') : null,
+            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
+        );
+    }
+
+    /**
+     * Build.
+     *
+     * @access protected
+     */
+    protected function build()
+    {
+        $workspace = commonModel::getWorkspaceInfo();
+        if($workspace['opened']) return $this->buildWorkspaceNavbar($workspace['type']);
+
+        $items    = $this->getOriginItems();
+        $navItems = [];
+
+        foreach($items as $item)
+        {
+            if(!empty($item['hidden'])) continue;
+            $navItems[] = array_merge($item, ['icon' => null]);
+        }
+
+        global $lang;
+        $responsiveNavOptions = [];
+        $responsiveNavOptions['container']        = 'parent';
+        $responsiveNavOptions['more']             = ['text' => $lang->other, 'caret' => true];
+        $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
+
+        return h::nav
+        (
+            set::id('navbar'),
+            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
+            new nav
+            (
+                setData('navbarGroup', data('mainNavbarGroup')),
+                on::init()->call('initPageNavbar', $items),
+                set::items($navItems),
+                zui::create('ResponsiveNavHelper', $responsiveNavOptions),
+                $this->children()
+            )
+        );
+    }
+
+
+    protected static function getWorkspaceItems(bool $showViewSwitcher = false)
+    {
+        if($showViewSwitcher)
+        {
+            list($items) = menuViewSwitcher::getItems();
+            foreach($items as $index => $item)
+            {
+                if(empty($item['selected'])) continue;
+                $items[$index]['active'] = true;
+            }
+            return $items;
+        }
+
+        return mainNavbar::getItems();
+    }
+
+    protected static function getExecutionMoreItem($executionID)
     {
         if(commonModel::isTutorialMode()) return;
 
@@ -105,7 +209,7 @@ class navbar extends wg
         );
     }
 
-    protected function getAppBtnItem()
+    protected static function getAppBtnItem()
     {
         if(commonModel::isTutorialMode()) return;
 
@@ -146,10 +250,16 @@ class navbar extends wg
         );
     }
 
-    protected function getItems()
+    /**
+     * Get the items for the navbar.
+     *
+     * @access public
+     * @return array
+     */
+    public static function getItems()
     {
-        $items = $this->prop('items');
-        if(!empty($items)) return $items;
+        $items = data('navbarOriginItems');
+        if($items !== null) return array_values($items);
 
         global $app, $lang, $config;
         $adminMenuKey = '';
@@ -229,7 +339,7 @@ class navbar extends wg
             if($menuItem->link['module'] == 'execution' and $menuItem->link['method'] == 'more')
             {
                 $executionID = $menuItem->link['vars'];
-                $executionMoreItem = $this->getExecutionMoreItem($executionID);
+                $executionMoreItem = static::getExecutionMoreItem($executionID);
                 if(!empty($executionMoreItem))
                 {
                     $newItem = $executionMoreItem;
@@ -241,7 +351,7 @@ class navbar extends wg
             }
             elseif($menuItem->link['module'] == 'app' and $menuItem->link['method'] == 'serverlink')
             {
-                $appBtnItem = $this->getAppBtnItem();
+                $appBtnItem = static::getAppBtnItem();
                 if(!empty($appBtnItem)) $newItem = $appBtnItem;
             }
             elseif($menuItem->link)
@@ -389,102 +499,8 @@ class navbar extends wg
         elseif($isHomeMenu)       $menuGroup = "{$tab}-home";
         elseif($tab == 'admin')   $menuGroup = "admin-$adminMenuKey";
         data('mainNavbarGroup', $menuGroup);
+        data('navbarOriginItems', $items);
 
         return array_values($items);
-    }
-
-    protected function getWorkspaceItems(bool $showViewSwitcher = false)
-    {
-        if($showViewSwitcher)
-        {
-            list($items) = menuViewSwitcher::getItems();
-            foreach($items as $index => $item)
-            {
-                if(empty($item['selected'])) continue;
-                $items[$index]['active'] = true;
-            }
-            return $items;
-        }
-
-        return mainNavbar::getItems();
-    }
-
-    protected function buildWorkspaceNavbar(string $workspace)
-    {
-        global $app, $config;
-        $originItems      = $this->getItems();
-        $showViewSwitcher = $app->rawModule === 'execution' && data('activeMenu') === 'task' && !empty($config->sanplexVersion) && $config->vision === 'rnd';
-        $items            = $this->getWorkspaceItems($showViewSwitcher);
-        $activeID         = data('activeMenu');
-        $activeItem       = array('data-id' => $activeID);
-
-        foreach($originItems as $item)
-        {
-            if($item['data-id'] != $activeID) continue;
-            $activeItem = $item;
-            break;
-        }
-
-        return h::nav
-        (
-            set::id('navbar'),
-            div
-            (
-                setID('navbarHeading'),
-                setClass('text-lg'),
-                $activeItem['text']
-            ),
-            new nav
-            (
-                setData('workspace', $workspace),
-                setData('navbarGroup', data('mainNavbarGroup')),
-                setData('mainNavbarGroup', $app->tab . '-' . $activeID),
-                on::init()->call('initPageNavbar', $originItems, $workspace, $activeID, "__WORKSPACE_{$workspace}__"),
-                set::items($items),
-                $this->children()
-            ),
-            $showViewSwitcher ? css('#actionBar>a[href^="' . str_replace('.html', '', createLink('task', 'report')) . '"]{display: none;}') : null,
-            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
-        );
-    }
-
-    /**
-     * Build.
-     *
-     * @access protected
-     */
-    protected function build()
-    {
-        $workspace = commonModel::getWorkspaceInfo();
-        if($workspace['opened']) return $this->buildWorkspaceNavbar($workspace['type']);
-
-        $items    = $this->getItems();
-        $navItems = [];
-
-        foreach($items as $item)
-        {
-            if(!empty($item['hidden'])) continue;
-            $navItems[] = array_merge($item, ['icon' => null]);
-        }
-
-        global $lang;
-        $responsiveNavOptions = [];
-        $responsiveNavOptions['container']        = 'parent';
-        $responsiveNavOptions['more']             = ['text' => $lang->other, 'caret' => true];
-        $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
-
-        return h::nav
-        (
-            set::id('navbar'),
-            commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
-            new nav
-            (
-                setData('navbarGroup', data('mainNavbarGroup')),
-                on::init()->call('initPageNavbar', $items),
-                set::items($navItems),
-                zui::create('ResponsiveNavHelper', $responsiveNavOptions),
-                $this->children()
-            )
-        );
     }
 }
