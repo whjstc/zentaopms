@@ -20,7 +20,7 @@ require_once dirname(__DIR__) . DS . 'nav' . DS . 'v1.php';
  *
  * @author Hao Sun
  */
-class mainNavbar extends nav
+class mainNavbar extends wg
 {
     protected static array $defineProps = array
     (
@@ -81,19 +81,6 @@ class mainNavbar extends nav
         return file_get_contents(__DIR__ . DS . 'js' . DS . 'v1.js');
     }
 
-    protected function created()
-    {
-        $badgeMap     = $this->prop('badgeMap');
-        $onRenderItem = $this->prop('onRenderItem');
-        $itemProps    = $this->prop('itemProps');
-        $activeItem   = $this->prop('active') ?: data('activeMenuItem');
-
-        $items = static::getItems(array('badgeMap' => $badgeMap, 'onRenderItem' => $onRenderItem, 'itemProps' => $itemProps, 'active' => $activeItem));
-        if(!$items) return;
-
-        $this->setProp('items', $items);
-    }
-
     /**
      * Override the build method.
      *
@@ -104,11 +91,24 @@ class mainNavbar extends nav
     {
         global $app, $config;
 
-        $moduleName = $app->rawModule;
-        $methodName = $app->rawMethod;
-        $items      = $this->prop('items');
+        $moduleName       = $app->rawModule;
+        $methodName       = $app->rawMethod;
+        $activeNavbarMenu = data('actualActiveMenu');
 
-        if(!$items && !in_array("$moduleName-$methodName", $config->hasMainNavBar)) return null;
+        if($activeNavbarMenu === 'view' && $moduleName === 'execution' && !empty($config->sanplexVersion)) return;
+
+        $items = $this->prop('items');
+
+        if($items === null)
+        {
+            $badgeMap     = $this->prop('badgeMap');
+            $onRenderItem = $this->prop('onRenderItem');
+            $itemProps    = $this->prop('itemProps');
+            $activeItem   = $this->prop('active') ?: data('activeMenuItem');
+            $items        = static::getItems(array('badgeMap' => $badgeMap, 'onRenderItem' => $onRenderItem, 'itemProps' => $itemProps, 'active' => $activeItem));
+        }
+
+        if(empty($items) && !in_array("$moduleName-$methodName", $config->hasMainNavBar)) return null;
 
         $leftBlock  = $this->block('left');
         $rightBlock = $this->block('right');
@@ -122,7 +122,8 @@ class mainNavbar extends nav
             (
                 setClass('container'),
                 empty($leftBlock) ? null : div(setClass('main-navbar-left'), $leftBlock),
-                parent::build(),
+                nav(set::items($items), set($this->getRestProps())),
+                $this->children(),
                 empty($rightBlock) ? null : div(setClass('main-navbar-right'), $rightBlock)
             ),
             commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item > a')->call('handleMainNavbarContextmenu', jsRaw('event'), jsRaw('this')),
@@ -171,6 +172,9 @@ class mainNavbar extends nav
     {
         global $app;
 
+        $items = data('mainNavbarMenuItems');
+        if($items !== null) return $items;
+
         $currentModule = $app->getModuleName();
         $currentMethod = $app->getMethodName();
         if($app->tab == 'admin')
@@ -184,7 +188,7 @@ class mainNavbar extends nav
 
         \commonModel::replaceMenuLang();
         \commonModel::setMainMenu();
-        $activeMenu = \commonModel::getActiveMainMenu();
+        $activeMenu = $props['activeMenu'] ?? \commonModel::getActiveMainMenu();
         if(empty($activeMenu)) return false;
 
         $menu = \customModel::getModuleMenu($activeMenu);
@@ -230,7 +234,7 @@ class mainNavbar extends nav
                 if($link['module'] == $currentModule && strpos(",{$menuItem['alias']},", ",{$currentMethod},") !== false) $active = 'active';
                 if(strpos(",{$menuItem['exclude']},", ",{$currentModule}-{$currentMethod},") !== false || strpos(",{$menuItem['exclude']},", ",{$currentModule},") !== false) $active = '';
             }
-            $item['class'] = $active;
+            $item['active'] = $active;
 
             if($badgeMap && isset($badgeMap[$name])) $item['badge'] = array('text' => $badgeMap[$name], 'class' => 'label rounded gray-pale size-sm');
             if($itemProps) $item = array_merge($item, $itemProps);
@@ -295,6 +299,7 @@ class mainNavbar extends nav
         }
 
         $items = array_filter($items, function($item) { return empty($item['hidden']); });
+        data('mainNavbarMenuItems', $items);
 
         return $items;
     }
