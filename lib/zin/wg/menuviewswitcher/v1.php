@@ -68,7 +68,7 @@ class menuViewSwitcher extends wg
         {
             $addItem = function($item) use (&$items, &$lastItem, &$selectedItem, $lang)
             {
-                if($lastItem && $lastItem['data-id'] === 'kanban' || $lastItem['data-id'] === 'burn') $items[] = ['type' => 'divider'];
+                if(is_array($lastItem) && ($lastItem['data-id'] === 'kanban' || $lastItem['data-id'] === 'burn')) $items[] = ['type' => 'divider'];
                 if($item['data-id'] === 'task') $item['text'] = $lang->execution->list;
                 if($item['active'])
                 {
