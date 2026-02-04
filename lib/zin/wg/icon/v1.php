@@ -21,9 +21,10 @@ class icon extends wg
     protected function build()
     {
         list($name, $size) = $this->prop(array('name', 'size'));
+        if(!empty($name) && !str_starts_with($name, 'icon-')) $name = "icon-$name";
         return h::i
         (
-            empty($name) ? null : setClass('icon', str_starts_with($name, 'icon-') ? $name : "icon-$name"),
+            empty($name) ? null : setClass('icon', $name),
             is_numeric($size)
                 ? setStyle('font-size', "{$size}px")
                 : (is_string($size)
