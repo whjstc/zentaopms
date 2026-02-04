@@ -405,7 +405,7 @@ class navbar extends wg
             list($items) = menuViewSwitcher::getItems();
             foreach($items as $index => $item)
             {
-                if(!$item['selected']) continue;
+                if(empty($item['selected'])) continue;
                 $items[$index]['active'] = true;
             }
             return $items;
@@ -418,7 +418,7 @@ class navbar extends wg
     {
         global $app, $config;
         $originItems      = $this->getItems();
-        $showViewSwitcher = $app->rawModule === 'execution' && data('activeMenu') === 'task' && !empty($config->sanplexVersion);
+        $showViewSwitcher = $app->rawModule === 'execution' && data('activeMenu') === 'task' && !empty($config->sanplexVersion) && $config->vision === 'rnd';
         $items            = $this->getWorkspaceItems($showViewSwitcher);
         $activeID         = data('activeMenu');
         $activeItem       = array('data-id' => $activeID);

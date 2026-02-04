@@ -873,7 +873,7 @@ $lang->aiapp->menuOrder[20] = 'models';
 $lang->aiapp->menuOrder[25] = 'config';
 
 /* Sanplex menu changes: */
-if(!empty($config->sanplexVersion))
+if(!empty($config->sanplexVersion) && $config->vision === 'rnd')
 {
     $lang->execution->menu->task['showInMainMenu']   = 'task';
     $lang->execution->menu->kanban['showInMainMenu'] = 'task';
