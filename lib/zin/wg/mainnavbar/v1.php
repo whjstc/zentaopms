@@ -95,7 +95,12 @@ class mainNavbar extends wg
         $methodName       = $app->rawMethod;
         $activeNavbarMenu = data('actualActiveMenu');
 
-        if($activeNavbarMenu === 'view' && $moduleName === 'execution' && !empty($config->sanplexVersion) && $config->vision === 'rnd') return;
+        if(!empty($config->sanplexVersion) && $config->vision === 'rnd')
+        {
+            $isExecutionView = $activeNavbarMenu === 'view' && $moduleName === 'execution';
+            $isTaskReport    = $methodName === 'report' && $moduleName === 'task';
+            if($isExecutionView || $isTaskReport) return;
+        }
 
         $items = $this->prop('items');
 
