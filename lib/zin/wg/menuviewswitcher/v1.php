@@ -32,7 +32,7 @@ class menuViewSwitcher extends wg
         $workspace = commonModel::getWorkspaceInfo();
         if($workspace['opened']) return null;
 
-        list($items, $selectedItem) = self::getItems();
+        list($items, $selectedItem) = static::getItems();
 
         return dropdown
         (
@@ -54,7 +54,7 @@ class menuViewSwitcher extends wg
      * @access public
      * @return array
      */
-    static function getItems()
+    public static function getItems()
     {
         global $lang, $app;
 
