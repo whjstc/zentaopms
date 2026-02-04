@@ -43,7 +43,7 @@ class menuViewSwitcher extends wg
                 setClass('rounded-full'),
                 set::type('surface'),
                 set::text($selectedItem['text']),
-                css('#actionBar>a[href^="' . createLink('task', 'report') . '"]{display: none;}')
+                css('#actionBar>a[href^="' . str_replace('.html', '', createLink('task', 'report')) . '"]{display: none;}')
             ),
             set::items($items)
         );
