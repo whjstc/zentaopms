@@ -740,8 +740,16 @@ class task extends control
     {
         /* Common actions of task module and task. */
         $this->taskZen->commonAction($taskID);
-        $task        = $this->task->getById($taskID);
+        $task = $this->task->getById($taskID);
+
         $currentTeam = !empty($task->team) ? $this->task->getTeamByAccount($task->team) : '';
+        if($task->mode == 'multi')
+        {
+            $currentTeam = '';
+            $account     = $this->app->user->account;
+            $teamPairs   = array_column($task->team, 'id', 'account');
+            if(isset($teamPairs[$account])) $currentTeam = zget($task->team, $teamPairs[$account], '');
+        }
 
         if(!empty($_POST))
         {

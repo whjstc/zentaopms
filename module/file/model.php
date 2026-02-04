@@ -516,7 +516,15 @@ class fileModel extends model
     {
         $companyID = isset($this->app->company->id) ? $this->app->company->id : 1;
         $savePath  = $this->app->getAppRoot() . "www/data/upload/{$companyID}/" . date('Ym/', $this->now);
-        if(!file_exists($savePath))
+
+        $parentDir = dirname($savePath);
+        while(!isset($parentCanWrite))
+        {
+            if(file_exists($parentDir)) $parentCanWrite = is_writable($parentDir);
+            $parentDir = dirname($parentDir);
+        }
+
+        if(!file_exists($savePath) && $parentCanWrite)
         {
             mkdir($savePath, 0777, true);
             touch($savePath . 'index.html');
