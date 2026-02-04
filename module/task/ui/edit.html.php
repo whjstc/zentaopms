@@ -127,6 +127,34 @@ detailHeader
 );
 
 $recordWorkhourDisabled = !empty($task->children) ? 'disabled' : '';
+if(!empty($task->team))
+{
+    $assignedToComponent = picker
+    (
+        setID('assignedTo'),
+        setClass('w-full'),
+        set::name('assignedTo'),
+        set::value($task->assignedTo),
+        set::items($assignedToOptions),
+        set::required(true),
+        $task->mode == 'linear' && !in_array($taskStatus, array('done', 'closed')) ? set::disabled(true) : null,
+        $taskStatus == 'closed' ? set::disabled(true) : null,
+    );
+}
+else
+{
+    $assignedToComponent = taskAssignedTo
+    (
+        setID('assignedTo'),
+        setClass('w-full'),
+        set::name('assignedTo'),
+        set::value($task->assignedTo),
+        set::items($assignedToOptions),
+        $taskStatus == 'closed' ? set::disabled(true) : null,
+        $manageLink ? set::manageLink($manageLink) : null
+    );
+}
+
 detailBody
 (
     set::isForm(true),
@@ -294,26 +322,7 @@ detailBody
                     div
                     (
                         setClass('flex grow'),
-                        !empty($task->team) ? picker
-                        (
-                            setID('assignedTo'),
-                            setClass('w-full'),
-                            set::name('assignedTo'),
-                            set::value($task->assignedTo),
-                            set::items($assignedToOptions),
-                            set::required(true),
-                            $task->mode == 'linear' && !in_array($taskStatus, array('done', 'closed')) ? set::disabled(true) : null,
-                            $taskStatus == 'closed' ? set::disabled(true) : null,
-                        ) :  taskAssignedTo
-                        (
-                            setID('assignedTo'),
-                            setClass('w-full'),
-                            set::name('assignedTo'),
-                            set::value($task->assignedTo),
-                            set::items($assignedToOptions),
-                            $taskStatus == 'closed' ? set::disabled(true) : null,
-                            $manageLink ? set::manageLink($manageLink) : null
-                        )
+                        $assignedToComponent
                     ),
                     div
                     (

@@ -125,20 +125,27 @@ foreach($results as $i => $result)
             setClass('border-r'),
             width('240px')
         );
-        $itemTds[] = !empty($stepResult['result']) ? div
-        (
-            setClass('text-center flex'),
-            width('56px'),
-            !empty($stepResult['files']) ? a
+        if(empty($stepResult['result']))
+        {
+            $itemTds[] = div(width('56px'));
+        }
+        else
+        {
+            $itemTds[] = div
             (
-                on::click('setFileModalHeight'),
-                set::href("#stepResultFileModal{$modalID}"),
-                set('data-toggle', 'modal'),
-                set('data-position', 'center'),
-                icon('paper-clip'),
-                $fileCount
-            ) : ''
-        ) : div(width('56px'));
+                setClass('text-center flex'),
+                width('56px'),
+                !empty($stepResult['files']) ? a
+                (
+                    on::click('setFileModalHeight'),
+                    set::href("#stepResultFileModal{$modalID}"),
+                    set('data-toggle', 'modal'),
+                    set('data-position', 'center'),
+                    icon('paper-clip'),
+                    $fileCount
+                ) : ''
+            );
+        }
         $fileModals[] = modal
         (
             set::id("stepResultFileModal{$modalID}"),
