@@ -33,6 +33,7 @@ class menuViewSwitcher extends wg
         if($workspace['opened']) return null;
 
         list($items, $selectedItem) = static::getItems();
+        if(empty($items)) return null;
 
         return dropdown
         (
