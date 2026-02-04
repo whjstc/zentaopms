@@ -4,6 +4,7 @@ namespace zin;
 
 require_once dirname(__DIR__) . DS . 'nav' . DS . 'v1.php';
 require_once dirname(__DIR__) . DS . 'mainnavbar' . DS . 'v1.php';
+require_once dirname(__DIR__) . DS . 'menuviewswitcher' . DS . 'v1.php';
 
 class navbar extends wg
 {
@@ -172,13 +173,15 @@ class navbar extends wg
         if($isTutorialMode and defined('WIZARD_MODULE')) $currentModule = WIZARD_MODULE;
         if($isTutorialMode and defined('WIZARD_METHOD')) $currentMethod = WIZARD_METHOD;
 
-        $tab          = $app->tab;
-        $menu         = \customModel::getMainMenu($isHomeMenu);
-        $activeMenu   = '';
-        $activeMenuID = data('activeMenuID');
-        $items        = array();
-        $flows        = $config->edition != 'open' ? $app->control->loadModel('my')->getFlowPairs() : array();
-        $projectModel = '';
+        $tab              = $app->tab;
+        $menu             = \customModel::getMainMenu($isHomeMenu);
+        $activeMenu       = '';
+        $activeMenuID     = data('activeMenuID');
+        $items            = array();
+        $flows            = $config->edition != 'open' ? $app->control->loadModel('my')->getFlowPairs() : array();
+        $projectModel     = '';
+        $navbarInMainMenu = [];
+        $activeInMainMenu = '';
 
         foreach($menu as $menuItem)
         {
@@ -222,13 +225,14 @@ class navbar extends wg
                 if($projectInfo) $projectModel = $projectModel->model;
             }
 
+            $newItem = null;
             if($menuItem->link['module'] == 'execution' and $menuItem->link['method'] == 'more')
             {
                 $executionID = $menuItem->link['vars'];
                 $executionMoreItem = $this->getExecutionMoreItem($executionID);
                 if(!empty($executionMoreItem))
                 {
-                    $items[] = $executionMoreItem;
+                    $newItem = $executionMoreItem;
                 }
                 elseif(isset(end($items)['type']) && end($items)['type'] == 'divider')
                 {
@@ -238,11 +242,11 @@ class navbar extends wg
             elseif($menuItem->link['module'] == 'app' and $menuItem->link['method'] == 'serverlink')
             {
                 $appBtnItem = $this->getAppBtnItem();
-                if(!empty($appBtnItem)) $items[] = $appBtnItem;
+                if(!empty($appBtnItem)) $newItem = $appBtnItem;
             }
             elseif($menuItem->link)
             {
-                $alias = isset($menuItem->alias) ? $menuItem->alias : '';
+                $alias  = isset($menuItem->alias) ? $menuItem->alias : '';
                 $target = '';
                 $module = '';
                 $method = '';
@@ -324,7 +328,7 @@ class navbar extends wg
                     }
 
                     if(empty($dropItems)) continue;
-                    $items[] = array
+                    $newItem = array
                     (
                         'type'     => 'dropdown',
                         'items'    => $dropItems,
@@ -339,7 +343,7 @@ class navbar extends wg
                 }
                 else
                 {
-                    $items[] = array(
+                    $newItem = array(
                         'class'    => $class,
                         'icon'     => isset($menuItem->icon) ? $menuItem->icon : '',
                         'text'     => $label,
@@ -354,12 +358,31 @@ class navbar extends wg
             }
             else
             {
-                $items[] = array('class' => $class, 'icon' => isset($menuItem->icon) ? $menuItem->icon : '', 'text' => $menuItem->text, 'active' => $isActive);
+                $newItem = array('class' => $class, 'icon' => isset($menuItem->icon) ? $menuItem->icon : '', 'text' => $menuItem->text, 'active' => $isActive);
             }
+
+            if(!$newItem) continue;
+
+            $showInMainMenu = isset($menuItem->showInMainMenu) ? $menuItem->showInMainMenu : false;
+            if($showInMainMenu)
+            {
+                if($isActive) $activeInMainMenu = $showInMainMenu;
+                $navbarInMainMenu[] = $newItem;
+            }
+            if(!$showInMainMenu || $showInMainMenu === $menuItem->name) $items[$menuItem->name] = $newItem;
+        }
+
+        data('actualActiveMenu', $activeMenu);
+
+        if(empty($items[$activeMenu]) && !empty($activeInMainMenu) && !empty($items[$activeInMainMenu]))
+        {
+            $items[$activeInMainMenu]['active'] = true;
+            $activeMenu = $activeInMainMenu;
         }
 
         /* Set active menu to global data, make it accessible to other widgets */
         data('activeMenu', $activeMenu);
+        data('navbarInMainMenu', $navbarInMainMenu);
 
         $menuGroup = $tab;
         if(!empty($projectModel)) $menuGroup = "project-$projectModel";
@@ -367,21 +390,33 @@ class navbar extends wg
         elseif($tab == 'admin')   $menuGroup = "admin-$adminMenuKey";
         data('mainNavbarGroup', $menuGroup);
 
-        return $items;
+        return array_values($items);
     }
 
-    protected function getWorkspaceItems()
+    protected function getWorkspaceItems(bool $showViewSwitcher = false)
     {
+        if($showViewSwitcher)
+        {
+            list($items) = menuViewSwitcher::getItems();
+            foreach($items as $index => $item)
+            {
+                if(!$item['selected']) continue;
+                $items[$index]['active'] = true;
+            }
+            return $items;
+        }
+
         return mainNavbar::getItems();
     }
 
     protected function buildWorkspaceNavbar(string $workspace)
     {
-        global $app;
-        $originItems  = $this->getItems();
-        $items        = $this->getWorkspaceItems();
-        $activeID     = data('activeMenu');
-        $activeItem   = array('data-id' => $activeID);
+        global $app, $config;
+        $originItems      = $this->getItems();
+        $showViewSwitcher = $app->rawModule === 'execution' && data('activeMenu') === 'task' && !empty($config->sanplexVersion);
+        $items            = $this->getWorkspaceItems($showViewSwitcher);
+        $activeID         = data('activeMenu');
+        $activeItem       = array('data-id' => $activeID);
 
         foreach($originItems as $item)
         {
@@ -408,6 +443,7 @@ class navbar extends wg
                 set::items($items),
                 $this->children()
             ),
+            $showViewSwitcher ? css('#actionBar>a[href^="' . createLink('task', 'report') . '"]{display: none;}') : null,
             commonModel::isTutorialMode() ? null : on::contextmenu('.nav-item:not(.nav-dropdown) > a, .nav-divider')->call('handleNavbarContextmenu', jsRaw('event'), jsRaw('this')),
         );
     }
