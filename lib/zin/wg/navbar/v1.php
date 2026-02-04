@@ -298,14 +298,7 @@ class navbar extends wg
             if(isset($menuItem->class) && strpos($menuItem->class, 'automation-menu'))
             {
                 if($menuItem->divider) $items[] = array('type' => 'divider');
-                $items[] = array
-                (
-                    'class'   => $menuItem->class,
-                    'text'    => $menuItem->text,
-                    'type'    => 'text',
-                    'tagName' => 'span',
-                    'icon'    => isset($menuItem->icon) ? $menuItem->icon : '',
-                );
+                $items[] = array('class' => $menuItem->class, 'text' => $menuItem->text, 'type' => 'text', 'tagName' => 'span', 'icon' => isset($menuItem->icon) ? $menuItem->icon : '');
                 continue;
 
             }
@@ -340,14 +333,8 @@ class navbar extends wg
             {
                 $executionID = $menuItem->link['vars'];
                 $executionMoreItem = static::getExecutionMoreItem($executionID);
-                if(!empty($executionMoreItem))
-                {
-                    $newItem = $executionMoreItem;
-                }
-                elseif(isset(end($items)['type']) && end($items)['type'] == 'divider')
-                {
-                    array_pop($items); // 最后一个是分割线，则删除
-                }
+                if(!empty($executionMoreItem)) $newItem = $executionMoreItem;
+                elseif(isset(end($items)['type']) && end($items)['type'] == 'divider') array_pop($items); // 最后一个是分割线，则删除
             }
             elseif($menuItem->link['module'] == 'app' and $menuItem->link['method'] == 'serverlink')
             {
@@ -369,10 +356,7 @@ class navbar extends wg
                     if(isset($menuItem->link['method'])) $method = $menuItem->link['method'];
                 }
 
-                if($module == $currentModule and ($method == $currentMethod or str_contains(",$alias,", ",$currentMethod,")) and !str_contains(",$exclude,", ",$currentMethod,"))
-                {
-                    $isActive = true;
-                }
+                if($module == $currentModule and ($method == $currentMethod or str_contains(",$alias,", ",$currentMethod,")) and !str_contains(",$exclude,", ",$currentMethod,")) $isActive = true;
 
                 $dataApp = (isset($lang->navGroup->$module) && $tab != $lang->navGroup->$module) || isset($flows[$module]) ? $tab : null;
                 if($isActive && $activeMenuID) $isActive = $menuItem->name == $activeMenuID;
