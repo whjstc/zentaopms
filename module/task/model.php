@@ -3167,7 +3167,8 @@ class taskModel extends model
     public function start(object $oldTask, object $task): false|array
     {
         /* Process data for multiple tasks. */
-        $currentTeam = !empty($oldTask->team) ? $this->getTeamByAccount($oldTask->team) : array();
+        $account     = $this->app->user->account;
+        $currentTeam = !empty($oldTask->team) ? $this->getTeamByAccount($oldTask->team, $account, array()) : '';
         if($currentTeam)
         {
             /* Update task team. */
@@ -3195,7 +3196,7 @@ class taskModel extends model
             if(count($finishedUsers) == count($oldTask->team))
             {
                 $task->status       = 'done';
-                $task->finishedBy   = $this->app->user->account;
+                $task->finishedBy   = $account;
                 $task->finishedDate = $now;
             }
         }

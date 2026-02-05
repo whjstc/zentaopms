@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace zin;
 
 jsVar('confirmFinish', $lang->task->confirmFinish);
+jsVar('confirmTeamFinish', $lang->task->confirmTeamFinish);
+jsVar('currentTeam', $currentTeam);
 
 /* zin: Set variables to define control for form. */
 $assignedToControl = '';
