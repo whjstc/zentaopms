@@ -11465,7 +11465,7 @@ class upgradeModel extends model
         $this->app->loadConfig('ai');
         foreach($this->config->ai->initAIPrompts as $aiPrompt)
         {
-            if(!$this->checkExistAIPrompt($aiPrompt)) return;
+            if(!$this->checkExistAIPrompt($aiPrompt)) continue;
 
             $index = $aiPrompt->id;
             unset($aiPrompt->id);

@@ -63,8 +63,8 @@ class webhook extends control
     {
         if($_POST)
         {
-            $webhook = form::data($this->config->webhook->form->create)->get();
-            $this->webhook->create($webhook);
+            $webhook   = form::data($this->config->webhook->form->create)->get();
+            $webhookID = $this->webhook->create($webhook);
             if(dao::isError()) return $this->send(array('result' => 'fail', 'message' => dao::getError()));
             if($this->viewType == 'json') return $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'id' => $webhookID));
             return $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'load' => inlink('browse')));
@@ -320,9 +320,12 @@ class webhook extends control
                     $diff = time() - $time;
                 }
                 $this->webhook->saveLog($webhook, $data->action, $data->data, $result);
+                $this->webhook->setSentStatus($data->id, 'sended', $now);
             }
-
-            $this->webhook->setSentStatus($data->id, 'sended', $now);
+            else
+            {
+                $this->webhook->setSentStatus($data->id, 'fail', $now);
+            }
         }
 
         $this->dao->delete()->from(TABLE_NOTIFY)->where('status')->eq('sended')->exec();

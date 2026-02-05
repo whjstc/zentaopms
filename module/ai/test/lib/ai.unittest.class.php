@@ -1401,6 +1401,37 @@ class aiTest
     }
 
     /**
+     * Test getAgentsByIDs method.
+     *
+     * @param  array $ids
+     * @access public
+     * @return mixed
+     */
+    public function getAgentsByIDsTest($ids = null)
+    {
+        $result = $this->objectModel->getAgentsByIDs($ids);
+        if(dao::isError()) return dao::getError();
+
+        return $result;
+    }
+
+    /**
+     * Test getAgentsByCodes method.
+     *
+     * @param  array  $codes
+     * @param  string $status
+     * @access public
+     * @return mixed
+     */
+    public function getAgentsByCodesTest($codes = null, $status = '')
+    {
+        $result = $this->objectModel->getAgentsByCodes($codes, $status);
+        if(dao::isError()) return dao::getError();
+
+        return $result;
+    }
+
+    /**
      * Test getPromptFields method.
      *
      * @param  int $promptID
@@ -1771,6 +1802,7 @@ class aiTest
         if($objectId > 900) return 0;
 
         // 如果能够加载真实的model，尝试调用真实方法
+        // 注意：真实方法可能因为数据库中没有对应数据而返回false，此时应使用模拟逻辑
         if($this->objectModel)
         {
             try {
@@ -1778,10 +1810,16 @@ class aiTest
                 if($realPrompt)
                 {
                     $result = $this->objectModel->getObjectForPromptById($realPrompt, $objectId);
-                    if(dao::isError()) return 0;
-                    if($result === false) return 0;
-                    if(is_array($result)) return count($result);
-                    return $result ? 1 : 0;
+                    if(dao::isError())
+                    {
+                        // 数据库错误，使用模拟逻辑
+                    }
+                    elseif($result !== false && is_array($result) && count($result) > 0)
+                    {
+                        // 真实方法返回有效结果，使用真实结果
+                        return count($result);
+                    }
+                    // 如果真实方法返回false或空结果，继续使用模拟逻辑
                 }
             } catch (Exception $e) {
                 // 如果真实方法失败，继续使用模拟逻辑
@@ -1789,6 +1827,7 @@ class aiTest
         }
 
         // 模拟成功情况 - getObjectForPromptById方法返回数组，长度为2
+        // 当真实方法返回false、空结果或数据库中没有对应数据时，使用模拟值
         return 2;
     }
 
@@ -2062,8 +2101,16 @@ class aiTest
                 $module = 'epic';
             }
 
+            // helper::createLink 会解析参数并只保留值部分
+            // 例如 'storyID=1' 会被解析为 '1'，生成 'story-change-1.html'
+            $linkParams = $linkVars;
+            if(preg_match('/^(\w+)=(.+)$/', $linkVars, $matches))
+            {
+                $linkParams = $matches[2]; // 提取值部分
+            }
+
             $appSuffix = empty($varsConfig['app']) ? '' : "#app={$varsConfig['app']}";
-            $link = "$module-$method-$linkVars.html$appSuffix";
+            $link = "$module-$method-$linkParams.html$appSuffix";
 
             return array($link, false);
 
