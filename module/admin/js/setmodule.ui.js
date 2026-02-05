@@ -42,7 +42,6 @@ function checkGroup()
     $(this).closest('tr').find("input[type=checkbox][name^='module']").each(function()
     {
         $(this).prop('checked', checked);
-        changeModule($(this));
     });
 };
 
