@@ -132,24 +132,8 @@ $promptMenuInject = function() use ($generateAgents)
     $pageInfo        = "$module,$method";
     if(!$showOnList)
     {
-        $html .= '<li class="menu-item">';
-        $html .= html::a
-        (
-            helper::createLink('ai', 'promptExecute', "promptId=$prompt->id&objectId=$currentObjectId&auto=0"),
-            $prompt->name . ($prompt->status != 'active' ? '<span class="label size-sm gray-500-pale ring-gray-500" style="margin-left: 4px; white-space: nowrap;">' . $this->lang->ai->prompts->statuses[$prompt->status] . '</span>' : ''),
-            '',
-            "class='prompt ajax-submit' style='width: 100%;'" . (empty($prompt->unauthorized) ? '' : ' disabled') . (empty($prompt->desc) ? '' : " title='$prompt->desc' data-placement='left'"),
-            'btn ghost size-sm font-medium text-left'
-        );
-        $html .= '</li>';
-    }
-    $html .= '</menu></div>';
-
-    if($canAssign && !empty($showTeammates))
-    {
-        $pageInfo = "$module,$method";
-        $html    .= '<div class="prompts dropdown inline-block"><button class="btn ai-styled size-sm size-sm font-medium" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-hand-right"></i>' . $assignedBtnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
-        foreach($showTeammates as $teammate)
+        $html .= '<div class="prompts dropdown' . ((isset($menuOptions->class) ? ' ' . $menuOptions->class : '') . (isset($menuOptions->dropdownClass) ? ' ' . $menuOptions->dropdownClass : '')) . '"><button class="btn ai-styled size-sm size-sm font-medium' . (isset($menuOptions->buttonClass) ? ' ' . $menuOptions->buttonClass : '') . '" type="button" data-toggle="dropdown" data-placement="' . zget($menuOptions, 'buttonPlacement', 'bottom-end') . '"><i class="icon icon-lightning"></i>' . $btnName . '<span class="caret-down"></span></button><menu class="dropdown-menu menu">';
+        foreach($prompts as $prompt)
         {
             $html .= '<li class="menu-item">';
             $html .= html::a
