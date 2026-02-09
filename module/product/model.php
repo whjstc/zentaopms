@@ -379,7 +379,7 @@ class productModel extends model
         $fixData->order = $productID * 5;
         if(!empty($lineName))
         {
-            $lineID = $this->productTao->createLine((int)$product->program, $lineName);
+            $lineID = $this->productTao->createLine(!empty($product->program) ? (int)$product->program : 0, $lineName);
             if($lineID) $fixData->line = $lineID;
         }
         $this->dao->update(TABLE_PRODUCT)->data($fixData)->where('id')->eq($productID)->exec();
