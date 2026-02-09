@@ -2237,7 +2237,12 @@ if(!$inUpgrade)
         unset($lang->resource->sonarqube);
         unset($lang->resource->mr);
         unset($lang->resource->instance, $lang->resource->space, $lang->resource->store);
-        unset($lang->resource->zanode, $lang->resource->ci, $lang->resource->testcase->showScript, $lang->resource->testcase->automation);
+        unset($lang->resource->zanode,   $lang->resource->ci);
+        unset($lang->resource->testcase->showScript, $lang->resource->testcase->automation);
+        unset($lang->resource->design->linkCommit,   $lang->resource->design->viewCommit, $lang->resource->design->unlinkCommit, $lang->resource->design->revision);
+        unset($lang->resource->story->createBranch,  $lang->resource->story->unlinkBranch);
+        unset($lang->resource->bug->createBranch,    $lang->resource->bug->unlinkBranch);
+        unset($lang->resource->task->createBranch,   $lang->resource->task->unlinkBranch);
     }
     if(!helper::hasFeature('kanban'))    unset($lang->resource->kanban);
     if(!helper::hasFeature('program'))   unset($lang->resource->program);
