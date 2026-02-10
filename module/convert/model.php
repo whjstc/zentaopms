@@ -887,10 +887,8 @@ EOT;
                 {
                     foreach($projectGroup as $issueType => $projects)
                     {
-                        if(in_array($project->id, $projects))
-                        {
-                            foreach($workflow->transitions as $action) $workflowActions[$issueType]['actions'][$action->id] = (array)$action;
-                        }
+                        if(!in_array($project->id, $projects)) continue;
+                        foreach($workflow->transitions as $action) $workflowActions[$issueType]['actions'][$action->id] = (array)$action;
                     }
                 }
             }
