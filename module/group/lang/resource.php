@@ -2245,7 +2245,7 @@ if(!$inUpgrade)
         unset($lang->resource->task->createBranch,   $lang->resource->task->unlinkBranch);
     }
     if(!helper::hasFeature('kanban'))    unset($lang->resource->kanban);
-    if(!helper::hasFeature('program'))   unset($lang->resource->program);
+    if(!helper::hasFeature('program'))   unset($lang->resource->program, $lang->resource->project->programTitle);
     if(!helper::hasFeature('caselib'))   unset($lang->resource->caselib, $lang->resource->testcase->confirmLibcaseChange, $lang->resource->testcase->ignoreLibcaseChange, $lang->resource->testcase->importFromLib, $lang->resource->testcase->importToLib);
     if(!helper::hasFeature('automated')) unset($lang->resource->zanode, $lang->resource->ci, $lang->resource->testcase->showScript, $lang->resource->testcase->automation);
     if(!helper::hasFeature('testsuite')) unset($lang->resource->testsuite);
