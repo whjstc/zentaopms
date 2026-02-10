@@ -144,7 +144,7 @@ window.executeZentaoPrompt = async function(info, testingMode)
             type     : 'agent',
             model    : info.model,
             tools    : tools,
-            prompt   : [info.role, zui.formatString(langData.processDataPrefix, {data: info.dataPrompt}), zui.formatString(langData.promptExtraLimit, {toolName: toolName})].join('\n\n'),
+            prompt   : [info.role, zui.formatString(langData.processDataPrefix, {data: info.dataPrompt}), noTargetForm ? null : zui.formatString(langData.promptExtraLimit, {toolName: toolName})].filter(Boolean).join('\n\n'),
             form     : formConfig,
             memories : klibs.length ? [{collections: klibs}] : undefined,
         },
