@@ -365,8 +365,8 @@ class productModel extends model
         /* Insert product and get the product ID. */
         $this->lang->error->unique = $this->lang->error->repeat;
         $this->dao->insert(TABLE_PRODUCT)->data($product)->autoCheck()
-            ->checkIF((!empty($product->name) && isset($product->program)), 'name', 'unique', "`program` = {$product->program} AND `deleted` = '0'")
-            ->checkIF((!empty($product->code) && isset($product->program)), 'code', 'unique', "`program` = {$product->program} AND `deleted` = '0'")
+            ->checkIF((!empty($product->name) && isset($product->program)), 'name', 'unique', "`program` = " . zget($product, 'program') . " AND `deleted` = '0'")
+            ->checkIF((!empty($product->code) && isset($product->program)), 'code', 'unique', "`program` = " . zget($product, 'program') . " AND `deleted` = '0'")
             ->batchCheck($this->config->product->create->requiredFields, 'notempty')
             ->checkFlow()
             ->exec();
@@ -379,7 +379,7 @@ class productModel extends model
         $fixData->order = $productID * 5;
         if(!empty($lineName))
         {
-            $lineID = $this->productTao->createLine((int)$product->program, $lineName);
+            $lineID = $this->productTao->createLine(!empty($product->program) ? (int)$product->program : 0, $lineName);
             if($lineID) $fixData->line = $lineID;
         }
         $this->dao->update(TABLE_PRODUCT)->data($fixData)->where('id')->eq($productID)->exec();
