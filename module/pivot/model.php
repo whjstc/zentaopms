@@ -2023,7 +2023,7 @@ class pivotModel extends model
                     $drillFields[$field] = $drillField;
                 }
                 $optionList  = isset($fieldOptions[$field]) ? $fieldOptions[$field] : array();
-                $rowAfterFields[$field] = isset($optionList[$value]) ? $optionList[$value] : $value;
+                $rowAfterFields[$field] = isset($optionList[(string)$value]) ? $optionList[(string)$value] : $value;
             }
             $dataDrills[$key] = array('drillFields' => $drillFields);
 
