@@ -139,7 +139,7 @@ class cron extends control
         set_time_limit(0);
         session_write_close();
 
-        $execId = getmypid();
+        $execId = mt_rand();
         if($restart)
         {
             $this->cron->restartCron($execId);
@@ -185,7 +185,7 @@ class cron extends control
         set_time_limit(0);
         session_write_close();
 
-        $execId = getmypid();
+        $execId = mt_rand();
         $this->cron->restartCron($execId);
 
         $this->loadModel('common');
@@ -220,7 +220,7 @@ class cron extends control
 
         $this->loadModel('common');
 
-        $execId = getmypid();
+        $execId = mt_rand();
         while(true)
         {
             if(empty($this->config->global->cron))
@@ -394,7 +394,7 @@ class cron extends control
         if(!empty($task->command))
         {
             $this->dao->update(TABLE_QUEUE)->set('status')->eq('doing')->set('execId')->eq($execId)->where('id')->eq($task->id)->exec();
-            usleep(500);
+            usleep(5000);
 
             $task = $this->dao->select('*')->from(TABLE_QUEUE)->where('id')->eq($task->id)->fetch();
             if($task->execId != $execId) return;
