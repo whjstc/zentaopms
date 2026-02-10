@@ -193,7 +193,7 @@ $lang->convert->jira->passwordDifferent  = 'Password do not match!';
 $lang->convert->jira->passwordEmpty      = 'Password can not be empty!';
 $lang->convert->jira->passwordLess       = 'Password must not be less than six characters!';
 $lang->convert->jira->importSuccessfully = 'Done!';
-$lang->convert->jira->importResult       = "Import <strong class='text-red'>%s</strong> data, <strong class='%scount'>%s</strong> pieces of data processed；";
+$lang->convert->jira->importResult       = "Import <strong class='text-danger'>%s</strong> data, <strong class='%scount'>%s</strong> pieces of data processed；";
 $lang->convert->jira->importing          = 'Data is being imported, please do not switch to other pages.';
 $lang->convert->jira->importingAB        = 'Data Import';
 $lang->convert->jira->imported           = 'Data Import Complete';
@@ -221,13 +221,13 @@ $lang->convert->jira->steps['confirme']   = 'Import Data';
 $lang->convert->jira->importSteps['db'][1]   = 'Backup ZenTao database, backup Jira database.';
 $lang->convert->jira->importSteps['db'][2]   = 'Using ZenTao when importing data will cause performance pressure on the server, please try to ensure that no one is using ZenTao when importing data.';
 $lang->convert->jira->importSteps['db'][3]   = 'Import the Jira database into the Mysql used by ZenTao, the name is distinguished from the ZenTao database.';
-$lang->convert->jira->importSteps['db'][4]   = "Put the Jira <strong class='text-red'> attachments</strong> directory under <strong class='text-red'>%s</strong>, Make sure you have enough disk space on the ZenTao server.";
+$lang->convert->jira->importSteps['db'][4]   = "Put the Jira <strong class='text-danger'> attachments</strong> directory under <strong class='text-danger'>%s</strong>, Make sure you have enough disk space on the ZenTao server.";
 $lang->convert->jira->importSteps['db'][5]   = "After the above steps are completed, please enter the Jira database name to proceed to the next step.";
 
 $lang->convert->jira->importSteps['file'][1] = 'Backup ZenTao database, backup Jira file.';
 $lang->convert->jira->importSteps['file'][2] = 'Using ZenTao when importing data will cause performance pressure on the server, please try to ensure that no one is using ZenTao when importing data.';
-$lang->convert->jira->importSteps['file'][3] = "Put the Jira backup file <strong class='text-red'>entities.xml</strong> under <strong class='text-red'>%s</strong>.";
-$lang->convert->jira->importSteps['file'][4] = "Put the Jira <strong class='text-red'> attachments</strong> directory under <strong class='text-red'>%s</strong>, Make sure you have enough disk space on the ZenTao server.";
+$lang->convert->jira->importSteps['file'][3] = "Put the Jira backup file <strong class='text-danger mx-1'>entities.xml</strong> under <strong class='text-danger mx-1'>%s</strong>.";
+$lang->convert->jira->importSteps['file'][4] = "Put the Jira <strong class='text-danger mx-1'> attachments</strong> directory under <strong class='text-danger mx-1'>%s</strong>, Make sure you have enough disk space on the ZenTao server.";
 $lang->convert->jira->importSteps['file'][5] = "To ensure the integrity of the imported data, please enter the domain name, administrator account, password/Token of the current Jira environment.";
 $lang->convert->jira->importSteps['file'][6] = "After the above steps are completed, click Next.";
 
