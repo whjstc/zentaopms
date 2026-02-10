@@ -52,7 +52,7 @@ class navbar extends wg
 
         foreach($originItems as $item)
         {
-            if($item['data-id'] != $activeID) continue;
+            if(empty($item['data-id']) || $item['data-id'] != $activeID) continue;
             $activeItem = $item;
             break;
         }
@@ -330,7 +330,7 @@ class navbar extends wg
             {
                 $projectID    = str_replace('project=', '', $menuItem->link['vars']);
                 $projectInfo  = $app->dbh->query("SELECT `model` FROM " . TABLE_PROJECT . " WHERE `id` = '$projectID'")->fetch();
-                if($projectInfo) $projectModel = $projectModel->model;
+                if($projectInfo && isset($projectModel->model)) $projectModel = $projectModel->model;
             }
 
             $newItem = null;
