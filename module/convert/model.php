@@ -804,6 +804,7 @@ EOT;
             {
                 foreach($fieldList as $fieldID => $field) $fields[$issueType][$fieldID] = $field->cfname;
             }
+            return $fields;
         }
 
         $issues     = $this->getJiraData($this->session->jiraMethod, 'issue');
