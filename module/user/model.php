@@ -2553,6 +2553,11 @@ class userModel extends model
         /* 当前用户为项目集的PM或创建者则判断为有权限。 */
         if($program->PM == $account || $program->openedBy == $account) return true;
 
+        if($program->acl == 'open')        return true; // 如果项目集为公开则判断为有权限。
+        if(isset($stakeholders[$account])) return true; // 如果该用户是项目集的干系人则判断为有权限。
+        if(isset($whiteList[$account]))    return true; // 如果该用户是项目集的白名单成员则判断为有权限。
+        if(isset($admins[$account]))       return true; // 如果该用户是项目集的管理人员则判断为有权限。
+
         /* 如果是项目集内公开，则检查所有父项目集的权限。 */
         if($program->parent != 0 && $program->acl == 'program')
         {
@@ -2564,11 +2569,6 @@ class userModel extends model
                 if($parent->PM == $account || $parent->openedBy == $account) return true;
             }
         }
-
-        if($program->acl == 'open')        return true; // 如果项目集为公开则判断为有权限。
-        if(isset($stakeholders[$account])) return true; // 如果该用户是项目集的干系人则判断为有权限。
-        if(isset($whiteList[$account]))    return true; // 如果该用户是项目集的白名单成员则判断为有权限。
-        if(isset($admins[$account]))       return true; // 如果该用户是项目集的管理人员则判断为有权限。
 
         return false;
     }
