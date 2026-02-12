@@ -1658,22 +1658,21 @@ class userModel extends model
      * 初始化访问权限所属的数据。
      * Init user view objects.
      *
-     * @param  bool    $force
      * @access private
      * @return array
      */
-    private function initViewObjects(bool $force = false): array
+    private function initViewObjects(): array
     {
         $this->loadModel('project');
 
         static $allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders;
 
-        if(!$allProducts || $force) $allProducts = $this->loadModel('product')->getListByAcl('private');
-        if(!$allProjects || $force) $allProjects = $this->project->getListByAclAndType('private,program', 'project');
-        if(!$allPrograms || $force) $allPrograms = $this->project->getListByAclAndType('private,program', 'program');
-        if(!$allSprints  || $force) $allSprints  = $this->project->getListByAclAndType('private', 'sprint,stage,kanban');
+        if(!$allProducts) $allProducts = $this->loadModel('product')->getListByAcl('private');
+        if(!$allProjects) $allProjects = $this->project->getListByAclAndType('private,program', 'project');
+        if(!$allPrograms) $allPrograms = $this->project->getListByAclAndType('private,program', 'program');
+        if(!$allSprints)  $allSprints  = $this->project->getListByAclAndType('private', 'sprint,stage,kanban');
 
-        if(!$teams || $force)
+        if(!$teams)
         {
             $teams    = array();
             $teamList = $this->project->getTeamListByType('project,execution');
@@ -1681,7 +1680,7 @@ class userModel extends model
         }
 
         /* Get white list. */
-        if(!$whiteList || $force)
+        if(!$whiteList)
         {
             $whiteList = array();
             $aclList   = $this->project->getAclListByObjectType('program,project,sprint,product');
@@ -1689,7 +1688,7 @@ class userModel extends model
         }
 
         /* Get stakeholders. */
-        if(!$stakeholders || $force)
+        if(!$stakeholders)
         {
             $stakeholders  = array();
             $cachedHolders = $this->mao->select('objectID, objectType, user')->from(TABLE_STAKEHOLDER)->where('deleted')->eq('0')->fetchAll();
@@ -1939,7 +1938,7 @@ class userModel extends model
         }
 
         /* Init objects. */
-        list($allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders) = $this->initViewObjects($force);
+        list($allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders) = $this->initViewObjects();
 
         /* Init user view. */
         $userView = new stdclass();
