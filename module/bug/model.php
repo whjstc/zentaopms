@@ -470,7 +470,7 @@ class bugModel extends model
         if(!empty($bug->duplicateBug))
         {
             $duplicateBug = $this->fetchByID($bug->duplicateBug);
-            if(!$duplicateBug || $duplicateBug->deleted == '1' || $duplicateBug->product != $oldBug->product)
+            if(!$duplicateBug || $duplicateBug->deleted == '1')
             {
                 dao::$errors['duplicateBug'][] = $this->lang->bug->error->duplicateBugNotExist;
                 return false;
