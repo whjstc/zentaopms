@@ -1153,7 +1153,7 @@ class bugModel extends model
         $productID = (int)$productID;
         return $this->dao->select("id, CONCAT(IF(product = $productID, '', CONCAT('{$this->lang->product->common}#', product, '@')), id, ':', title) AS title, IF(product = $productID, 0, product) AS `order`")->from(TABLE_BUG)
             ->where('deleted')->eq(0)
-            ->beginIF($range == 'single')->andWhere('product')->eq($productID)->fi()
+            ->beginIF($range == 'single' && $productID)->andWhere('product')->eq($productID)->fi()
             ->beginIF(!$this->app->user->admin)->andWhere('execution')->in('0,' . $this->app->user->view->sprints)->fi()
             ->beginIF($range == 'all' && !$this->app->user->admin)->andWhere('product')->in($this->app->user->view->products)->fi()
             ->beginIF($branch !== '')->andWhere('branch')->in($branch)->fi()
