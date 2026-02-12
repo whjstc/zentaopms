@@ -36,7 +36,6 @@ cid=15405
 - 测试解决原因为设计如此的bug 传入output
  - 属性resolution @bydesign
  - 属性assignedTo @user99
-- 测试解决原因为重复bug 有重复bugID的bug 传入output @重复Bug不存在。
 - 测试解决原因为解决 有解决版本的bug 传入output
  - 属性resolution @fixed
  - 属性assignedTo @user99
