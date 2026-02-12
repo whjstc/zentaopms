@@ -1658,45 +1658,45 @@ class userModel extends model
      * 初始化访问权限所属的数据。
      * Init user view objects.
      *
-     * @param  bool    $force
+     * @param  string  $account
      * @access private
      * @return array
      */
-    private function initViewObjects(bool $force = false): array
+    private function initViewObjects(string $account): array
     {
         $this->loadModel('project');
 
         static $allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders;
 
-        if(!$allProducts || $force) $allProducts = $this->loadModel('product')->getListByAcl('private');
-        if(!$allProjects || $force) $allProjects = $this->project->getListByAclAndType('private,program', 'project');
-        if(!$allPrograms || $force) $allPrograms = $this->project->getListByAclAndType('private,program', 'program');
-        if(!$allSprints  || $force) $allSprints  = $this->project->getListByAclAndType('private', 'sprint,stage,kanban');
+        if(!$allProducts) $allProducts = $this->loadModel('product')->getListByAcl('private');
+        if(!$allProjects) $allProjects = $this->project->getListByAclAndType('private,program', 'project');
+        if(!$allPrograms) $allPrograms = $this->project->getListByAclAndType('private,program', 'program');
+        if(!$allSprints)  $allSprints  = $this->project->getListByAclAndType('private', 'sprint,stage,kanban');
 
-        if(!$teams || $force)
+        if(empty($teams[$account]))
         {
-            $teams    = array();
-            $teamList = $this->project->getTeamListByType('project,execution');
-            foreach($teamList as $team) $teams[$team->type][$team->root][$team->account] = $team->account;
+            $teams[$account] = [];
+            $teamList = $this->project->getTeamListByType('project,execution', $account);
+            foreach($teamList as $team) $teams[$account][$team->type][$team->root][$team->account] = $team->account;
         }
 
         /* Get white list. */
-        if(!$whiteList || $force)
+        if(empty($whiteList[$account]))
         {
-            $whiteList = array();
-            $aclList   = $this->project->getAclListByObjectType('program,project,sprint,product');
-            foreach($aclList as $acl) $whiteList[$acl->objectType][$acl->objectID][$acl->account] = $acl->account;
+            $whiteList[$account] = [];
+            $aclList = $this->project->getAclListByObjectType('program,project,sprint,product', $account);
+            foreach($aclList as $acl) $whiteList[$account][$acl->objectType][$acl->objectID][$acl->account] = $acl->account;
         }
 
         /* Get stakeholders. */
-        if(!$stakeholders || $force)
+        if(empty($stakeholders[$account]))
         {
-            $stakeholders  = array();
-            $cachedHolders = $this->mao->select('objectID, objectType, user')->from(TABLE_STAKEHOLDER)->where('deleted')->eq('0')->fetchAll();
-            foreach($cachedHolders as $holder) $stakeholders[$holder->objectType][$holder->objectID][$holder->user] = $holder->user;
+            $stakeholders[$account] = [];
+            $cachedHolders = $this->dao->select('objectID, objectType, user')->from(TABLE_STAKEHOLDER)->where('deleted')->eq('0')->andWhere('user')->eq($account)->fetchAll();
+            foreach($cachedHolders as $holder) $stakeholders[$account][$holder->objectType][$holder->objectID][$holder->user] = $holder->user;
         }
 
-        return array($allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders);
+        return array($allProducts, $allProjects, $allPrograms, $allSprints, $teams[$account], $whiteList[$account], $stakeholders[$account]);
     }
 
     /**
@@ -1765,7 +1765,7 @@ class userModel extends model
             $products       = array();
             $manageProducts = isset($manageObjects['products']['list']) ? $manageObjects['products']['list'] : '';
 
-            list($productTeams, $productStakeholders) = $this->getProductMembers($allProducts);
+            list($productTeams, $productStakeholders) = $this->getProductMembers($allProducts, $account);
             foreach($allProducts as $productID => $product)
             {
                 /* 根据团队、干系人、白名单判断是否可以访问该产品。 */
@@ -1939,7 +1939,7 @@ class userModel extends model
         }
 
         /* Init objects. */
-        list($allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders) = $this->initViewObjects($force);
+        list($allProducts, $allProjects, $allPrograms, $allSprints, $teams, $whiteList, $stakeholders) = $this->initViewObjects($account);
 
         /* Init user view. */
         $userView = new stdclass();
@@ -2027,10 +2027,11 @@ class userModel extends model
      * Get product teams and stakeholders.
      *
      * @param  array     $allProducts
+     * @param  string    $account
      * @access protected
      * @return array
      */
-    protected function getProductMembers(array $allProducts): array
+    protected function getProductMembers(array $allProducts, string $account = ''): array
     {
         /* Get product and project relation. */
         $projectProducts = array();
@@ -2081,7 +2082,7 @@ class userModel extends model
 
         /* Get linked projects teams. */
         $teamsGroup = array();
-        $teamList   = $this->loadModel('project')->getTeamListByType('project');
+        $teamList   = $this->loadModel('project')->getTeamListByType('project', $account);
         foreach($teamList as $team)
         {
             if(!isset($projectProducts[$team->root])) continue;
