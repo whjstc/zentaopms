@@ -7,12 +7,15 @@ class projectModel extends model
      * Get access control list by object type.
      *
      * @param  string $objectType
+     * @param  string $account
      * @access public
      * @return array
      */
-    public function getAclListByObjectType(string $objectType): array
+    public function getAclListByObjectType(string $objectType, string $account = ''): array
     {
-        return $this->dao->select('id, account, objectType, objectID')->from(TABLE_ACL)->where('objectType')->in($objectType)->fetchAll('id');
+        return $this->dao->select('id, account, objectType, objectID')->from(TABLE_ACL)->where('objectType')->in($objectType)
+            ->beginIF($account)->andWhere('account')->eq($account)->fi()
+            ->fetchAll('id');
     }
 
     /**
@@ -56,12 +59,15 @@ class projectModel extends model
      * Get teams by type.
      *
      * @param  string $type
+     * @param  string $account
      * @access public
      * @return array
      */
-    public function getTeamListByType(string $type): array
+    public function getTeamListByType(string $type, string $account = ''): array
     {
-        return $this->dao->select('id, root, type, account')->from(TABLE_TEAM)->where('type')->in($type)->fetchAll('id');
+        return $this->dao->select('id, root, type, account')->from(TABLE_TEAM)->where('type')->in($type)
+            ->beginIF($account)->andWhere('account')->eq($account)->fi()
+            ->fetchAll('id');
     }
 
     /**
