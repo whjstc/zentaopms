@@ -1130,6 +1130,8 @@ $(document).on('contextmenu', '#menuMainNav .divider', function(event)
     }
     items.push({text: langData.restore, onClick: () => restoreMenuNavToServer()});
 
+    items = items.filter(Boolean);
+    if(!items.length) return;
     if(apps.openedMenu) apps.openedMenu.hide();
     apps.openedMenu = zui.ContextMenu.show({
         element: $divider[0],
@@ -1224,6 +1226,8 @@ $(document).on('click', '.open-in-app,.show-in-app', function(e)
         if(!inWorkspace && app && code !== 'my') items.push({text: langData.close, onClick: () => closeApp(code)});
     }
 
+    items = items.filter(Boolean);
+    if(!items.length) return;
     if(apps.openedMenu) apps.openedMenu.hide();
     apps.openedMenu = zui.ContextMenu.show({element: $btn[0], placement: $btn.closest('#appTabs').length ? 'top-start' : 'right-start', items: items.filter(Boolean), event: event, onClickItem: function(info){info.event.preventDefault();}, onHide: () => {apps.openedMenu = null}});
     event.preventDefault();
