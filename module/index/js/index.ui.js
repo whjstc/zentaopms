@@ -1090,7 +1090,7 @@ $(document).on('contextmenu', '#menuMainNav .divider', function(event)
     const $divider = $(this);
     const $nav = $divider.closest('.nav');
     const isMoving = $nav.is('[z-use-sortable]');
-    const items = [];
+    let   items = [];
     if(isMoving)
     {
         items.push({
@@ -1166,7 +1166,7 @@ $(document).on('click', '.open-in-app,.show-in-app', function(e)
     const app         = apps.openedMap[code];
     const inTabs      = !!$btn.closest('#appTabs').length;
     const inWorkspace = $.apps.workspace === code;
-    const items       = [(inWorkspace && !inTabs) ? null : {text: langData.open, disabled: app && getLastAppCode() === code, onClick: () => showApp(code)}];
+    let   items       = [(inWorkspace && !inTabs) ? null : {text: langData.open, disabled: app && getLastAppCode() === code, onClick: () => showApp(code)}];
 
     if(app && (!inWorkspace || inTabs || $btn.hasClass('active'))) items.push({text: langData.reload, onClick: () => reloadApp(code)});
 
