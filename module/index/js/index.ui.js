@@ -706,7 +706,10 @@ function refreshMenu()
     const $menuNav       = $('#menuNav');
     const hasSpace       = $('body').hasClass('has-space');
     const $menuItems     = $mainNav.children(hasSpace ? '.is-space' : '.is-original');
-    const itemHeight     = $menuItems.first().outerHeight();
+    const itemHeight     = $menuItems.filter((_, ele) => {
+        const $ele = $(ele);
+        return $ele.css('display') !== 'none' && !$ele.hasClass('divider');
+    }).first().outerHeight();
     const maxHeight      = $('#menu').outerHeight() - ($('#menuFooter').outerHeight() || 0) - ($('body').hasClass('has-space') ? (($('#spaceHeading').outerHeight() || 0) + 16) : 0) - 28;
     const dividerHeight  = 13;
     let showMoreMenu     = false;
@@ -935,8 +938,11 @@ function getMenuNavData()
     const data      = [];
     const $nav      = $('#menuMainNav');
     const workspace = $.apps.workspace;
-    $nav.children($.apps.workspace ? '.is-space' : '.is-original').each(function(index, element) {
-        const $elm     = $(element);
+    $nav.children($.apps.workspace ? '.is-space' : '.is-original').each(function(index, element)
+    {
+        const $elm = $(element);
+        if($elm.hasClass('rsh-more')) return;
+
         const menuItem = {};
         menuItem.name  = $elm.is('.divider') ? 'divider' : $elm.data(workspace ? 'name' : 'app');
         menuItem.order = index * 5;
@@ -971,8 +977,15 @@ function saveMenuNavToServer()
  */
 function restoreMenuNavToServer()
 {
+    let menu = 'nav';
+    if($.apps.workspace)
+    {
+        const currentApp = getLastApp();
+        if(currentApp.workspace.type === $.apps.workspace) menu = currentApp.workspace.menuGroup;
+    }
+
     const url = $.createLink('custom', 'ajaxRestoreMenu');
-    $.ajaxSubmit({url, data: {menu: 'nav'}});
+    $.ajaxSubmit({url, data: {menu: menu}});
     top.location.reload();
 }
 
@@ -1079,6 +1092,8 @@ function updateSpaceMenu(info)
 
         $('<li class="hint-right is-space"></li>')
             .attr({'data-app': currentCode, 'data-hint': item.text, 'data-name': item.code})
+            .attr('data-hidden', item.hidden ? 1 : null)
+            .css('display', item.hidden ? 'none' : 'block')
             .append($link)
             .appendTo($menuMainNav);
     });
@@ -1119,7 +1134,7 @@ $(document).on('contextmenu', '#menuMainNav .divider', function(event)
         onClick: () => {
             const $li = $divider.closest('li');
             $li.remove();
-            refreshMenu();
+            if(!$.apps.workspace) refreshMenu();
             saveMenuNavToServer();
         }
     });
@@ -1202,12 +1217,15 @@ $(document).on('click', '.open-in-app,.show-in-app', function(e)
         items.push({
             text: langData.hide,
             onClick: hideDisabled ? null : () => {
-                closeApp(code);
                 const $li = $btn.closest('li');
                 $li.hide().attr('data-hidden', '1');
-                refreshMenu();
+                if(!$.apps.workspace)
+                {
+                    closeApp(code);
+                    refreshMenu();
+                    changeApp();
+                }
                 saveMenuNavToServer();
-                changeApp();
             },
             disabled: hideDisabled,
         });
