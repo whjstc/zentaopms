@@ -33,7 +33,7 @@ class menuViewSwitcher extends wg
         if($workspace['opened']) return null;
 
         list($items, $selectedItem) = static::getItems();
-        if(empty($items)) return null;
+        if(empty($items) || empty($selectedItem)) return null;
 
         return dropdown
         (
@@ -111,6 +111,6 @@ class menuViewSwitcher extends wg
             }
         }
 
-        return [array_values($items), $items[$selectedID]];
+        return [array_values($items), isset($items[$selectedID]) ? $items[$selectedID] : null];
     }
 }
