@@ -456,6 +456,7 @@ class navbar extends wg
             }
 
             if(!$newItem) continue;
+            if(isset($newItem['data-id'])) $newItem['zui-key'] = $newItem['data-id'];
 
             $showInMainMenu = isset($menuItem->showInMainMenu) ? $menuItem->showInMainMenu : false;
             if($showInMainMenu)
