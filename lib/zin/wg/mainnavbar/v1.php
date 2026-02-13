@@ -225,6 +225,7 @@ class mainNavbar extends wg
             $item['data-id']    = $name;
             $item['data-app']   = $app->tab;
             $item['data-group'] = $app->tab . '-' . $activeMenu;
+            $item['zui-key']    = $name;
 
             $active = '';
             if($activeItem && $activeItem == $name)
