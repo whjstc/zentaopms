@@ -1051,7 +1051,7 @@ function updateSpaceMenu(info)
     }
     else
     {
-        $spaceHeading.find('.text').text(info.name).attr('title', info.name);
+        if(info.name) $spaceHeading.find('.text').text(info.name).attr('title', info.name);
     }
     $spaceHeading.find('.icon').attr('class', `icon icon-${info.icon || spaceType}`);
 
