@@ -51,3 +51,5 @@ WHERE `name` = '编写结项报告' AND `createdBy` = 'system';
 UPDATE `zt_ai_agent`
 SET `code` = 'zt_automatic_test'
 WHERE `name` = '编写自动化测试脚本' AND `createdBy` = 'system';
+
+UPDATE `zt_workflowaction` SET `method` = `action` WHERE `action` IN ('browse', 'create', 'batchcreate', 'edit', 'view', 'delete', 'link', 'unlink', 'export', 'exporttemplate', 'import', 'showimport', 'report');
