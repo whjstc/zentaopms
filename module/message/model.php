@@ -101,6 +101,7 @@ class messageModel extends model
         {
             $story = $this->loadModel('story')->fetchByID($objectID);
             if($story) $objectType = $story->type;
+            if($story && $story->status == 'draft') return;
         }
 
         /* 如果对象类型是审批，动作是提交审计或者审计，使用瀑布项目审批的发信配置。*/
