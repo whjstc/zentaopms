@@ -41,7 +41,9 @@ function checkGroup()
     const checked = $(this).prop('checked');
     $(this).closest('tr').find("input[type=checkbox][name^='module']").each(function()
     {
+        const name = $(this).attr('name');
         $(this).prop('checked', checked);
+        $(`input[type=hidden][name='${name}']`).val(checked ? '1' : '0');
     });
 };
 
