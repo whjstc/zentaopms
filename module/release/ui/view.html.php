@@ -395,7 +395,7 @@ detailBody
                         )
                     ),
                     html($this->printExtendFields($release, 'html', 'position=all', false)),
-                    fileList(set::files($release->files)),
+                    fileList(set::files($release->files), set::showEdit(true)),
                     h::hr(set::className('mt-6')),
                     history(set::objectID($release->id), set::objectType('release'))
                 )
