@@ -36,6 +36,8 @@ $canImportToLib             = $canModify && hasPriv('testcase', 'importToLib') &
 $canGroupBatch              = ($canBatchRun || $canBatchEdit || $canBatchReview || $canBatchDelete || $canBatchChangeType || $canBatchConfirmStoryChange);
 $canBatchAction             = ($canGroupBatch || $canBatchChangeBranch || $canBatchChangeModule || $canBatchChangeScene || $canImportToLib);
 
+jsVar('canImportToLib', $canImportToLib);
+
 $productCount  = count(array_unique(array_map(function($case){return $case->product;}, $cases)));
 $caseProductID = $productCount > 1 ? 0 : $productID;
 
