@@ -25,7 +25,7 @@ jsVar('openDependFeature', $lang->admin->notice->openDependFeature);
 jsVar('closeDependFeature', $lang->admin->notice->closeDependFeature);
 
 if(strpos(",$disabledFeatures,", ",productUR,") !== false) $disabledFeatures .= ',productER';
-if($config->systemMode != 'ALM' && $config->systemMode != 'PLM') $config->hiddenFeature[] = 'program';
+if($config->systemMode != 'ALM' && $config->systemMode != 'PLM') $config->hiddenFeature[] = 'otherProgram';
 
 $rows = array();
 foreach($config->featureGroup as $group => $features)
