@@ -1349,4 +1349,124 @@ EOT;
         }
         return $projectIssueTypeList;
     }
+
+    /**
+     * 快速导入jira数据。
+     * Quick import Jira data.
+     *
+     * @access public
+     * @return void
+     */
+    public function quickImportJiraData()
+    {
+        $jiraApi = array();
+        $jiraApi['domain'] = $this->post->domain;
+        $jiraApi['admin']  = $this->post->account;
+        $jiraApi['token']  = $this->post->token;
+
+        $this->session->set('jiraApi',    json_encode($jiraApi));
+        $this->session->set('jiraDB',     '');
+        $this->session->set('jiraMethod', 'api');
+
+        $this->checkJiraApi();
+        if(dao::isError()) return false;
+
+        $issueTypeList  = $this->getJiraTypeList();
+        $zentaoObjects  = $this->getZentaoObjectList();
+        $defaultValue   = $this->getObjectDefaultValue('object');
+        $jiraFields     = $this->getJiraCustomField();
+        $jiraStatus     = $this->getJiraStatusList();
+        $jiraActions    = $this->getJiraWorkflowActions();
+        $jiraResolution = $this->getJiraData('api', 'resolution');
+        $jiraLinkTypes  = $this->getJiraData('api', 'issuelinktype');
+
+        $jiraRelation = array();
+        foreach($issueTypeList as $issueID => $issueType)
+        {
+            $jiraRelation['jiraObject'][] = $issueID;
+            $jiraRelation['zentaoObject'][$issueID] = !empty($defaultValue['zentaoObject'][$issueType->pname]) ? $defaultValue['zentaoObject'][$issueType->pname] : 'add_custom';
+
+            if($jiraRelation['zentaoObject'][$issueID] == 'add_custom') continue;
+
+            if(!empty($jiraFields[$issueID]))
+            {
+                foreach($jiraFields[$issueID] as $fieldID => $field)
+                {
+                    $jiraRelation["jiraField{$issueID}"][] = $fieldID;
+                    $jiraRelation["zentaoField{$issueID}"][$fieldID] = 'add_field';
+                }
+            }
+
+            if(!empty($jiraStatus[$issueID]))
+            {
+                foreach($jiraStatus[$issueID] as $statusID => $status)
+                {
+                    $jiraRelation["jiraStatus{$issueID}"][] = $statusID;
+                    $jiraRelation["zentaoStatus{$issueID}"][$statusID] = !empty($this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['status'][$status]) ? $this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['status'][$status] : '';
+                    if(in_array($jiraRelation['zentaoObject'][$issueID], array('requirement', 'story', 'epic'))) $jiraRelation["zentaoStage{$issueID}"][$statusID] = '';
+                }
+            }
+
+            if(!empty($jiraActions[$issueID]))
+            {
+                foreach($jiraActions[$issueID]['actions'] as $actionID => $action)
+                {
+                    $jiraRelation["jiraAction{$issueID}"][] = $actionID;
+                    $jiraRelation["zentaoAction{$issueID}"][$actionID] = !empty($this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['action'][$action['name']]) ? $this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['action'][$action['name']] : 'add_action';
+                }
+            }
+
+            if(!empty($jiraResolution))
+            {
+                foreach($jiraResolution as $resolutionID => $resolution)
+                {
+                    $jiraRelation["jiraResolution{$issueID}"][] = $resolutionID;
+                    if($jiraRelation['zentaoObject'][$issueID] == 'bug')
+                    {
+                        $jiraRelation["zentaoResolution{$issueID}"][$resolutionID] = !empty($this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['resolution'][$resolution->pname]) ? $this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['resolution'][$resolution->pname] : '';
+                    }
+                    else
+                    {
+                        $jiraRelation["zentaoReason{$issueID}"][$resolutionID] = !empty($this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['reason'][$resolution->pname]) ? $this->config->convert->importDeafaultValue[$jiraRelation['zentaoObject'][$issueID]]['reason'][$resolution->pname] : '';
+                    }
+                }
+            }
+        }
+
+        if(!empty($jiraLinkTypes))
+        {
+            foreach($jiraLinkTypes as $linkID => $linkType)
+            {
+                $jiraRelation['jiraLinkType'][] = $linkID;
+                $jiraRelation['zentaoLinkType'][$linkID] = 'add_relation';
+            }
+        }
+
+        $jiraUser['password'] = md5('123456');
+        $jiraUser['group']    = '';
+        $jiraUser['mode']     = 'email';
+        $this->session->set('jiraUser', $jiraUser);
+        $this->session->set('jiraRelation', json_encode($jiraRelation));
+
+        $this->batchImportJiraData();
+        return true;
+    }
+
+    /**
+     * 分批次的导入Jira数据。
+     * Batch import Jira data.
+     *
+     * @param  string $type
+     * @param  int    $lastID
+     * @param  bool   $createTable
+     * @access public
+     * @return void
+     */
+    public function batchImportJiraData(string $type = '', int $lastID = 0, bool $createTable = true): bool
+    {
+        $result = $this->importJiraData($type, $lastID, $createTable);
+        if(!empty($result['finished'])) return true;
+
+        return $this->batchImportJiraData($result['type'], $result['lastID'], false);
+    }
 }
