@@ -267,21 +267,12 @@ class convertModelTest extends baseTest
             $result = $this->instance->getIssueTypeList($relations);
             if(dao::isError()) {
                 $errors = dao::getError();
-                $this->restoreJiraMethodSession($originalJiraMethod);
                 return $errors;
             }
-
-            $this->restoreJiraMethodSession($originalJiraMethod);
             return $result;
         } catch (Exception $e) {
-            if(isset($originalJiraMethod)) {
-                $this->restoreJiraMethodSession($originalJiraMethod);
-            }
             return array();
         } catch (Error $e) {
-            if(isset($originalJiraMethod)) {
-                $this->restoreJiraMethodSession($originalJiraMethod);
-            }
             return array();
         }
     }
