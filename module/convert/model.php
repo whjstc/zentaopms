@@ -1372,7 +1372,6 @@ EOT;
         if(dao::isError()) return false;
 
         $issueTypeList  = $this->getJiraTypeList();
-        $zentaoObjects  = $this->getZentaoObjectList();
         $defaultValue   = $this->getObjectDefaultValue('object');
         $jiraFields     = $this->getJiraCustomField();
         $jiraStatus     = $this->getJiraStatusList();
