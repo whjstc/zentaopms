@@ -1906,7 +1906,8 @@ class aiModel extends model
                 foreach(array_keys($obj) as $idx)
                 {
                     if(empty($dataObject[$semanticName][$idx])) $dataObject[$semanticName][$idx] = array();
-                    if(isset($dataObject[$semanticName][$idx][$semanticKey]) && isset($data[$objectName][$idx][$objectKey])) $dataObject[$semanticName][$idx][$semanticKey] = $data[$objectName][$idx][$objectKey];
+                    if(!isset($dataObject[$semanticName][$idx][$semanticKey])) $dataObject[$semanticName][$idx][$semanticKey] = '';
+                    $dataObject[$semanticName][$idx][$semanticKey] = $data[$objectName][$idx][$objectKey];
                 }
             }
             if(!empty($storyData)) $dataObject[$semanticName] = array_merge($dataObject[$semanticName], $storyData);
