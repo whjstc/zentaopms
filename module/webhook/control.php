@@ -236,8 +236,14 @@ class webhook extends control
 
         if($response['result'] == 'fail')
         {
-            $response = array('result' => 'fail', 'message' => $response['message'], 'load' => $this->createLink('webhook', 'browse'));
-            if(empty($response['message'])) $response['message'] = $this->lang->webhook->error->requestError;
+            $message = $response['message'];
+            if(is_array($message) || is_object($message))
+            {
+                $message = array();
+                array_walk_recursive($response['message'], function($item, $key) use(&$message) {$message[] = "$key: $item";});
+                $message = implode(",", $message);
+            }
+            $response = array('result' => 'fail', 'message' => $message, 'load' => $this->createLink('webhook', 'browse'));
             return $this->send($response);
         }
         if($response['result'] == 'selected')
