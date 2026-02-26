@@ -219,7 +219,8 @@ class pivotZen extends pivot
 
         if(isset($_POST['filterValues']) and $_POST['filterValues'])
         {
-            foreach(explode(',', $this->post->filterValues) as $key => $value) $pivot->filters[$key]['default'] = $value;
+            $filterValuesData = is_string($this->post->filterValues) ? explode(',', $this->post->filterValues) : $this->post->filterValues;
+            foreach($filterValuesData as $key => $value) $pivot->filters[$key]['default'] = $value;
         }
         $showOrigin = false;
         if(isset($_POST['summary']) and $_POST['summary']) $showOrigin = $this->post->summary == 'notuse';
