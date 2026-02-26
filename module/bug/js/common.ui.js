@@ -751,7 +751,7 @@ function loadProductBugs(productID, bugID)
 {
     if($('[name="duplicateBug"]').length == 0) return;
 
-    const link = $.createLink('bug', 'ajaxGetProductBugs', 'productID=' + productID + '&bugID=' + bugID);
+    const link = $.createLink('bug', 'ajaxGetProductBugs', 'productID=&bugID=' + bugID);
     $.getJSON(link, function(data)
     {
         const duplicateBugID      = $('[name="duplicateBug"]').val();
