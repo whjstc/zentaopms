@@ -25,7 +25,8 @@ jsVar('openDependFeature', $lang->admin->notice->openDependFeature);
 jsVar('closeDependFeature', $lang->admin->notice->closeDependFeature);
 
 if(strpos(",$disabledFeatures,", ",productUR,") !== false) $disabledFeatures .= ',productER';
-if($config->systemMode != 'ALM' && $config->systemMode != 'PLM') $config->hiddenFeature[] = 'otherProgram';
+if($config->systemMode != 'ALM' && $config->systemMode != 'PLM') $disabledFeatures .= ',otherProgram';
+if(!empty($config->hiddenFeature)) $disabledFeatures .= ',' . implode(',', $config->hiddenFeature);
 
 $rows = array();
 foreach($config->featureGroup as $group => $features)
@@ -54,7 +55,7 @@ foreach($config->featureGroup as $group => $features)
             $items[] = checkbox
             (
                 setID("module{$code}"),
-                set::rootClass('w-40', !empty($config->hiddenFeature) && in_array($code, $config->hiddenFeature) ? 'hidden' : ''),
+                set::rootClass('w-40'),
                 set::name("module[{$code}]"),
                 set::value(1),
                 set::checked($value == 1),

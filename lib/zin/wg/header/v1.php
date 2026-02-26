@@ -166,15 +166,8 @@ class header extends wg
         $helpItems[] = array('text' => $lang->manual, 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
         $helpItems[] = array('text' => $lang->changeLog, 'url' => createLink('misc', 'changeLog'), 'data-toggle' => 'modal', 'innerClass' => $modalClass);
 
-        /* 禅道国际版帮助样式调整。 */
-        if(!empty($config->sanplexVersion))
-        {
-            $items[] = array('text' => $lang->manual, 'icon' => 'help', 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
-        }
-        else
-        {
-            $items[] = array('text' => $lang->help, 'icon' => 'help', 'items' => $helpItems);
-        }
+        /* 禅道国际版隐藏帮助。 */
+        if(empty($config->sanplexVersion)) $items[] = array('text' => $lang->manual, 'icon' => 'help', 'url' => $manualUrl, 'attrs' => array('data-app' => 'help'));
 
         $items[] = array('type' => 'divider');
 
