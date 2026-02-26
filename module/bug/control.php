@@ -1565,7 +1565,7 @@ class bug extends control
         /* 获取除了这个 bugID 的产品 bugs。 */
         /* Get product bugs exclude this bugID. */
         $limit       =  $this->get->limit ? $this->get->limit : $this->config->maxCount;
-        $productBugs = $this->bug->getProductBugPairs($productID, '', $search, $limit, 'single');
+        $productBugs = $this->bug->getProductBugPairs($productID, '', $search, $limit, $productID ? 'single' : 'all');
 
         unset($productBugs[$bugID]);
         if($type == 'json') return print(helper::jsonEncode($productBugs));

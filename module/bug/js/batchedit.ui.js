@@ -45,9 +45,9 @@ window.renderRowData = function($row, index, row)
     }
 
     /* Show the bugs of current bug's product. */
-    if(productBugOptions[row.product] != undefined && productBugOptions[row.product][row.branch] != undefined)
+    if(productBugOptions != undefined)
     {
-        let duplicateBugs = JSON.parse(JSON.stringify(productBugOptions[row.product][row.branch]));
+        let duplicateBugs = JSON.parse(JSON.stringify(productBugOptions));
         duplicateBugs.forEach((duplicateBug, index) =>
         {
             if(duplicateBug.value == row.id)

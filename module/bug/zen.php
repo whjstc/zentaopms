@@ -1166,7 +1166,7 @@ class bugZen extends bug
 
         $this->assignVarsForEdit($bug, $product);
 
-        $duplicateBugs = $this->bug->getProductBugPairs($bug->product, $bug->branch);
+        $duplicateBugs = $this->bug->getProductBugPairs(0, $bug->branch, '', 0, 'all');
         unset($duplicateBugs[$bug->id]);
 
         $this->view->title                 = $this->lang->bug->edit . "BUG #$bug->id $bug->title - " . $this->products[$bug->product];
@@ -1676,19 +1676,18 @@ class bugZen extends bug
                 {
                     $branchTagOption[$product->id][$branchID] = "/{$product->name}/{$branchName}";
                     $productPlanList[$product->id][$branchID] = $this->loadModel('productplan')->getPairs($product->id, $branchID, '', true);
-                    $productBugList[$product->id][$branchID]  = $this->bug->getProductBugPairs($product->id, "0,{$branchID}");
                 }
             }
             else
             {
                 $productPlanList[$product->id][0] = $this->loadModel('productplan')->getPairs($product->id, 0, '', true);
-                $productBugList[$product->id][0]  = $this->bug->getProductBugPairs($product->id, "");
             }
 
             $modulePairs           = $this->tree->getOptionMenu($product->id, 'bug', 0, $branches);
             $modules[$product->id] = $product->type != 'normal' ? $modulePairs : array(0 => $modulePairs);
         }
 
+        $productBugList     = $this->bug->getProductBugPairs(0, '', '', 0, 'all');
         $productPlanOptions = array();
         foreach($productPlanList as $productID => $productPlans)
         {
@@ -1736,18 +1735,7 @@ class bugZen extends bug
         }
 
         $productBugOptions = array();
-        foreach($productBugList as $productID => $productBugs)
-        {
-            $productBugOptions[$productID] = array();
-            foreach($productBugs as $branchID => $branchBugs)
-            {
-                $productBugOptions[$productID][$branchID] = array();
-                foreach($branchBugs as $bugID => $bugTitle)
-                {
-                    $productBugOptions[$productID][$branchID][] = array('text' => $bugTitle, 'value' => $bugID);
-                }
-            }
-        }
+        foreach($productBugList as $bugID => $bugTitle) $productBugOptions[] = array('text' => $bugTitle, 'value' => $bugID);
 
         $this->view->bugs              = $bugs;
         $this->view->branchProduct     = $branchProduct;
