@@ -234,7 +234,12 @@ class webhook extends control
 
         if($webhook->type == 'feishuuser') $response = array('result' => 'success', 'data' => array());
 
-        if($response['result'] == 'fail') return $this->send(array('result' => 'fail', 'message' => $response['message'], 'load' => $this->createLink('webhook', 'browse')));
+        if($response['result'] == 'fail')
+        {
+            $response = array('result' => 'fail', 'message' => $response['message'], 'load' => $this->createLink('webhook', 'browse'));
+            if(empty($response['message'])) $response['message'] = $this->lang->webhook->error->requestError;
+            return $this->send($response);
+        }
         if($response['result'] == 'selected')
         {
             $locateLink  = $this->createLink('webhook', 'bind', "id={$id}");
