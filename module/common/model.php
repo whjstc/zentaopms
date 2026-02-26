@@ -413,6 +413,10 @@ class commonModel extends model
         if(isset($this->config->personalDB->common)) $this->app->mergeConfig($this->config->personalDB->common, 'common');
 
         $this->config->disabledFeatures = $this->config->disabledFeatures . ',' . $this->config->closedFeatures;
+
+        /* Sanplex hide features. */
+        $this->app->loadConfig('common');
+        if(!empty($this->config->hiddenFeature)) $this->config->disabledFeatures .= ',' . implode(',', $this->config->hiddenFeature);
     }
 
     /**
