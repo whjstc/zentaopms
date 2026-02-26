@@ -3535,24 +3535,12 @@ SELECT
   YEAR(t5.date) AS `year`,
   t1.id,
   t1.name AS program,
-  ROUND(
-    SUM(t5.consumed),
-    2
-  ) AS consumed
-FROM
-  zt_project AS t1
-  LEFT JOIN zt_project AS t2 ON FIND_IN_SET(t1.id, t2.path)
-  AND t2.deleted = '0'
-  AND t2.type = 'project'
-  LEFT JOIN zt_project AS t3 ON t2.id = t3.parent
-  AND t3.deleted = '0'
-  AND t3.type IN ('sprint', 'stage', 'kanban')
-  LEFT JOIN zt_task AS t4 ON t3.id = t4.execution
-  AND t4.deleted = '0'
-  AND t4.status != 'cancel'
-  LEFT JOIN zt_effort AS t5 ON t4.id = t5.objectID
-  AND t5.deleted = '0'
-  AND t5.objectType = 'task'
+  ROUND(SUM(t5.consumed), 2) AS consumed
+FROM zt_project AS t1
+  LEFT JOIN zt_project AS t2 ON FIND_IN_SET(t1.id, t2.path) AND t2.deleted = '0' AND t2.type = 'project'
+  LEFT JOIN zt_project AS t3 ON t2.id = t3.project          AND t3.deleted = '0' AND t3.type IN ('sprint', 'stage', 'kanban')
+  LEFT JOIN zt_task    AS t4 ON t3.id = t4.execution        AND t4.deleted = '0' AND t4.status != 'cancel'
+  LEFT JOIN zt_effort  AS t5 ON t4.id = t5.objectID         AND t5.deleted = '0' AND t5.objectType = 'task'
 WHERE
   t1.deleted = '0'
   AND t1.type = 'program'
@@ -4244,21 +4232,11 @@ SELECT
   YEAR(t4.date) AS `year`,
   t1.id,
   t1.name AS project,
-  ROUND(
-    SUM(t4.consumed),
-    2
-  ) AS consumed
-FROM
-  zt_project AS t1
-  LEFT JOIN zt_project AS t2 ON t1.id = t2.parent
-  AND t2.deleted = '0'
-  AND t2.type IN ('sprint', 'stage', 'kanban')
-  LEFT JOIN zt_task AS t3 ON t2.id = t3.execution
-  AND t3.deleted = '0'
-  AND t3.status != 'cancel'
-  LEFT JOIN zt_effort AS t4 ON t3.id = t4.objectID
-  AND t4.deleted = '0'
-  AND t4.objectType = 'task'
+  ROUND(SUM(t4.consumed), 2) AS consumed
+FROM zt_project AS t1
+  LEFT JOIN zt_project AS t2 ON t1.id = t2.project   AND t2.deleted = '0' AND t2.type IN ('sprint', 'stage', 'kanban')
+  LEFT JOIN zt_task    AS t3 ON t2.id = t3.execution AND t3.deleted = '0' AND t3.status != 'cancel'
+  LEFT JOIN zt_effort  AS t4 ON t3.id = t4.objectID  AND t4.deleted = '0' AND t4.objectType = 'task'
 WHERE
   t1.deleted = '0'
   AND t1.type = 'project'
