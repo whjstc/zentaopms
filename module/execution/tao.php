@@ -235,6 +235,7 @@ class executionTao extends executionModel
 
             foreach($extendFields as $extendField)
             {
+                if(in_array($extendField->type, array('date', 'datetime')) && empty($postData->{$extendField->field}[$executionID])) continue;
                 $executions[$executionID]->{$extendField->field} = $postData->{$extendField->field}[$executionID];
                 if(is_array($executions[$executionID]->{$extendField->field})) $executions[$executionID]->{$extendField->field} = implode(',', $executions[$executionID]->{$extendField->field});
 
