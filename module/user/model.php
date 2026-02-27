@@ -1972,6 +1972,7 @@ class userModel extends model
         }
 
         /* 更新访问权限表。 */
+        $this->dao->begin();
         if(empty($oldUserView))
         {
             $this->dao->insert(TABLE_USERVIEW)->data($userView)->exec();
@@ -1982,6 +1983,7 @@ class userModel extends model
         }
 
         $this->loadModel('setting')->setItem("$account|common|userview|updateTime", time(), '|');
+        $this->dao->commit();
 
         return $userView;
     }
