@@ -1167,6 +1167,11 @@ class bugZen extends bug
         $this->assignVarsForEdit($bug, $product);
 
         $duplicateBugs = $this->bug->getProductBugPairs(0, $bug->branch, '', 0, 'all');
+        if(!empty($bug->duplicateBug))
+        {
+            $duplicateBug = $this->bug->fetchByID($bug->duplicateBug);
+            $duplicateBugs[$bug->duplicateBug] = $this->lang->productCommon . '#' . $duplicateBug->product . '@'. $duplicateBug->id . ':' . $duplicateBug->title;
+        }
         unset($duplicateBugs[$bug->id]);
 
         $this->view->title                 = $this->lang->bug->edit . "BUG #$bug->id $bug->title - " . $this->products[$bug->product];
@@ -1659,7 +1664,6 @@ class bugZen extends bug
         $branchProduct   = false;
         $modules         = array();
         $branchTagOption = array();
-        $productBugList  = array();
         $productPlanList = array();
         foreach($products as $product)
         {
@@ -1687,7 +1691,6 @@ class bugZen extends bug
             $modules[$product->id] = $product->type != 'normal' ? $modulePairs : array(0 => $modulePairs);
         }
 
-        $productBugList     = $this->bug->getProductBugPairs(0, '', '', 0, 'all');
         $productPlanOptions = array();
         foreach($productPlanList as $productID => $productPlans)
         {
@@ -1734,13 +1737,9 @@ class bugZen extends bug
             }
         }
 
-        $productBugOptions = array();
-        foreach($productBugList as $bugID => $bugTitle) $productBugOptions[] = array('text' => $bugTitle, 'value' => $bugID);
-
         $this->view->bugs              = $bugs;
         $this->view->branchProduct     = $branchProduct;
         $this->view->modules           = $bugModules;
-        $this->view->productBugOptions = $productBugOptions;
         $this->view->branchTagOption   = $branchOptions;
         $this->view->products          = $products;
 

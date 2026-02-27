@@ -1732,4 +1732,33 @@ class bug extends control
         foreach($projects as $projectID => $projectName) $items[] = array('text' => $projectName, 'value' => $projectID, 'keys' => $projectName);
         return print(json_encode($items));
     }
+
+    /**
+     * AJAX: 获重复Bug。
+     * AJAX: Get duplicate bugs.
+     *
+     * @param  int     $bugID
+     * @param  int     $duplicateBug
+     * @access public
+     * @return void
+     */
+    public function ajaxGetDuplicateBugs(int $bugID, int $duplicateBug = 0)
+    {
+        /* 获取除了这个 bugID 的重复Bug。 */
+        /* Get duplicate bugs exclude this bugID. */
+        $limit       =  $this->get->limit ? $this->get->limit : $this->config->maxCount;
+        $productBugs = $this->bug->getProductBugPairs(0, '', '', $limit, 'all');
+        unset($productBugs[$bugID]);
+
+        /* 如果选中的重复Bug不在列表中，加入列表。*/
+        if($duplicateBug && empty($productBugs[$duplicateBug]))
+        {
+            $duplicateBugInfo = $this->bug->fetchByID($duplicateBug);
+            $productBugs[$duplicateBug] = $this->lang->productCommon . '#' . $duplicateBugInfo->product . '@'. $duplicateBugInfo->id . ':' . $duplicateBugInfo->title;
+        }
+
+        $bugItems = array();
+        foreach($productBugs as $bugID => $bugName) $bugItems[] = array('value' => $bugID, 'text' => $bugName);
+        return print(json_encode($bugItems));
+    }
 }

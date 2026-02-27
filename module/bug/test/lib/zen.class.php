@@ -134,7 +134,6 @@ class bugZenTest extends baseTest
                 'error'             => $e->getMessage(),
                 'branchProduct'     => false,
                 'modulesCount'      => 0,
-                'productBugOptions' => 0,
                 'branchTagOption'   => 0,
             );
         }
@@ -153,7 +152,6 @@ class bugZenTest extends baseTest
         return array(
             'branchProduct'       => !empty($instance->view->branchProduct) ? 1 : 0,
             'modulesCount'        => !empty($instance->view->modules) ? count($instance->view->modules) : 0,
-            'productBugOptions'   => !empty($instance->view->productBugOptions) ? count($instance->view->productBugOptions) : 0,
             'branchTagOptionView' => !empty($instance->view->branchTagOption) ? count($instance->view->branchTagOption) : 0,
             'returnValue'         => $branchCount,
         );
