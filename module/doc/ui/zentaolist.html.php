@@ -133,7 +133,7 @@ div
         set::data($ganttData['data']),
         set::links($ganttData['links']),
         set::ganttFields($ganttFields),
-        set::showFields(explode(',', $showFields)),
+        set::showFields('text,begin,duration,' . ($showFields[0] == '"' ? json_decode($showFields) : $showFields)),
         set::userList($userList),
         set::exts('zentao')
     ): null
