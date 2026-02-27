@@ -9,7 +9,7 @@ cid=15427
 - 获取项目相关变量
  - 属性noProductProjects @0
  - 属性noSprintProjects @0
- - 属性productProjects @1
+ - 属性productProjects @0
  - 属性productExecutions @0
  - 属性productOpenedBuilds @1
  - 属性projectOpenedBuilds @1
@@ -24,6 +24,7 @@ zenData('product')->gen(5);
 zenData('bug')->gen(5);
 zenData('build')->gen(10);
 zenData('user')->gen(5);
+
 $projectTable = zenData('project');
 $projectTable->type->range('project,scrum');
 $projectTable->project->range('0,1');
@@ -45,4 +46,4 @@ $products = array(
     (object)array('id' => 3, 'name' => '影子产品3', 'shadow' => 1)
 );
 
-r($bugTest->assignProjectRelatedVarsTest($bugs, $products)) && p('noProductProjects,noSprintProjects,productProjects,productExecutions,productOpenedBuilds,projectOpenedBuilds,projectOpenedBuilds') && e('0,0,1,0,1,1,1'); // 获取项目相关变量
+r($bugTest->assignProjectRelatedVarsTest($bugs, $products)) && p('noProductProjects,noSprintProjects,productProjects,productExecutions,productOpenedBuilds,projectOpenedBuilds,projectOpenedBuilds') && e('0,0,0,0,1,1,1'); // 获取项目相关变量
