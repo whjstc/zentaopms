@@ -1814,7 +1814,7 @@ class bugZen extends bug
             else
             {
                 if(isset($productOpenedBuilds[$bug->product])) continue;
-                $productOpenedBuildItems = $this->build->getBuildPairs(array($bug->product), $bug->branch, 'noempty,noterminate,nodone,withbranch,noreleased,nofail');
+                $productOpenedBuildItems = $this->build->getBuildPairs(array($bug->product), empty($bug->branch) ? 'all' : $bug->branch, 'noempty,noterminate,nodone,withbranch,noreleased,nofail');
                 foreach($productOpenedBuildItems as $buildID => $buildName) $productOpenedBuilds[$bug->product][] = array('text' => $buildName, 'value' => $buildID, 'keys' => $buildName);
             }
         }
