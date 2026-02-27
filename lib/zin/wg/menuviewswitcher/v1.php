@@ -96,7 +96,7 @@ class menuViewSwitcher extends wg
             }
 
             $execution = data('execution');
-            if(hasPriv('task', 'report') && empty($execution->isTpl))
+            if(hasPriv('task', 'report') && empty($execution->isTpl) && !empty($execution->id))
             {
                 if(!empty($items)) $items[] = ['type' => 'divider'];
                 $browseType = data('browseType');
