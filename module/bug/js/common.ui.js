@@ -751,8 +751,7 @@ function loadProductBugs(productID, bugID)
 {
     if($('[name="duplicateBug"]').length == 0) return;
 
-    const duplicateBugID = $('[name="duplicateBug"]').val();
-    const link           = $.createLink('bug', 'ajaxGetDuplicateBugs', `bugID=${bugID}&duplicateBugID=${duplicateBugID}`);
+    const link = $.createLink('bug', 'ajaxGetDuplicateBugs', `bugID=${bugID}&duplicateBugID=${duplicateBugID}`);
     $.getJSON(link, function(data)
     {
         const $duplicateBugPicker = $('[name="duplicateBug"]').zui('picker');

@@ -23,6 +23,7 @@ jsVar('confirmUnlinkBuild',    sprintf($lang->bug->notice->confirmUnlinkBuild, z
 jsVar('projectExecutionPairs', $projectExecutionPairs);
 jsVar('edition',               $config->edition);
 jsVar('isShadowProduct',       !empty($product->shadow));
+jsVar('duplicateBugID',        !empty($bug->duplicateBug) ? $bug->duplicateBug : 0);
 
 detailHeader
 (
