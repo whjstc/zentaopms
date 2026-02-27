@@ -1017,4 +1017,31 @@ class bugZenTest extends baseTest
         if(dao::isError()) return false;
         return $result;
     }
+
+    /**
+     * 分配项目相关的变量。
+     * Assign project related variables.
+     *
+     * @param  array $bugs
+     * @param  array $products
+     * @access public
+     * @return array
+     */
+    public function assignProjectRelatedVarsTest(array $bugs , array $products): array
+    {
+        $instance = $this->getInstance($this->moduleName, $this->className);
+
+        $this->invokeArgs('assignProjectRelatedVars', [$bugs, $products]);
+        if(dao::isError()) return array('error' => dao::getError());
+
+        return array(
+            'noProductProjects'     => !empty($instance->view->noProductProjects)     ? count($instance->view->noProductProjects)     : 0,
+            'noSprintProjects'      => !empty($instance->view->noSprintProjects)      ? count($instance->view->noSprintProjects)      : 0,
+            'productProjects'       => !empty($instance->view->productProjects)       ? count($instance->view->productProjects)       : 0,
+            'productExecutions'     => !empty($instance->view->productExecutions)     ? count($instance->view->productExecutions)     : 0,
+            'productOpenedBuilds'   => !empty($instance->view->productOpenedBuilds)   ? count($instance->view->productOpenedBuilds)   : 0,
+            'projectOpenedBuilds'   => !empty($instance->view->projectOpenedBuilds)   ? count($instance->view->projectOpenedBuilds)   : 0,
+            'executionOpenedBuilds' => !empty($instance->view->executionOpenedBuilds) ? count($instance->view->executionOpenedBuilds) : 0
+        );
+    }
 }
