@@ -1972,6 +1972,7 @@ class userModel extends model
         }
 
         /* 更新访问权限表。 */
+        $this->dao->begin();
         if(empty($oldUserView))
         {
             $this->dao->insert(TABLE_USERVIEW)->data($userView)->exec();
@@ -1982,6 +1983,7 @@ class userModel extends model
         }
 
         $this->loadModel('setting')->setItem("$account|common|userview|updateTime", time(), '|');
+        $this->dao->commit();
 
         return $userView;
     }
@@ -2110,9 +2112,7 @@ class userModel extends model
         if(empty($acls)     && !empty($this->session->user->rights['acls']))     $acls     = $this->session->user->rights['acls'];
         if(empty($projects) && !empty($this->session->user->rights['projects'])) $projects = $this->session->user->rights['projects'];
 
-        $this->dao->begin();
         $userView = $this->computeUserView($account);
-        $this->dao->commit();
 
         /* Get opened projects, programs, products and set it to userview. */
         $openedProducts = array_keys($this->loadModel('product')->getListByAcl('open'));
