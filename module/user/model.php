@@ -2110,7 +2110,9 @@ class userModel extends model
         if(empty($acls)     && !empty($this->session->user->rights['acls']))     $acls     = $this->session->user->rights['acls'];
         if(empty($projects) && !empty($this->session->user->rights['projects'])) $projects = $this->session->user->rights['projects'];
 
+        $this->dao->begin();
         $userView = $this->computeUserView($account);
+        $this->dao->commit();
 
         /* Get opened projects, programs, products and set it to userview. */
         $openedProducts = array_keys($this->loadModel('product')->getListByAcl('open'));
