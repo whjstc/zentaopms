@@ -79,6 +79,7 @@ class convertTao extends convertModel
         $issue->changeGroups         = !empty($data['changeGroups'])        ? $data['changeGroups']         : array();
         $issue->changeItems          = !empty($data['changeItems'])         ? $data['changeItems']          : array();
         $issue->worklogs             = !empty($data['worklogs'])            ? $data['worklogs']             : array();
+        $issue->links                = !empty($data['links'])               ? $data['links']                : array();
         $issue->files                = !empty($data['files'])               ? $data['files']                : array();
 
         /* 获取自定义字段的值。 */
@@ -1090,6 +1091,9 @@ class convertTao extends convertModel
         foreach($dataList as $issueLink)
         {
             $linkType = $issueLink->linktype;
+            if($linkType == 'jiraSubTask') $taskLink[$issueLink->source][] = $issueLink->destination;
+
+            if(empty($issueLinkTypeList[$linkType])) continue;
             if($issueLinkTypeList[$linkType] == 'subStoryLink') $storyLink[$issueLink->source][]   = $issueLink->destination;
             if($issueLinkTypeList[$linkType] == 'subTaskLink')  $taskLink[$issueLink->source][]    = $issueLink->destination;
             if($issueLinkTypeList[$linkType] == 'duplicate')    $duplicateLink[$issueLink->source] = $issueLink->destination;

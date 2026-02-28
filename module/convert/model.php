@@ -770,7 +770,7 @@ EOT;
             $status = $statusList[$issue->issuestatus];
             $jiraStatusList[$issue->issuetype][$issue->issuestatus] = $status->pname;
         }
-        return $step ? $jiraStatusList[$step] : $jiraStatusList;
+        return $step ? zget($jiraStatusList, $step, array()) : $jiraStatusList;
     }
 
     /**
@@ -1217,7 +1217,14 @@ EOT;
             foreach($sprintRelation as $sprintID => $executionID)
             {
                 $issueList = $this->callJiraAPI("/rest/agile/1.0/sprint/{$sprintID}/issue?maxResults=1000");
-                foreach($issueList as $issue) $issueGroup[$issue->id] = $executionID;
+                foreach($issueList as $issue)
+                {
+                    $issueGroup[$issue->id] = $executionID;
+                    if(!empty($issue->fields->subtasks))
+                    {
+                        foreach($issue->fields->subtasks as $subtask) $issueGroup[$subtask->id] = $executionID;
+                    }
+                }
             }
         }
 
