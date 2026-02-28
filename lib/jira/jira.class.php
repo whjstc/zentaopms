@@ -303,7 +303,6 @@ class jira
                 $issue['files'] = $files;
             }
 
-
             if(!empty($issue['issuelinks']))
             {
                 $links = array();
@@ -314,6 +313,21 @@ class jira
                     $link['linktype']    = $issueLink['type']['id'];
                     $link['source']      = $issue['id'];
                     $link['destination'] = !empty($issueLink['inwardIssue']['id']) ? $issueLink['inwardIssue']['id'] : '';
+                    $links[$link['id']] = $link;
+                }
+                $issue['links'] = $links;
+            }
+
+            if(!empty($issue['subtasks']))
+            {
+                $links = !empty($issue['links']) ? $issue['links'] : array();
+                foreach($issue['subtasks'] as $index => $subtask)
+                {
+                    $link = array();
+                    $link['id']          = 'subtask' . $subtask['id'];
+                    $link['linktype']    = 'jiraSubTask';
+                    $link['source']      = $issue['id'];
+                    $link['destination'] = $subtask['id'];
                     $links[$link['id']] = $link;
                 }
                 $issue['links'] = $links;
