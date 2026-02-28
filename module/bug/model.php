@@ -1802,7 +1802,7 @@ class bugModel extends model
             {
                 foreach($out[2] as $searchValue)
                 {
-                    $story = $this->dao->select('id')->from(TABLE_STORY)->alias('t1')
+                    $story = $this->dao->select('t1.id')->from(TABLE_STORY)->alias('t1')
                         ->leftJoin(TABLE_STORYSPEC)->alias('t2')->on('t1.id=t2.story')
                         ->where('t1.title')->like("%$searchValue%")
                         ->orWhere('t1.keywords')->like("%$searchValue%")
