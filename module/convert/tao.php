@@ -1087,7 +1087,7 @@ class convertTao extends convertModel
         if($this->config->edition != 'open') $relations = $this->createRelation($relations);
 
         $storyLink = $taskLink = $duplicateLink = $relatesLink = array();
-        $issueLinkTypeList = $relations['zentaoLinkType'];
+        $issueLinkTypeList = zget($relations, 'zentaoLinkType', array());
         foreach($dataList as $issueLink)
         {
             $linkType = $issueLink->linktype;
