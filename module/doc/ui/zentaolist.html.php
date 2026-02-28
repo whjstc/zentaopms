@@ -85,7 +85,7 @@ $ganttView = null;
 if($type == 'gantt' && !empty($ganttData))
 {
     if($showFields[0] == '"') $showFields = json_decode($showFields);
-    zui::gantt
+    $ganttView = zui::gantt
     (
         set::onInit(jsRaw('window.onInitGantt')),
         set::data($ganttData['data']),
