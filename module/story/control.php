@@ -1949,6 +1949,8 @@ class story extends control
      */
     public function export(int $productID, string $orderBy, int $executionID = 0, string $browseType = '', string $storyType = 'story')
     {
+        $this->story->replaceURLang($storyType);
+
         /* format the fields of every story in order to export data. */
         if($_POST)
         {
@@ -1982,8 +1984,6 @@ class story extends control
 
             $this->fetch('transfer', 'export', "model=$storyType");
         }
-
-        $this->story->replaceURLang($storyType);
 
         $project  = null;
         $hasBranch = false;
