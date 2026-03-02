@@ -563,7 +563,7 @@ class convert extends control
      * @access public
      * @return void
      */
-    public function ajaxQuickImportJiraData()
+    public function quickImportJiraData()
     {
         $this->convert->quickImportJiraData();
         if(dao::isError()) return $this->send(array('result' => 'fail', 'message' => dao::getError()));
