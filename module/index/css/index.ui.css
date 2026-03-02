@@ -49,7 +49,7 @@
 #menuMoreNav {display: none;}
 .show-more-nav #menuMoreNav {display: block;}
 #menuMoreNav > li > a.with-popover-show {background-color: rgba(255,255,255,.1);}
-#menuMoreList {background: var(--zt-menu-bg); padding: 8px 0; min-width: 100px;}
+#menuMoreList {background: var(--zt-menu-bg); padding: 8px 0; min-width: 100px; list-style: none;}
 #menuMoreList > .menu-item {padding: 1px 12px!important; height: 32px!important;}
 #menuMoreList > .menu-item > a > .text {flex: auto;}
 
