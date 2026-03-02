@@ -1202,7 +1202,7 @@ class convertTaoTest extends baseTest
               `extra` char(100) NULL,
               PRIMARY KEY (`id`),
               UNIQUE KEY `relation` (`AType`,`BType`,`AID`,`BID`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+            ) ENGINE=InnoDB;
             EOT;
 
         try {
