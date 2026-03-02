@@ -388,14 +388,20 @@ class cron extends control
      */
     public function consumeTask(int $execId, object $task)
     {
-        /* Other executor may execute the task at the same time，so we mark execId and wait 500ms to check whether we own it. */
         $this->dao->clearCache();
 
         if(!empty($task->command))
         {
-            $this->dao->update(TABLE_QUEUE)->set('status')->eq('doing')->set('execId')->eq($execId)->where('id')->eq($task->id)->exec();
-            usleep(5000);
+            $affectedRows = $this->dao->update(TABLE_QUEUE)
+                ->set('status')->eq('doing')->set('execId')->eq($execId)
+                ->where('id')->eq($task->id)
+                ->andWhere('status')->eq('wait')
+                ->andWhere('execId')->eq('0')
+                ->exec();
+            if($affectedRows != 1) return;
 
+            /* Other executor may execute the task at the same time，so we mark execId and wait 0.5s to check whether we own it. */
+            usleep(500000);
             $task = $this->dao->select('*')->from(TABLE_QUEUE)->where('id')->eq($task->id)->fetch();
             if($task->execId != $execId) return;
 
