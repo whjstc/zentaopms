@@ -43,21 +43,21 @@ $objectType = array('story', 'task', 'bug');
 
 $report = new reportTest();
 
-r($report->getYearObjectStatTest($accounts[0], $objectType[0])) && p() && e('draft:3;');  // 测试获取 admin story
-r($report->getYearObjectStatTest($accounts[0], $objectType[1])) && p() && e('wait:3;');   // 测试获取 admin task
-r($report->getYearObjectStatTest($accounts[0], $objectType[2])) && p() && e('0');         // 测试获取 admin bug
-r($report->getYearObjectStatTest($accounts[1], $objectType[0])) && p() && e('0');         // 测试获取 dev17 story
-r($report->getYearObjectStatTest($accounts[1], $objectType[1])) && p() && e('0');         // 测试获取 dev17 task
-r($report->getYearObjectStatTest($accounts[1], $objectType[2])) && p() && e('0');         // 测试获取 dev17 bug
-r($report->getYearObjectStatTest($accounts[2], $objectType[0])) && p() && e('0');         // 测试获取 test18 story
-r($report->getYearObjectStatTest($accounts[2], $objectType[1])) && p() && e('0');         // 测试获取 test18 task
-r($report->getYearObjectStatTest($accounts[2], $objectType[2])) && p() && e('active:2;'); // 测试获取 test18 bug
-r($report->getYearObjectStatTest($accounts[3], $objectType[0])) && p() && e('draft:3;');  // 测试获取 admin dev17 story
-r($report->getYearObjectStatTest($accounts[3], $objectType[1])) && p() && e('wait:3;');   // 测试获取 admin dev17 task
-r($report->getYearObjectStatTest($accounts[3], $objectType[2])) && p() && e('0');         // 测试获取 admin dev17 bug
-r($report->getYearObjectStatTest($accounts[4], $objectType[0])) && p() && e('draft:3;');  // 测试获取 admin test18 story
-r($report->getYearObjectStatTest($accounts[4], $objectType[1])) && p() && e('wait:3;');   // 测试获取 admin test18 task
-r($report->getYearObjectStatTest($accounts[4], $objectType[2])) && p() && e('active:2;'); // 测试获取 admin test18 bug
-r($report->getYearObjectStatTest($accounts[5], $objectType[0])) && p() && e('draft:3;');  // 测试获取 所有用户 story
-r($report->getYearObjectStatTest($accounts[5], $objectType[1])) && p() && e('wait:3;');   // 测试获取 所有用户 task
-r($report->getYearObjectStatTest($accounts[5], $objectType[2])) && p() && e('active:2;'); // 测试获取 所有用户 bug
+r($report->getYearObjectStatTest($accounts[0], $objectType[0])) && p('', '|') && e('draft:3;');  // 测试获取 admin story
+r($report->getYearObjectStatTest($accounts[0], $objectType[1])) && p('', '|') && e('wait:3;');   // 测试获取 admin task
+r($report->getYearObjectStatTest($accounts[0], $objectType[2])) && p('', '|') && e('0');         // 测试获取 admin bug
+r($report->getYearObjectStatTest($accounts[1], $objectType[0])) && p('', '|') && e('0');         // 测试获取 dev17 story
+r($report->getYearObjectStatTest($accounts[1], $objectType[1])) && p('', '|') && e('0');         // 测试获取 dev17 task
+r($report->getYearObjectStatTest($accounts[1], $objectType[2])) && p('', '|') && e('0');         // 测试获取 dev17 bug
+r($report->getYearObjectStatTest($accounts[2], $objectType[0])) && p('', '|') && e('0');         // 测试获取 test18 story
+r($report->getYearObjectStatTest($accounts[2], $objectType[1])) && p('', '|') && e('0');         // 测试获取 test18 task
+r($report->getYearObjectStatTest($accounts[2], $objectType[2])) && p('', '|') && e('active:2;'); // 测试获取 test18 bug
+r($report->getYearObjectStatTest($accounts[3], $objectType[0])) && p('', '|') && e('draft:3;');  // 测试获取 admin dev17 story
+r($report->getYearObjectStatTest($accounts[3], $objectType[1])) && p('', '|') && e('wait:3;');   // 测试获取 admin dev17 task
+r($report->getYearObjectStatTest($accounts[3], $objectType[2])) && p('', '|') && e('0');         // 测试获取 admin dev17 bug
+r($report->getYearObjectStatTest($accounts[4], $objectType[0])) && p('', '|') && e('draft:3;');  // 测试获取 admin test18 story
+r($report->getYearObjectStatTest($accounts[4], $objectType[1])) && p('', '|') && e('wait:3;');   // 测试获取 admin test18 task
+r($report->getYearObjectStatTest($accounts[4], $objectType[2])) && p('', '|') && e('active:2;'); // 测试获取 admin test18 bug
+r($report->getYearObjectStatTest($accounts[5], $objectType[0])) && p('', '|') && e('draft:3;');  // 测试获取 所有用户 story
+r($report->getYearObjectStatTest($accounts[5], $objectType[1])) && p('', '|') && e('wait:3;');   // 测试获取 所有用户 task
+r($report->getYearObjectStatTest($accounts[5], $objectType[2])) && p('', '|') && e('active:2;'); // 测试获取 所有用户 bug
