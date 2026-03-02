@@ -25,8 +25,8 @@ function loadConfig()
 
     if(empty($config->zin->allowCommands)) $config->zin->allowCommands = array('zinDebug', 'hookCode');
 
-    if(empty($config->noWorkspace))
+    if(empty($config->noWorkspace) && !isset($config->zin->wgVerMap['visionswitcher']))
     {
-        if(!isset($config->zin->wgVerMap['visionswitcher'])) $config->zin->wgVerMap['visionswitcher'] = '2';
+        $config->zin->wgVerMap['visionswitcher'] = '2';
     }
 }
