@@ -45,7 +45,9 @@ class navbar extends wg
     {
         global $app, $config;
         $originItems      = $this->getOriginItems();
-        $showViewSwitcher = $app->rawModule === 'execution' && data('activeMenu') === 'task' && !empty($config->sanplexVersion) && $config->vision === 'rnd';
+        $isTaskViews      = $app->rawModule === 'execution' && data('activeMenu') === 'task';
+        $isTaskReport     = $app->tab === 'execution' && $app->rawModule === 'task' && $app->rawMethod === 'report';
+        $showViewSwitcher = ($isTaskViews || $isTaskReport) && !empty($config->sanplexVersion) && $config->vision === 'rnd';
         $items            = static::getWorkspaceItems($showViewSwitcher);
         $activeID         = data('activeMenu');
         $activeItem       = array('data-id' => $activeID);
