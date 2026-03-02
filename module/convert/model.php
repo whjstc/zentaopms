@@ -733,44 +733,32 @@ EOT;
      * 获取Jira状态列表。
      * Get jira status list.
      *
+     * @param  string $step
      * @access public
      * @return array
      */
-    public function getJiraStatusList(): array
+    public function getJiraStatusList($step = ''): array
     {
         if($this->session->jiraMethod == 'api')
         {
-            $schemes      = $this->callJiraAPI('/rest/api/3/issuetypescheme?expand=projects,issuetypes&maxResults=1000');
-            $workflows    = $this->callJiraAPI('/rest/api/3/workflow/search?expand=statuses,projects&maxResults=1000');
-            $projectGroup = array();
-            foreach($schemes as $scheme)
-            {
-                if(empty($scheme->issueTypes->values) || empty($scheme->projects->values)) continue;
-                foreach($scheme->issueTypes->values as $issueType)
-                {
-                    foreach($scheme->projects->values as $project) $projectGroup[$issueType->id][$project->id] = $project->id;
-                }
-            }
+            $jql = 'created<=' . date('Y-m-d', strtotime('+1 day'));
+            if($step) $jql .= " AND issuetype = {$step}";
+            $issues = $this->callJiraAPI('/rest/api/3/search/jql?jql=' . urlencode($jql) . '&fields=status,issuetype&maxResults=5000');
 
-            $statusList = array();
-            foreach($workflows as $workflow)
+            foreach($issues as $issue)
             {
-                if(empty($workflow->statuses) || empty($workflow->projects)) continue;
-                foreach($workflow->projects as $project)
+                if(!empty($issue->fields))
                 {
-                    foreach($projectGroup as $issueType => $projects)
-                    {
-                        if(in_array($project->id, $projects))
-                        {
-                            foreach($workflow->statuses as $status) $statusList[$issueType][$status->id] = $status->name;
-                        }
-                    }
+                    foreach($issue->fields as $field => $value) $issue->$field = $value;
                 }
+                if(!empty($issue->status->id))    $issue->issuestatus = $issue->status->id;
+                if(!empty($issue->issuetype->id)) $issue->issuetype   = $issue->issuetype->id;
             }
-            return $statusList;
         }
-
-        $issues     = $this->getJiraData($this->session->jiraMethod, 'issue');
+        else
+        {
+            $issues = $this->getJiraData($this->session->jiraMethod, 'issue');
+        }
         $statusList = $this->getJiraData($this->session->jiraMethod, 'status');
 
         $jiraStatusList = array();
@@ -782,7 +770,7 @@ EOT;
             $status = $statusList[$issue->issuestatus];
             $jiraStatusList[$issue->issuetype][$issue->issuestatus] = $status->pname;
         }
-        return $jiraStatusList;
+        return $step ? zget($jiraStatusList, $step, array()) : $jiraStatusList;
     }
 
     /**
@@ -988,7 +976,17 @@ EOT;
         if(!empty($result->values) || !empty($result->issues))
         {
             $dataList = !empty($result->values) ? $result->values : $result->issues;
-            if(empty($result->isLast)) $dataList = array_merge($dataList, $this->callJiraAPI($url, $start + $result->maxResults));
+            if(empty($result->isLast))
+            {
+                if(!empty($result->nextPageToken))
+                {
+                    $dataList = array_merge($dataList, $this->callJiraAPI($url . "&nextPageToken={$result->nextPageToken}"));
+                }
+                else
+                {
+                    $dataList = array_merge($dataList, $this->callJiraAPI($url, $start + $result->maxResults));
+                }
+            }
         }
 
         return $dataList;
@@ -1219,7 +1217,14 @@ EOT;
             foreach($sprintRelation as $sprintID => $executionID)
             {
                 $issueList = $this->callJiraAPI("/rest/agile/1.0/sprint/{$sprintID}/issue?maxResults=1000");
-                foreach($issueList as $issue) $issueGroup[$issue->id] = $executionID;
+                foreach($issueList as $issue)
+                {
+                    $issueGroup[$issue->id] = $executionID;
+                    if(!empty($issue->fields->subtasks))
+                    {
+                        foreach($issue->fields->subtasks as $subtask) $issueGroup[$subtask->id] = $executionID;
+                    }
+                }
             }
         }
 
