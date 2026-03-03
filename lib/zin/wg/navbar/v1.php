@@ -420,7 +420,7 @@ class navbar extends wg
                         }
 
                         $dataApp = !empty($dropMenuItem['data-app']) ? $dropMenuItem['data-app'] : $dataApp;
-                        $dropItems[] = array('active' => $subActive, 'data-id' => $dropMenuName, 'url' => $subLink, 'text' => $subLabel, 'data-app' => $dataApp);
+                        $dropItems[] = array('active' => $subActive, 'data-id' => $dropMenuName, 'url' => $subLink, 'text' => $subLabel, 'data-app' => $dataApp, 'zui-key' => $dropMenuName);
                     }
 
                     if(empty($dropItems)) continue;
@@ -429,7 +429,6 @@ class navbar extends wg
                     {
                         foreach($dropItems as $dropItem)
                         {
-                            if(isset($dropItem['data-id'])) $dropItem['zui-key'] = $dropItem['data-id'];
                             $dropItem['outerClass'] = 'is-rsh-more';
                             $items['other-' . $dropItem['data-id']] = $dropItem;
                         }
