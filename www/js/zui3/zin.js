@@ -385,6 +385,7 @@
             $nav.find('.nav-item,.nav-divider').each(function()
             {
                 const $item = $(this);
+                if($item.hasClass('rsh-overflow-item')) return;
                 if($item.hasClass('nav-divider'))
                 {
                     layout.dividerCount++;
@@ -406,9 +407,6 @@
         itemPadding -= Math.min(7, fixSize);
         dividerMargin -= Math.min(7, fixSize);
         $nav.css({'--nav-item-padding': itemPadding + 'px', '--nav-divider-margin': dividerMargin + 'px', '--nav-offset-left': 0}).toggleClass('compact', fixSize > 6).toggleClass('compact-extra', fixSize > 8);
-        const navLeft      = $nav[0].getBoundingClientRect().left;
-        const headingRight = $heading[0].getBoundingClientRect().right;
-        $nav.css('--nav-offset-left', Math.max(0, 20 + 2 * Math.ceil(headingRight - navLeft)) + 'px');
     }
 
     function updateNavbar(data)
