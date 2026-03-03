@@ -2212,6 +2212,7 @@ class convertTao extends convertModel
      */
     protected function createBuildinField(string $module, array $resolutions, array $priList, $buildin = false): bool
     {
+        $this->loadModel('workflowfield');
         foreach($this->lang->convert->jira->buildinFields as $fieldCode => $buildinField)
         {
             if(isset($buildinField['buildin']) && $buildinField['buildin'] !== $buildin) continue;
@@ -2246,12 +2247,13 @@ class convertTao extends convertModel
             $field->optionType    = $buildinField['optionType'];
             $field->sql           = '';
             $field->options       = $options;
-            $field->default       = '';
             $field->placeholder   = '';
             $field->module        = $module;
             $field->group         = '0';
             $field->createdBy     = $this->app->user->account;
             $field->createdDate   = helper::now();
+
+            if($field->type != 'text') $field->default = '';
 
             $result = $this->workflowfield->create($module, $field, null, true);
         }
