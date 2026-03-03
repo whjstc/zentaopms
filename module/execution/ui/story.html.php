@@ -89,6 +89,7 @@ featureBar
     (
         picker
         (
+            set::boxClass('whitespace-nowrap'),
             set::tree(),
             set::name('showGrades'),
             set::items($gradeMenu),

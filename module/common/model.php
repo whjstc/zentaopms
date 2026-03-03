@@ -3933,6 +3933,40 @@ EOF;
 
         return $dotStyle;
     }
+
+    /**
+     * Get workspace info.
+     *
+     * @return array ['enabled' => bool, 'type' => string, 'opened' => bool]
+     */
+    public static function getWorkspaceInfo(): array
+    {
+        global $app, $config;
+
+        if(isset($app->workspaceInfo)) return $app->workspaceInfo;
+
+        if(!empty($config->noWorkspace) || (!empty($_SERVER['HTTP_USER_AGENT']) && str_contains($_SERVER['HTTP_USER_AGENT'], 'xuanxuan')))
+        {
+            $app->workspaceInfo = array('enabled' => false, 'type' => '', 'opened' => false);
+            return $app->workspaceInfo;
+        }
+
+        if(empty($app->lang->workspaceList[$app->tab]) || commonModel::setMainMenu())
+        {
+            $app->workspaceInfo = array('enabled' => true, 'type' => '', 'opened' => false);
+            return $app->workspaceInfo;
+        }
+
+        $cookieWorkspace = $app->cookie->workspace;
+        if($cookieWorkspace !== $app->tab)
+        {
+            $app->workspaceInfo = array('enabled' => true, 'type' => $app->tab, 'opened' => false);
+            return $app->workspaceInfo;
+        }
+
+        $app->workspaceInfo = array('enabled' => true, 'type' => $cookieWorkspace, 'opened' => true);
+        return $app->workspaceInfo;
+    }
 }
 
 class common extends commonModel
