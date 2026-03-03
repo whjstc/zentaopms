@@ -105,6 +105,7 @@ class navbar extends wg
         $responsiveNavOptions = [];
         $responsiveNavOptions['container']        = 'parent';
         $responsiveNavOptions['more']             = ['text' => $lang->other, 'caret' => true];
+        $responsiveNavOptions['moreDropdown']     = ['trigger' => 'hover'];
         $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
 
         return h::nav
@@ -424,6 +425,18 @@ class navbar extends wg
                     }
 
                     if(empty($dropItems)) continue;
+
+                    if($menuItem->name === 'other')
+                    {
+                        foreach($dropItems as $dropItem)
+                        {
+                            if(isset($dropItem['data-id'])) $dropItem['zui-key'] = $dropItem['data-id'];
+                            $dropItem['outerClass'] = 'is-rsh-more';
+                            $items['other-' . $dropItem['data-id']] = $dropItem;
+                        }
+                        continue;
+                    }
+
                     $newItem = array
                     (
                         'type'     => 'dropdown',
