@@ -2212,6 +2212,7 @@ class convertTao extends convertModel
      */
     protected function createBuildinField(string $module, array $resolutions, array $priList, $buildin = false): bool
     {
+        $this->loadModel('workflowfield');
         foreach($this->lang->convert->jira->buildinFields as $fieldCode => $buildinField)
         {
             if(isset($buildinField['buildin']) && $buildinField['buildin'] !== $buildin) continue;
