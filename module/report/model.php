@@ -536,17 +536,18 @@ class reportModel extends model
         $statusStat = array();
         while($action = $stmt->fetch())
         {
+            /* Story, bug can from feedback and ticket, task can from feedback, change this action down to opened. */
+            $lowerAction = strtolower($action->action);
+            if(in_array($lowerAction, array('fromfeedback', 'fromticket'))) $lowerAction = 'opened';
+
             $objectID = $action->objectID;
-            if($action->deleted == '0' && $action->action == 'opened')
+            if($action->deleted == '0' && $lowerAction == 'opened')
             {
                 if(!isset($statusStat[$action->status]))   $statusStat[$action->status] = 0;
                 if(!isset($statedObjectIDList[$objectID])) $statusStat[$action->status] ++;
                 $statedObjectIDList[$objectID] = $objectID;
             }
 
-            /* Story, bug can from feedback and ticket, task can from feedback, change this action down to opened. */
-            $lowerAction = strtolower($action->action);
-            if(in_array($lowerAction, array('fromfeedback', 'fromticket'))) $lowerAction = 'opened';
             if(!isset($actionStat[$lowerAction]))
             {
                 foreach($months as $month) $actionStat[$lowerAction][$month] = 0;
