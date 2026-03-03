@@ -420,13 +420,7 @@ class navbar extends wg
                         }
 
                         $dataApp = !empty($dropMenuItem['data-app']) ? $dropMenuItem['data-app'] : $dataApp;
-                        $dropItems[] = array(
-                            'active'   => $subActive,
-                            'data-id'  => $dropMenuName,
-                            'url'      => $subLink,
-                            'text'     => $subLabel,
-                            'data-app' => $dataApp
-                        );
+                        $dropItems[] = array('active' => $subActive, 'data-id' => $dropMenuName, 'url' => $subLink, 'text' => $subLabel, 'data-app' => $dataApp);
                     }
 
                     if(empty($dropItems)) continue;
@@ -442,32 +436,12 @@ class navbar extends wg
                         continue;
                     }
 
-                    $newItem = array
-                    (
-                        'type'     => 'dropdown',
-                        'items'    => $dropItems,
-                        'class'    => $class,
-                        'active'   => $isActive,
-                        'target'   => $target,
-                        'text'     => $label,
-                        'data-id'  => $menuItem->name,
-                        'data-app' => $dataApp,
-                        'trigger'  => 'hover'
-                    );
+                    $newItem = array('type' => 'dropdown', 'items' => $dropItems, 'class' => $class, 'active' => $isActive, 'target' => $target, 'text' => $label, 'data-id' => $menuItem->name, 'data-app' => $dataApp, 'trigger' => 'hover');
                 }
                 else
                 {
-                    $newItem = array(
-                        'class'    => $class,
-                        'icon'     => isset($menuItem->icon) ? $menuItem->icon : '',
-                        'text'     => $label,
-                        'url'      => commonModel::createMenuLink($menuItem, $tab),
-                        'active'   => $isActive,
-                        'target'   => $target,
-                        'data-id'  => $menuItem->name,
-                        'data-app' => $dataApp,
-                        'hidden'   => (isset($menuItem->hidden) && $menuItem->hidden && (!isset($menuItem->tutorial) || !$menuItem->tutorial))
-                    );
+                    $hidden  = (isset($menuItem->hidden) && $menuItem->hidden && (!isset($menuItem->tutorial) || !$menuItem->tutorial));
+                    $newItem = array('class' => $class, 'icon' => isset($menuItem->icon) ? $menuItem->icon : '', 'text' => $label, 'url' => commonModel::createMenuLink($menuItem, $tab), 'active' => $isActive, 'target' => $target, 'data-id' => $menuItem->name, 'data-app' => $dataApp, 'hidden' => $hidden);
                 }
             }
             else
