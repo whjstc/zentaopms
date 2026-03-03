@@ -231,7 +231,7 @@ class zaiModel extends model
         }
 
         $hasFile = false;
-        if($postData)
+        if($postData !== null) // Post data must set even if it is empty
         {
             foreach($postData as $value)
             {

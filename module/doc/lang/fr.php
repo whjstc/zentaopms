@@ -794,6 +794,7 @@ $lang->doc->docLang->restoreVersionHint          = 'Restore to version';
 $lang->doc->docLang->restoreVersion              = 'Restore';
 $lang->doc->docLang->restoreVersionConfirm       = 'This will create a new version using the content of version {version}. Are you sure you want to continue?';
 $lang->doc->docLang->frozenTips                  = $lang->doc->frozenTips;
+$lang->doc->docLang->aiTask                      = 'AI Teammate Task';
 
 $lang->docTemplate->types = array();
 $lang->docTemplate->types['plan']   = 'Plan';

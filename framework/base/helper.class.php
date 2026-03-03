@@ -1235,7 +1235,7 @@ class baseHelper
     {
         if(empty($data)) return $data;
         if(!is_object($data) && !is_array($data)) return $data;
-        if(!static::needDecodeHtmlSpecialChars()) return $data;
+        if(!self::needDecodeHtmlSpecialChars()) return $data;
 
         global $app, $config;
 
@@ -1244,7 +1244,7 @@ class baseHelper
 
         if(!isset($config->action->objectNameFields)) $app->loadConfig('action');
         $titleField = $config->action->objectNameFields[$objectType] ?? '';
-        if(!$titleField || $titleField == 'id') return $data;
+        if(!$titleField) return $data;
 
         if(is_object($data))
         {

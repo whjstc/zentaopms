@@ -741,7 +741,8 @@ class task extends control
         /* Common actions of task module and task. */
         $this->taskZen->commonAction($taskID);
         $task        = $this->task->getById($taskID);
-        $currentTeam = !empty($task->team) ? $this->task->getTeamByAccount($task->team) : '';
+        $account     = $this->app->user->account;
+        $currentTeam = !empty($task->team) ? $this->task->getTeamByAccount($task->team, $account, array()) : '';
 
         if(!empty($_POST))
         {

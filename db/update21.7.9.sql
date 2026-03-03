@@ -395,3 +395,5 @@ ALTER TABLE `zt_projectadmin` MODIFY COLUMN `programs` text DEFAULT NULL;
 ALTER TABLE `zt_projectadmin` MODIFY COLUMN `projects` text DEFAULT NULL;
 ALTER TABLE `zt_projectadmin` MODIFY COLUMN `executions` text DEFAULT NULL;
 ALTER TABLE `zt_projectadmin` MODIFY COLUMN `products` text DEFAULT NULL;
+
+DELETE FROM zt_workflowfield WHERE `module`='bug' AND `field`='linkBug';

@@ -528,7 +528,8 @@ class customModel extends model
         global $lang, $app, $config;
         if(!isset($lang->$module->featureBar[$method])) return;
 
-        $queryModule = ($module == 'execution' && $method == 'task') ? 'task' : ($module == 'product' ? 'story' : $module);
+        $queryModule = $module == 'execution' && $method == 'task' ? 'task' : $module;
+        if($module == 'product') $queryModule = !empty($_SESSION['storyType']) ? $_SESSION['storyType'] : 'story';
         if(isset($config->$module->queryModule[$method])) $queryModule = $config->$module->queryModule[$method];
         if($module == 'execution' && $method == 'story')  $queryModule = 'executionStory';
 

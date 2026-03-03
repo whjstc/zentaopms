@@ -289,6 +289,7 @@ $lang->task->remindBug                 = "Diese Aufgabe wurde aus einem Bus erze
 $lang->task->remindIssue               = "This task is converted from a issue. Do you want to update the Issue:%s?";
 $lang->task->confirmChangeExecution    = "Wenn Sie {$lang->executionCommon} ändern, das verwendete Modul, Story and Assignor will be changed. Do you want to do it?";
 $lang->task->confirmFinish             = '"Reststunden " sind 0. Möchten Sue den Status auf Erledigt setzen?';
+$lang->task->confirmTeamFinish         = '"Left Hour" is 0. Do you want to change the team member status to "Finished"?';
 $lang->task->confirmRecord             = '"Reststunden " sind 0. Möchten Sie den Task auf Erledigt setzen?';
 $lang->task->confirmTransfer           = '"Left Hour" is 0，Do you want to assign to <strong>%s</strong> task?';
 $lang->task->noticeTaskStart           = '"Cost Hour" and "Left Hour" cannot be 0 at the same time.';

@@ -923,11 +923,14 @@ class user extends control
     public function resetPassword(string $code)
     {
         $expired = true;
-        $user    = $this->dao->select('account, resetToken')->from(TABLE_USER)->where('resetToken')->like('%"code":"' . $code . '"%')->fetch();
-        if($user)
+        if(preg_match("/^[a-z0-9]+$/i", $code))
         {
-            $resetToken = json_decode($user->resetToken);
-            if($resetToken->endTime >= time()) $expired = false;
+            $user = $this->dao->select('account, resetToken')->from(TABLE_USER)->where('resetToken')->like('%"code":"' . $code . '"%')->fetch();
+            if($user)
+            {
+                $resetToken = json_decode($user->resetToken);
+                if($resetToken->endTime >= time()) $expired = false;
+            }
         }
 
         if(!empty($_POST))

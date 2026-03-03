@@ -107,7 +107,7 @@ class pivot extends control
         $this->view->builtin        = $pivot->builtin;
         $this->view->version        = $version;
         $this->view->groupID        = $groupID;
-        $this->view->pivotID        = $groupID;
+        $this->view->pivotID        = $pivotID;
         $this->display();
     }
 

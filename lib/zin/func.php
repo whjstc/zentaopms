@@ -262,3 +262,8 @@ if(is_dir(__DIR__ . DS . 'wg' . DS . 'boardeditor'))
 {
     function boardEditor(): boardEditor {return createWg('boardeditor', func_get_args());}
 }
+
+if(is_dir(__DIR__ . DS . 'wg' . DS . 'teammatemenu'))
+{
+    function teammateMenu(): teammateMenu {return createWg('teammateMenu', func_get_args());}
+}

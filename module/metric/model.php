@@ -817,7 +817,8 @@ class metricModel extends model
 
         if(!empty($records))
         {
-            $time = helper::now();
+            $records = json_decode(json_encode($records), true);
+            $time    = helper::now();
             foreach($records as $index => $record)
             {
                 $records[$index]['date']         = $time;
@@ -944,7 +945,7 @@ class metricModel extends model
             $dbh = $this->app->loadDriver('duckdb');
             $statement = $dbh->query($sql);
         }
-        if($statement) $rows = $statement->fetchAll();
+        if($statement) $rows = $statement->fetchAll('', false);
         if(!empty($rows)) foreach($rows as $row) $calculator->calculate($row);
     }
 
