@@ -48,6 +48,7 @@ class featureBar extends wg
         $recTotal     = $pager ? $pager->recTotal : data('recTotal');
         $recTotal     = $this->prop('labelCount') >= 0 ? $this->prop('labelCount') : $recTotal;
         $items        = array();
+        $items        = [['text' => 'Test item 1'], ['text' => 'Test item 2'], ['text' => 'Test item 3'], ['text' => 'Test item 4']];
         $loadID       = $this->prop('loadID');
         $load         = $this->prop('load');
         $tab          = $this->prop('app');
@@ -160,7 +161,7 @@ class featureBar extends wg
             set::compact(),
             set::className('nav-feature'),
             set::items($this->getItems()),
-            zui::create('ResponsiveNavHelper', ['container' => 'parent', 'fixedItems' => jsRaw('(_,ele) => $(ele).find(".search-form-toggle").length')]),
+            zui::create('ResponsiveNavHelper', ['container' => 'parent', 'fixedItems' => jsRaw('(_,ele) => {if($(ele).find(".search-form-toggle").length) {$(ele).css("order", 10000);return true} return false}')]),
             divorce($this->children())
         );
     }
