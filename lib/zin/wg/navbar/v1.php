@@ -66,7 +66,7 @@ class navbar extends wg
             (
                 setID('navbarHeading'),
                 setClass('text-lg'),
-                $activeItem['text']
+                isset($activeItem['text']) ? $activeItem['text'] : null
             ),
             new nav
             (
