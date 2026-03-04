@@ -1138,7 +1138,7 @@ class convertTao extends convertModel
             $effort->objectID   = $objectID;
             $effort->date       = !empty($data->created) ? substr($data->created, 0, 10) : null;
             $effort->account    = $this->getJiraAccount(isset($data->author) ? $data->author : '');
-            $effort->consumed   = round($data->timeworked / 3600);
+            $effort->consumed   = round($data->timeworked / 3600, 2);
             $effort->work       = $data->worklogbody;
             $effort->objectType = substr($objectType, 1);
             $this->dao->dbh($this->dbh)->insert(TABLE_EFFORT)->data($effort)->exec();
@@ -1650,7 +1650,7 @@ class convertTao extends convertModel
                 }
                 if($fieldCode == 'timeoriginalestimate' || $fieldCode == 'timespent')
                 {
-                    $object->{$field} = round($object->{$field} / 3600);
+                    $object->{$field} = round($object->{$field} / 3600, 2);
                 }
             }
         }
@@ -1780,9 +1780,9 @@ class convertTao extends convertModel
         $task->execution  = $executionID;
         $task->name       = $data->summary;
         $task->type       = 'devel';
-        $task->estimate   = !empty($data->timeoriginalestimate) ? round($data->timeoriginalestimate / 3600) : 0;
-        $task->left       = !empty($data->timeestimate)         ? round($data->timeestimate / 3600)         : 0;
-        $task->consumed   = !empty($data->timespent)            ? round($data->timespent / 3600)            : 0;
+        $task->estimate   = !empty($data->timeoriginalestimate) ? round($data->timeoriginalestimate / 3600, 2) : 0;
+        $task->left       = !empty($data->timeestimate)         ? round($data->timeestimate / 3600, 2)         : 0;
+        $task->consumed   = !empty($data->timespent)            ? round($data->timespent / 3600, 2)            : 0;
         $task->pri        = $data->priority ? $data->priority : 3;
         $task->status     = $this->convertStatus('task', $data->issuestatus, $data->issuetype, $relations);
         $task->desc       = isset($data->description) ? $data->description : '';
