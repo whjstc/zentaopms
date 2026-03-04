@@ -427,6 +427,7 @@ CSS;
     {
         global $config;
 
+        $mainSections = $this->buildMainSections();
         return div
         (
             setClass('detail-main flex-auto col gap-2 min-w-0'),
