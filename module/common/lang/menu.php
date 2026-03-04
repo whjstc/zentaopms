@@ -883,7 +883,7 @@ if(!empty($config->sanplexVersion) && $config->vision === 'rnd')
 
 /* Zentao icons map: */
 $lang->iconMap = [];
-$lang->iconMap['report']        = 'flag';
+$lang->iconMap['report']        = 'ruler';
 $lang->iconMap['weekly']        = 'flag';
 $lang->iconMap['deliverable']   = 'package';
 $lang->iconMap['dynamic']       = 'news';
