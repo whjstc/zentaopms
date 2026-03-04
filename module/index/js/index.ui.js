@@ -1051,7 +1051,11 @@ function updateSpaceMenu(info)
     $('body').toggleClass('has-space', hasSpaceNav);
 
     $menuMainNav.children('.is-space').remove();
-    if(!hasSpaceNav) return;
+    if(!hasSpaceNav)
+    {
+        refreshMenu();
+        return;
+    }
 
     const $spaceHeading = $('#spaceHeading').toggleClass('has-dropmenu', !!info.dropmenu);
     if(info.dropmenu)
