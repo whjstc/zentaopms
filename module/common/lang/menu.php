@@ -880,3 +880,23 @@ if(!empty($config->sanplexVersion) && $config->vision === 'rnd')
     $lang->execution->menu->burn['showInMainMenu']   = 'task';
     $lang->execution->menu->view['showInMainMenu']   = 'task';
 }
+
+/* Zentao icons map: */
+$lang->iconMap = [];
+$lang->iconMap['report']        = 'flag';
+$lang->iconMap['weekly']        = 'flag';
+$lang->iconMap['deliverable']   = 'package';
+$lang->iconMap['dynamic']       = 'news';
+$lang->iconMap['issue']         = 'issue';
+$lang->iconMap['risk']          = 'risk';
+$lang->iconMap['opportunity']   = 'opportunity';
+$lang->iconMap['pssp']          = 'task-list';
+$lang->iconMap['meeting']       = 'statistic';
+$lang->iconMap['track']         = 'chart-timeline';
+$lang->iconMap['cm']            = 'confirm';
+$lang->iconMap['projectchange'] = 'change';
+$lang->iconMap['estimation']    = 'hand-coins';
+$lang->iconMap['auditplan']     = 'shield-check';
+$lang->iconMap['train']         = 'book';
+$lang->iconMap['orroadmap']     = 'road-sign';
+$lang->iconMap['effort']        = 'time';
