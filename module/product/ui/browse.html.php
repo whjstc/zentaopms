@@ -473,6 +473,7 @@ featureBar
             set::display($lang->story->viewAllGrades),
             set::menu(array('checkbox' => true, 'itemProps' => array('innerComponent' => 'a'))),
             set::value($showGrades),
+            set::popMinWidth(150),
             set::toolbar
             (
                 array('text' => $lang->confirm, 'onClick' => jsRaw('(e,info) => {setShowGrades();info.relativeTarget.close();}')),

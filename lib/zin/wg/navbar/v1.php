@@ -66,7 +66,7 @@ class navbar extends wg
             (
                 setID('navbarHeading'),
                 setClass('text-lg'),
-                $activeItem['text']
+                isset($activeItem['text']) ? $activeItem['text'] : null
             ),
             new nav
             (
@@ -105,6 +105,7 @@ class navbar extends wg
         $responsiveNavOptions = [];
         $responsiveNavOptions['container']        = 'parent';
         $responsiveNavOptions['more']             = ['text' => $lang->other, 'caret' => true];
+        $responsiveNavOptions['moreDropdown']     = ['trigger' => 'hover'];
         $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
 
         return h::nav
@@ -299,13 +300,19 @@ class navbar extends wg
         $projectModel     = '';
         $navbarInMainMenu = [];
         $activeInMainMenu = '';
+        $getMenuIcon      = function($menuItem) use ($lang)
+        {
+            if(isset($menuItem->icon)) return $menuItem->icon;
+            if(!empty($lang->iconMap[$menuItem->name])) return 'icon-' . $lang->iconMap[$menuItem->name];
+            return '';
+        };
 
         foreach($menu as $menuItem)
         {
             if(isset($menuItem->class) && strpos($menuItem->class, 'automation-menu'))
             {
                 if($menuItem->divider) $items[] = array('type' => 'divider');
-                $items[] = array('class' => $menuItem->class, 'text' => $menuItem->text, 'type' => 'text', 'tagName' => 'span', 'icon' => isset($menuItem->icon) ? $menuItem->icon : '');
+                $items[] = array('class' => $menuItem->class, 'text' => $menuItem->text, 'type' => 'text', 'tagName' => 'span', 'icon' => $getMenuIcon($menuItem));
                 continue;
 
             }
@@ -377,7 +384,7 @@ class navbar extends wg
                     foreach($menuItem->dropMenu as $dropMenuName => $dropMenuItem)
                     {
                         if(empty($dropMenuItem)) continue;
-                        if(isset($dropMenuItem->hidden) and $dropMenuItem->hidden) continue;
+                        if(isset($dropMenuItem['hidden']) and $dropMenuItem['hidden']) continue;
 
                         /* Parse drop menu link. */
                         if(!empty($dropMenuItem['links']))
@@ -418,48 +425,35 @@ class navbar extends wg
                             $label      = $subLabel;
                         }
 
+                        $dropItemIcon = isset($dropMenuItem->icon) ? $dropMenuItem->icon : '';
+                        if(empty($dropItemIcon)) $dropItemIcon = isset($lang->iconMap[$dropMenuName]) ? 'icon-' . $lang->iconMap[$dropMenuName] : '';
                         $dataApp = !empty($dropMenuItem['data-app']) ? $dropMenuItem['data-app'] : $dataApp;
-                        $dropItems[] = array(
-                            'active'   => $subActive,
-                            'data-id'  => $dropMenuName,
-                            'url'      => $subLink,
-                            'text'     => $subLabel,
-                            'data-app' => $dataApp
-                        );
+                        $dropItems[] = array('active' => $subActive, 'data-id' => $dropMenuName, 'url' => $subLink, 'text' => $subLabel, 'data-app' => $dataApp, 'zui-key' => $dropMenuName, 'icon' => $dropItemIcon);
                     }
 
                     if(empty($dropItems)) continue;
-                    $newItem = array
-                    (
-                        'type'     => 'dropdown',
-                        'items'    => $dropItems,
-                        'class'    => $class,
-                        'active'   => $isActive,
-                        'target'   => $target,
-                        'text'     => $label,
-                        'data-id'  => $menuItem->name,
-                        'data-app' => $dataApp,
-                        'trigger'  => 'hover'
-                    );
+
+                    if($menuItem->name === 'other')
+                    {
+                        foreach($dropItems as $dropItem)
+                        {
+                            $dropItem['outerClass'] = 'is-rsh-more';
+                            $items['other-' . $dropItem['data-id']] = $dropItem;
+                        }
+                        continue;
+                    }
+
+                    $newItem = array('type' => 'dropdown', 'items' => $dropItems, 'class' => $class, 'active' => $isActive, 'target' => $target, 'text' => $label, 'data-id' => $menuItem->name, 'data-app' => $dataApp, 'trigger' => 'hover', 'icon' => 'icon-more-circle');
                 }
                 else
                 {
-                    $newItem = array(
-                        'class'    => $class,
-                        'icon'     => isset($menuItem->icon) ? $menuItem->icon : '',
-                        'text'     => $label,
-                        'url'      => commonModel::createMenuLink($menuItem, $tab),
-                        'active'   => $isActive,
-                        'target'   => $target,
-                        'data-id'  => $menuItem->name,
-                        'data-app' => $dataApp,
-                        'hidden'   => (isset($menuItem->hidden) && $menuItem->hidden && (!isset($menuItem->tutorial) || !$menuItem->tutorial))
-                    );
+                    $hidden  = (isset($menuItem->hidden) && $menuItem->hidden && (!isset($menuItem->tutorial) || !$menuItem->tutorial));
+                    $newItem = array('class' => $class, 'icon' => $getMenuIcon($menuItem), 'text' => $label, 'url' => commonModel::createMenuLink($menuItem, $tab), 'active' => $isActive, 'target' => $target, 'data-id' => $menuItem->name, 'data-app' => $dataApp, 'hidden' => $hidden);
                 }
             }
             else
             {
-                $newItem = array('class' => $class, 'icon' => isset($menuItem->icon) ? $menuItem->icon : '', 'text' => $menuItem->text, 'active' => $isActive);
+                $newItem = array('class' => $class, 'icon' => $getMenuIcon($menuItem), 'text' => $menuItem->text, 'active' => $isActive);
             }
 
             if(!$newItem) continue;
@@ -475,6 +469,10 @@ class navbar extends wg
         }
 
         data('actualActiveMenu', $activeMenu);
+
+        $isExecutionView = ($activeMenu === 'view' || $activeMenu === 'task') && $currentModule === 'execution';
+        $isTaskReport    = $currentMethod === 'report' && $currentModule === 'task';
+        if(!$isExecutionView && !$isTaskReport) $navbarInMainMenu = null;
 
         if(empty($items[$activeMenu]) && !empty($activeInMainMenu) && !empty($items[$activeInMainMenu]))
         {
