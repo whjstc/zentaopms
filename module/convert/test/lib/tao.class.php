@@ -994,11 +994,6 @@ class convertTaoTest extends baseTest
     {
         global $tester;
 
-        if(!isset($this->instance->workflowfield))
-        {
-            $this->instance->workflowfield = $this->createMockWorkflowField();
-        }
-
         $reflection = new ReflectionClass($this->instance);
         $method = $reflection->getMethod('createWorkflowField');
         $method->setAccessible(true);
@@ -1197,7 +1192,25 @@ class convertTaoTest extends baseTest
      */
     public function importJiraIssueLinkTest($dataList = array())
     {
+        $sql = <<<EOT
+            CREATE TABLE IF NOT EXISTS `jiratmprelation`(
+              `id` int(8) NOT NULL AUTO_INCREMENT,
+              `AType` char(30) NOT NULL,
+              `AID` char(100) NOT NULL,
+              `BType` char(30) NOT NULL,
+              `BID` char(100) NOT NULL,
+              `extra` char(100) NULL,
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `relation` (`AType`,`BType`,`AID`,`BID`)
+            ) ENGINE=InnoDB;
+            EOT;
+
+        try {
+            $this->instance->dbh->exec($sql);
+            $this->instance->dbh->exec('TRUNCATE TABLE jiratmprelation');
+        } catch (Exception $e) {}
         $result = $this->invokeArgs('importJiraIssueLink', [$dataList]);
+
         if(dao::isError()) return dao::getError();
         return $result;
     }
@@ -1266,74 +1279,14 @@ class convertTaoTest extends baseTest
     }
 
     /**
-     * Test processBuildinFieldData method.
-     *
-     * @param  string $module
-     * @param  object $data
-     * @param  object $object
-     * @param  array  $relations
-     * @param  bool   $buildinFlow
-     * @access public
-     * @return mixed
-     */
-    public function processBuildinFieldDataTest($module = null, $data = null, $object = null, $relations = array(), $buildinFlow = false)
-    {
-        if($module === null || $data === null || $object === null) return false;
-
-        $result = $this->invokeArgs('processBuildinFieldData', [$module, $data, $object, $relations, $buildinFlow]);
-        if(dao::isError()) return dao::getError();
-        return $result;
-    }
-
-    /**
-     * Test processBuildinFieldData method.
-     *
-     * @param  string $module
-     * @param  object $data
-     * @param  object $object
-     * @param  array  $relations
-     * @param  bool   $buildinFlow
-     * @access public
-     * @return mixed
-     */
-    public function processBuildinFieldDataTest($module = null, $data = null, $object = null, $relations = array(), $buildinFlow = false)
-    {
-        if($module === null || $data === null || $object === null) return false;
-
-        $result = $this->invokeArgs('processBuildinFieldData', [$module, $data, $object, $relations, $buildinFlow]);
-        if(dao::isError()) return dao::getError();
-        return $result;
-    }
-
-    /**
-     * Test processBuildinFieldData method.
-     *
-     * @param  string $module
-     * @param  object $data
-     * @param  object $object
-     * @param  array  $relations
-     * @param  bool   $buildinFlow
-     * @access public
-     * @return mixed
-     */
-    public function processBuildinFieldDataTest($module = null, $data = null, $object = null, $relations = array(), $buildinFlow = false)
-    {
-        if($module === null || $data === null || $object === null) return false;
-
-        $result = $this->invokeArgs('processBuildinFieldData', [$module, $data, $object, $relations, $buildinFlow]);
-        if(dao::isError()) return dao::getError();
-        return $result;
-    }
-
-    /**
      * Test processJiraIssueContent method.
      *
-     * @param  array $issueList
      * @access public
      * @return mixed
      */
-    public function processJiraIssueContentTest($issueList = array())
+    public function processJiraIssueContentTest()
     {
+        $issueList = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('BID')->ne('')->andWhere('extra')->eq('issue')->fetchAll('AID');
         $result = $this->invokeArgs('processJiraIssueContent', [$issueList]);
         if(dao::isError()) return dao::getError();
         return $result;
@@ -1397,5 +1350,48 @@ class convertTaoTest extends baseTest
         $result = $this->invokeArgs('updateSubTask', [$taskLink, $issueList]);
         if(dao::isError()) return dao::getError();
         return $result;
+
+    }
+
+    /*
+     * Test getJiraUser method.
+     *
+     * @access public
+     * @return array
+     */
+    public function getJiraUserTest(): array
+    {
+        return $this->instance->getJiraUser();
+    }
+
+    /**
+     * Test createWorkflowAction method.
+     *
+     * @param  array   $relations
+     * @param  array   $actions
+     * @access public
+     * @return array
+     */
+    public function createWorkflowActionTest(array $relations, array $actions): array
+    {
+        $sql = <<<EOT
+            CREATE TABLE IF NOT EXISTS `jiratmprelation`(
+              `id` int(8) NOT NULL AUTO_INCREMENT,
+              `AType` char(30) NOT NULL,
+              `AID` char(100) NOT NULL,
+              `BType` char(30) NOT NULL,
+              `BID` char(100) NOT NULL,
+              `extra` char(100) NULL,
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `relation` (`AType`,`BType`,`AID`,`BID`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+            EOT;
+
+        try {
+            $this->instance->dbh->exec($sql);
+            $this->instance->dbh->exec('TRUNCATE TABLE jiratmprelation');
+        } catch (Exception $e) {}
+
+        return $this->invokeArgs('createWorkflowAction', array($relations, $actions));
     }
 }
