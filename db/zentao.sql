@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS `zt_acl` (
   `source` varchar(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
+CREATE INDEX `idx_object`  ON `zt_acl` (`objectType`, `objectID`, `account`);
+CREATE INDEX `idx_account` ON `zt_acl` (`account`);
 
 -- DROP TABLE IF EXISTS `zt_action`;
 CREATE TABLE IF NOT EXISTS `zt_action` (
