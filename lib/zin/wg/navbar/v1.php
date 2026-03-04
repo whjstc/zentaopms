@@ -470,7 +470,7 @@ class navbar extends wg
 
         data('actualActiveMenu', $activeMenu);
 
-        $isExecutionView = $activeMenu === 'view' && $currentModule === 'execution';
+        $isExecutionView = ($activeMenu === 'view' || $activeMenu === 'task') && $currentModule === 'execution';
         $isTaskReport    = $currentMethod === 'report' && $currentModule === 'task';
         if(!$isExecutionView && !$isTaskReport) $navbarInMainMenu = null;
 
