@@ -1086,7 +1086,7 @@ function updateSpaceMenu(info)
             .toggleClass('active', item.code === info.active)
             .addClass('rounded' + (item.notApp ? '' : ' open-in-app'));
 
-        item.icon = item.icon || 'icon-docspace';
+        item.icon = item.icon || `icon-${item.code}`;
         $link.html('<i class="icon ' + item.icon + '"></i><span class="text">' + item.text + '</span>', false);
         if(['devops', 'bi', 'safe'].includes(item.code)) $link.find('.text').addClass('font-brand');
 
