@@ -1268,14 +1268,15 @@ $lang->testreport->methodOrder[15] = 'delete';
 $lang->testreport->methodOrder[20] = 'edit';
 
 $lang->resource->testsuite = new stdclass();
-$lang->resource->testsuite->browse           = 'browse';
-$lang->resource->testsuite->create           = 'create';
-$lang->resource->testsuite->view             = 'view';
-$lang->resource->testsuite->edit             = 'edit';
-$lang->resource->testsuite->delete           = 'delete';
-$lang->resource->testsuite->linkCase         = 'linkCase';
-$lang->resource->testsuite->unlinkCase       = 'unlinkCaseAction';
-$lang->resource->testsuite->batchUnlinkCases = 'batchUnlinkCases';
+$lang->resource->testsuite->browse            = 'browse';
+$lang->resource->testsuite->create            = 'create';
+$lang->resource->testsuite->view              = 'view';
+$lang->resource->testsuite->edit              = 'edit';
+$lang->resource->testsuite->delete            = 'delete';
+$lang->resource->testsuite->linkCase          = 'linkCase';
+$lang->resource->testsuite->unlinkCase        = 'unlinkCaseAction';
+$lang->resource->testsuite->batchUnlinkCases  = 'batchUnlinkCases';
+$lang->resource->testsuite->confirmCaseChange = 'confirmCaseChange';
 
 $lang->testsuite->methodOrder[5]  = 'browse';
 $lang->testsuite->methodOrder[10] = 'create';
@@ -1285,6 +1286,7 @@ $lang->testsuite->methodOrder[25] = 'delete';
 $lang->testsuite->methodOrder[30] = 'linkCase';
 $lang->testsuite->methodOrder[35] = 'unlinkCase';
 $lang->testsuite->methodOrder[40] = 'batchUnlinkCases';
+$lang->testsuite->methodOrder[45] = 'confirmCaseChange';
 
 $lang->resource->caselib = new stdclass();
 $lang->resource->caselib->browse           = 'browseAction';
