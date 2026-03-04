@@ -192,9 +192,9 @@ class convertModelTest extends baseTest
      * @access public
      * @return mixed
      */
-    public function checkJiraApiTest($jiraApiData = array())
+    public function checkJiraApiTest()
     {
-        $result = $this->invokeArgs('checkJiraApi', [$jiraApiData]);
+        $result = $this->invokeArgs('checkJiraApi');
         if(dao::isError()) return dao::getError();
         return $result;
     }
