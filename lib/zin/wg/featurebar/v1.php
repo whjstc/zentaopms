@@ -48,7 +48,6 @@ class featureBar extends wg
         $recTotal     = $pager ? $pager->recTotal : data('recTotal');
         $recTotal     = $this->prop('labelCount') >= 0 ? $this->prop('labelCount') : $recTotal;
         $items        = array();
-        $items        = [['text' => 'Test item 1'], ['text' => 'Test item 2'], ['text' => 'Test item 3'], ['text' => 'Test item 4']];
         $loadID       = $this->prop('loadID');
         $load         = $this->prop('load');
         $tab          = $this->prop('app');
