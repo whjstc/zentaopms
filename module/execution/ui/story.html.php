@@ -101,6 +101,7 @@ featureBar
             setStyle('justify-content', 'center'),
             set::display($lang->story->viewAllGrades),
             set::menu(array('checkbox' => true, 'itemProps' => array('innerComponent' => 'a'))),
+            set::popMinWidth(150),
             set::value($showGrades),
             set::toolbar
             (
