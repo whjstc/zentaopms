@@ -80,6 +80,7 @@ body.hide-menu {--zt-menu-width: var(--zt-menu-fold-width)!important;}
 #visionSwitcher::before, #visionSwitcher::after {content: ''; display: block; position: absolute; right: -9px; top: -2px; width: 0; height: 0; border-style: solid; border-width: 18px 0 18px 8px; border-color: transparent transparent transparent var(--color-canvas);}
 #visionSwitcher::before {right: -10px; border-left-color: var(--color-fore); opacity: .1;}
 #versionSwitchBtn {padding: 0 6px;}
+.has-space #visionSwitcher {display: none;}
 
 .app-container {position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; transition-duration: .3s; background: var(--zt-page-bg);}
 .app-container.loading {background: var(--zt-page-bg) linear-gradient(180deg, var(--zt-header-bg) 0, var(--zt-header-bg) 48px, rgba(255,0,0,0) 48px) no-repeat;}
