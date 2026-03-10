@@ -674,9 +674,9 @@ $lang->block->productoverview->thisWeek                = 'This Week';
 
 $lang->block->productlist = new stdclass();
 $lang->block->productlist->unclosedFeedback  = 'Unclosed Feedback';
-$lang->block->productlist->activatedStory    = 'Activate Stories';
+$lang->block->productlist->activatedStory    = 'Active Stories';
 $lang->block->productlist->storyCompleteRate = 'Story Completion Rate';
-$lang->block->productlist->activatedBug      = 'Activate Bugs';
+$lang->block->productlist->activatedBug      = 'Active Bugs';
 
 $lang->block->sprint = new stdclass();
 $lang->block->sprint->totalExecution = "Total{$lang->executionCommon}";
