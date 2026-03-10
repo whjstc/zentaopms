@@ -68,7 +68,7 @@ $lang->todo->cycleWeek    = 'Woche';
 $lang->todo->cycleMonth   = 'Monat';
 $lang->todo->cycleYear    = 'Year';
 $lang->todo->day          = 'Tag';
-$lang->todo->assignedTo   = 'Assigned To';
+$lang->todo->assignedTo   = 'Assigned to';
 $lang->todo->assignedBy   = 'Assigned by';
 $lang->todo->finishedBy   = 'Finished by';
 $lang->todo->finishedDate = 'Finished Date';
@@ -144,13 +144,13 @@ $lang->todo->today          = 'Todo Today';
 $lang->todo->selectProduct  = "Please select a {$lang->productCommon}";
 $lang->todo->privateTip     = 'Only the todo I create that is assigned to me can be set to private, and only I can see it once it is set to private.';
 
-$lang->todo->periods['all']             = 'Assigned To Yourself';
+$lang->todo->periods['all']             = 'Assigned to Yourself';
 $lang->todo->periods['before']          = 'Unfinished';
 $lang->todo->periods['future']          = 'TBD';
 $lang->todo->periods['thisWeek']        = 'This Week';
 $lang->todo->periods['thisMonth']       = 'This Month';
 $lang->todo->periods['thisYear']        = 'This Year';
-$lang->todo->periods['assignedToOther'] = 'Assigned To Other';
+$lang->todo->periods['assignedToOther'] = 'Assigned to Other';
 $lang->todo->periods['cycle']           = 'Recurrence';
 
 $lang->todo->action = new stdclass();

@@ -164,7 +164,7 @@ $lang->kanban->group->story['pri']        = "Story Priority";
 $lang->kanban->group->story['category']   = "Story Category";
 $lang->kanban->group->story['module']     = "Story Module";
 $lang->kanban->group->story['source']     = "Story Source";
-$lang->kanban->group->story['assignedTo'] = "Assigned To";
+$lang->kanban->group->story['assignedTo'] = "Assigned to";
 
 $lang->kanban->group->epic        = $lang->kanban->group->story;
 $lang->kanban->group->requirement = $lang->kanban->group->story;
@@ -175,7 +175,7 @@ $lang->kanban->group->task['default']    = "Default Group";
 $lang->kanban->group->task['pri']        = "Task Priority";
 $lang->kanban->group->task['type']       = "Task Type";
 $lang->kanban->group->task['module']     = "Task Module";
-$lang->kanban->group->task['assignedTo'] = "Assigned To";
+$lang->kanban->group->task['assignedTo'] = "Assigned to";
 $lang->kanban->group->task['story']      = "Story";
 
 $lang->kanban->group->bug = array();
@@ -184,7 +184,7 @@ $lang->kanban->group->bug['pri']        = "Bug Priority";
 $lang->kanban->group->bug['severity']   = "Bug Severity";
 $lang->kanban->group->bug['module']     = "Bug Module";
 $lang->kanban->group->bug['type']       = "Bug Type";
-$lang->kanban->group->bug['assignedTo'] = "Assigned To";
+$lang->kanban->group->bug['assignedTo'] = "Assigned to";
 
 $lang->kanban->WIP                = 'WIP';
 $lang->kanban->setWIP             = 'WIP Settings';
@@ -231,7 +231,7 @@ $lang->kanban->orderList['pri_asc']         = 'Story Priority Ascending';
 $lang->kanban->orderList['pri_desc']        = 'Story Priority Descending';
 $lang->kanban->orderList['stage_asc']       = 'Story Stage Ascending';
 $lang->kanban->orderList['stage_desc']      = 'Story Stage Descending';
-$lang->kanban->orderList['assignedTo_desc'] = 'Assigned To';
+$lang->kanban->orderList['assignedTo_desc'] = 'Assigned to';
 
 $lang->kanban->importList = array();
 $lang->kanban->importList['on']  = 'Enable the import function, you can only import content that you have permission to view.';

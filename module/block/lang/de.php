@@ -174,12 +174,12 @@ $lang->block->default['product'][] = array('title' => "Unclosed {$lang->productC
 $lang->block->default['product'][] = array('title' => "Unclosed {$lang->productCommon} Releases",          'module' => 'product', 'code' => 'release',          'width' => '2', 'params' => array('type' => 'noclosed', 'count' => '20'));
 $lang->block->default['product'][] = array('title' => "Unclosed {$lang->productCommon} Plans",             'module' => 'product', 'code' => 'plan',             'width' => '2', 'params' => array('type' => 'noclosed', 'count' => '20'));
 $lang->block->default['product'][] = array('title' => "{$lang->productCommon} Release Statistic",          'module' => 'product', 'code' => 'releasestatistic', 'width' => '1');
-$lang->block->default['product'][] = array('title' => "{$lang->SRCommon} Assigned To Me",                  'module' => 'product', 'code' => 'story',            'width' => '1', 'params' => array('type' => 'assignedTo', 'count' => '20', 'orderBy' => 'id_desc'));
+$lang->block->default['product'][] = array('title' => "{$lang->SRCommon} Assigned to Me",                  'module' => 'product', 'code' => 'story',            'width' => '1', 'params' => array('type' => 'assignedTo', 'count' => '20', 'orderBy' => 'id_desc'));
 
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Statistic",                  'module' => 'singleproduct', 'code' => 'singlestatistic',        'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Bug Statistic",              'module' => 'singleproduct', 'code' => 'singlebugstatistic',     'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Roadmap",                    'module' => 'singleproduct', 'code' => 'roadmap',                'width' => '2');
-$lang->block->default['singleproduct'][] = array('title' => "{$lang->SRCommon} Assigned To Me",                  'module' => 'singleproduct', 'code' => 'singlestory',            'width' => '2', 'params' => array('type' => 'assignedTo', 'count' => '20', 'orderBy' => 'id_desc'));
+$lang->block->default['singleproduct'][] = array('title' => "{$lang->SRCommon} Assigned to Me",                  'module' => 'singleproduct', 'code' => 'singlestory',            'width' => '2', 'params' => array('type' => 'assignedTo', 'count' => '20', 'orderBy' => 'id_desc'));
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Plans",                      'module' => 'singleproduct', 'code' => 'singleplan',             'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Releases",                   'module' => 'singleproduct', 'code' => 'singlerelease',          'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['singleproduct'][] = array('title' => "Dynamic",                                           'module' => 'singleproduct', 'code' => 'singledynamic',          'width' => '1');
@@ -433,7 +433,7 @@ $lang->block->typeList->testtask['all']     = 'Alle';
 
 $lang->block->typeList->risk['all']      = 'All';
 $lang->block->typeList->risk['active']   = 'Active';
-$lang->block->typeList->risk['assignTo'] = 'Assign To';
+$lang->block->typeList->risk['assignTo'] = 'Assign to';
 $lang->block->typeList->risk['assignBy'] = 'Assign by';
 $lang->block->typeList->risk['closed']   = 'Closed';
 $lang->block->typeList->risk['hangup']   = 'Hangup';
@@ -441,7 +441,7 @@ $lang->block->typeList->risk['canceled'] = 'Canceled';
 
 $lang->block->typeList->issue['all']      = 'All';
 $lang->block->typeList->issue['open']     = 'Open';
-$lang->block->typeList->issue['assignto'] = 'Assign To';
+$lang->block->typeList->issue['assignto'] = 'Assign to';
 $lang->block->typeList->issue['assignby'] = 'Assign by';
 $lang->block->typeList->issue['closed']   = 'Closed';
 $lang->block->typeList->issue['resolved'] = 'Resolved';

@@ -72,7 +72,7 @@ $lang->my->projects     = "{$lang->projectCommon}s";
 $lang->my->executions   = 'Executions';
 
 $lang->my->taskMenu = new stdclass();
-$lang->my->taskMenu->assignedToMe = 'Assigned To Me';
+$lang->my->taskMenu->assignedToMe = 'Assigned to Me';
 $lang->my->taskMenu->openedByMe   = 'Created by Me';
 $lang->my->taskMenu->finishedByMe = 'Finished by Me';
 $lang->my->taskMenu->closedByMe   = 'Closed by Me';
@@ -148,7 +148,7 @@ $lang->my->guideChangeTheme = <<<EOT
 </div>
 EOT;
 
-$lang->my->featureBar['todo']['all']       = 'Assigned To Yourself';
+$lang->my->featureBar['todo']['all']       = 'Assigned to Yourself';
 $lang->my->featureBar['todo']['undone']    = 'Unfinished';
 $lang->my->featureBar['todo']['future']    = 'TBD';
 $lang->my->featureBar['todo']['today']     = 'Today';
@@ -157,7 +157,7 @@ $lang->my->featureBar['todo']['thisMonth'] = 'This Month';
 $lang->my->featureBar['todo']['more']      = 'More';
 
 $lang->my->moreSelects['todo']['more']['thisYear']        = 'This Year';
-$lang->my->moreSelects['todo']['more']['assignedToOther'] = 'Assigned To Other';
+$lang->my->moreSelects['todo']['more']['assignedToOther'] = 'Assigned to Other';
 $lang->my->moreSelects['todo']['more']['cycle']           = 'Recurrence';
 
 $lang->my->featureBar['audit']['all']         = 'All';
