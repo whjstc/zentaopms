@@ -210,8 +210,7 @@ $lang->custom->notice->noClosedBlock       = 'No permanently closed blocks.';
 $lang->custom->notice->required            = 'Selected fields are mandatory upon form submission.';
 $lang->custom->notice->conceptResult       = 'Based on your selection, we have configured the <b>%s-%s</b> mode using <b>%s</b> + <b>%s</b>.';
 $lang->custom->notice->conceptPath         = 'Go to Admin -> Custom -> Concept to set it.';
-$lang->custom->notice->readOnlyOfProduct   = 'Once set Changes Prohibited, items under a closed {
-lang->SRCommon}, Bug, Test Case, Effort, Release, Plan, and Build) cannot be changed.';
+$lang->custom->notice->readOnlyOfProduct   = "Once set Changes Prohibited, items under a closed {$lang->SRCommon}, Bug, Test Case, Effort, Release, Plan, and Build cannot be changed.";
 $lang->custom->notice->readOnlyOfProject   = "Once set Changes Prohibited, any change on closed {$lang->projectCommon}s is not allowed:<br/>
 1. For {$lang->productCommon}-based {$lang->projectCommon}s with {$lang->custom->executionCommon} enabled: The following will not be editable under closed {$lang->projectCommon}s: {$lang->custom->executionCommon}, stories, design, reviews, review issues, baselines, documents, builds, releases, efforts, test requests, test reports, process tailoring, research, estimation, issues, risks, opportunities, meetings, QA plans, non-conformities, etc.<br/>
 2. For {$lang->productCommon}-based {$lang->projectCommon}s with{$lang->custom->executionCommon} disabled: The following will not be editable under closed {$lang->projectCommon}s: tasks, stories, builds, releases, efforts, test request, test reports, documents, etc.<br/>
