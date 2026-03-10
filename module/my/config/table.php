@@ -15,6 +15,9 @@ $app->loadModuleConfig('testcase');
 $app->loadModuleConfig('company');
 $app->loadModuleConfig('project');
 
+$isEn  = $app->getClientLang() == 'en';
+$space = '';
+
 $config->my->todo = new stdclass();
 $config->my->todo->actionList = array();
 $config->my->todo->actionList['start']['icon']      = 'play';
@@ -110,7 +113,7 @@ $config->my->todo->dtable->fieldList['type']['flex']  = 2;
 $config->my->todo->dtable->fieldList['assignedBy']['name']  = 'assignedBy';
 $config->my->todo->dtable->fieldList['assignedBy']['title'] = $lang->todo->assignedBy;
 $config->my->todo->dtable->fieldList['assignedBy']['type']  = 'user';
-$config->my->todo->dtable->fieldList['assignedBy']['width'] = $app->getClientLang() == 'en' ? 110 : 90;
+$config->my->todo->dtable->fieldList['assignedBy']['width'] = $isEN ? 110 : 90;
 $config->my->todo->dtable->fieldList['assignedBy']['group'] = 'assignedBy';
 $config->my->todo->dtable->fieldList['assignedBy']['flex']  = 1;
 
@@ -228,6 +231,8 @@ if($config->vision != 'lite')
     $config->my->task->actionList['batchCreate']['data-toggle']   = 'modal';
     $config->my->task->actionList['batchCreate']['data-size']     = 'lg';
     $config->my->task->actionList['batchCreate']['data-position'] = 'center';
+
+    $space = ' ';
 }
 
 $config->my->task->dtable = new stdclass();
@@ -323,12 +328,6 @@ $config->my->task->dtable->fieldList['actions']['type']     = 'actions';
 $config->my->task->dtable->fieldList['actions']['sortType'] = false;
 $config->my->task->dtable->fieldList['actions']['list']     = $config->my->task->actionList;
 $config->my->task->dtable->fieldList['actions']['menu']     = array(array('confirmStoryChange'), array('start|restart', 'finish', 'close', 'record', 'edit', 'batchCreate'));
-
-if($app->getClientLang() == 'en')
-{
-    $config->my->task->dtable->fieldList['finishedBy']['width'] = 100;
-    $config->my->task->dtable->fieldList['left']['width']       = 100;
-}
 
 $config->my->requirement = new stdclass();
 $config->my->requirement->actionList = array();
@@ -465,7 +464,7 @@ $config->my->epic->dtable->fieldList['id']['type']     = 'id';
 $config->my->epic->dtable->fieldList['id']['sortType'] = true;
 
 $config->my->epic->dtable->fieldList['title']['name']         = 'title';
-$config->my->epic->dtable->fieldList['title']['title']        = $lang->ERCommon . $lang->my->name;
+$config->my->epic->dtable->fieldList['title']['title']        = $lang->ERCommon . $space . $lang->my->name;
 $config->my->epic->dtable->fieldList['title']['type']         = 'title';
 $config->my->epic->dtable->fieldList['title']['link']         = array('module' => 'epic', 'method' => 'view', 'params' => 'id={id}&version=0&param=0&storyType=epic');
 $config->my->epic->dtable->fieldList['title']['fixed']        = 'left';
@@ -770,10 +769,6 @@ $config->my->bug->dtable->fieldList['resolvedBy']['name']   = 'resolvedBy';
 $config->my->bug->dtable->fieldList['resolvedBy']['title']  = $lang->bug->resolvedBy;
 $config->my->bug->dtable->fieldList['resolvedBy']['type']   = 'user';
 $config->my->bug->dtable->fieldList['resolvedBy']['group']  = '6';
-if($app->getClientLang() == 'en')
-{
-    $config->my->bug->dtable->fieldList['resolvedBy']['width'] = 100;
-}
 
 $config->my->bug->dtable->fieldList['resolution']['name']  = 'resolution';
 $config->my->bug->dtable->fieldList['resolution']['title'] = $lang->bug->resolution;
@@ -1264,8 +1259,15 @@ unset($config->my->team->dtable->fieldList['actions']);
 $config->my->project = new stdclass();
 $config->my->project->dtable = $config->project->dtable;
 
-if($app->getClientLang() == 'en')
+if($isEn)
 {
+    $config->my->task->dtable->fieldList['finishedBy']['width'] = 100;
+    $config->my->task->dtable->fieldList['left']['width']       = 100;
+    $config->my->task->dtable->fieldList['assignedTo']['width'] = 100;
+
+    $config->my->bug->dtable->fieldList['resolvedBy']['width'] = 100;
+    $config->my->bug->dtable->fieldList['assignedTo']['width'] = 120;
+
     $config->my->project->dtable->fieldList['executionCount']['width'] = '120';
     $config->my->project->dtable->fieldList['begin']['width']          = '110';
     $config->my->project->dtable->fieldList['end']['width']            = '120';

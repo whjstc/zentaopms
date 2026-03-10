@@ -53,8 +53,8 @@ $lang->my->assignedToMe    = 'Assigned to Me';
 $lang->my->byQuery         = 'Search';
 $lang->my->contactHolder   = 'Contacts';
 $lang->my->contactList     = 'Contact List';
-$lang->my->myContact       = 'My Contacts';
-$lang->my->publicContact   = 'Public Contacts';
+$lang->my->myContact       = 'My';
+$lang->my->publicContact   = 'Public';
 $lang->my->manageSelf      = 'You can only edit contacts you created.';
 $lang->my->adminView       = 'System administrators have permission to delete public contacts.';
 
