@@ -770,6 +770,10 @@ $config->my->bug->dtable->fieldList['resolvedBy']['name']   = 'resolvedBy';
 $config->my->bug->dtable->fieldList['resolvedBy']['title']  = $lang->bug->resolvedBy;
 $config->my->bug->dtable->fieldList['resolvedBy']['type']   = 'user';
 $config->my->bug->dtable->fieldList['resolvedBy']['group']  = '6';
+if($app->getClientLang() == 'en')
+{
+    $config->my->bug->dtable->fieldList['resolvedBy']['width'] = 100;
+}
 
 $config->my->bug->dtable->fieldList['resolution']['name']  = 'resolution';
 $config->my->bug->dtable->fieldList['resolution']['title'] = $lang->bug->resolution;
