@@ -110,7 +110,7 @@ $config->my->todo->dtable->fieldList['type']['flex']  = 2;
 $config->my->todo->dtable->fieldList['assignedBy']['name']  = 'assignedBy';
 $config->my->todo->dtable->fieldList['assignedBy']['title'] = $lang->todo->assignedBy;
 $config->my->todo->dtable->fieldList['assignedBy']['type']  = 'user';
-$config->my->todo->dtable->fieldList['assignedBy']['width'] = 90;
+$config->my->todo->dtable->fieldList['assignedBy']['width'] = $app->getClientLang() == 'en' ? 110 : 90;
 $config->my->todo->dtable->fieldList['assignedBy']['group'] = 'assignedBy';
 $config->my->todo->dtable->fieldList['assignedBy']['flex']  = 1;
 
@@ -323,6 +323,12 @@ $config->my->task->dtable->fieldList['actions']['type']     = 'actions';
 $config->my->task->dtable->fieldList['actions']['sortType'] = false;
 $config->my->task->dtable->fieldList['actions']['list']     = $config->my->task->actionList;
 $config->my->task->dtable->fieldList['actions']['menu']     = array(array('confirmStoryChange'), array('start|restart', 'finish', 'close', 'record', 'edit', 'batchCreate'));
+
+if($app->getClientLang() == 'en')
+{
+    $config->my->task->dtable->fieldList['finishedBy']['width'] = 100;
+    $config->my->task->dtable->fieldList['left']['width']       = 100;
+}
 
 $config->my->requirement = new stdclass();
 $config->my->requirement->actionList = array();

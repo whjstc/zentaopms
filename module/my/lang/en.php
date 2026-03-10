@@ -81,7 +81,7 @@ $lang->my->taskMenu->assignedByMe = 'Assigned By Me';
 
 $lang->my->storyMenu = new stdclass();
 $lang->my->storyMenu->assignedToMe = 'Assigned to Me';
-$lang->my->storyMenu->reviewByMe   = 'My Pending Review';
+$lang->my->storyMenu->reviewByMe   = 'Review By Me';
 $lang->my->storyMenu->openedByMe   = 'Created By Me';
 $lang->my->storyMenu->reviewedByMe = 'Reviewed By Me';
 $lang->my->storyMenu->closedByMe   = 'Closed By Me';
@@ -195,10 +195,10 @@ $lang->my->featureBar['work']['testcase']['assigntome'] = $lang->my->assignedToM
 $lang->my->featureBar['work']['testtask']['assignedTo'] = 'Managed By Me';
 
 $lang->my->featureBar['work']['epic'] = $lang->my->featureBar['work']['task'];
-$lang->my->featureBar['work']['epic']['reviewBy'] = 'My Review';
+$lang->my->featureBar['work']['epic']['reviewBy'] = 'Review By Me';
 
 $lang->my->featureBar['work']['requirement'] = $lang->my->featureBar['work']['task'];
-$lang->my->featureBar['work']['requirement']['reviewBy'] = 'My Review';
+$lang->my->featureBar['work']['requirement']['reviewBy'] = 'Review By Me';
 
 $lang->my->featureBar['work']['story'] = $lang->my->featureBar['work']['requirement'];
 $lang->my->featureBar['work']['bug']   = $lang->my->featureBar['work']['task'];

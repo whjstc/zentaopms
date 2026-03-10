@@ -213,7 +213,7 @@ $lang->system->backup->change       = 'Retention Period';
 $lang->system->backup->changeAB     = 'Edit';
 $lang->system->backup->rmPHPHeader  = 'Remove security settings';
 $lang->system->backup->setting      = 'Settings';
-$lang->system->backup->creator      = 'Created By';
+$lang->system->backup->creator      = 'Creator';
 $lang->system->backup->type         = 'Backup type';
 
 $lang->system->backup->settingAction = 'Backup Settings';

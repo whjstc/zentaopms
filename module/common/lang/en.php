@@ -198,7 +198,7 @@ $lang->workingHour = 'Working hours';
 $lang->idAB         = 'ID';
 $lang->priAB        = 'P';
 $lang->statusAB     = 'Status';
-$lang->openedByAB   = 'Created by';
+$lang->openedByAB   = 'Creator';
 $lang->assignedToAB = 'Assignee';
 $lang->typeAB       = 'Type';
 $lang->nameAB       = 'Name';
@@ -394,7 +394,7 @@ $lang->timezone        = 'Time Zone';
 $lang->security        = 'Security';
 $lang->calendar        = 'Calendar';
 
-$lang->my->work = 'My work';
+$lang->my->work = 'My Work';
 
 $lang->project->list   = $lang->projectCommon . ' List';
 $lang->project->kanban = $lang->projectCommon . ' Kanban';

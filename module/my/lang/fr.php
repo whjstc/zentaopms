@@ -72,20 +72,20 @@ $lang->my->projects     = "{$lang->projectCommon}s";
 $lang->my->executions   = 'Executions';
 
 $lang->my->taskMenu = new stdclass();
-$lang->my->taskMenu->assignedToMe = 'AssignedToMe';
-$lang->my->taskMenu->openedByMe   = 'CreatedByMe';
-$lang->my->taskMenu->finishedByMe = 'FinishedByMe';
-$lang->my->taskMenu->closedByMe   = 'ClosedByMe';
-$lang->my->taskMenu->canceledByMe = 'CancelledByMe';
-$lang->my->taskMenu->assignedByMe = 'AssignedByMe';
+$lang->my->taskMenu->assignedToMe = 'Assigned To Me';
+$lang->my->taskMenu->openedByMe   = 'Created By Me';
+$lang->my->taskMenu->finishedByMe = 'Finished By Me';
+$lang->my->taskMenu->closedByMe   = 'Closed By Me';
+$lang->my->taskMenu->canceledByMe = 'Cancelled By Me';
+$lang->my->taskMenu->assignedByMe = 'Assigned By Me';
 
 $lang->my->storyMenu = new stdclass();
-$lang->my->storyMenu->assignedToMe = 'AssignedToMe';
-$lang->my->storyMenu->reviewByMe   = 'ReviewByMe';
-$lang->my->storyMenu->openedByMe   = 'CreatedByMe';
-$lang->my->storyMenu->reviewedByMe = 'ReviewedByMe';
-$lang->my->storyMenu->closedByMe   = 'ClosedByMe';
-$lang->my->storyMenu->assignedByMe = 'AssignedByMe';
+$lang->my->storyMenu->assignedToMe = 'Assigned ToMe';
+$lang->my->storyMenu->reviewByMe   = 'Review By Me';
+$lang->my->storyMenu->openedByMe   = 'Created By Me';
+$lang->my->storyMenu->reviewedByMe = 'Reviewed By Me';
+$lang->my->storyMenu->closedByMe   = 'Closed By Me';
+$lang->my->storyMenu->assignedByMe = 'Assigned By Me';
 
 $lang->my->auditField = new stdclass();
 $lang->my->auditField->title  = 'Title';

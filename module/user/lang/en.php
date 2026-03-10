@@ -216,7 +216,7 @@ $lang->user->tpl->content = 'Content';
 $lang->user->tpl->public  = 'Public';
 
 $lang->usertpl = new stdclass();
-$lang->usertpl->account = 'Created by';
+$lang->usertpl->account = 'Creator';
 $lang->usertpl->type    = 'Template Type';
 $lang->usertpl->title   = 'Template Name';
 $lang->usertpl->content = 'Template Content';
