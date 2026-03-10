@@ -379,24 +379,24 @@ $lang->block->ticketCount   = 'Tickets';
 
 $lang->block->typeList = new stdclass();
 $lang->block->typeList->task['assignedTo'] = 'Assigned to Me';
-$lang->block->typeList->task['openedBy']   = 'Created By Me';
-$lang->block->typeList->task['finishedBy'] = 'Completed By Me';
-$lang->block->typeList->task['closedBy']   = 'Closed By Me';
-$lang->block->typeList->task['canceledBy'] = 'Canceled By Me';
+$lang->block->typeList->task['openedBy']   = 'Created by Me';
+$lang->block->typeList->task['finishedBy'] = 'Completed by Me';
+$lang->block->typeList->task['closedBy']   = 'Closed by Me';
+$lang->block->typeList->task['canceledBy'] = 'Canceled by Me';
 
 $lang->block->typeList->bug['assignedTo'] = 'Assigned to Me';
-$lang->block->typeList->bug['openedBy']   = 'Created By Me';
-$lang->block->typeList->bug['resolvedBy'] = 'Resolved By Me';
-$lang->block->typeList->bug['closedBy']   = 'Closed By Me';
+$lang->block->typeList->bug['openedBy']   = 'Created by Me';
+$lang->block->typeList->bug['resolvedBy'] = 'Resolved by Me';
+$lang->block->typeList->bug['closedBy']   = 'Closed by Me';
 
 $lang->block->typeList->case['assigntome'] = 'Assigned to Me';
-$lang->block->typeList->case['openedbyme'] = 'Created By Me';
+$lang->block->typeList->case['openedbyme'] = 'Created by Me';
 
 $lang->block->typeList->story['assignedTo'] = 'Assigned to Me';
 $lang->block->typeList->story['reviewBy']   = 'My Pending Review';
-$lang->block->typeList->story['openedBy']   = 'Created By Me';
-$lang->block->typeList->story['reviewedBy'] = 'Reviewed By Me';
-$lang->block->typeList->story['closedBy']   = 'Closed By Me' ;
+$lang->block->typeList->story['openedBy']   = 'Created by Me';
+$lang->block->typeList->story['reviewedBy'] = 'Reviewed by Me';
+$lang->block->typeList->story['closedBy']   = 'Closed by Me' ;
 
 $lang->block->typeList->product['noclosed'] = 'Open';
 $lang->block->typeList->product['closed']   = 'Closed';
@@ -434,7 +434,7 @@ $lang->block->typeList->testtask['all']     = 'All';
 $lang->block->typeList->risk['all']      = 'All';
 $lang->block->typeList->risk['active']   = 'Open';
 $lang->block->typeList->risk['assignTo'] = 'Assigned to Me';
-$lang->block->typeList->risk['assignBy'] = 'Assigned By Me';
+$lang->block->typeList->risk['assignBy'] = 'Assigned by Me';
 $lang->block->typeList->risk['closed']   = 'Closed';
 $lang->block->typeList->risk['hangup']   = 'On Hold';
 $lang->block->typeList->risk['canceled'] = 'Canceled';
@@ -442,7 +442,7 @@ $lang->block->typeList->risk['canceled'] = 'Canceled';
 $lang->block->typeList->issue['all']      = 'All';
 $lang->block->typeList->issue['open']     = 'Public';
 $lang->block->typeList->issue['assignto'] = 'Assigned to Me';
-$lang->block->typeList->issue['assignby'] = 'Assigned By Me';
+$lang->block->typeList->issue['assignby'] = 'Assigned by Me';
 $lang->block->typeList->issue['closed']   = 'Closed';
 $lang->block->typeList->issue['resolved'] = 'Resolved';
 $lang->block->typeList->issue['canceled'] = 'Canceled';

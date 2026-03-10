@@ -53,16 +53,16 @@ $lang->bug->openedBuild      = 'Affected Version';
 $lang->bug->assignedTo       = 'Assign to';
 $lang->bug->assignedToMe     = 'Assign to Me';
 $lang->bug->assignedDate     = 'Assigned on';
-$lang->bug->resolvedBy       = 'Resolved By';
+$lang->bug->resolvedBy       = 'Resolved by';
 $lang->bug->resolution       = 'Resolution';
 $lang->bug->resolvedBuild    = 'Fixed Build';
 $lang->bug->resolvedDate     = 'Resolved on';
 $lang->bug->deadline         = 'Due Date';
 $lang->bug->plan             = 'Linked Plan';
-$lang->bug->closedBy         = 'Closed By';
+$lang->bug->closedBy         = 'Closed by';
 $lang->bug->closedDate       = 'Closed on';
 $lang->bug->duplicateBug     = 'Duplicated Bug';
-$lang->bug->lastEditedBy     = 'Last Edited By';
+$lang->bug->lastEditedBy     = 'Last Edited by';
 $lang->bug->caseVersion      = 'Test Case Version';
 $lang->bug->testtask         = 'Test Request';
 $lang->bug->files            = 'File';
@@ -104,11 +104,11 @@ $lang->bug->abbr->resolvedBy     = 'Resolve';
 $lang->bug->abbr->resolution     = 'Resolution';
 $lang->bug->abbr->resolvedDate   = 'Resolved on';
 $lang->bug->abbr->deadline       = 'Due Date';
-$lang->bug->abbr->lastEditedBy   = 'Edited By';
+$lang->bug->abbr->lastEditedBy   = 'Edited by';
 $lang->bug->abbr->lastEditedDate = 'Edited on';
 $lang->bug->abbr->assignToMe     = 'Assigned to Me';
-$lang->bug->abbr->openedByMe     = 'Reported By Me';
-$lang->bug->abbr->resolvedByMe   = 'Resolved By Me';
+$lang->bug->abbr->openedByMe     = 'Reported by Me';
+$lang->bug->abbr->resolvedByMe   = 'Resolved by Me';
 
 /* Method list. */
 $lang->bug->index              = 'Bug Home';
@@ -152,10 +152,10 @@ $lang->bug->unlinkBug          = 'Unlink Bug';
 
 /* Query condition list. */
 $lang->bug->assignToMe         = 'AssignedToMe';
-$lang->bug->openedByMe         = 'Reported By Me';
-$lang->bug->resolvedByMe       = 'Resolved By Me';
-$lang->bug->closedByMe         = 'Closed By Me';
-$lang->bug->assignedByMe       = 'Assigned By Me';
+$lang->bug->openedByMe         = 'Reported by Me';
+$lang->bug->resolvedByMe       = 'Resolved by Me';
+$lang->bug->closedByMe         = 'Closed by Me';
+$lang->bug->assignedByMe       = 'Assigned by Me';
 $lang->bug->assignToNull       = 'Unassigned';
 $lang->bug->unResolved         = 'Active';
 $lang->bug->toClosed           = 'Pending Closure';
@@ -184,8 +184,8 @@ $lang->bug->ditto          = 'Ditto';
 /* Page tags. */
 $lang->bug->lblAssignedTo = 'AssignTo';
 $lang->bug->lblMailto     = 'Mail to';
-$lang->bug->lblLastEdited = 'Last Edited By';
-$lang->bug->lblResolved   = 'Resolved By';
+$lang->bug->lblLastEdited = 'Last Edited by';
+$lang->bug->lblResolved   = 'Resolved by';
 $lang->bug->loadAll       = 'Load All';
 $lang->bug->createBuild   = 'New';
 

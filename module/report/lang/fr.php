@@ -96,7 +96,7 @@ $lang->report->mailTitle->testTask = " Recettes (%s),";
 
 $lang->report->annualData = new stdclass();
 $lang->report->annualData->title            = "%s work summary in %s";
-$lang->report->annualData->exportByZentao   = "Export By ZenTao";
+$lang->report->annualData->exportByZentao   = "Export by ZenTao";
 $lang->report->annualData->scope            = "Scope";
 $lang->report->annualData->allUser          = "All Users";
 $lang->report->annualData->allDept          = "Whole Company";

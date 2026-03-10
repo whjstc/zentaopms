@@ -97,7 +97,7 @@ $lang->story->unlinkBranch       = 'Unlink code branch';
 $lang->story->branchName         = 'Branch Name';
 $lang->story->branchFrom         = 'Create from';
 $lang->story->codeRepo           = 'Code Repository';
-$lang->story->viewByType         = "View By %s";
+$lang->story->viewByType         = "View by %s";
 
 $lang->story->editAction      = "Edit {$lang->SRCommon}";
 $lang->story->changeAction    = "Change {$lang->SRCommon}";

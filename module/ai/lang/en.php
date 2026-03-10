@@ -27,7 +27,7 @@ $lang->prompt->characterization = 'Characterization';
 $lang->prompt->status           = 'Status';
 $lang->prompt->createdBy        = 'Creator';
 $lang->prompt->createdDate      = 'Created Date';
-$lang->prompt->editedBy         = 'Edited By';
+$lang->prompt->editedBy         = 'Edited by';
 $lang->prompt->editedDate       = 'Edited Date';
 $lang->prompt->deleted          = 'Deleted';
 
@@ -128,8 +128,8 @@ $lang->ai->prompts->stage        = 'Stage';
 $lang->ai->prompts->basicInfo    = 'Basic Info';
 $lang->ai->prompts->editInfo     = 'Edit Info';
 $lang->ai->prompts->createdBy    = 'Creator';
-$lang->ai->prompts->publishedBy  = 'Published By';
-$lang->ai->prompts->draftedBy    = 'Drafted By';
+$lang->ai->prompts->publishedBy  = 'Published by';
+$lang->ai->prompts->draftedBy    = 'Drafted by';
 $lang->ai->prompts->lastEditor   = 'Last Editor';
 $lang->ai->prompts->modelNeutral = 'Model Neutral';
 
@@ -555,7 +555,7 @@ $lang->ai->dataSource['doc']['doc']['title']      = 'Title';
 $lang->ai->dataSource['doc']['doc']['content']    = 'Text';
 $lang->ai->dataSource['doc']['doc']['addedBy']    = 'Creator';
 $lang->ai->dataSource['doc']['doc']['addedDate']  = 'Created Date';
-$lang->ai->dataSource['doc']['doc']['editedBy']   = 'Edited By';
+$lang->ai->dataSource['doc']['doc']['editedBy']   = 'Edited by';
 $lang->ai->dataSource['doc']['doc']['editedDate'] = 'Edited Date';
 
 /* Target form definition. See `$config->ai->targetForm`. */
@@ -760,7 +760,7 @@ $lang->ai->models->description    = 'Description';
 $lang->ai->models->createdDate    = 'Creation Date';
 $lang->ai->models->createdBy      = 'Creator';
 $lang->ai->models->editedDate     = 'Modification Date';
-$lang->ai->models->editedBy       = 'Edited By';
+$lang->ai->models->editedBy       = 'Edited by';
 $lang->ai->models->usesProxy      = 'Use Proxy';
 $lang->ai->models->testConnection = 'Test Connection';
 $lang->ai->models->unconfigured   = 'Unconfigured';
