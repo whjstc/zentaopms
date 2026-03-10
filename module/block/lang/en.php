@@ -204,7 +204,7 @@ $lang->block->default['full']['my'][] = array('title' => 'Dynamic',             
 $lang->block->default['full']['my'][] = array('title' => "Team",                                            'module' => 'teamachievement', 'code' => 'teamachievement', 'width' => '1');
 if($config->vision != 'lite') $lang->block->default['full']['my'][] = array('title' => "{$lang->productCommon} Overview",                 'module' => 'product',         'code' => 'overview',        'width' => '1');
 $lang->block->default['full']['my'][] = array('title' => "{$lang->projectCommon} Overview",                 'module' => 'project',         'code' => 'overview',        'width' => '1');
-$lang->block->default['full']['my'][] = array('title' => "{$lang->execution->common}Overview",         'module' => 'execution',       'code' => 'overview',        'width' => '1');
+$lang->block->default['full']['my'][] = array('title' => "{$lang->execution->common} Overview",             'module' => 'execution',       'code' => 'overview',        'width' => '1');
 
 $lang->block->default['doc'][] = array('title' => 'Statistic',                       'module' => 'doc', 'code' => 'docstatistic',    'width' => '2');
 $lang->block->default['doc'][] = array('title' => 'My Collection Document',          'module' => 'doc', 'code' => 'docmycollection', 'width' => '2');
@@ -224,15 +224,15 @@ $lang->block->availableBlocks['todo']        = 'To-Do';
 $lang->block->availableBlocks['task']        = 'Tasks';
 $lang->block->availableBlocks['bug']         = 'Bugs';
 $lang->block->availableBlocks['case']        = 'Cases';
-$lang->block->availableBlocks['story']       = "{$lang->SRCommon}";
+$lang->block->availableBlocks['story']       = "Stories";
 $lang->block->availableBlocks['requirement'] = "{$lang->URCommon}";
 $lang->block->availableBlocks['product']     = $lang->productCommon . 'List';
 $lang->block->availableBlocks['execution']   = $lang->execution->common . 'List';
 $lang->block->availableBlocks['plan']        = 'Plans';
 $lang->block->availableBlocks['release']     = 'Releases';
 $lang->block->availableBlocks['build']       = 'Builds';
-$lang->block->availableBlocks['testcase']    = 'Testcase';
-$lang->block->availableBlocks['testtask']    = 'Test Request';
+$lang->block->availableBlocks['testcase']    = 'Test Cases';
+$lang->block->availableBlocks['testtask']    = 'Test Requests';
 $lang->block->availableBlocks['risk']        = 'Risks';
 $lang->block->availableBlocks['reviewissue'] = 'Review Issue';
 $lang->block->availableBlocks['issue']       = 'Issues';
@@ -250,7 +250,7 @@ $lang->block->modules['project']->availableBlocks['project']       = "{$lang->pr
 $lang->block->modules['scrumproject'] = new stdclass();
 $lang->block->modules['scrumproject']->availableBlocks['scrumoverview']  = "{$lang->projectCommon} Overview";
 $lang->block->modules['scrumproject']->availableBlocks['scrumlist']      = $lang->executionCommon . 'List';
-$lang->block->modules['scrumproject']->availableBlocks['sprint']         = $lang->executionCommon . 'Overview';
+$lang->block->modules['scrumproject']->availableBlocks['sprint']         = $lang->executionCommon . ' Overview';
 $lang->block->modules['scrumproject']->availableBlocks['scrumtest']      = 'Test Requests';
 $lang->block->modules['scrumproject']->availableBlocks['projectdynamic'] = 'Recent Activity';
 
@@ -573,7 +573,7 @@ $lang->block->productstatistic->deliveryRate    = 'Story Delivery Rate';
 $lang->block->projectoverview = new stdclass();
 $lang->block->projectoverview->totalProject  = 'Total Projects';
 $lang->block->projectoverview->thisYear      = 'Completed This Year';
-$lang->block->projectoverview->lastThreeYear = 'Completed Project Distribution (Last 3 Years)';
+$lang->block->projectoverview->lastThreeYear = 'Project Completion Trend (Last 3 Years)';
 
 $lang->block->projectstatistic = new stdclass();
 $lang->block->projectstatistic->story            = 'Story';
@@ -586,17 +586,19 @@ $lang->block->projectstatistic->undone           = 'Open';
 $lang->block->projectstatistic->costs            = 'Invested';
 $lang->block->projectstatistic->consumed         = 'Cost';
 $lang->block->projectstatistic->remainder        = 'Left';
-$lang->block->projectstatistic->tasks            = 'Total ';
+$lang->block->projectstatistic->tasks            = 'tasks';
 $lang->block->projectstatistic->wait             = 'Waiting';
 $lang->block->projectstatistic->doing            = 'Doing';
-$lang->block->projectstatistic->bugs             = 'Total ';
+$lang->block->projectstatistic->bugs             = 'bugs';
+$lang->block->projectstatistic->stories          = 'stories';
 $lang->block->projectstatistic->closed           = 'Closed';
 $lang->block->projectstatistic->activated        = 'Activated';
 $lang->block->projectstatistic->unit             = 'unit';
+$lang->block->projectstatistic->total            = 'Total';
 $lang->block->projectstatistic->SP               = 'SP';
-$lang->block->projectstatistic->personDay        = 'Person-Days';
+$lang->block->projectstatistic->personDay        = 'PD';
 $lang->block->projectstatistic->day              = 'day';
-$lang->block->projectstatistic->hour             = 'hour';
+$lang->block->projectstatistic->hour             = 'hours';
 $lang->block->projectstatistic->leftDaysPre      = 'Time Remaining';
 $lang->block->projectstatistic->delayDaysPre     = 'Overdue by';
 $lang->block->projectstatistic->existRisks       = 'Risks';
@@ -644,16 +646,16 @@ $lang->block->executionstatistic->burn              = $lang->execution->common .
 $lang->block->executionstatistic->cfd               = $lang->execution->common . 'Cumulative Flow Diagram';
 $lang->block->executionstatistic->story             = 'Story';
 $lang->block->executionstatistic->doneStory         = 'Done';
-$lang->block->executionstatistic->totalStory        = 'Total Stories';
+$lang->block->executionstatistic->totalStory        = 'Total';
 $lang->block->executionstatistic->task              = 'Task';
-$lang->block->executionstatistic->totalTask         = 'Total Tasks';
+$lang->block->executionstatistic->totalTask         = 'Total';
 $lang->block->executionstatistic->undoneTask        = 'Uncompleted';
 $lang->block->executionstatistic->yesterdayDoneTask = 'Complated Yesterday';
 
 $lang->block->executionoverview = new stdclass();
-$lang->block->executionoverview->totalExecution = "{$lang->execution->common} Total";
+$lang->block->executionoverview->totalExecution = "Total {$lang->execution->common}s";
 $lang->block->executionoverview->thisYear       = 'Completed This Year';
-$lang->block->executionoverview->statusCount    = "Status Distribution of Open{$lang->execution->common}";
+$lang->block->executionoverview->statusCount    = "Status Distribution of Open {$lang->execution->common}";
 
 $lang->block->productoverview = new stdclass();
 $lang->block->productoverview->overview                = 'Overview Data';
@@ -700,7 +702,7 @@ $lang->block->annualworkload->resolvedBugCount  = 'Resolved Bugs';
 
 $lang->block->releasestatistic = new stdclass();
 $lang->block->releasestatistic->monthly = 'Monthly releases trend chart';
-$lang->block->releasestatistic->annual  = "Annual Release Leaderboard (%s year)";
+$lang->block->releasestatistic->annual  = "Annual Release Leaderboard (%s)";
 
 $lang->block->teamachievement = new stdclass();
 $lang->block->teamachievement->finishedTasks  = 'Completed Tasks';

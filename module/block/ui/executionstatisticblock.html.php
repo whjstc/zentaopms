@@ -177,6 +177,7 @@ else
             )
         );
 
+    $isEn = $app->getClientLang() == 'en';
     /* 任务故事信息。Task story info. */
     $taskStoryInfo = col
         (
@@ -189,7 +190,7 @@ else
                     setClass('flex-auto'),
                     cell
                     (
-                        setClass('w-1/3'),
+                        setClass($isEn ? 'w-1/6' : 'w-1/3'),
                         span(setClass('text-sm text-gray'), $lang->block->executionstatistic->totalTask),
                         strong(setClass('num ml-2'), $execution->totalTask)
                     ),
@@ -201,7 +202,7 @@ else
                     ),
                     cell
                     (
-                        setClass('w-1/3'),
+                        setClass($isEn ? 'w-1/2' : 'w-1/3'),
                         span(setClass('text-sm text-gray'), $lang->block->executionstatistic->yesterdayDoneTask),
                         strong(setClass('num ml-2'), $execution->yesterdayDoneTask)
                     )
@@ -215,7 +216,7 @@ else
                     setClass('flex-auto'),
                     cell
                     (
-                        setClass('w-1/3'),
+                        setClass($isEn ? 'w-1/6' : 'w-1/3'),
                         span(setClass('text-sm text-gray'), $lang->block->executionstatistic->totalStory),
                         strong(setClass('num ml-2'), $execution->totalStory)
                     ),
