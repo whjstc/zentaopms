@@ -121,7 +121,7 @@ $lang->my->productLinkList['product-all']       = "{$lang->productCommon} List /
 $lang->my->productLinkList['product-kanban']    = "{$lang->productCommon} Kanban / Visualize the progress of all {$lang->productCommon}.";
 $lang->my->productLinkList['product-index']     = "All {$lang->productCommon} Dashboard / View statistics, summaries, and overviews of all {$lang->productCommon}.";
 $lang->my->productLinkList['product-dashboard'] = "Recent {$lang->productCommon} Dashboard / View the most recently accessed {$lang->productCommon} dashboard.";
-$lang->my->productLinkList['product-browse']    = "Recent {$lang->productCommon}s Story List: Access the story list under the most recently viewed {$lang->productCommon}.";
+$lang->my->productLinkList['product-browse']    = "Recent {$lang->productCommon}s Story List / Access the story list under the most recently viewed {$lang->productCommon}.";
 
 $lang->my->projectLinkList = array();
 $lang->my->projectLinkList['project-browse']    = "{$lang->projectCommon} List / View all {$lang->projectCommon}.";
