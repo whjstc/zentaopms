@@ -542,11 +542,11 @@ $lang->block->welcome->reviewList['story']      = 'Story';
 $lang->block->welcome->reviewList['reviewByMe'] = 'Review';
 
 $lang->block->welcome->assignList = array();
-$lang->block->welcome->assignList['task'] = 'Task';
-if($config->vision != 'or') $lang->block->welcome->assignList['bug']   = 'Bug';
+$lang->block->welcome->assignList['task'] = 'Tasks';
+if($config->vision != 'or') $lang->block->welcome->assignList['bug']   = 'Bugs';
 if($config->vision != 'or') $lang->block->welcome->assignList['story'] = 'SRStroy';
 $lang->block->welcome->assignList['testcase'] = 'TestCase';
-if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignList['requirement'] = "{$lang->URCommon}";
+if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignList['requirement'] = "Features";
 if($config->enableER && $config->vision != 'or') $lang->block->welcome->assignList['epic']        = "{$lang->ERCommon}";
 
 $lang->block->customModeTip = new stdClass();

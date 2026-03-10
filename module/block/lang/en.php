@@ -122,8 +122,8 @@ $lang->block->budget          = 'Budget';
 $lang->block->left            = 'left';
 
 $lang->block->summary = new stdclass();
-$lang->block->summary->welcome    = 'You\'ve been with ZenTao for %s. %s are waiting for you to handle today.';
-$lang->block->summary->yesterday  = '<strong>Yesterday</strong>';
+$lang->block->summary->welcome    = 'You\'ve been with Sanplex for %s. %s are waiting for you to handle today.';
+$lang->block->summary->yesterday  = '<strong>Yesterday</strong> ';
 $lang->block->summary->noWork     = 'You haven\'t processed any tasks or bugs,';
 $lang->block->summary->finishTask = 'You have completed<a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a>tasks';
 $lang->block->summary->fixBug     = 'You have resolved<a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a>Bugs';
@@ -539,15 +539,15 @@ $lang->block->welcome->reviewByMe = 'My Pending Review';
 $lang->block->welcome->assignToMe = 'Assigned to Me';
 
 $lang->block->welcome->reviewList = array();
-$lang->block->welcome->reviewList['story']      = $lang->SRCommon . 'count';
+$lang->block->welcome->reviewList['story']      = 'Stories';
 $lang->block->welcome->reviewList['reviewByMe'] = 'My Pending Reviews';
 
 $lang->block->welcome->assignList = array();
 $lang->block->welcome->assignList['task'] = 'Tasks';
-if($config->vision != 'or') $lang->block->welcome->assignList['bug']   = 'Bug';
+if($config->vision != 'or') $lang->block->welcome->assignList['bug']   = 'Bugs';
 if($config->vision != 'or') $lang->block->welcome->assignList['story'] = 'SRStroy';
 $lang->block->welcome->assignList['testcase'] = 'Cases';
-if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignList['requirement'] = "{$lang->URCommon}";
+if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignList['requirement'] = "Features";
 if($config->enableER && $config->vision != 'or') $lang->block->welcome->assignList['epic']        = "{$lang->ERCommon}";
 
 $lang->block->customModeTip = new stdClass();
