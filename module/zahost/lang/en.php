@@ -144,7 +144,7 @@ $lang->zahost->automation->feature1           = '1. Core Concepts';
 $lang->zahost->automation->feature1Spec       = "Hosts include physical hosts, Kubernetes (K8s) clusters, cloud servers, and cloud container instances, which are mainly used to create virtual machines or container instances. The recommended operating system for the host is Ubuntu or a CentOS LTS release.<br/> An execution node is a virtual machine or container instance created by the host, serving as the test environment where tasks are executed.
 ";
 $lang->zahost->automation->feature2           = '2. Application Overview';
-$lang->zahost->automation->feature2ZenAgent   = 'ZAgent is ZenTao\'s open-source automated testing and scheduling platform. by leveraging virtualization technology, it provides users with a distributed and centrally managed test environment.';
+$lang->zahost->automation->feature2ZenAgent   = 'ZAgent is ZenTao\'s open-source automated testing and scheduling platform. By leveraging virtualization technology, it provides users with a distributed and centrally managed test environment.';
 $lang->zahost->automation->feature2ZTF        = 'ZTF is ZenTao\'s open-source automated testing framework, helping users uniformly manage test scripts. ZTF is deeply integrated with ZenTao; each script can be linked to a test case in the system, allowing step and case information to sync seamlessly.';
 $lang->zahost->automation->feature2KVM        = 'KVM (Kernel-based Virtual Machine) is a full virtualization solution for Linux on x86 hardware containing virtualization extensions (Intel VT or AMD-V).';
 $lang->zahost->automation->feature2Nginx      = 'Nginx is a high-performance HTTP and reverse proxy web server that also provides IMAP/POP3/SMTP services.';
