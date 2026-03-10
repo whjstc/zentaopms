@@ -436,7 +436,7 @@ $lang->tutorial->scrumProjectManage->manageTask->step5->name = 'Save the form';
 $lang->tutorial->scrumProjectManage->manageTask->step5->desc = 'After saving, you can view the decomposed tasks in the task list';
 
 $lang->tutorial->scrumProjectManage->manageTask->step6 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageTask->step6->name = 'Click Assign to';
+$lang->tutorial->scrumProjectManage->manageTask->step6->name = 'Click Assigned to';
 $lang->tutorial->scrumProjectManage->manageTask->step6->desc = 'You can assign tasks to the corresponding users here';
 
 $lang->tutorial->scrumProjectManage->manageTask->step7 = new stdClass();
@@ -1069,7 +1069,7 @@ $lang->tutorial->taskManage->step9->name = 'Save the form';
 $lang->tutorial->taskManage->step9->desc = 'After saving, view tasks in the task list';
 
 $lang->tutorial->taskManage->step10 = new stdClass();
-$lang->tutorial->taskManage->step10->name = 'Click Assign to';
+$lang->tutorial->taskManage->step10->name = 'Click Assigned to';
 $lang->tutorial->taskManage->step10->desc = 'Click to assign tasks to individuals';
 
 $lang->tutorial->taskManage->step11 = new stdClass();
@@ -1077,7 +1077,7 @@ $lang->tutorial->taskManage->step11->name = 'Fill out the form';
 
 $lang->tutorial->taskManage->step12 = new stdClass();
 $lang->tutorial->taskManage->step12->name = 'Save the form';
-$lang->tutorial->taskManage->step12->desc = 'After saving, the assigned user will be displayed in the task list under "Assign to"';
+$lang->tutorial->taskManage->step12->desc = 'After saving, the assigned user will be displayed in the task list under "Assigned to"';
 
 $lang->tutorial->taskManage->step13 = new stdClass();
 $lang->tutorial->taskManage->step13->name = 'Click Start Task';

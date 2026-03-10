@@ -135,7 +135,7 @@ $lang->block->titleList['flowchart']      = 'Flow Chart';
 $lang->block->titleList['guide']          = 'Guides';
 $lang->block->titleList['statistic']      = 'Statistic';
 $lang->block->titleList['recentproject']  = "Recent {$lang->projectCommon}";
-$lang->block->titleList['assigntome']     = 'Assign to me';
+$lang->block->titleList['assigntome']     = 'Assigned to me';
 $lang->block->titleList['project']        = "{$lang->projectCommon} List";
 $lang->block->titleList['dynamic']        = 'Dynamic';
 $lang->block->titleList['list']           = 'Todo List';
@@ -433,7 +433,7 @@ $lang->block->typeList->testtask['all']     = 'Alle';
 
 $lang->block->typeList->risk['all']      = 'All';
 $lang->block->typeList->risk['active']   = 'Active';
-$lang->block->typeList->risk['assignTo'] = 'Assign to';
+$lang->block->typeList->risk['assignTo'] = 'Assigned to';
 $lang->block->typeList->risk['assignBy'] = 'Assign by';
 $lang->block->typeList->risk['closed']   = 'Closed';
 $lang->block->typeList->risk['hangup']   = 'Hangup';
@@ -441,7 +441,7 @@ $lang->block->typeList->risk['canceled'] = 'Canceled';
 
 $lang->block->typeList->issue['all']      = 'All';
 $lang->block->typeList->issue['open']     = 'Open';
-$lang->block->typeList->issue['assignto'] = 'Assign to';
+$lang->block->typeList->issue['assignto'] = 'Assigned to';
 $lang->block->typeList->issue['assignby'] = 'Assign by';
 $lang->block->typeList->issue['closed']   = 'Closed';
 $lang->block->typeList->issue['resolved'] = 'Resolved';

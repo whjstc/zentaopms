@@ -6,7 +6,7 @@ $lang->webhook->entry      = 'Apply';
 $lang->webhook->log        = 'Log';
 $lang->webhook->bind       = 'Link User';
 $lang->webhook->chooseDept = 'Select Dept to Sync';
-$lang->webhook->assigned   = 'Assign to';
+$lang->webhook->assigned   = 'Assigned to';
 $lang->webhook->setting    = 'Settings';
 
 $lang->webhook->logAction = 'Webhook Log';

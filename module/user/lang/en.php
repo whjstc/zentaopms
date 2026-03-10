@@ -143,7 +143,7 @@ $lang->user->story     = 'Stories';
 $lang->user->dynamic   = 'Recents';
 
 $lang->user->openedBy    = 'Created by %s';
-$lang->user->assignedTo  = 'Assign to %s';
+$lang->user->assignedTo  = 'Assigned to %s';
 $lang->user->finishedBy  = 'Completed by %s';
 $lang->user->involved    = '%s Involved';
 $lang->user->resolvedBy  = 'Fixed by %s';
@@ -152,7 +152,7 @@ $lang->user->reviewedBy  = 'Reviewed by %s';
 $lang->user->canceledBy  = 'Cancelled by %s';
 
 $lang->user->testTask2Him = 'Managed by %s';
-$lang->user->case2Him     = 'Assign to %s';
+$lang->user->case2Him     = 'Assigned to %s';
 $lang->user->caseByHim    = 'Created by %s';
 
 $lang->user->errorDeny    = "Sorry, you do not have permission to access the [<b>%s</b>] feature in the 『<b>%s</b>」 module. Please contact your administrator for assistance. You can return to the Dashboard or log in again.";
@@ -338,13 +338,13 @@ $lang->user->jumping = "You will be automatically redirected to the login page i
 $lang->user->zentaoapp = new stdclass();
 $lang->user->zentaoapp->logout = 'Log Out';
 
-$lang->user->featureBar['todo']['all']             = 'Assign to Me';
+$lang->user->featureBar['todo']['all']             = 'Assigned to Me';
 $lang->user->featureBar['todo']['before']          = 'Unfinished';
 $lang->user->featureBar['todo']['future']          = 'TBD';
 $lang->user->featureBar['todo']['thisWeek']        = 'This Week';
 $lang->user->featureBar['todo']['thisMonth']       = 'This Month';
 $lang->user->featureBar['todo']['thisYear']        = 'This Year';
-$lang->user->featureBar['todo']['assignedToOther'] = 'Assign to Others';
+$lang->user->featureBar['todo']['assignedToOther'] = 'Assigned to Others';
 $lang->user->featureBar['todo']['cycle']           = 'Recurring';
 
 $lang->user->featureBar['dynamic']['all']       = 'All';

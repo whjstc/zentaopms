@@ -156,9 +156,9 @@ $lang->repo->task               = 'Task';
 
 $lang->repo->title      = 'Title';
 $lang->repo->status     = 'Status';
-$lang->repo->openedBy   = 'CreatedBy';
-$lang->repo->assignedTo = 'AssignedTo';
-$lang->repo->openedDate = 'CreatedDate';
+$lang->repo->openedBy   = 'Created by';
+$lang->repo->assignedTo = 'Assigned to';
+$lang->repo->openedDate = 'Created Date';
 
 $lang->repo->actionInfo     = "Add by %s in %s";
 $lang->repo->changes        = "Change Log";

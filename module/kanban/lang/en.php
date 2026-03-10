@@ -231,7 +231,7 @@ $lang->kanban->orderList['pri_asc']         = 'Story Priority Ascending';
 $lang->kanban->orderList['pri_desc']        = 'Story Priority Descending';
 $lang->kanban->orderList['stage_asc']       = 'Story Phase Ascending';
 $lang->kanban->orderList['stage_desc']      = 'Story Phase Descending';
-$lang->kanban->orderList['assignedTo_desc'] = 'Assign to';
+$lang->kanban->orderList['assignedTo_desc'] = 'Assigned to';
 
 $lang->kanban->importList = array();
 $lang->kanban->importList['on']  = 'Enable Import (Import items you have access to as cards)';
@@ -412,7 +412,7 @@ $lang->kanbancard->region          = 'Area';
 $lang->kanbancard->kanban          = 'Kanban';
 $lang->kanbancard->lane            = 'Lane';
 $lang->kanbancard->column          = 'Column';
-$lang->kanbancard->assignedTo      = 'Assign to';
+$lang->kanbancard->assignedTo      = 'Assigned to';
 $lang->kanbancard->beginAndEnd     = 'Duration';
 $lang->kanbancard->begin           = 'Planned Start';
 $lang->kanbancard->end             = 'Due Date';
