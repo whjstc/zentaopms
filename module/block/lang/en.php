@@ -94,7 +94,7 @@ $lang->block->ordersSaved        = 'The order is saved.';
 $lang->block->confirmRemoveBlock = 'Are you sure you want to hide this block?';
 $lang->block->noticeNewBlock     = 'New layouts are available for all view homepages starting from version 10.0. Would you like to switch to the new one?';
 $lang->block->confirmReset       = 'Reset to default layout?';
-$lang->block->closeForever       = 'Disable Permanently';
+$lang->block->closeForever       = 'Remove Permanently';
 $lang->block->confirmClose       = 'Are you sure you want to disable this block? Once disabled, it will be unavailable to all users. You can re-enable it in [Admin > Feature>Dashboard > Blocks].';
 $lang->block->remove             = 'Remove';
 $lang->block->refresh            = 'Refresh';
@@ -243,9 +243,9 @@ $lang->block->availableBlocks['demand']      = 'Stories';
 
 $lang->block->modules['project'] = new stdclass();
 $lang->block->modules['project']->availableBlocks['overview']      = "{$lang->projectCommon} Overview";
-$lang->block->modules['project']->availableBlocks['recentproject'] = "My Recent {$lang->projectCommon}";
+$lang->block->modules['project']->availableBlocks['recentproject'] = "My Recent {$lang->projectCommon}s";
 $lang->block->modules['project']->availableBlocks['statistic']     = "{$lang->projectCommon} Statistics";
-$lang->block->modules['project']->availableBlocks['project']       = "{$lang->projectCommon}List";
+$lang->block->modules['project']->availableBlocks['project']       = "{$lang->projectCommon} List";
 
 $lang->block->modules['scrumproject'] = new stdclass();
 $lang->block->modules['scrumproject']->availableBlocks['scrumoverview']  = "{$lang->projectCommon} Overview";

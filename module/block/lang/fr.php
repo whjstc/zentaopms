@@ -243,7 +243,7 @@ $lang->block->availableBlocks['demand']      = 'Demands';
 
 $lang->block->modules['project'] = new stdclass();
 $lang->block->modules['project']->availableBlocks['overview']      = "{$lang->projectCommon} Overview";
-$lang->block->modules['project']->availableBlocks['recentproject'] = "Recent {$lang->projectCommon}";
+$lang->block->modules['project']->availableBlocks['recentproject'] = "My Recent {$lang->projectCommon}s";
 $lang->block->modules['project']->availableBlocks['statistic']     = "{$lang->projectCommon} Statistic";
 $lang->block->modules['project']->availableBlocks['project']       = "{$lang->projectCommon} List";
 
