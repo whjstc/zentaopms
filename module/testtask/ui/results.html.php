@@ -38,6 +38,7 @@ $trs        = array();
 $fileModals = array();
 $trCount    = 1;
 $failCount  = 0;
+$isEn       = $app->getClientLang() == 'en';
 foreach($results as $i => $result)
 {
     $class     = ($result->caseResult == 'pass' ? 'success' : ($result->caseResult == 'fail' ? 'danger' : ($result->caseResult == 'blocked' ? 'warning' : '')));
@@ -96,13 +97,13 @@ foreach($results as $i => $result)
         $itemTds[] = div
         (
             setClass('text-left flex border-r break-all'),
-            width('calc(25% + 2px)'),
+            width($isEn ? 'calc(25%)' : 'calc(25% + 2px)'),
             isset($stepResult['expect']) ? html(nl2br($stepResult['expect'])) : ''
         );
         $itemTds[] = div
         (
             setClass('text-left flex border-r text-gray'),
-            width('80px'),
+            width($isEn ? '94px' : '80px'),
             isset($stepResult['version']) ? "#{$stepResult['version']}" : ''
         );
         $itemTds[] = !empty($stepResult['result']) ? div
@@ -128,7 +129,7 @@ foreach($results as $i => $result)
         $itemTds[] = !empty($stepResult['result']) ? div
         (
             setClass('text-center flex'),
-            width('56px'),
+            width($isEn ? '90px' : '56px'),
             !empty($stepResult['files']) ? a
             (
                 on::click('setFileModalHeight'),
@@ -138,7 +139,7 @@ foreach($results as $i => $result)
                 icon('paper-clip'),
                 $fileCount
             ) : ''
-        ) : div(width('56px'));
+        ) : div(width($isEn ? '90px' : '56px'));
         $fileModals[] = modal
         (
             set::id("stepResult{$modalID}"),
@@ -154,7 +155,7 @@ foreach($results as $i => $result)
             div
             (
                 setClass('step-id flex border-r check-item'),
-                width('calc(75% - 292px)'),
+                width($isEn ? 'calc(75% - 504px)' : 'calc(75% - 292px)'),
                 $result->caseResult == 'fail' ? checkbox
                 (
                     on::click('toggleCheckChildItem'),
@@ -208,7 +209,7 @@ foreach($results as $i => $result)
                         setClass('steps-header flex border-b'),
                         div
                         (
-                            width('calc(75% - 296px)'),
+                            width($isEn ? 'calc(75% - 504px)' : 'calc(75% - 296px)'),
                             setClass('text-left desc border-r'),
                             $lang->testcase->stepDesc
                         ),
@@ -220,7 +221,7 @@ foreach($results as $i => $result)
                         ),
                         div
                         (
-                            width('80px'),
+                            width($isEn ? '94px' : '80px'),
                             setClass('text-center border-r'),
                             $lang->testcase->version
                         ),
@@ -238,14 +239,14 @@ foreach($results as $i => $result)
                         ),
                         div
                         (
-                            width('56px'),
+                            width($isEn ? '90px' : '56px'),
                             setClass('text-left'),
                             $lang->attach
                         )
                     ),
                     div
                     (
-                        setClass('steps-body ml-2'),
+                        setClass($isEn ? 'steps-body' : 'steps-body ml-2'),
                         $stepResultTrs
                     ),
                     $result->caseResult == 'fail' && common::hasPriv('testcase', 'createBug') ? div
