@@ -131,7 +131,7 @@ $lang->instance->backup->disableAutoBackup   = 'Auto-backup disabled.';
 $lang->instance->backup->keepBackupBySystem  = 'Expired auto-backups are deleted only when more than one backup exists.';
 $lang->instance->backup->backupSize          = 'Size';
 $lang->instance->backup->confirmTip          = 'Are you sure you want to back up?';
-$lang->instance->backup->cronRemark          = 'DevOps service auto-backup task';
+$lang->instance->backup->cronRemark          = 'CI&CD service auto-backup task';
 $lang->instance->backup->backupSettingsTip   = 'Backups exceeding the retention period will be deleted, but at least one valid backup is kept.';
 $lang->instance->backup->confirmDeleteTip    = 'Are you sure you want to delete this backup?';
 

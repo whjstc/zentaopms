@@ -186,7 +186,7 @@ $lang->execution->endList[365] = '1 Year';
 
 $lang->execution->lifeTimeList['short'] = "Short-Term";
 $lang->execution->lifeTimeList['long']  = "Long-Term";
-$lang->execution->lifeTimeList['ops']   = "DevOps";
+$lang->execution->lifeTimeList['ops']   = "CI&CD";
 
 $lang->execution->cfdTypeList['story'] = "View by {$lang->SRCommon}";
 $lang->execution->cfdTypeList['task']  = "View by task";
