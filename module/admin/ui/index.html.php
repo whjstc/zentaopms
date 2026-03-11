@@ -15,6 +15,8 @@ namespace zin;
 jsVar('hasInternet', $zentaoData->hasData || $hasInternet);
 jsVar('isAdminUser', $this->app->user->admin);
 
+$isEn = $app->getClientLang() == 'en';
+
 $buildHeader = function(string $title, string $actionUrl = '', string $titleIcon = '', string $actionLang = '', string $actionIcon = ''): h
 {
     global $lang;
@@ -88,7 +90,7 @@ foreach($lang->admin->menuList as $menuKey => $menu)
 
     $items = div
     (
-        setClass('pb-4 pr-4 h-32 w-1/' . ($config->vision == 'lite' ? 3 : 5)),
+        setClass('pb-4 pr-4 h-32 w-1/' . ($config->vision == 'lite' || $isEn ? 3 : 5)),
         col
         (
             setClass('setting-box cursor-pointer border border-hover rounded-md px-2 py-1 h-full'),
