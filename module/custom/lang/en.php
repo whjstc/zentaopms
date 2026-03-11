@@ -346,7 +346,7 @@ $lang->custom->conceptQuestions['storypoint'] = "Which unit does your company us
 
 $lang->custom->conceptOptions             = new stdclass;
 $lang->custom->conceptOptions->story      = array();
-$lang->custom->conceptOptions->story['0'] = 'Requirement';
+$lang->custom->conceptOptions->story['0'] = 'Feature';
 $lang->custom->conceptOptions->story['1'] = 'Story';
 
 $lang->custom->conceptOptions->URAndSR = array();
