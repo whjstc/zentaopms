@@ -155,7 +155,7 @@ $lang->noticeOkFile    = '<p class="font-bold mb-2">For security reasons, your a
         <li>If the file already exists, please delete it and recreate it.</li>
     </ul>';
 $lang->noticeDrag      = 'Click or drag files here to upload. Maximum size: %s.';
-$lang->allProgress     = 'Overall progress';
+$lang->allProgress     = 'Progress';
 $lang->hasReviewed     = 'This content has already been reviewed. No further action is required.';
 $lang->appNotFound     = 'You do not have permission to access this application. Please check your permission settings.';
 
@@ -198,7 +198,7 @@ $lang->workingHour = 'Working hours';
 $lang->idAB         = 'ID';
 $lang->priAB        = 'P';
 $lang->statusAB     = 'Status';
-$lang->openedByAB   = 'Created by';
+$lang->openedByAB   = 'Creator';
 $lang->assignedToAB = 'Assignee';
 $lang->typeAB       = 'Type';
 $lang->nameAB       = 'Name';
@@ -394,7 +394,7 @@ $lang->timezone        = 'Time Zone';
 $lang->security        = 'Security';
 $lang->calendar        = 'Calendar';
 
-$lang->my->work = 'My work';
+$lang->my->work = 'My Work';
 
 $lang->project->list   = $lang->projectCommon . ' List';
 $lang->project->kanban = $lang->projectCommon . ' Kanban';
@@ -533,7 +533,7 @@ $lang->setLang = 'Language Settings';
 
 /* Theme style. */
 $lang->theme                = 'Theme';
-$lang->themes['default']    = 'ZenTao Blue';
+$lang->themes['default']    = 'Classic Blue';
 $lang->themes['blue']       = 'Blue';
 $lang->themes['green']      = 'Green';
 $lang->themes['red']        = 'Red';

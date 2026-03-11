@@ -437,7 +437,7 @@ $lang->tutorial->scrumProjectManage->manageTask->step5->name = 'Save the form';
 $lang->tutorial->scrumProjectManage->manageTask->step5->desc = 'After saving, you can view the broken-down tasks in the Task List.';
 
 $lang->tutorial->scrumProjectManage->manageTask->step6 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageTask->step6->name = 'Click on Assign To';
+$lang->tutorial->scrumProjectManage->manageTask->step6->name = 'Click on Assigned to';
 $lang->tutorial->scrumProjectManage->manageTask->step6->desc = 'You can assign tasks to the corresponding users here.';
 
 $lang->tutorial->scrumProjectManage->manageTask->step7 = new stdClass();
@@ -449,7 +449,7 @@ $lang->tutorial->scrumProjectManage->manageTask->step8->desc = 'Once saved, the 
 
 $lang->tutorial->scrumProjectManage->manageTask->step9 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTask->step9->name = 'Click on Start Task';
-$lang->tutorial->scrumProjectManage->manageTask->step9->desc = 'You can start tasks here and log 'Cost' and 'Left' hours.';
+$lang->tutorial->scrumProjectManage->manageTask->step9->desc = "You can start tasks here and log 'Cost' and 'Left' hours.";
 
 $lang->tutorial->scrumProjectManage->manageTask->step10 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTask->step10->name = 'Fill out the form';
@@ -460,7 +460,7 @@ $lang->tutorial->scrumProjectManage->manageTask->step11->desc = 'After saving, r
 
 $lang->tutorial->scrumProjectManage->manageTask->step12 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTask->step12->name = 'Click on Log Hours';
-$lang->tutorial->scrumProjectManage->manageTask->step12->desc = 'You can log cost and time left here. Once the 'Left' value reaches 0, the task will automatically be completed.';
+$lang->tutorial->scrumProjectManage->manageTask->step12->desc = "You can log cost and time left here. Once the 'Left' value reaches 0, the task will automatically be completed.";
 
 $lang->tutorial->scrumProjectManage->manageTask->step13 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTask->step13->name = 'Fill out the form';
@@ -1029,7 +1029,7 @@ $lang->tutorial->kanbanProjectManage->manageBuild->step4->desc = 'After saving, 
 
 $lang->tutorial->kanbanProjectManage->manageBuild->step5 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageBuild->step5->name = 'Click on Cumulative Flow Diagrams';
-$lang->tutorial->kanbanProjectManage->manageBuild->step5->desc = 'You can view the Cumulative Flow Diagram here to track your Kanban's progress.';
+$lang->tutorial->kanbanProjectManage->manageBuild->step5->desc = "You can view the Cumulative Flow Diagram here to track your Kanban's progress.";
 
 $lang->tutorial->taskManage = new stdClass();
 $lang->tutorial->taskManage->title = 'Task Management Tutorial';
@@ -1048,7 +1048,7 @@ $lang->tutorial->taskManage->step3->desc = 'Click to create a project without it
 
 $lang->tutorial->taskManage->step4 = new stdClass();
 $lang->tutorial->taskManage->step4->name = 'Fill out the form';
-$lang->tutorial->taskManage->step4->desc = 'Select 'Category' and uncheck 'Multi Iteration' to create a project without iterations.';
+$lang->tutorial->taskManage->step4->desc = "Select 'Category' and uncheck 'Multi Iteration' to create a project without iterations.";
 
 $lang->tutorial->taskManage->step5 = new stdClass();
 $lang->tutorial->taskManage->step5->name = 'Save the form';
@@ -1070,7 +1070,7 @@ $lang->tutorial->taskManage->step9->name = 'Save the form';
 $lang->tutorial->taskManage->step9->desc = 'After saving, you can view tasks in the task list.';
 
 $lang->tutorial->taskManage->step10 = new stdClass();
-$lang->tutorial->taskManage->step10->name = 'Click on Assign To';
+$lang->tutorial->taskManage->step10->name = 'Click on Assigned to';
 $lang->tutorial->taskManage->step10->desc = 'Click to assign tasks to individuals.';
 
 $lang->tutorial->taskManage->step11 = new stdClass();
@@ -1093,7 +1093,7 @@ $lang->tutorial->taskManage->step15->desc = 'After saving, the task status chang
 
 $lang->tutorial->taskManage->step16 = new stdClass();
 $lang->tutorial->taskManage->step16->name = 'Click on Log Hours';
-$lang->tutorial->taskManage->step16->desc = 'You can log cost and time left here. Once the 'Left' value reaches 0, the task will automatically be completed.';
+$lang->tutorial->taskManage->step16->desc = "You can log cost and time left here. Once the 'Left' value reaches 0, the task will automatically be completed.";
 
 $lang->tutorial->taskManage->step17 = new stdClass();
 $lang->tutorial->taskManage->step17->name = 'Fill out the form';

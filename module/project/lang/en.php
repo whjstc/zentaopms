@@ -98,7 +98,7 @@ $lang->project->backToExecutionList = 'Return to Project %s List';
 $lang->project->backToProjectList   = 'Return to Project List';
 $lang->project->deletedTip          = "Sorry, the {$lang->projectCommon} you are trying to access has been deleted.";
 
-$lang->project->manDay          = 'Man Day';
+$lang->project->manDay          = 'Man-Days';
 $lang->project->day             = 'Day';
 $lang->project->newProduct      = 'New Product';
 $lang->project->associatePlan   = 'Link Plan';
@@ -142,7 +142,7 @@ $lang->project->planDuration       = 'Planned Duration';
 $lang->project->realDuration       = 'Actual Duration';
 $lang->project->openedVersion      = 'Create Version';
 $lang->project->pri                = 'Priority';
-$lang->project->openedBy           = 'Created by';
+$lang->project->openedBy           = 'Creator';
 $lang->project->openedDate         = 'Created on';
 $lang->project->lastEditedBy       = 'Last Edited by';
 $lang->project->lastEditedDate     = 'Last Edited on';

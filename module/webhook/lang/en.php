@@ -6,7 +6,7 @@ $lang->webhook->entry      = 'Apply';
 $lang->webhook->log        = 'Log';
 $lang->webhook->bind       = 'Link User';
 $lang->webhook->chooseDept = 'Select Dept to Sync';
-$lang->webhook->assigned   = 'Assign to';
+$lang->webhook->assigned   = 'Assigned to';
 $lang->webhook->setting    = 'Settings';
 
 $lang->webhook->logAction = 'Webhook Log';
@@ -29,7 +29,7 @@ $lang->webhook->execution   = "Link {$lang->execution->common}";
 $lang->webhook->params      = 'Parameters';
 $lang->webhook->action      = 'Trigger Action';
 $lang->webhook->desc        = 'Description';
-$lang->webhook->createdBy   = 'Created by';
+$lang->webhook->createdBy   = 'Creator';
 $lang->webhook->createdDate = 'Created on';
 $lang->webhook->editedby    = 'Last Edited by';
 $lang->webhook->editedDate  = 'Edited on';

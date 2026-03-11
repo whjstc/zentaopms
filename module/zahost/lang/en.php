@@ -29,9 +29,9 @@ $lang->zahost->desc        = 'Description';
 $lang->zahost->type        = 'Type';
 $lang->zahost->status      = 'Status';
 
-$lang->zahost->createdBy    = 'Created By';
+$lang->zahost->createdBy    = 'Creator';
 $lang->zahost->createdDate  = 'Created At';
-$lang->zahost->editedBy     = 'Last Modified By';
+$lang->zahost->editedBy     = 'Last Modified by';
 $lang->zahost->editedDate   = 'Last Modified At';
 $lang->zahost->registerDate = 'Registration Date';
 

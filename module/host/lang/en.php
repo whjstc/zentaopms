@@ -31,7 +31,7 @@ $lang->host->memory       = 'Memory Size';
 $lang->host->serverRoom   = 'IDC';
 $lang->host->desc         = 'Description';
 
-$lang->host->createdBy   = 'Created by';
+$lang->host->createdBy   = 'Creator';
 $lang->host->createdDate = 'Created on';
 $lang->host->editedBy    = 'Edited by';
 $lang->host->editedDate  = 'Edited on';
