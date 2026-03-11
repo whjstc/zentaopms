@@ -231,6 +231,8 @@ class taskZen extends task
         {
             if(!empty($execution) && $execution->type == 'stage' && strpos('estStarted,deadline', $field) !== false) continue;
             $customFields[$field] = $this->lang->task->$field;
+
+            if($this->app->getClientLang() == 'en' && $field == 'record') $customFields['record'] = $this->lang->task->consumedAB;
         }
         $this->view->customFields = $customFields;
         $this->view->showFields   = $this->config->task->custom->batchEditFields;
