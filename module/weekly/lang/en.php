@@ -86,7 +86,7 @@ Calculation logic:
 <br />3) Deleted tasks are excluded.
 <br />4) Canceled tasks are excluded.
 <br />5) Deleted executions are excluded.
-<br />6) Completion Percentage = Spent Hours ÷ (Spent Hours + Remaining Hours).
+<br />6) Completion Percentage = Cost Hours ÷ (Cost Hours + Hours Left).
 
 <h2>AC — Actual Cost</h2>
 Calculation logic:
@@ -106,7 +106,7 @@ Formula: SV(%) = −1 × (1 − (EV / PV))%
 Formula: CV(%) = −1 × (1 − (EV / AC))%;
 $lang->weekly->blockHelpNotice = '<h2>Progress This Week</h2>
 Calculation logic: 
-<br />1) Project Progress = (Spent Hours on Tasks ÷ (Spent Hours on Tasks + Remaining Task Hours)) × 100%
+<br />1) Project Progress = (Cost Hours on Tasks ÷ (Cost Hours on Tasks + Remaining Task Hours)) × 100%
 
 <p><strong>Scope of Calculation:</strong></p>
 1) Only task work‑hour data is included.
@@ -149,7 +149,7 @@ Calculation logic:
 <br />3) Exclude deleted tasks.
 <br />4) Exclude canceled tasks.
 <br />5) Exclude deleted executions.
-<br />6) Completion Percentage = Spent Hours ÷ (Spent Hours + Remaining Hours).
+<br />6) Completion Percentage = Cost Hours ÷ (Cost Hours + Hours Left).
 
 <h2>AC — Actual Cost </h2>
 Calculation logic:

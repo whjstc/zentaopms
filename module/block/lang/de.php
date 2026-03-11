@@ -117,7 +117,7 @@ $lang->block->totalMember   = '%s members in total';
 
 $lang->block->totalInvestment = 'Have Invested';
 $lang->block->totalPeople     = 'Total';
-$lang->block->spent           = 'Has Been Spent';
+$lang->block->spent           = 'Has Been Cost';
 $lang->block->budget          = 'Budget';
 $lang->block->left            = 'Remain';
 
