@@ -68,6 +68,7 @@ $lang->custom->limitTaskDateAction  = 'Set Duration Required';
 $lang->custom->closeSetting         = 'Close Settings';
 $lang->custom->gradeRule            = 'Allow Cross-Level Subdivision';
 $lang->custom->setExecutionClose    = 'Execution Close Setting';
+$lang->custom->feature              = 'feature';
 
 $lang->custom->gradeRuleList['cross']    = 'Yes';
 $lang->custom->gradeRuleList['stepwise'] = 'No';
