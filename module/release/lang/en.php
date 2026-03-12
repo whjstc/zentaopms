@@ -24,7 +24,7 @@ $lang->release->batchUnlinkStory = 'Batch Unlink Stories';
 $lang->release->batchUnlinkBug   = 'Batch Unlink Bugs';
 $lang->release->manageSystem     = 'Manage ' . $lang->product->system;
 $lang->release->addSystem        = 'Add ' . $lang->product->system;
-$lang->release->consumed         = 'Spent';
+$lang->release->consumed         = 'Cost';
 
 $lang->release->confirmDelete      = 'Are you sure you want to delete this release?';
 $lang->release->syncFromBuilds     = "Link completed {$lang->SRCommon} and fixed bugs from the build to the release.";

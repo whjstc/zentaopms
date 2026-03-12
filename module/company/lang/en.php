@@ -52,5 +52,5 @@ $lang->company->featureBar['dynamic']['lastWeek']  = 'Last Week';
 $lang->company->featureBar['dynamic']['thisMonth'] = 'This Month';
 $lang->company->featureBar['dynamic']['lastMonth'] = 'Last Month';
 
-$lang->company->featureBar['browse']['inside']  = 'Internal User';
-$lang->company->featureBar['browse']['outside'] = 'External User';
+$lang->company->featureBar['browse']['inside']  = 'Internal Users';
+$lang->company->featureBar['browse']['outside'] = 'External Users';

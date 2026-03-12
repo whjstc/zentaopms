@@ -56,7 +56,7 @@ $lang->programplan->editedBy         = 'Edited by';
 $lang->programplan->editedDate       = 'Edited on';
 $lang->programplan->duration         = 'Available Workdays';
 $lang->programplan->estimate         = 'Man Hours';
-$lang->programplan->consumed         = 'Spent';
+$lang->programplan->consumed         = 'Cost';
 $lang->programplan->version          = 'Version';
 $lang->programplan->full             = 'Full Screen';
 $lang->programplan->today            = 'Today';
@@ -130,7 +130,7 @@ $lang->programplan->ganttCustom['realEnd']      = 'Actual End';
 $lang->programplan->ganttCustom['progress']     = 'Workload Ratio';
 $lang->programplan->ganttCustom['taskProgress'] = 'Task Progress';
 $lang->programplan->ganttCustom['estimate']     = 'Estimated Effort';
-$lang->programplan->ganttCustom['consumed']     = 'Spent';
+$lang->programplan->ganttCustom['consumed']     = 'Cost';
 $lang->programplan->ganttCustom['delay']        = 'Postponed';
 $lang->programplan->ganttCustom['delayDays']    = 'Days Delayed';
 

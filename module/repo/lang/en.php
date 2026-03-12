@@ -200,7 +200,7 @@ if(!$config->inQuickon && !$config->inCompose)
 }
 
 $lang->repo->aclList['private'] = 'Private(The product personnel can access it)';
-$lang->repo->aclList['open']    = 'Open(Users with privileges to DevOps can access it)';
+$lang->repo->aclList['open']    = 'Open(Users with privileges to CI&CD can access it)';
 $lang->repo->aclList['custom']  = 'Custom';
 
 $lang->repo->gitlabHost    = 'GitLab Host';

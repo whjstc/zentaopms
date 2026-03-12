@@ -76,11 +76,11 @@ $lang->admin->menuList->feature['subMenu']['kanban']      = array('link' => "{$l
 $lang->admin->menuList->feature['subMenu']['user']        = array('link' => "{$lang->user->common}|custom|required|module=user", 'links' => array('custom|set|module=user&field=roleList'), 'exclude' => 'set,required');
 
 $lang->admin->menuList->feature['tabMenu']['my']['todo']  = array('link' => "{$lang->todo->common}|custom|set|module=todo&field=priList", 'exclude' => 'custom-set');
-$lang->admin->menuList->feature['tabMenu']['my']['block'] = array('link' => "{$lang->block->common}|custom|set|module=block&field=closed", 'exclude' => 'custom-set');
+$lang->admin->menuList->feature['tabMenu']['my']['block'] = array('link' => "{$lang->block->common}s|custom|set|module=block&field=closed", 'exclude' => 'custom-set');
 
 $lang->admin->menuList->feature['tabMenu']['product']['product'] = array('link' => "{$lang->productCommon}|custom|required|module=product", 'links' => array("custom|browsestoryconcept|", 'custom|product|'), 'alias' => 'browsestoryconcept,product', 'exclude' => 'custom-required');
 if($config->enableER) $lang->admin->menuList->feature['tabMenu']['product']['epic']        = array('link' => "{$lang->epic->common}|custom|required|module=epic", 'links' => array("custom|set|module=epic&field=categoryList"), 'exclude' => 'custom-required,custom-set');
-if($config->URAndSR)  $lang->admin->menuList->feature['tabMenu']['product']['requirement'] = array('link' => "{$lang->URCommon}|custom|required|module=requirement", 'links' => array("custom|set|module=requirement&field=categoryList"), 'exclude' => 'custom-required,custom-set');
+if($config->URAndSR)  $lang->admin->menuList->feature['tabMenu']['product']['requirement'] = array('link' => "Feature|custom|required|module=requirement", 'links' => array("custom|set|module=requirement&field=categoryList"), 'exclude' => 'custom-required,custom-set');
 $lang->admin->menuList->feature['tabMenu']['product']['story']       = array('link' => "{$lang->SRCommon}|custom|required|module=story", 'links' => array("custom|set|module=story&field=categoryList"), 'exclude' => 'custom-required,custom-set');
 $lang->admin->menuList->feature['tabMenu']['product']['productplan'] = array('link' => "{$lang->productplan->shortCommon}|custom|required|module=productplan", 'exclude' => 'custom-required');
 $lang->admin->menuList->feature['tabMenu']['product']['release']     = array('link' => "{$lang->release->common}|custom|required|module=release", 'exclude' => 'custom-required');

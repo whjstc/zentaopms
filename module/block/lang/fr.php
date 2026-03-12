@@ -117,7 +117,7 @@ $lang->block->totalMember   = '%s members in total';
 
 $lang->block->totalInvestment = 'Have Invested';
 $lang->block->totalPeople     = 'Total';
-$lang->block->spent           = 'Has Been Spent';
+$lang->block->spent           = 'Has Been Cost';
 $lang->block->budget          = 'Budget';
 $lang->block->left            = 'Remain';
 
@@ -225,7 +225,7 @@ $lang->block->availableBlocks['task']        = 'Tasks';
 $lang->block->availableBlocks['bug']         = 'Bugs';
 $lang->block->availableBlocks['case']        = 'Cases';
 $lang->block->availableBlocks['story']       = 'Stories';
-$lang->block->availableBlocks['requirement'] = 'Requirements';
+$lang->block->availableBlocks['requirement'] = 'Features';
 $lang->block->availableBlocks['product']     = $lang->productCommon . 's';
 $lang->block->availableBlocks['execution']   = $lang->execution->common . 's';
 $lang->block->availableBlocks['plan']        = 'Plans';
@@ -671,8 +671,8 @@ $lang->block->productoverview->thisWeek                = 'This Week';
 
 $lang->block->productlist = new stdclass();
 $lang->block->productlist->unclosedFeedback  = 'Number Of Feedback Not Closed';
-$lang->block->productlist->activatedStory    = 'Activate Requirements';
-$lang->block->productlist->storyCompleteRate = 'Requirement Completion Rate';
+$lang->block->productlist->activatedStory    = 'Activate Features';
+$lang->block->productlist->storyCompleteRate = 'Feature Completion Rate';
 $lang->block->productlist->activatedBug      = 'Activate Bugs';
 
 $lang->block->sprint = new stdclass();

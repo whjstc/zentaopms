@@ -11,8 +11,8 @@
  */
 $lang->user->common           = 'User';
 $lang->user->id               = 'ID';
-$lang->user->inside           = 'Internal User';
-$lang->user->outside          = 'External User';
+$lang->user->inside           = 'Internal Users';
+$lang->user->outside          = 'External Users';
 $lang->user->company          = 'Company';
 $lang->user->dept             = 'Department';
 $lang->user->account          = 'Account';
@@ -20,7 +20,7 @@ $lang->user->password         = 'Password';
 $lang->user->passwordfield    = 'Password';
 $lang->user->password1        = 'Password';
 $lang->user->password2        = 'Confirm Password';
-$lang->user->role             = 'Position';
+$lang->user->role             = 'Role';
 $lang->user->group            = 'Permission Group';
 $lang->user->realname         = 'Name';
 $lang->user->nickname         = 'Nickname';
@@ -166,7 +166,7 @@ $lang->user->errorCaptcha = "Incorrect Captcha.";
 $lang->user->loginExpired = 'Your session has expired. Please log in again.';
 
 $lang->user->roleList['']       = '';
-$lang->user->roleList['dev']    = 'Development Engineer';
+$lang->user->roleList['dev']    = 'Dev Engineer';
 $lang->user->roleList['qa']     = 'Test Engineer';
 $lang->user->roleList['pm']     = 'Project Manager';
 $lang->user->roleList['po']     = 'Product Owner';

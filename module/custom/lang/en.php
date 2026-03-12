@@ -68,6 +68,7 @@ $lang->custom->limitTaskDateAction  = 'Set Duration Required';
 $lang->custom->closeSetting         = 'Close Settings';
 $lang->custom->gradeRule            = 'Allow Cross-Level Subdivision';
 $lang->custom->setExecutionClose    = 'Execution Close Setting';
+$lang->custom->feature              = 'feature';
 
 $lang->custom->gradeRuleList['cross']    = 'Yes';
 $lang->custom->gradeRuleList['stepwise'] = 'No';
@@ -122,7 +123,7 @@ $lang->custom->execution->fields['execution'] = 'Close Settings';
 
 $lang->custom->product = new stdClass();
 $lang->custom->product->fields['required']           = $lang->custom->required;
-$lang->custom->product->fields['browsestoryconcept'] = 'Story Concpet';
+$lang->custom->product->fields['browsestoryconcept'] = 'Story Concept';
 $lang->custom->product->fields['product']            = 'Close Settings';
 
 $lang->custom->story = new stdClass();
@@ -346,7 +347,7 @@ $lang->custom->conceptQuestions['storypoint'] = "Which unit does your company us
 
 $lang->custom->conceptOptions             = new stdclass;
 $lang->custom->conceptOptions->story      = array();
-$lang->custom->conceptOptions->story['0'] = 'Requirement';
+$lang->custom->conceptOptions->story['0'] = 'Feature';
 $lang->custom->conceptOptions->story['1'] = 'Story';
 
 $lang->custom->conceptOptions->URAndSR = array();

@@ -27,16 +27,16 @@ $lang->cron->lastTime = 'Last Run';
 $lang->cron->turnonList['1'] = 'On';
 $lang->cron->turnonList['0'] = 'Off';
 
-$lang->cron->statusList['normal']  = 'Normal';
+$lang->cron->statusList['normal']  = 'Active';
 $lang->cron->statusList['running'] = 'Running';
-$lang->cron->statusList['stop']    = 'Stop';
+$lang->cron->statusList['stop']    = 'Stopped';
 
 $lang->cron->typeList['zentao'] = 'ZenTao Self Call';
 global $config;
 if($config->features->cronSystemCall) $lang->cron->typeList['system'] = 'System Command';
 
-$lang->cron->toggleList['start'] = 'Activate';
-$lang->cron->toggleList['stop']  = 'Deactivate';
+$lang->cron->toggleList['start'] = 'Enable';
+$lang->cron->toggleList['stop']  = 'Disable';
 
 $lang->cron->confirmDelete = 'Are you sure you want to delete the scheduled task?';
 $lang->cron->confirmTurnon = 'Are you sure you want to turn off the scheduled task?';
@@ -53,6 +53,6 @@ $lang->cron->notice->h    = 'Range:0-23';
 $lang->cron->notice->dom  = 'Range:1-31';
 $lang->cron->notice->mon  = 'Range:1-12';
 $lang->cron->notice->dow  = 'Range:0-6';
-$lang->cron->notice->help = 'Note: If the server is restarted or you notice that scheduled tasks are not running properly, it means the scheduler has stopped. You need to manually click the Restart button, or refresh the page after one minute, to resume the scheduled tasks. If the “Last Running Time” of the first record in the task list changes, it indicates that the scheduler has started successfully.';
+$lang->cron->notice->help = 'Note: If the server is restarted or you notice that scheduled tasks are not running properly, it means the scheduler has stopped. You need to manually click the Restart button, or refresh the page after one minute, to resume the scheduled tasks. If the “Last Run” of the first record in the task list changes, it indicates that the scheduler has started successfully.';
 $lang->cron->notice->errorRule = '"%s" is not a valid value.';
 $lang->cron->notice->errorType = 'Cannot create a scheduled task of the “Operating System Command” type.';
