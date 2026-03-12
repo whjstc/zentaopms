@@ -104,6 +104,8 @@ Formula: SV(%) = −1 × (1 − (EV / PV))%
 
 <h2>CV(%) — Cost Variance </h2>
 Formula: CV(%) = −1 × (1 − (EV / AC))%;
+EOD;
+
 $lang->weekly->blockHelpNotice = '<h2>Progress This Week</h2>
 Calculation logic: 
 <br />1) Project Progress = (Cost Hours on Tasks ÷ (Cost Hours on Tasks + Remaining Task Hours)) × 100%
