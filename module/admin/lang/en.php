@@ -40,7 +40,7 @@ $lang->admin->zentaoInfo           = 'ZenTao News';
 $lang->admin->officialAccount      = 'Official Social Media';
 $lang->admin->publicClass          = 'Webinars';
 $lang->admin->days                 = 'Log Retention Days';
-$lang->admin->resetPWDByMail       = 'Reset Password Via Email';
+$lang->admin->resetPWDByMail       = 'Reset Via Email';
 $lang->admin->followUs             = 'Follow Us';
 $lang->admin->followUsContent      = 'Stay updated on ZenTao news, events, and access support at any time.';
 
