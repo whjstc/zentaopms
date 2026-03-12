@@ -123,7 +123,7 @@ $lang->convert->priType->task     = 'Priority Type (Task Status)';
 
 $lang->convert->issue = new stdclass();
 $lang->convert->issue->redmine = 'Redmine';
-$lang->convert->issue->zentao  = 'ZenTao';
+$lang->convert->issue->zentao  = 'Sanplex';
 $lang->convert->issue->goto    = 'Map To';
 
 $lang->convert->jira = new stdclass();
@@ -132,14 +132,14 @@ $lang->convert->jira->back             = 'Back';
 $lang->convert->jira->next             = 'Next';
 $lang->convert->jira->importFromDB     = 'Migrate From Database';
 $lang->convert->jira->importFromFile   = 'Migrate From File';
-$lang->convert->jira->importFromAPI    = 'Import From API';
+$lang->convert->jira->importFromAPI    = 'API Import';
 $lang->convert->jira->mapJira2Zentao   = 'Map Jira To Zentao';
 $lang->convert->jira->database         = 'Jira Database';
 $lang->convert->jira->domain           = 'Jira Domain';
 $lang->convert->jira->admin            = 'Jira Admin Account';
-$lang->convert->jira->token            = 'Jira Passwork/Token';
+$lang->convert->jira->token            = 'Jira Password/Token';
 $lang->convert->jira->dbNameNotice     = "Please enter the Jira database name.";
-$lang->convert->jira->importNotice     = 'Warning: Data import involves risks! Please ensure the following steps are completed in sequence before proceeding with the merge.';
+$lang->convert->jira->importNotice     = 'Warning: Data import carries risks. Please ensure the following steps are completed in sequence before merging.';
 $lang->convert->jira->accountNotice    = 'For email accounts, the text before the "@" symbol will be used as the username. Characters exceeding the 30-character limit will be truncated.';
 $lang->convert->jira->userExceeds      = 'The current system license limit is %s users. Please verify that the total user count after import does not exceed this limit, as the import process will be aborted if it does.';
 $lang->convert->jira->apiError         = 'Unable to connect to the Jira API. Please verify your Jira domain, username, and password/API Token.';
@@ -149,7 +149,7 @@ $lang->convert->jira->apiDesc          = 'If your Jira is a cloud version or it 
 $lang->convert->jira->jiraObject       = 'Jira Issues';
 $lang->convert->jira->zentaoObject     = 'Sanplex Objects';
 $lang->convert->jira->jiraLinkType     = 'Jira Relations';
-$lang->convert->jira->zentaoLinkType   = 'ZenTao Relations';
+$lang->convert->jira->zentaoLinkType   = 'Sanplex Relations';
 $lang->convert->jira->jiraResolution   = 'Jira Resolution';
 $lang->convert->jira->zentaoResolution = 'Zentao Resolution';
 $lang->convert->jira->zentaoReason     = 'Zentao Story Closed Reason';
@@ -181,8 +181,8 @@ $lang->convert->jira->invalidDB          = 'Invalid database name.';
 $lang->convert->jira->invalidTable       = 'This database is not a Jira database.';
 $lang->convert->jira->notReadAndWrite    = 'The directory does not exist or insufficient permissions! Please create the directory %s and grant read and write permissions.';
 $lang->convert->jira->notExistEntities   = 'The %s file does not exist.';
-$lang->convert->jira->passwordNotice     = 'Set the default password for users migrated to ZenTao. Users can later update their passwords within ZenTao.';
-$lang->convert->jira->groupNotice        = 'Set the default permission group for users migrated to ZenTao.';
+$lang->convert->jira->passwordNotice     = 'Set the default password for users migrated to Sanplex. Users can later update their passwords within Sanplex.';
+$lang->convert->jira->groupNotice        = 'Set the default permission group for users migrated to Sanplex.';
 $lang->convert->jira->mapObjectNotice    = 'When defining field mappings, if “Create as a new workflow” is selected, a new workflow object will be automatically created upon import.';
 $lang->convert->jira->mapFieldNotice     = 'Built-in Jira fields have been matched automatically. Please define mappings for custom fields. If “Create new” is selected, new fields will be created upon import; any unmapped fields will not be imported.';
 $lang->convert->jira->mapStatusNotice    = 'When defining status mappings, any unmapped statuses will be automatically mapped to %s after migration.';
@@ -218,21 +218,21 @@ $lang->convert->jira->steps['relation']   = 'Global Relationship Mapping';
 $lang->convert->jira->steps['user']       = 'Migrate Jira User';
 $lang->convert->jira->steps['confirme']   = 'Migration Data Confirmation';
 
-$lang->convert->jira->importSteps['db'][1]   = 'Back up the ZenTao database and the Jira database.';
-$lang->convert->jira->importSteps['db'][2]   = 'Using ZenTao during the import process may cause server performance issues. Please ensure that no one else is using ZenTao during data import.';
-$lang->convert->jira->importSteps['db'][3]   = 'Import the Jira database into the MySQL instance used by ZenTao, and assign it a different name from the ZenTao database.';
-$lang->convert->jira->importSteps['db'][4]   = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the ZenTao server has sufficient disk space.";
+$lang->convert->jira->importSteps['db'][1]   = 'Back up the Sanplex database and the Jira database.';
+$lang->convert->jira->importSteps['db'][2]   = 'Using Sanplex during the import process may cause server performance issues. Please ensure that no one else is using Sanplex during data import.';
+$lang->convert->jira->importSteps['db'][3]   = 'Import the Jira database into the MySQL instance used by Sanplex, and assign it a different name from the Sanplex database.';
+$lang->convert->jira->importSteps['db'][4]   = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the Sanplex server has sufficient disk space.";
 $lang->convert->jira->importSteps['db'][5]   = "After completing the above steps, please enter the name of the Jira database to proceed.";
 
-$lang->convert->jira->importSteps['file'][1] = 'Back up the ZenTao database and Jira files.';
-$lang->convert->jira->importSteps['file'][2] = 'Using ZenTao during the import process may cause server performance issues. Please ensure that no one else is using ZenTao during data import.';
+$lang->convert->jira->importSteps['file'][1] = 'Back up the Sanplex database and Jira files.';
+$lang->convert->jira->importSteps['file'][2] = 'Using Sanplex during the import process may cause server performance issues. Please ensure that no one else is using Sanplex during data import.';
 $lang->convert->jira->importSteps['file'][3] = "Place the Jira backup file <strong class='text-danger'>entities.xml</strong> in <strong class='text-danger'>%s</strong> and grant read/write permissions to that directory.";
-$lang->convert->jira->importSteps['file'][4] = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the ZenTao server has sufficient disk space.";
+$lang->convert->jira->importSteps['file'][4] = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the Sanplex server has sufficient disk space.";
 $lang->convert->jira->importSteps['file'][5] = "To ensure data integrity during the import, please provide the domain, admin account, and password/token of your current Jira environment.";
 $lang->convert->jira->importSteps['file'][6] = "Click Next upon the above steps completed.";
 
-$lang->convert->jira->importSteps['api'][1] = 'Backup ZenTao database.';
-$lang->convert->jira->importSteps['api'][2] = 'Using ZenTao when importing data will cause performance pressure on the server, please try to ensure that no one is using ZenTao when importing data.';
+$lang->convert->jira->importSteps['api'][1] = 'Backup Sanplex database.';
+$lang->convert->jira->importSteps['api'][2] = 'Avoid using Sanplex during the import to prevent server performance issues. Ensure no other users are active on the system during the process.';
 $lang->convert->jira->importSteps['api'][3] = 'Enter the domain name, administrator account, password/Token of the current Jira environment.';
 $lang->convert->jira->importSteps['api'][4] = "After the above steps are completed, click Next.";
 
