@@ -218,8 +218,8 @@ $lang->convert->jira->steps['relation']   = 'Global Relationship Mapping';
 $lang->convert->jira->steps['user']       = 'Migrate Jira User';
 $lang->convert->jira->steps['confirme']   = 'Migration Data Confirmation';
 
-$lang->convert->jira->importSteps['db'][1]   = 'Back up the Sanplex database and the Jira database.';
-$lang->convert->jira->importSteps['db'][2]   = 'Using Sanplex during the import process may cause server performance issues. Please ensure that no one else is using Sanplex during data import.';
+$lang->convert->jira->importSteps['db'][1]   = 'Back up both Sanplex and Jira databases.';
+$lang->convert->jira->importSteps['db'][2]   = 'Avoid using Sanplex during the import to prevent server performance issues. Ensure no other users are active on the system during the process.';
 $lang->convert->jira->importSteps['db'][3]   = 'Import the Jira database into the MySQL instance used by Sanplex, and assign it a different name from the Sanplex database.';
 $lang->convert->jira->importSteps['db'][4]   = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the Sanplex server has sufficient disk space.";
 $lang->convert->jira->importSteps['db'][5]   = "After completing the above steps, please enter the name of the Jira database to proceed.";
