@@ -91,9 +91,18 @@ foreach($results as $i => $result)
         if(empty($stepResult['result'])) $stepResult['result'] = 0;
         if(empty($stepResult['grade']))  $stepResult['grade']  = 0;
 
-        $itemTds   = array();
-        $modalID   = $result->id . '-' . $key;
-        $fileCount = count($stepResult['files']);
+        $itemTds    = array();
+        $modalID    = $result->id . '-' . $key;
+        $fileCount  = count($stepResult['files']);
+        $resultFile = !empty($stepResult['files']) ? a
+        (
+            on::click('setFileModalHeight'),
+            set::href("#stepResult{$modalID}"),
+            set('data-toggle', 'modal'),
+            set('data-position', 'center'),
+            icon('paper-clip'),
+            $fileCount
+        ) : '';
 
         $expectWidth  = $isEn ? 'calc(25%)' : 'calc(25% + 2px)';
         $versionWidth = $isEn ? '94px' : '80px';
@@ -135,15 +144,7 @@ foreach($results as $i => $result)
         (
             setClass('text-center flex'),
             width($resultWidth),
-            !empty($stepResult['files']) ? a
-            (
-                on::click('setFileModalHeight'),
-                set::href("#stepResult{$modalID}"),
-                set('data-toggle', 'modal'),
-                set('data-position', 'center'),
-                icon('paper-clip'),
-                $fileCount
-            ) : ''
+            $resultFile
         ) : div(width($resultWidth));
         $fileModals[] = modal
         (

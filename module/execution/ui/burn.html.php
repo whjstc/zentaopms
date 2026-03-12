@@ -26,7 +26,8 @@ $weekendParam = $delay == 'withdelay' ? "nodelay,{$weekend}" : "withdelay,{$week
 $delayParam   = $weekend == 'noweekend' ? "withweekend,{$delay}" : "noweekend,{$delay}";
 
 $isEn = $app->getClientLang() == 'en';
-$intervalBoxWidth = $isEn ? '150px' :'100px';
+$intervalBoxWidth   = $isEn ? '150px' :'100px';
+$intervalPickerProp = $isEn ? set::style(array('width' => '150px')) : null;
 
 featureBar
 (
@@ -110,8 +111,8 @@ featureBar
             set::name('interval'),
             set::items($dayList),
             set::value($interval),
-            $isEn ? set::style(array('width' => '150px')) : null,
-            set::required(true)
+            set::required(true),
+            $intervalPickerProp
         )
     ) : null
 );
