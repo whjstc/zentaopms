@@ -5449,6 +5449,7 @@ class storyModel extends model
         $storyTypes      = isset($project->storyType) ? explode(',', $project->storyType) : array();
         $showEpic        = $this->config->enableER && ($storyType == 'epic' || in_array('epic', $storyTypes) || $storyType == 'all');
         $showRequirement = $showEpic || $storyType == 'requirement' || in_array('requirement', $storyTypes) || $storyType == 'all';
+        $space           = $this->app->getClientLang() == 'en' ? ' ' : '';
 
         $menu = array();
         if($showEpic)
@@ -5456,7 +5457,7 @@ class storyModel extends model
             $items = array();
             $gradePairs = $this->getGradePairs('epic', 'all');
             foreach($gradePairs as $grade => $name) $items[] = array('text' => $name, 'value' => "epic{$grade}");
-            $menu[] = array('text' => $this->lang->preview . $this->lang->ERCommon, 'value' => 'epic', 'items' => $items);
+            $menu[] = array('text' => $this->lang->preview . $space . $this->lang->ERCommon, 'value' => 'epic', 'items' => $items);
         }
 
         if($showRequirement)
@@ -5464,7 +5465,7 @@ class storyModel extends model
             $items = array();
             $gradePairs = $this->getGradePairs('requirement', 'all');
             foreach($gradePairs as $grade => $name) $items[] = array('text' => $name, 'value' => "requirement{$grade}");
-            $menu[] = array('text' => $this->lang->preview . $this->lang->URCommon, 'value' => 'requirement', 'items' => $items);
+            $menu[] = array('text' => $this->lang->preview . $space . $this->lang->URCommon, 'value' => 'requirement', 'items' => $items);
         }
 
         if($this->config->vision != 'or')
@@ -5472,7 +5473,7 @@ class storyModel extends model
             $items = array();
             $gradePairs = $this->getGradePairs('story', 'all');
             foreach($gradePairs as $grade => $name) $items[] = array('text' => $name, 'value' => "story{$grade}");
-            $menu[] = array('text' => $this->lang->preview . $this->lang->SRCommon, 'value' => 'story', 'items' => $items);
+            $menu[] = array('text' => $this->lang->preview . $space . $this->lang->SRCommon, 'value' => 'story', 'items' => $items);
         }
 
         return $menu;
