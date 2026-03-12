@@ -26,6 +26,7 @@ $weekendParam = $delay == 'withdelay' ? "nodelay,{$weekend}" : "withdelay,{$week
 $delayParam   = $weekend == 'noweekend' ? "withweekend,{$delay}" : "noweekend,{$delay}";
 
 $isEn = $app->getClientLang() == 'en';
+$intervalBoxWidth = $isEn ? '150px' :'100px';
 
 featureBar
 (
@@ -102,7 +103,7 @@ featureBar
     $interval ? li
     (
         set::className('intervalBox ml-4'),
-        set::style(array('width' =>  $isEn ? '150px' :'100px')),
+        set::style(array('width' => $intervalBoxWidth)),
         picker
         (
             set::id('interval'),
