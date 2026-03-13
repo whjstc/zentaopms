@@ -227,8 +227,8 @@ $lang->tutorial->starter->manageTeam->step4->name = 'Click on Team';
 $lang->tutorial->starter->manageTeam->step4->desc = 'Click on the team to view the project members.';
 
 $lang->tutorial->starter->manageTeam->step5 = new stdClass();
-$lang->tutorial->starter->manageTeam->step5->name = 'Click on Team Management';
-$lang->tutorial->starter->manageTeam->step5->desc = 'Clicking on team management allows you to manage the team members for the current project.';
+$lang->tutorial->starter->manageTeam->step5->name = 'Click on Manage Team';
+$lang->tutorial->starter->manageTeam->step5->desc = 'Clicking on manage team allows you to manage the team members for the current project.';
 
 $lang->tutorial->starter->manageTeam->step6 = new stdClass();
 $lang->tutorial->starter->manageTeam->step6->name = 'Fill out the form';
@@ -367,8 +367,8 @@ $lang->tutorial->scrumProjectManage->manageProject->step8->name = 'Click on Team
 $lang->tutorial->scrumProjectManage->manageProject->step8->desc = 'Clicking on Team, and you can view team members in the project here.';
 
 $lang->tutorial->scrumProjectManage->manageProject->step9 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageProject->step9->name = 'Click on Team Management';
-$lang->tutorial->scrumProjectManage->manageProject->step9->desc = 'Clicking on Team Management, and you can manage team members for the current project.';
+$lang->tutorial->scrumProjectManage->manageProject->step9->name = 'Click on Manage Team';
+$lang->tutorial->scrumProjectManage->manageProject->step9->desc = 'Clicking on manage team, and you can manage team members for the current project.';
 
 $lang->tutorial->scrumProjectManage->manageProject->step10 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageProject->step10->name = 'Fill out the form';
@@ -794,7 +794,7 @@ $lang->tutorial->waterfallProjectManage->manageProject->step8->name = 'Click on 
 $lang->tutorial->waterfallProjectManage->manageProject->step8->desc = 'Click on Team to view team members in the project.';
 
 $lang->tutorial->waterfallProjectManage->manageProject->step9 = new stdClass();
-$lang->tutorial->waterfallProjectManage->manageProject->step9->name = 'Click on Team Management';
+$lang->tutorial->waterfallProjectManage->manageProject->step9->name = 'Click on Manage Team';
 $lang->tutorial->waterfallProjectManage->manageProject->step9->desc = 'Click Team Management to manage team members for the current project';
 
 $lang->tutorial->waterfallProjectManage->manageProject->step10 = new stdClass();

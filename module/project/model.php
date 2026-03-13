@@ -1218,7 +1218,7 @@ class projectModel extends model
      */
     protected function addTeamMembers(int $projectID, object $project, array $members): bool
     {
-        /* Set team of project. */
+        /* Manage Team of project. */
         array_push($members, $project->PM, $project->openedBy);
         $members     = array_unique($members);
         $roles       = $this->loadModel('user')->getUserRoles(array_values($members));

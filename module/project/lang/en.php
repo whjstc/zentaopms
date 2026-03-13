@@ -26,7 +26,7 @@ $lang->project->editGroup           = 'Edit Group';
 $lang->project->copyGroup           = 'Copy Group';
 $lang->project->manageView          = 'Manage View Permission';
 $lang->project->managePriv          = 'Manage Permission';
-$lang->project->manageMembers       = 'Set Team';
+$lang->project->manageMembers       = 'Manage Team';
 $lang->project->export              = 'Export';
 $lang->project->addProduct          = "Add {$lang->productCommon}";
 $lang->project->manageGroupMember   = 'Manage Group';
@@ -86,7 +86,7 @@ $lang->project->manage              = 'Manage';
 $lang->project->market              = 'Target Market';
 $lang->project->tips                = 'Note';
 $lang->project->afterInfo           = "{$lang->projectCommon} created successfully. Next you can";
-$lang->project->setTeam             = 'Set Team';
+$lang->project->setTeam             = 'Manage Team';
 $lang->project->linkStory           = 'Link Stories';
 $lang->project->createStory         = "Create {$lang->SRCommon}";
 $lang->project->createTask          = "Create Task";
@@ -521,7 +521,7 @@ $lang->project->executionList['waterfallplus'] = $lang->projectCommon . ' Phase'
 
 $lang->project->featureBar['team']['all'] = 'Members';
 
-$lang->project->featureBar['managemembers']['all'] = 'Set Team';
+$lang->project->featureBar['managemembers']['all'] = 'Manage Team';
 
 $lang->project->api = new stdclass();
 $lang->project->api->error = new stdclass();

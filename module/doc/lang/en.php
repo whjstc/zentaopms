@@ -58,9 +58,9 @@ $lang->doclib->create['product']   = 'Create ' . $lang->productCommon . ' Librar
 $lang->doclib->create['execution'] = 'Create ' . $lang->executionCommon . ' Library';
 $lang->doclib->create['custom']    = 'Create Custom Library';
 
-$lang->doclib->main['product']   = $lang->productCommon . 'Primary Library';
+$lang->doclib->main['product']   = $lang->productCommon . ' Primary Library';
 $lang->doclib->main['project']   = "{$lang->projectCommon} Primary Library";
-$lang->doclib->main['execution'] = $lang->executionCommon . 'Primary Library';
+$lang->doclib->main['execution'] = $lang->executionCommon . ' Primary Library';
 
 $lang->doclib->tabList['product']   = $lang->productCommon;
 $lang->doclib->tabList['execution'] = $lang->executionCommon;
