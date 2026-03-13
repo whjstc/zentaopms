@@ -15,7 +15,7 @@ $lang->message->browserSetting->turnon   = 'Notification';
 $lang->message->browserSetting->pollTime = 'Polling Interval';
 
 $lang->message->browserSetting->pollTimeTip         = 'Polling interval cannot be less than 30 seconds.';
-$lang->message->browserSetting->pollTimePlaceholder = 'Notification interval (in seconds).';
+$lang->message->browserSetting->pollTimePlaceholder = 'Set the interval for checking notifications (in seconds).';
 
 $lang->message->browserSetting->turnonList[1] = 'On';
 $lang->message->browserSetting->turnonList[0] = 'Off';
