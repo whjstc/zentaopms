@@ -462,7 +462,7 @@ $lang->block->widthOptions['3'] = 'Max Block';
 $lang->block->flowchart            = array();
 $lang->block->flowchart['admin']   = array('Admins', 'Manage Departments', 'Add User', 'Manage Permissions');
 if($config->systemMode == 'ALM') $lang->block->flowchart['program'] = array('Program Owner', 'Create Program', "Link {$lang->productCommon}", "Create {$lang->projectCommon}", "Budgeting and planning", 'Add Stakeholder');
-$lang->block->flowchart['product'] = array($lang->productCommon . 'Manager', 'Create' . $lang->productCommon, 'Manage Modules', 'Manage Plans', 'Manage Stories', 'Create Release');
+$lang->block->flowchart['product'] = array($lang->productCommon . ' Manager', 'Create' . $lang->productCommon, 'Manage Modules', 'Manage Plans', 'Manage Stories', 'Create Release');
 $lang->block->flowchart['project'] = array('Project Manager', "Create {$lang->projectCommon} & " . $lang->execution->common, 'Manage Team', 'Link Stories', 'Decompose Tasks', 'Track Progress');
 $lang->block->flowchart['dev']     = array('Developers', 'Claim Tasks & Bugs', 'Design Solution', 'Update Status', 'Complete Tasks & Bugs', 'Commit Code');
 $lang->block->flowchart['tester']  = array('Test Team', 'Write Cases', 'Execute Cases', 'Report Bugs', 'Verify Bugs', 'Close Bugs');
@@ -551,7 +551,7 @@ if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignLi
 if($config->enableER && $config->vision != 'or') $lang->block->welcome->assignList['epic']        = "{$lang->ERCommon}";
 
 $lang->block->customModeTip = new stdClass();
-$lang->block->customModeTip->common = 'There are 2 running modes of ZenTao:  Lightweight Management Mode and ALM Mode.';
+$lang->block->customModeTip->common = 'There are 2 running modes of Sanplex:  Lightweight Management Mode and ALM Mode.';
 $lang->block->customModeTip->ALM    = 'Designed for mid-to-large teams, offering a comprehensive and rigorous management framework with an extensive feature set.';
 $lang->block->customModeTip->light  = "Designed for small R&D teams, providing the core functionalities of {$lang->projectCommon} management.";
 
