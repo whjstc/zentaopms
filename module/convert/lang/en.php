@@ -130,8 +130,8 @@ $lang->convert->jira = new stdclass();
 $lang->convert->jira->method           = 'Select Migration Method';
 $lang->convert->jira->back             = 'Back';
 $lang->convert->jira->next             = 'Next';
-$lang->convert->jira->importFromDB     = 'Migrate From Database';
-$lang->convert->jira->importFromFile   = 'Migrate From File';
+$lang->convert->jira->importFromDB     = 'Database Import';
+$lang->convert->jira->importFromFile   = 'File Import';
 $lang->convert->jira->importFromAPI    = 'API Import';
 $lang->convert->jira->mapJira2Zentao   = 'Map Jira To Zentao';
 $lang->convert->jira->database         = 'Jira Database';
@@ -143,9 +143,9 @@ $lang->convert->jira->importNotice     = 'Warning: Data import carries risks. Pl
 $lang->convert->jira->accountNotice    = 'For email accounts, the text before the "@" symbol will be used as the username. Characters exceeding the 30-character limit will be truncated.';
 $lang->convert->jira->userExceeds      = 'The current system license limit is %s users. Please verify that the total user count after import does not exceed this limit, as the import process will be aborted if it does.';
 $lang->convert->jira->apiError         = 'Unable to connect to the Jira API. Please verify your Jira domain, username, and password/API Token.';
-$lang->convert->jira->dbDesc           = 'Select this option if you are using a self-hosted version of Jira (Server or Data Center).';
-$lang->convert->jira->fileDesc         = 'Select this option if you are using Jira Cloud or cannot directly access the database.';
-$lang->convert->jira->apiDesc          = 'If your Jira is a cloud version or it is inconvenient to access the database and file, please choose this way';
+$lang->convert->jira->dbDesc           = 'Best for self-hosted Jira instances (Server or Data Center) with database access.';
+$lang->convert->jira->fileDesc         = 'Best for Jira Cloud or when database access is restricted.';
+$lang->convert->jira->apiDesc          = 'Best for Jira Cloud or when you cannot access the database and server files.';
 $lang->convert->jira->jiraObject       = 'Jira Issues';
 $lang->convert->jira->zentaoObject     = 'Sanplex Objects';
 $lang->convert->jira->jiraLinkType     = 'Jira Relations';
@@ -218,18 +218,18 @@ $lang->convert->jira->steps['relation']   = 'Global Relationship Mapping';
 $lang->convert->jira->steps['user']       = 'Migrate Jira User';
 $lang->convert->jira->steps['confirme']   = 'Migration Data Confirmation';
 
-$lang->convert->jira->importSteps['db'][1]   = 'Back up the Sanplex database and the Jira database.';
-$lang->convert->jira->importSteps['db'][2]   = 'Using Sanplex during the import process may cause server performance issues. Please ensure that no one else is using Sanplex during data import.';
+$lang->convert->jira->importSteps['db'][1]   = 'Back up both Sanplex and Jira databases.';
+$lang->convert->jira->importSteps['db'][2]   = 'Avoid using Sanplex during the import to prevent server performance issues. Ensure no other users are active on the system during the process.';
 $lang->convert->jira->importSteps['db'][3]   = 'Import the Jira database into the MySQL instance used by Sanplex, and assign it a different name from the Sanplex database.';
 $lang->convert->jira->importSteps['db'][4]   = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the Sanplex server has sufficient disk space.";
 $lang->convert->jira->importSteps['db'][5]   = "After completing the above steps, please enter the name of the Jira database to proceed.";
 
 $lang->convert->jira->importSteps['file'][1] = 'Back up the Sanplex database and Jira files.';
-$lang->convert->jira->importSteps['file'][2] = 'Using Sanplex during the import process may cause server performance issues. Please ensure that no one else is using Sanplex during data import.';
+$lang->convert->jira->importSteps['file'][2] = 'Avoid using Sanplex during the import to prevent server performance issues. Ensure no other users are active on the system during the process.';
 $lang->convert->jira->importSteps['file'][3] = "Place the Jira backup file <strong class='text-danger'>entities.xml</strong> in <strong class='text-danger'>%s</strong> and grant read/write permissions to that directory.";
 $lang->convert->jira->importSteps['file'][4] = "Place the Jira attachment directory <strong class='text-danger'>attachments</strong> under <strong class='text-danger'>%s</strong>, and ensure that the Sanplex server has sufficient disk space.";
-$lang->convert->jira->importSteps['file'][5] = "To ensure data integrity during the import, please provide the domain, admin account, and password/token of your current Jira environment.";
-$lang->convert->jira->importSteps['file'][6] = "Click Next upon the above steps completed.";
+$lang->convert->jira->importSteps['file'][5] = "Please enter your current Jira domain, admin account, and password/token to ensure data integrity.";
+$lang->convert->jira->importSteps['file'][6] = "Click Next after completing the steps above.";
 
 $lang->convert->jira->importSteps['api'][1] = 'Backup Sanplex database.';
 $lang->convert->jira->importSteps['api'][2] = 'Avoid using Sanplex during the import to prevent server performance issues. Ensure no other users are active on the system during the process.';

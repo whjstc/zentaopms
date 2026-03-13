@@ -41,42 +41,42 @@ formPanel
     ),
     formGroup
     (
-        setStyle(array('align-items' => 'center')),
+        setStyle(array('align-items' => 'center', 'white-space' => 'break-spaces')),
         set::label('1.'),
         $isSetLabelWidth,
         $lang->convert->jira->importSteps[$method][1]
     ),
     formGroup
     (
-        setStyle(array('align-items' => 'center')),
+        setStyle(array('align-items' => 'center', 'white-space' => 'break-spaces')),
         set::label('2.'),
         $isSetLabelWidth,
         $lang->convert->jira->importSteps[$method][2]
     ),
     formGroup
     (
-        setStyle(array('align-items' => 'center')),
+        setStyle(array('align-items' => 'center', 'white-space' => 'break-spaces')),
         set::label('3.'),
         $isSetLabelWidth,
         $method == 'db' ? $lang->convert->jira->importSteps[$method][3] : html(sprintf($lang->convert->jira->importSteps[$method][3], $app->getTmpRoot() . 'jirafile'))
     ),
     formGroup
     (
-        setStyle(array('align-items' => 'center')),
+        setStyle(array('align-items' => 'center', 'white-space' => 'break-spaces')),
         set::label('4.'),
         $isSetLabelWidth,
         html(sprintf($lang->convert->jira->importSteps[$method][4], $app->getTmpRoot()))
     ),
     $method != 'api' ? formGroup
     (
-        setStyle(array('align-items' => 'center')),
+        setStyle(array('align-items' => 'center', 'white-space' => 'break-spaces')),
         set::label('5.'),
         $isSetLabelWidth,
         $lang->convert->jira->importSteps[$method][5]
     ) : null,
     $method == 'file' ? formGroup
     (
-        setStyle(array('align-items' => 'center')),
+        setStyle(array('align-items' => 'center', 'white-space' => 'break-spaces')),
         set::label('6.'),
         $isSetLabelWidth,
         $lang->convert->jira->importSteps[$method][6]
