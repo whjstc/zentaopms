@@ -227,7 +227,7 @@ $lang->tutorial->starter->manageTeam->step4->desc = 'Clicking on the team allows
 
 $lang->tutorial->starter->manageTeam->step5 = new stdClass();
 $lang->tutorial->starter->manageTeam->step5->name = 'Click on Manage Team';
-$lang->tutorial->starter->manageTeam->step5->desc = 'Clicking on team management allows you to maintain the team members for the current project';
+$lang->tutorial->starter->manageTeam->step5->desc = 'Clicking on manage team allows you to maintain the team members for the current project';
 
 $lang->tutorial->starter->manageTeam->step6 = new stdClass();
 $lang->tutorial->starter->manageTeam->step6->name = 'Fill out the form';
@@ -367,7 +367,7 @@ $lang->tutorial->scrumProjectManage->manageProject->step8->desc = 'Clicking on T
 
 $lang->tutorial->scrumProjectManage->manageProject->step9 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageProject->step9->name = 'Click Manage Team';
-$lang->tutorial->scrumProjectManage->manageProject->step9->desc = 'Clicking on Team Management allows you to maintain team members for the current project';
+$lang->tutorial->scrumProjectManage->manageProject->step9->desc = 'Clicking on manage team allows you to maintain team members for the current project';
 
 $lang->tutorial->scrumProjectManage->manageProject->step10 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageProject->step10->name = 'Fill out the form';

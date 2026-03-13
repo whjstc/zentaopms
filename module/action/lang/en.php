@@ -727,7 +727,7 @@ $lang->action->dynamicAction->design['confirmed'] = 'Confirm Design';
 $lang->action->dynamicAction->design['assigned']  = 'Assign Design';
 $lang->action->dynamicAction->design['deleted']   = 'Delete Design';
 
-$lang->action->dynamicAction->team['managedTeam'] = 'Set Team';
+$lang->action->dynamicAction->team['managedTeam'] = 'Manage Team';
 
 $lang->action->dynamicAction->task['opened']               = 'Create Task';
 $lang->action->dynamicAction->task['importfromgitlab']     = "Create Task from Gitlab";
