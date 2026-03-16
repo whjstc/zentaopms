@@ -47,19 +47,19 @@ $config->projectCommonList['zh-tw'][1] = '迭代';
 $config->projectCommonList['zh-tw'][2] = '冲刺';
 
 $config->projectCommonList['en'][0] = 'Project';
-$config->projectCommonList['en'][1] = 'Iteration';
+$config->projectCommonList['en'][1] = 'Execution';
 $config->projectCommonList['en'][2] = 'Sprint';
 
 $config->projectCommonList['de'][0] = 'Project';
-$config->projectCommonList['de'][1] = 'Iteration';
+$config->projectCommonList['de'][1] = 'Execution';
 $config->projectCommonList['de'][2] = 'Sprint';
 
 $config->projectCommonList['fr'][0] = 'Project';
-$config->projectCommonList['fr'][1] = 'Iteration';
+$config->projectCommonList['fr'][1] = 'Execution';
 $config->projectCommonList['fr'][2] = 'Sprint';
 
 $config->projectCommonList['vi'][0] = 'Project';
-$config->projectCommonList['vi'][1] = 'Iteration';
+$config->projectCommonList['vi'][1] = 'Execution';
 $config->projectCommonList['vi'][2] = 'Sprint';
 
 $config->projectCommonList['ru'][0] = 'Проект';
@@ -86,15 +86,15 @@ $config->executionCommonList['zh-tw'][0] = '迭代';
 $config->executionCommonList['zh-tw'][1] = '冲刺';
 $config->executionCommonList['zh-tw'][2] = '階段';
 
-$config->executionCommonList['en'][0] = 'Iteration';
+$config->executionCommonList['en'][0] = 'Execution';
 $config->executionCommonList['en'][1] = 'Sprint';
 $config->executionCommonList['en'][2] = 'Stage';
 
-$config->executionCommonList['de'][0] = 'Iteration';
+$config->executionCommonList['de'][0] = 'Execution';
 $config->executionCommonList['de'][1] = 'Sprint';
 $config->executionCommonList['de'][2] = 'Bühne';
 
-$config->executionCommonList['fr'][0] = 'Iteration';
+$config->executionCommonList['fr'][0] = 'Execution';
 $config->executionCommonList['fr'][1] = 'Sprint';
 $config->executionCommonList['fr'][2] = 'Phase';
 
