@@ -122,11 +122,12 @@ $lang->block->budget          = 'Budget';
 $lang->block->left            = 'left';
 
 $lang->block->summary = new stdclass();
-$lang->block->summary->welcome    = 'You\'ve been with Sanplex for %s. %s are waiting for you to handle today.';
-$lang->block->summary->yesterday  = '<strong>Yesterday</strong> ';
-$lang->block->summary->noWork     = 'You haven\'t processed any tasks or bugs,';
-$lang->block->summary->finishTask = 'You have completed<a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a>tasks';
-$lang->block->summary->fixBug     = 'You have resolved<a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a>Bugs';
+$lang->block->summary->welcome    = 'Day %s with Sanplex! %s  looking forward to your great work today!';
+$lang->block->summary->yesterday  = '<strong>yesterday</strong>,';
+$lang->block->summary->noWork     = 'No tasks or bugs handled';
+$lang->block->summary->finishTask = 'You have completed <a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a> tasks';
+$lang->block->summary->fixBug     = 'You have resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> Bugs';
+$lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> Bugs';
 
 $lang->block->dashboard['default'] = 'My Overview';
 $lang->block->dashboard['my']      = 'Dashboard';
