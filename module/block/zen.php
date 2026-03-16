@@ -409,6 +409,8 @@ class blockZen extends block
      */
     protected function printWelcomeBlock(): void
     {
+        global $app;
+
         /* 计算当前时间是早上还是中午还是下午还是晚上。 */
         $time = date('H:i');
         $welcomeType = '19:00';
@@ -496,18 +498,39 @@ class blockZen extends block
         $reviewList = $this->loadModel('my')->getReviewingList('all');
         $reviewByMe['reviewByMe'] = array('number' => count($reviewList), 'href' => common::hasPriv('my', 'audit') && $this->config->vision != 'lite' ? helper::createLink('my', 'audit') : '');
 
+        $isEn = $app->getClientLang() == 'en';
         /* 生成欢迎语。 */
         $yesterdaySummary = '';
         if($finishTask || $fixBug)
         {
-            if($finishTask) $yesterdaySummary .= sprintf($this->lang->block->summary->finishTask, $finishTask) . ($fixBug ? '、' : $this->lang->comma);
-            if($fixBug)     $yesterdaySummary .= sprintf($this->lang->block->summary->fixBug, $fixBug) . $this->lang->comma;
+
+            $separator = $isEn ? ', ' : '、';
+            $comma     = $isEn ? ' ' : $this->lang->comma;
+            if($finishTask) $yesterdaySummary .= sprintf($this->lang->block->summary->finishTask, $finishTask) . ($fixBug ? $separator : $comma);
+            if($isEn)
+            {
+                if($finishTask && $fixBug)  $yesterdaySummary .= sprintf($this->lang->block->summary->fixBugEn, $fixBug) ;
+                if($fixBug && !$finishTask) $yesterdaySummary .= sprintf($this->lang->block->summary->fixBug, $fixBug);
+            }
+            else
+            {
+                if($fixBug) $yesterdaySummary .= sprintf($this->lang->block->summary->fixBug, $fixBug) . $this->lang->comma;
+            }
         }
         else
         {
             $yesterdaySummary .= $this->lang->block->summary->noWork;
         }
-        $yesterdaySummary = $this->lang->block->summary->yesterday . $yesterdaySummary;
+
+        if($isEn)
+        {
+            $yesterdaySummary = $yesterdaySummary . ' ' . $this->lang->block->summary->yesterday;
+        }
+        else
+        {
+            $yesterdaySummary = $this->lang->block->summary->yesterday . $yesterdaySummary;
+        }
+
         $welcomeSummary   = sprintf($this->lang->block->summary->welcome, $usageDays, $yesterdaySummary);
 
         $this->view->todaySummary   = date(DT_DATE3, time()) . ' ' . $this->lang->datepicker->dayNames[date('w', time())]; // 当前年月日 星期几。
