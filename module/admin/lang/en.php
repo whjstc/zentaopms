@@ -152,8 +152,8 @@ $lang->admin->safe->modeList[0] = 'Ignore';
 $lang->admin->safe->modeList[1] = 'Medium';
 $lang->admin->safe->modeList[2] = 'Strong';
 
-$lang->admin->safe->modeRuleList[1] = 'At least 6 characters, including uppercase letters, lowercase letters, and numbers.';
-$lang->admin->safe->modeRuleList[2] = 'At least 10 characters, including uppercase letters, lowercase letters, numbers, and special characters.';
+$lang->admin->safe->modeRuleList[1] = '≥6 characters:  A-Z, a-z, and 0-9.';
+$lang->admin->safe->modeRuleList[2] = '≥10 characters: A-Z, a-z, 0-9, and symbols.';
 
 $lang->admin->safe->reasonList['weak']     = 'Common Weak Passwords';
 $lang->admin->safe->reasonList['account']  = 'Same as user name.';

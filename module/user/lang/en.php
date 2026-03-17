@@ -236,8 +236,8 @@ $lang->user->placeholder->loginUrl      = 'Enter your ZenTao site URL.';
 $lang->user->placeholder->email         = 'Enter your email.';
 
 $lang->user->placeholder->passwordStrength[0] = 'Password must be at least 6 characters.';
-$lang->user->placeholder->passwordStrength[1] = 'At least 6 characters, including uppercase letters, lowercase letters, and numbers.';
-$lang->user->placeholder->passwordStrength[2] = 'At least 10 characters, including uppercase letters, lowercase letters, numbers, and special characters.';
+$lang->user->placeholder->passwordStrength[1] = '≥6 characters:  A-Z, a-z, and 0-9.';
+$lang->user->placeholder->passwordStrength[2] = '≥10 characters: A-Z, a-z, 0-9, and symbols.';
 
 $lang->user->placeholder->passwordStrengthCheck[0] = 'Password must be at least 6 characters.';
 $lang->user->placeholder->passwordStrengthCheck[1] = 'Password must be at least 6 characters, containing uppercase letters, lowercase letters, and numbers.';
