@@ -317,6 +317,7 @@ $lang->executionburn->common        = 'Burndown chart';
 $lang->executioncfd->common         = 'Cumulative Flow Diagram';
 $lang->executionstory->common       = 'Story';
 $lang->executionqa->common          = 'QA';
+$lang->executionbuild->common       = 'Build';
 $lang->executionsettings->common    = 'Settings';
 $lang->generalcomment->common       = 'Comments';
 $lang->generalping->common          = 'Keep-alive';

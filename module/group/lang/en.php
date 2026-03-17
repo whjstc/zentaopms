@@ -275,6 +275,7 @@ $lang->group->package->importProjectStory    = 'Import/Export Project ' . $lang-
 $lang->group->package->browseProject         = 'View Project';
 $lang->group->package->manageProject         = 'Manage Project';
 $lang->group->package->importProject         = 'Import/Export Project';
+$lang->group->package->projectDoc            = 'Project Doc';
 $lang->group->package->projectTeam           = 'Team Permission';
 $lang->group->package->deleteProject         = 'Delete Project';
 $lang->group->package->projectWhitelist      = 'Project Whitelist';
