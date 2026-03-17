@@ -425,6 +425,15 @@ class story extends control
             $storyData = $this->storyZen->buildStoryForChange($storyID);
             if(!$storyData) return $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
+            $oldStory = $this->story->fetchByID($storyID);
+            $changes  = common::createChanges($oldStory, $storyData);
+            $location = $this->storyZen->getAfterChangeLocation($storyID, $storyType);
+            foreach($changes as $index => $change)
+            {
+                if(in_array($change['field'], array('status', 'version', 'reviewedBy', 'changedDate', 'reviewedDate'))) unset($changes[$index]);
+            }
+            if(empty($changes)) return $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => $location));
+
             $changes = $this->story->change($storyID, $storyData);
             if(dao::isError()) return $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
@@ -446,7 +455,6 @@ class story extends control
             $response = $this->storyZen->getResponseInModal($message);
             if($response) return $this->send($response);
 
-            $location = $this->storyZen->getAfterChangeLocation($storyID, $storyType);
             return $this->send(array('result' => 'success', 'message' => $message, 'load' => $location));
         }
 
