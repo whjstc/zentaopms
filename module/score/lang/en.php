@@ -30,7 +30,7 @@ $lang->score->modules['user']        = 'User';
 $lang->score->modules['ajax']        = 'Others';
 $lang->score->modules['doc']         = 'Document';
 $lang->score->modules['todo']        = 'Todo';
-$lang->score->modules['story']       = '$lang->SRCommon';
+$lang->score->modules['story']       = "$lang->SRCommon";
 $lang->score->modules['bug']         = 'Bug';
 $lang->score->modules['testcase']    = 'Test Case';
 $lang->score->modules['testtask']    = 'Test Request';
@@ -81,11 +81,10 @@ $lang->score->methods['search']['saveQuery']         = 'Save Search';
 $lang->score->methods['search']['saveQueryAdvanced'] = 'Advanced Search';
 
 $lang->score->extended['user']['changePassword'] = 'Earn ##strength,1## extra points for Medium password strength, and ##strength,2## extra points for Strong password strength.';
-$lang->score->extended['execution']['close']     = "Project Manager earns ##manager,close## points; {
-lang->executionCommon} Team Member earns an additional ##member,onTime## points.";
+$lang->score->extended['execution']['close']     = "Project Manager earns ##manager,close## points; {$lang->executionCommon} Team Member earns an additional ##member,onTime## points.";
 $lang->score->extended['bug']['resolve']         = 'Upon resolving a Bug, earn extra points based on severity: S1 +##severity,1##, S2 +##severity,2##, S3 +##severity,3##.';
 $lang->score->extended['bug']['confirm']         = 'Upon confirming a Bug, earn extra points based on severity: S1 +##severity,1##, S2 +##severity,2##, S3 +##severity,3##.';
 $lang->score->extended['task']['finish']         = 'Extra points for hours: round(Hours / 10 * Estimated / Cost) + Priority points (P1 ##pri,1##, P2 ##pri,2##).';
-$lang->score->extended['story']['close']         = '{lang->SRCommon} creator earns an extra ##createID## points.';
+$lang->score->extended['story']['close']         = "{$lang->SRCommon} creator earns an extra ##createID## points.";
 
 $lang->score->featureBar['rule']['all'] = 'Point Rules';
