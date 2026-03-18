@@ -515,16 +515,15 @@ $lang->block->themes['green']      = 'Green';
 $lang->block->themes['red']        = 'Red';
 $lang->block->themes['purple']     = 'Purple';
 
-$lang->block->visionTitle            = 'The user interface of ZenTao is divided into 【R&D interface】 and 【Operations Management Interface】.';
+$lang->block->visionTitle            = 'Sanplex offers two interfaces:';
 $lang->block->visions['rnd']         = new stdclass();
 $lang->block->visions['rnd']->key    = 'rnd';
 $lang->block->visions['rnd']->title  = 'R&D interface';
-$lang->block->visions['rnd']->text   = "Integrates Programs, {$lang->productCommon}, {$lang->projectCommon},
-Executions,  test, etc. into one platform, providing  a lifecycle {$lang->projectCommon} management solution.";
+$lang->block->visions['rnd']->text   = "An all-in-one lifecycle project management solution.";
 $lang->block->visions['lite']        = new stdclass();
 $lang->block->visions['lite']->key   = 'lite';
 $lang->block->visions['lite']->title = 'Operations Management Interface';
-$lang->block->visions['lite']->text  = "Tailored for non-R&D teams, featuring an intuitive and visual Kanban model for {$lang->projectCommon} management.";
+$lang->block->visions['lite']->text  = "A visual, intuitive experience tailored for non-R&D teams.";
 
 $lang->block->customModes['light'] = 'Lightweight Management Mode';
 $lang->block->customModes['ALM']   = 'ALM Mode';
