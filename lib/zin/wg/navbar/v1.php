@@ -106,7 +106,7 @@ class navbar extends wg
         $responsiveNavOptions['container']        = 'parent';
         $responsiveNavOptions['more']             = ['text' => $lang->other, 'caret' => true];
         $responsiveNavOptions['moreDropdown']     = ['trigger' => 'hover'];
-        $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 40 - (2 * Math.max($("#heading").outerWidth() || 0, $("#toolbar").outerWidth() || 0)))');
+        $responsiveNavOptions['getContainerSize'] = jsRaw('(container) => ($(container).width() - 20 - (2 * Math.max(($("#heading").outerWidth() || 0), $("#toolbar").outerWidth() || 0)))');
 
         return h::nav
         (
@@ -117,7 +117,7 @@ class navbar extends wg
                 setData('navbarGroup', data('mainNavbarGroup')),
                 on::init()->call('initPageNavbar', $items),
                 set::items($navItems),
-                zui::create('ResponsiveNavHelper', $responsiveNavOptions),
+                empty($items) ? null : zui::create('ResponsiveNavHelper', $responsiveNavOptions),
                 $this->children()
             )
         );
@@ -149,39 +149,34 @@ class navbar extends wg
         $object = $app->dbh->query('SELECT project,`type` FROM ' . TABLE_EXECUTION . " WHERE `id` = '$executionID'")->fetch();
         if(empty($object)) return;
 
-        $project          = $app->dbh->query('SELECT id,`model` FROM ' . TABLE_PROJECT . " WHERE `id` = '{$object->project}'")->fetch();
-        $executionPairs   = array();
-        $userCondition    = !$app->user->admin ? " AND `id` " . helper::dbIN($app->user->view->sprints) : '';
-        $orderBy          = in_array($project->model, array('waterfall', 'waterfallplus')) ? 'ORDER BY `order` ASC' : 'ORDER BY `id` DESC';
-        $executionList    = $app->dbh->query("SELECT id,name,parent,grade FROM " . TABLE_EXECUTION . " WHERE `project` = '{$object->project}' AND `deleted` = '0' $userCondition $orderBy")->fetchAll();
-        $parentExecutions = array_flip(array_column($executionList, 'parent'));
-        $topExecutions    = array();
-        foreach($executionList as $execution)
-        {
-            if($execution->grade == 1) $topExecutions[$execution->id] = $execution->id;
-            if($execution->id == $executionID || isset($parentExecutions[$execution->id])) continue;
-            $executionPairs[$execution->id] = $execution->name;
-        }
+        $project     = $app->dbh->query('SELECT id,`model` FROM ' . TABLE_PROJECT . " WHERE `id` = '{$object->project}'")->fetch();
+        $isWaterfall = in_array($project->model, array('waterfall', 'waterfallplus'));
+        $orderBy     = $isWaterfall ? '`order` ASC' : '`id` DESC';
 
-        if(empty($executionPairs)) return;
-        if(in_array($project->model, array('waterfall', 'waterfallplus')))
+        $executionPairs    = array();
+        $executionList     = $app->control->dao->select("id,name,parent,grade,path")->from(TABLE_EXECUTION)->where('project')->eq($object->project)->andWhere('deleted')->eq('0')->orderBy($orderBy)->fetchAll('id');
+        $orderedExecutions = $app->control->loadModel('execution')->resetExecutionSorts($executionList);
+        foreach(array_keys($orderedExecutions) as $currentID)
         {
-            $allExecutions     = $app->control->dao->select('id,name,path,grade')->from(TABLE_EXECUTION)->where('project')->eq($object->project)->andWhere('deleted')->eq('0')->fetchAll('id');
-            $orderedExecutions = $app->control->loadModel('execution')->resetExecutionSorts($executionPairs, $topExecutions);
-            $executionPairs    = array();
-            foreach($orderedExecutions as $executionID => $executionName)
+            if(!isset($executionList[$currentID])) continue;
+
+            $execution = $executionList[$currentID];
+            if(isset($executionPairs[$execution->parent])) unset($executionPairs[$execution->parent]);
+            if(!$app->user->admin && strpos(",{$app->user->view->sprints},", ",{$execution->id},") === false) continue;
+            if($execution->id == $executionID) continue;
+
+            $executionPairs[$currentID] = $execution->name;
+            if($isWaterfall)
             {
-                $execution     = zget($allExecutions, $executionID, null);
-                $paths         = array_slice(explode(',', trim($execution->path, ',')), 1);
-                $executionName = array();
-                foreach($paths as $path)
+                $executionName = array_map(function($executionID) use ($executionList)
                 {
-                    if(isset($allExecutions[$path])) $executionName[] = $allExecutions[$path]->name;
-                }
+                    if(isset($executionList[$executionID])) return $executionList[$executionID]->name;
+                }, array_slice(explode(',', trim($execution->path, ',')), 1));
 
-                $executionPairs[$executionID] = implode('/', $executionName);
+                $executionPairs[$currentID] = implode('/', array_filter($executionName));
             }
         }
+        if(empty($executionPairs)) return;
 
         $dropItems = array();
         foreach($executionPairs as $executionID => $executionName)
@@ -339,7 +334,7 @@ class navbar extends wg
             {
                 $projectID    = str_replace('project=', '', $menuItem->link['vars']);
                 $projectInfo  = $app->dbh->query("SELECT `model` FROM " . TABLE_PROJECT . " WHERE `id` = '$projectID'")->fetch();
-                if($projectInfo && isset($projectModel->model)) $projectModel = $projectModel->model;
+                if($projectInfo && isset($projectInfo->model)) $projectModel = $projectInfo->model;
             }
 
             $newItem = null;
@@ -457,7 +452,11 @@ class navbar extends wg
             }
 
             if(!$newItem) continue;
-            if(isset($newItem['data-id'])) $newItem['zui-key'] = $newItem['data-id'];
+            if(isset($newItem['data-id']))
+            {
+                $newItem['zui-key'] = $newItem['data-id'];
+                if($newItem['data-id'] === 'settings' && strpos(',execution,project,product,', ",{$app->tab},") !== false) $newItem['outerClass'] = 'is-rsh-fixed';
+            }
 
             $showInMainMenu = isset($menuItem->showInMainMenu) ? $menuItem->showInMainMenu : false;
             if($showInMainMenu)
@@ -472,7 +471,9 @@ class navbar extends wg
 
         $isExecutionView = ($activeMenu === 'view' || $activeMenu === 'task') && $currentModule === 'execution';
         $isTaskReport    = $currentMethod === 'report' && $currentModule === 'task';
-        if(!$isExecutionView && !$isTaskReport) $navbarInMainMenu = null;
+        $isKanbanView    = $currentModule === 'execution' && $currentMethod === 'taskkanban';
+        $isBurnView      = $currentModule === 'execution' && $currentMethod === 'burn';
+        if(!$isExecutionView && !$isTaskReport && !$isKanbanView && !$isBurnView) $navbarInMainMenu = null;
 
         if(empty($items[$activeMenu]) && !empty($activeInMainMenu) && !empty($items[$activeInMainMenu]))
         {

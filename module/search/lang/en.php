@@ -112,3 +112,5 @@ $lang->search->objectTypeList['sprint']           = $lang->execution->common;
 $lang->search->objectTypeList['kanban']           = 'kanban';
 $lang->search->objectTypeList['commonIssue']      = 'Issues';
 $lang->search->objectTypeList['stakeholderIssue'] = 'Stakeholder Issues';
+
+if(!helper::hasFeature('testsuite') ) unset($lang->searchObjects['testsuite']);

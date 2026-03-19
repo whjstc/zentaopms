@@ -95,8 +95,9 @@ class menuViewSwitcher extends wg
                 $addItem($item);
             }
 
-            $execution = data('execution');
-            if(hasPriv('task', 'report') && empty($execution->isTpl) && !empty($execution->id))
+            $execution   = data('execution');
+            $executionID = empty($execution->id) ? data('executionID') : $execution->id;
+            if(hasPriv('task', 'report') && empty($execution->isTpl) && !empty($executionID))
             {
                 if(!empty($items)) $items[] = ['type' => 'divider'];
                 $browseType = data('browseType');
@@ -106,7 +107,7 @@ class menuViewSwitcher extends wg
                     'text'     => $lang->task->report->common,
                     'data-id'  => 'report',
                     'data-app' => $app->tab,
-                    'url'      => createLink('task', 'report', "execution={$execution->id}&browseType={$browseType}")
+                    'url'      => createLink('task', 'report', "execution={$executionID}&browseType={$browseType}")
                 ]);
             }
         }

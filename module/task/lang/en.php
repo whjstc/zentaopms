@@ -290,6 +290,7 @@ $lang->task->remindBug                 = "This task was converted from a Bug. Do
 $lang->task->remindIssue               = "This task was converted from an Issue. Do you want to update the Issue %s?";
 $lang->task->confirmChangeExecution    = "Changing {Slang->executionCommon} will cause changes to the related module, associated {$lang->SRCommon}, and assignee. Are you sure you want to continue?";
 $lang->task->confirmFinish             = 'The Hours Left are 0. Do you want to change the task status to Done?';
+$lang->task->confirmTeamFinish         = '"Left Hour" is 0. Do you want to change the team member status to "Finished"?';
 $lang->task->confirmRecord             = 'The Hours Left are 0. The task will be marked as Done. Are you sure you want to continue?';
 $lang->task->confirmTransfer           = 'The Hours Left are 0. The current member has completed the task, and it will be assigned to: <strong>%s</strong>.';
 $lang->task->noticeTaskStart           = 'Total Cost and Hours Left cannot both be 0.';

@@ -514,6 +514,7 @@ $lang->block->themes['blue']       = 'Sky Blue';
 $lang->block->themes['green']      = 'Green';
 $lang->block->themes['red']        = 'Red';
 $lang->block->themes['purple']     = 'Purple';
+$lang->block->themes['blackberry'] = 'Blackberry';
 
 $lang->block->visionTitle            = 'Sanplex offers two interfaces:';
 $lang->block->visions['rnd']         = new stdclass();

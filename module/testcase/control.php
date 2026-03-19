@@ -105,6 +105,11 @@ class testcase extends control
         $productID  = ($this->app->tab != 'project' || $from == 'doc' || $from == 'ai') ? $this->product->checkAccess($productID, $this->products) : $productID;
         $branch     = $this->testcaseZen->getBrowseBranch($branch);
         $browseType = strtolower($browseType);
+        $moduleID   = $browseType == 'bymodule' ? $param : 0;
+        $suiteID    = $browseType == 'bysuite'  ? $param : ($browseType == 'bymodule' ? ($this->cookie->caseSuite ? (int)$this->cookie->caseSuite : 0) : 0);
+        $queryID    = $browseType == 'bysearch' ? $param : 0;
+        if($browseType == 'bymodule' && $this->session->caseBrowseType) $browseType = $this->session->caseBrowseType == 'bysearch' ? 'all' : $this->session->caseBrowseType;
+
         $this->testcaseZen->setBrowseCookie($productID, $branch, $browseType, (string)$param);
 
         $moduleID = $browseType == 'bymodule' ? $param : (int)$this->cookie->caseModule;
@@ -516,10 +521,11 @@ class testcase extends control
      * @param  string $from
      * @param  int    $taskID
      * @param  string $stepsType
+     * @param  int    $suiteID
      * @access public
      * @return void
      */
-    public function view(int $caseID, int $version = 0, string $from = 'testcase', int $taskID = 0, string $stepsType = '')
+    public function view(int $caseID, int $version = 0, string $from = 'testcase', int $taskID = 0, string $stepsType = '', int $suiteID = 0)
     {
         $this->session->set('bugList', $this->app->getURI(true), $this->app->tab);
         $this->session->set('testtaskID', $taskID, $this->app->tab);
@@ -577,6 +583,7 @@ class testcase extends control
             $this->view->branchName  = $product->type == 'normal' ? '' : zget($branches, $case->branch, '');
         }
 
+        $this->view->suiteID   = $suiteID;
         $this->view->testcase  = $case;
         $this->view->stepsType = $stepsType;
         $this->view->version   = $version ? $version : $case->version;

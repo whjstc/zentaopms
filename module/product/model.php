@@ -80,19 +80,14 @@ class productModel extends model
     {
         $this->loadModel('search')->setQuery('product', $queryID);
 
-        $productQuery = $this->session->productQuery;
-        $productQuery = preg_replace('/`(\w+)`/', 't1.`$1`', $productQuery);
-
-        return $this->dao->select('t1.id as id,t1.*')->from(TABLE_PRODUCT)->alias('t1')
-            ->leftJoin(TABLE_PROGRAM)->alias('t2')->on('t1.program = t2.id')
-            ->where($productQuery)
-            ->andWhere('t1.deleted')->eq(0)
-            ->andWhere('t1.shadow')->eq(0)
-            ->beginIF(!$this->app->user->admin)->andWhere('t1.id')->in($this->app->user->view->products)->fi()
-            ->beginIF($this->config->vision != 'or')->andWhere("FIND_IN_SET('{$this->config->vision}', t1.vision)")->fi()
+        return $this->dao->select('*')->from(TABLE_PRODUCT)->where($this->session->productQuery)
+            ->andWhere('deleted')->eq(0)
+            ->andWhere('shadow')->eq(0)
+            ->beginIF(!$this->app->user->admin)->andWhere('id')->in($this->app->user->view->products)->fi()
+            ->beginIF($this->config->vision != 'or')->andWhere("FIND_IN_SET('{$this->config->vision}', vision)")->fi()
             ->filterTpl('skip')
-            ->orderBy('t1.order_asc')
-            ->fetchAll('id');
+            ->orderBy('order_asc')
+            ->fetchAll('id', false);
     }
 
     /**
@@ -343,7 +338,7 @@ class productModel extends model
         $products = $this->getList(0, 'noclosed');
 
         $programIdList = array_unique(array_column($products, 'program'));
-        $programs      = $this->loadModel('program')->getPairsByList($programIdList);
+        $programs      = helper::hasFeature('program') ? $this->loadModel('program')->getPairsByList($programIdList) : array();
 
         $productGroup = array();
         foreach($products as $product) $productGroup[$product->program][$product->id] = zget($programs, $product->program, '') . '/' . $product->name;
@@ -1211,7 +1206,7 @@ class productModel extends model
     {
         return $this->dao->select('id,name')->from(TABLE_MODULE)
             ->where('type')->eq('line')
-            ->beginIF($programIdList || $filterRoot)->andWhere('root')->in($programIdList)->fi()
+            ->beginIF(helper::hasFeature('program') && ($programIdList || $filterRoot))->andWhere('root')->in($programIdList)->fi()
             ->andWhere('deleted')->eq(0)
             ->orderBy('order_asc')
             ->fetchPairs('id', 'name');
@@ -1507,8 +1502,10 @@ class productModel extends model
     {
         $product->type        = 'product';
         $product->productLine = $product->lineName;
-        $product->PO          = !empty($product->PO)  ? zget($users, $product->PO)  : '';
-        $product->PMT         = !empty($product->PMT) ? zget($users, $product->PMT) : '';
+        $product->PO          = !empty($product->PO)        ? zget($users, $product->PO)  : '';
+        $product->PMT         = !empty($product->PMT)       ? zget($users, $product->PMT) : '';
+        $product->createdBy   = !empty($product->createdBy) ? zget($users, $product->createdBy)  : '';
+        $product->createdDate = substr($product->createdDate, 0, 10);
 
         if($this->config->vision == 'or') return $product;
 
@@ -1906,8 +1903,8 @@ class productModel extends model
         /* Collect releases. */
         foreach($releases as $release)
         {
-            if($release->date > $today) continue;
-            $orderedReleases[$release->date][] = $release;
+            if(helper::isZeroDate($release->releasedDate) || $release->releasedDate > $today || $release->status != 'normal') continue;
+            $orderedReleases[$release->releasedDate][] = $release;
         }
 
         krsort($orderedReleases);

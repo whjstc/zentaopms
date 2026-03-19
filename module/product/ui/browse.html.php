@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace zin;
 
+include($this->app->getModuleRoot() . 'ai/ui/promptmenu.html.php');
+
 data('storyType', $storyType);
 data('activeMenuID', $storyType);
 jsVar('URChanged', $this->lang->story->URChanged);
@@ -236,7 +238,6 @@ if($isFromDoc || $isFromAI)
         $setting[$key]['sortType'] = false;
         if(isset($col['link'])) unset($setting[$key]['link']);
         if($key == 'assignedTo') $setting[$key]['type'] = 'user';
-        if($key == 'pri') $setting[$key]['priList'] = $lang->story->priList;
         if($key == 'title') $setting[$key]['link']  = array('url' => createLink('{type}', 'view', 'storyID={id}&version={version}'), 'data-toggle' => 'modal', 'data-size' => 'lg');
     }
 }

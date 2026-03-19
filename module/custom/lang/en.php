@@ -30,7 +30,6 @@ $lang->custom->isRange              = 'Target Control Scope';
 $lang->custom->concept              = "{$lang->projectCommon} Concept";
 $lang->custom->URStory              = "Feature";
 $lang->custom->SRStory              = "Story";
-$lang->custom->epic                 = "Epic";
 $lang->custom->default              = "Default";
 $lang->custom->scrumStory           = "Story";
 $lang->custom->waterfallCommon      = "Waterfall";
@@ -68,7 +67,6 @@ $lang->custom->limitTaskDateAction  = 'Set Duration Required';
 $lang->custom->closeSetting         = 'Close Settings';
 $lang->custom->gradeRule            = 'Allow Cross-Level Subdivision';
 $lang->custom->setExecutionClose    = 'Execution Close Setting';
-$lang->custom->feature              = 'feature';
 
 $lang->custom->gradeRuleList['cross']    = 'Yes';
 $lang->custom->gradeRuleList['stepwise'] = 'No';
@@ -367,3 +365,8 @@ $lang->custom->reviewRules['halfpass'] = 'Approved by Majority';
 
 $lang->custom->limitTaskDate['0'] = 'No Restriction';
 $lang->custom->limitTaskDate['1'] = 'Restricted to the execution duration.';
+
+$lang->custom->setDate = new stdClass();
+$lang->custom->setDate->fields['hours']   = $lang->custom->setHours;
+$lang->custom->setDate->fields['weekend'] = $lang->custom->setWeekend;
+$lang->custom->setDate->fields['holiday'] = $lang->custom->setHoliday;

@@ -140,15 +140,30 @@ foreach($results as $i => $result)
             setClass('border-r'),
             width('240px')
         );
-        $itemTds[] = !empty($stepResult['result']) ? div
-        (
-            setClass('text-center flex'),
-            width($resultWidth),
-            $resultFile
-        ) : div(width($resultWidth));
+        if(empty($stepResult['result']))
+        {
+            $itemTds[] = div(width('56px'));
+        }
+        else
+        {
+            $itemTds[] = div
+            (
+                setClass('text-center flex'),
+                width('56px'),
+                !empty($stepResult['files']) ? a
+                (
+                    on::click('setFileModalHeight'),
+                    set::href("#stepResultFileModal{$modalID}"),
+                    set('data-toggle', 'modal'),
+                    set('data-position', 'center'),
+                    icon('paper-clip'),
+                    $fileCount
+                ) : ''
+            );
+        }
         $fileModals[] = modal
         (
-            set::id("stepResult{$modalID}"),
+            set::id("stepResultFileModal{$modalID}"),
             !empty($stepResult['files']) ? fileList(set::extra($stepResult['id']), set::files($stepResult['files'])) : ''
         );
 

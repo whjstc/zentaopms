@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * The tao file of metric module of ZenTaoPMS.
  *
@@ -40,7 +40,7 @@ class metricTao extends metricModel
             ->beginIF($this->config->edition == 'ipd' && $this->config->vision == 'rnd')->andWhere('code')->notIN($this->config->metric->orMetricList)->fi()
             ->beginIF($this->config->systemMode == 'light')->andWhere('code')->notIN($this->config->metric->waterfallCode)->fi()
             ->beginIF(!helper::hasFeature('program'))->andWhere('object')->notIN('program')->fi()
-            ->beginIF(!helper::hasFeature('devops'))->andWhere('object')->notIN('host')->fi()
+            ->beginIF(!helper::hasFeature('devops'))->andWhere('object')->notIN('host,deployment,node,code,codebase,pipeline,artifact')->fi()
             ->beginIF($sort)->orderBy($sort)->fi()
             ->beginIF($pager)->page($pager)->fi()
             ->fetchAll();
@@ -498,14 +498,18 @@ class metricTao extends metricModel
          */
         $intersect = array_intersect($fields, array('year', 'month', 'week', 'day'));
         foreach($fields as $key => $field) $fields[$key] = "`$field`";
-        if(empty($intersect)) $fields[] = 'left(date, 10)';
+        if(empty($intersect)) $fields[] = 'DATE(date)';
         $table = TABLE_METRICLIB;
 
-        $sql  = " UPDATE $table SET deleted = '0' WHERE id IN (";
-        $sql .= "    SELECT MAX(id) AS maxid";
-        $sql .= "    FROM $table";
-        $sql .= "    WHERE metricCode = '$code'";
-        $sql .= "    GROUP BY ". implode(',', $fields);
+        $sql  = " UPDATE $table AS t1";
+        $sql .= " SET t1.deleted = 0";
+        $sql .= " WHERE id IN (";
+        $sql .= "    SELECT maxid FROM (";
+        $sql .= "        SELECT MAX(id) AS maxid";
+        $sql .= "        FROM $table";
+        $sql .= "        WHERE metricCode = '$code'";
+        $sql .= "        GROUP BY ". implode(',', $fields);
+        $sql .= "    ) AS tmp";
         $sql .= " )";
 
         $this->dao->exec($sql);

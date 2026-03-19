@@ -1268,14 +1268,15 @@ $lang->testreport->methodOrder[15] = 'delete';
 $lang->testreport->methodOrder[20] = 'edit';
 
 $lang->resource->testsuite = new stdclass();
-$lang->resource->testsuite->browse           = 'browse';
-$lang->resource->testsuite->create           = 'create';
-$lang->resource->testsuite->view             = 'view';
-$lang->resource->testsuite->edit             = 'edit';
-$lang->resource->testsuite->delete           = 'delete';
-$lang->resource->testsuite->linkCase         = 'linkCase';
-$lang->resource->testsuite->unlinkCase       = 'unlinkCaseAction';
-$lang->resource->testsuite->batchUnlinkCases = 'batchUnlinkCases';
+$lang->resource->testsuite->browse            = 'browse';
+$lang->resource->testsuite->create            = 'create';
+$lang->resource->testsuite->view              = 'view';
+$lang->resource->testsuite->edit              = 'edit';
+$lang->resource->testsuite->delete            = 'delete';
+$lang->resource->testsuite->linkCase          = 'linkCase';
+$lang->resource->testsuite->unlinkCase        = 'unlinkCaseAction';
+$lang->resource->testsuite->batchUnlinkCases  = 'batchUnlinkCases';
+$lang->resource->testsuite->confirmCaseChange = 'confirmCaseChange';
 
 $lang->testsuite->methodOrder[5]  = 'browse';
 $lang->testsuite->methodOrder[10] = 'create';
@@ -1285,6 +1286,7 @@ $lang->testsuite->methodOrder[25] = 'delete';
 $lang->testsuite->methodOrder[30] = 'linkCase';
 $lang->testsuite->methodOrder[35] = 'unlinkCase';
 $lang->testsuite->methodOrder[40] = 'batchUnlinkCases';
+$lang->testsuite->methodOrder[45] = 'confirmCaseChange';
 
 $lang->resource->caselib = new stdclass();
 $lang->resource->caselib->browse           = 'browseAction';
@@ -2237,7 +2239,7 @@ if(!$inUpgrade)
         unset($lang->resource->sonarqube);
         unset($lang->resource->mr);
         unset($lang->resource->instance, $lang->resource->space, $lang->resource->store);
-        unset($lang->resource->zanode,   $lang->resource->ci);
+        unset($lang->resource->zanode,   $lang->resource->ci, $lang->resource->zahost);
         unset($lang->resource->testcase->showScript, $lang->resource->testcase->automation);
         unset($lang->resource->design->linkCommit,   $lang->resource->design->viewCommit, $lang->resource->design->unlinkCommit, $lang->resource->design->revision);
         unset($lang->resource->story->createBranch,  $lang->resource->story->unlinkBranch);

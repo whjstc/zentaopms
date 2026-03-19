@@ -186,7 +186,7 @@ class taskModel extends model
                 $this->feedback->updateStatus('task', $oldTask->feedback, $task->status, $oldTask->status, $taskID);
             }
 
-            if(!empty($task->story) && !empty($task->isParent) && $this->post->syncChildren) $this->syncStoryToChildren($task);
+            if(!empty($task->story) && !empty($oldTask->isParent) && $this->post->syncChildren) $this->syncStoryToChildren($task);
 
             if(!$syncStatus && $oldTask->status == 'wait' && $task->status == 'doing')
             {
@@ -194,6 +194,31 @@ class taskModel extends model
                 $this->loadModel('common')->syncPPEStatus($oldTask->id);
             }
 
+            if($this->config->edition != 'open' && $task->story != $oldTask->story)
+            {
+                if($oldTask->story > 0)
+                {
+                    $this->dao->delete()->from(TABLE_RELATION)
+                        ->where('relation')->eq('generated')
+                        ->andWhere('AID')->eq($oldTask->story)
+                        ->andWhere('AType')->eq('story')
+                        ->andWhere('BID')->eq($oldTask->id)
+                        ->andWhere('BType')->eq('task')
+                        ->exec();
+                }
+
+                if($task->story > 0)
+                {
+                    $relation = new stdClass();
+                    $relation->relation = 'generated';
+                    $relation->AID      = $task->story;
+                    $relation->AType    = 'story';
+                    $relation->BID      = $oldTask->id;
+                    $relation->BType    = 'task';
+                    $relation->product  = 0;
+                    $this->dao->replace(TABLE_RELATION)->data($relation)->exec();
+                }
+            }
         }
 
         return !dao::isError();
@@ -295,8 +320,11 @@ class taskModel extends model
         /* When a normal task is consumed, create the subtask and update the parent task status. */
         if($oldParentTask->isParent == 0 && $oldParentTask->consumed > 0)
         {
-            $this->taskTao->copyTaskData($oldParentTask);
+            $copyTaskID = $this->taskTao->copyTaskData($oldParentTask);
             if(dao::isError()) return false;
+
+            $this->loadModel('action')->create('task', $copyTaskID, 'Opened', '');
+            $childrenIdList = arrayUnion(array($copyTaskID), $childrenIdList);
         }
 
         $parentTask = new stdclass();
@@ -3139,7 +3167,8 @@ class taskModel extends model
     public function start(object $oldTask, object $task): false|array
     {
         /* Process data for multiple tasks. */
-        $currentTeam = !empty($oldTask->team) ? $this->getTeamByAccount($oldTask->team) : array();
+        $account     = $this->app->user->account;
+        $currentTeam = !empty($oldTask->team) ? $this->getTeamByAccount($oldTask->team, $account, array()) : '';
         if($currentTeam)
         {
             /* Update task team. */
@@ -3167,7 +3196,7 @@ class taskModel extends model
             if(count($finishedUsers) == count($oldTask->team))
             {
                 $task->status       = 'done';
-                $task->finishedBy   = $this->app->user->account;
+                $task->finishedBy   = $account;
                 $task->finishedDate = $now;
             }
         }

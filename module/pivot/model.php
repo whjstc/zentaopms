@@ -815,6 +815,7 @@ class pivotModel extends model
                 switch($filter['type'])
                 {
                     case 'select':
+                        if(is_string($default) && strpos($default, ',') !== false) $default = explode(',', $default);
                         if(is_array($default)) $default = implode("', '", array_filter($default, function($val){return trim($val) != '';}));
                         if(empty($default)) break;
                         $value = "('" . $default . "')";
@@ -2029,9 +2030,8 @@ class pivotModel extends model
                     }
                     $drillFields[$field] = $drillField;
                 }
-                $optionList = isset($fieldOptions[$field]) ? $fieldOptions[$field] : array();
+                $optionList  = isset($fieldOptions[$field]) ? $fieldOptions[$field] : array();
                 $rowAfterFields[$field] = isset($optionList[(string)$value]) ? $optionList[(string)$value] : $value;
-
             }
             $dataDrills[$key] = array('drillFields' => $drillFields);
 
@@ -2525,7 +2525,7 @@ class pivotModel extends model
      * @param  object $data
      * @param  array  $configs
      * @access public
-     * @return void
+     * @return string
      *
      */
     public function buildPivotTable($data, $configs)
@@ -2653,7 +2653,7 @@ class pivotModel extends model
         $table .= "</tbody>";
         $table .= "</table></div>";
 
-        echo $table;
+        return $table;
     }
 
 

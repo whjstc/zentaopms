@@ -1143,6 +1143,7 @@ $lang->ai->formSchema['programplan']['create']->required = array('stages');
 
 $lang->ai->promptMenu = new stdclass();
 $lang->ai->promptMenu->dropdownTitle = '%s Assistant';
+$lang->ai->promptMenu->assignedTo    = 'Assignee %s';
 
 $lang->ai->dataInject = new stdclass();
 $lang->ai->dataInject->success = 'ZenTao agent execution results are filled in.';

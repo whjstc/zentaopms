@@ -825,10 +825,8 @@ class taskZen extends task
             $task->assignedTo   = $oldTask->openedBy;
         }
 
-        $currentTeam = !empty($oldTask->team) ? $this->task->getTeamByAccount($oldTask->team) : array();
-
         /* Check if the input post data meets the requirements. */
-        $result = $this->checkStart($oldTask, $task, $currentTeam);
+        $result = $this->checkStart($oldTask, $task);
         if(!$result) return false;
 
         return $task;
@@ -917,7 +915,8 @@ class taskZen extends task
      */
     protected function buildEffortForStart(object $oldTask, object $task): object
     {
-        $currentTeam = !empty($oldTask->team) ? $this->task->getTeamByAccount($oldTask->team) : array();
+        $account     = $this->app->user->account;
+        $currentTeam = !empty($oldTask->team) ? $this->task->getTeamByAccount($oldTask->team, $account, array()) : '';
 
         $effort = new stdclass();
         $effort->date     = helper::today();
@@ -925,7 +924,7 @@ class taskZen extends task
         $effort->consumed = zget($task, 'consumed', 0);
         $effort->left     = zget($task, 'left', 0);
         $effort->work     = zget($task, 'work', '');
-        $effort->account  = $this->app->user->account;
+        $effort->account  = $account;
         $effort->consumed = !empty($oldTask->team) && $currentTeam ? $effort->consumed - $currentTeam->consumed : $effort->consumed - $oldTask->consumed;
 
         return $effort;

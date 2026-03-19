@@ -30,7 +30,6 @@ $lang->custom->isRange              = 'Is Target Control';
 $lang->custom->concept              = "Concept";
 $lang->custom->URStory              = "User requirements";
 $lang->custom->SRStory              = "Software requirements";
-$lang->custom->epic                 = "Epic";
 $lang->custom->default              = "Default";
 $lang->custom->scrumStory           = "Story";
 $lang->custom->waterfallCommon      = "Waterfall";

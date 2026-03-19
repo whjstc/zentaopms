@@ -86,29 +86,30 @@ class convertTao extends convertModel
         foreach($data as $fieldKey => $fieldValue)
         {
             if(strpos($fieldKey, 'customfield_') === false) continue;
+            $customFieldKey = str_replace('customfield_', '', $fieldKey);
             if(is_array($fieldValue))
             {
                 if(!empty($fieldValue['content']) && !empty($fieldValue['renderedFields'][$fieldKey]))
                 {
-                    $issue->{$fieldKey} = $fieldValue['renderedFields'][$fieldKey];
+                    $issue->{$customFieldKey} = $fieldValue['renderedFields'][$fieldKey];
                 }
                 elseif(!empty($fieldValue['id']))
                 {
-                    $issue->{$fieldKey} = $fieldValue['id'];
+                    $issue->{$customFieldKey} = $fieldValue['id'];
                 }
                 else
                 {
-                    $issue->{$fieldKey} = '';
+                    $issue->{$customFieldKey} = '';
                     foreach($fieldValue as $field)
                     {
-                        if(!empty($field['id'])) $issue->{$fieldKey} .= $field['id'] . ',';
+                        if(!empty($field['id'])) $issue->{$customFieldKey} .= $field['id'] . ',';
                     }
-                    $issue->{$fieldKey} = rtrim($issue->{$fieldKey}, ',');
+                    $issue->{$customFieldKey} = rtrim($issue->{$customFieldKey}, ',');
                 }
             }
             else
             {
-                $issue->{$fieldKey} = $fieldValue;
+                $issue->{$customFieldKey} = $fieldValue;
             }
         }
 
@@ -1138,7 +1139,7 @@ class convertTao extends convertModel
             $effort->objectID   = $objectID;
             $effort->date       = !empty($data->created) ? substr($data->created, 0, 10) : null;
             $effort->account    = $this->getJiraAccount(isset($data->author) ? $data->author : '');
-            $effort->consumed   = round($data->timeworked / 3600);
+            $effort->consumed   = round($data->timeworked / 3600, 2);
             $effort->work       = $data->worklogbody;
             $effort->objectType = substr($objectType, 1);
             $this->dao->dbh($this->dbh)->insert(TABLE_EFFORT)->data($effort)->exec();
@@ -1337,16 +1338,20 @@ class convertTao extends convertModel
      */
     protected function createTeamMember(int $objectID, string $createdBy, string $type): bool
     {
-        $member = new stdclass();
-        $member->root    = $objectID;
-        $member->account = $createdBy;
-        $member->role    = '';
-        $member->join    = helper::now();
-        $member->type    = $type;
-        $member->days    = 0;
-        $member->hours   = $this->config->execution->defaultWorkhours;
+        $account = $this->getJiraAccount($createdBy);
+        if($account)
+        {
+            $member = new stdclass();
+            $member->root    = $objectID;
+            $member->account = $account;
+            $member->role    = '';
+            $member->join    = helper::now();
+            $member->type    = $type;
+            $member->days    = 0;
+            $member->hours   = $this->config->execution->defaultWorkhours;
 
-        $this->dao->dbh($this->dbh)->replace(TABLE_TEAM)->data($member)->exec();
+            $this->dao->dbh($this->dbh)->replace(TABLE_TEAM)->data($member)->exec();
+        }
 
         return true;
     }
@@ -1650,7 +1655,7 @@ class convertTao extends convertModel
                 }
                 if($fieldCode == 'timeoriginalestimate' || $fieldCode == 'timespent')
                 {
-                    $object->{$field} = round($object->{$field} / 3600);
+                    $object->{$field} = round($object->{$field} / 3600, 2);
                 }
             }
         }
@@ -1734,7 +1739,7 @@ class convertTao extends convertModel
                 foreach($data->fixVersions as $version)
                 {
                     $versionID = $version['id'];
-                    $zentaoVersionID = $this->dao->dbh($this->dbh)->select('BID')->from(TABLE_TMPRELATION)->where('AType')->eq('jversion')->andWhere('BType')->eq('zversion')->andWhere('AID')->eq($versionID)->fetch('BID');
+                    $zentaoVersionID = $this->dao->dbh($this->dbh)->select('BID')->from(JIRA_TMPRELATION)->where('AType')->eq('jversion')->andWhere('BType')->eq('zversion')->andWhere('AID')->eq($versionID)->fetch('BID');
                     if($zentaoVersionID) $this->dao->dbh($this->dbh)->update(TABLE_BUILD)->set('stories')->eq("CONCAT(stories,',',{$storyID})")->where('id')->eq($zentaoVersionID)->exec();
                 }
             }
@@ -1780,9 +1785,9 @@ class convertTao extends convertModel
         $task->execution  = $executionID;
         $task->name       = $data->summary;
         $task->type       = 'devel';
-        $task->estimate   = !empty($data->timeoriginalestimate) ? round($data->timeoriginalestimate / 3600) : 0;
-        $task->left       = !empty($data->timeestimate)         ? round($data->timeestimate / 3600)         : 0;
-        $task->consumed   = !empty($data->timespent)            ? round($data->timespent / 3600)            : 0;
+        $task->estimate   = !empty($data->timeoriginalestimate) ? round($data->timeoriginalestimate / 3600, 2) : 0;
+        $task->left       = !empty($data->timeestimate)         ? round($data->timeestimate / 3600, 2)         : 0;
+        $task->consumed   = !empty($data->timespent)            ? round($data->timespent / 3600, 2)            : 0;
         $task->pri        = $data->priority ? $data->priority : 3;
         $task->status     = $this->convertStatus('task', $data->issuestatus, $data->issuetype, $relations);
         $task->desc       = isset($data->description) ? $data->description : '';
@@ -1888,7 +1893,7 @@ class convertTao extends convertModel
             foreach($data->fixVersions as $version)
             {
                 $versionID = $version['id'];
-                $zentaoVersionID = $this->dao->dbh($this->dbh)->select('BID')->from(TABLE_TMPRELATION)->where('AType')->eq('jversion')->andWhere('BType')->eq('zversion')->andWhere('AID')->eq($versionID)->fetch('BID');
+                $zentaoVersionID = $this->dao->dbh($this->dbh)->select('BID')->from(JIRA_TMPRELATION)->where('AType')->eq('jversion')->andWhere('BType')->eq('zversion')->andWhere('AID')->eq($versionID)->fetch('BID');
                 if($zentaoVersionID) $this->dao->dbh($this->dbh)->update(TABLE_BUILD)->set('bugs')->eq("CONCAT(bugs,',',{$bugID})")->where('id')->eq($zentaoVersionID)->exec();
             }
         }

@@ -165,6 +165,7 @@ class product extends control
         $branch    = $branchID ? $branchID : $branch;
 
         /* ATTENTION: be careful to change the order of follow sentences. */
+        $this->session->set('storyType', $storyType, 'product');
         $this->productZen->setMenu4Browse($projectID, $productID, $branch, $storyType);
         $this->productZen->saveAndModifyCookie4Browse($productID, $branch, $param, $browseType, $orderBy);
         if($browseType == '')
