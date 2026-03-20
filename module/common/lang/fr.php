@@ -467,7 +467,7 @@ $lang->admin->tableEngine = 'Table Engine';
 
 $lang->convert->importJira = 'Import Jira';
 
-$lang->storyConcept  = 'Story Concpet';
+$lang->storyConcept  = 'Story Concept';
 $lang->defaultERName = 'Epic';
 
 $lang->searchTips = '';

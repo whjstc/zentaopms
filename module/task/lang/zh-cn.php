@@ -188,6 +188,7 @@ $lang->task->teamMember        = '团队成员';
 $lang->task->addMember         = '添加成员';
 $lang->task->to                = '至';
 $lang->task->suffixHour        = 'h';
+$lang->task->labelSuffixHour   = '(h)';
 $lang->task->update            = '更新';
 $lang->task->isParent          = '是父任务';
 $lang->task->path              = '路径';

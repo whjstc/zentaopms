@@ -121,7 +121,7 @@ $lang->custom->execution->fields['execution'] = 'Close Setting';
 
 $lang->custom->product = new stdClass();
 $lang->custom->product->fields['required']           = $lang->custom->required;
-$lang->custom->product->fields['browsestoryconcept'] = 'Story Concpet';
+$lang->custom->product->fields['browsestoryconcept'] = 'Story Concept';
 $lang->custom->product->fields['product']            = 'Close Setting';
 
 $lang->custom->story = new stdClass();
