@@ -6,7 +6,7 @@
     },
     "zentaoext": {
       "gitRepo": "zentao/zentaoext",
-      "gitVersion": "release/13.0"
+      "gitVersion": "feature/projectpriv"
     },
     "zentaomax": {
       "gitVersion": "release/8.0"
