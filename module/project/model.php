@@ -1141,12 +1141,14 @@ class projectModel extends model
         /* Sort by project order in the program list. */
         $allProjects = array();
         foreach($programs as $programID => $program) $allProjects[$programID] = array();
+
+        $hasProgram = helper::hasFeature('program');
         foreach($projects as $project)
         {
             $programID = zget($project, 'program', '');
 
             $projectName = $project->name;
-            if($this->config->systemMode == 'ALM' && $programID != $project->id) $projectName = zget($programs, $programID, '') . ' / ' . $projectName;
+            if($this->config->systemMode == 'ALM' && $hasProgram && $programID != $project->id) $projectName = zget($programs, $programID, '') . ' / ' . $projectName;
             $project->name = $projectName;
 
             $allProjects[$programID][] = $project;
@@ -2046,7 +2048,7 @@ class projectModel extends model
             }
 
             $project = $this->projectTao->fetchProjectInfo($projectID);
-            if(!empty($project) && !empty($executions) && $project->stageBy == 'project' && in_array($project->model, array('waterfall', 'waterfallplus')))
+            if(!empty($project) && !empty($executions) && $project->stageBy == 'project' && in_array($project->model, array('waterfall', 'waterfallplus', 'ipd')))
             {
                 $this->loadModel('execution');
                 unset($postProductData->plans);
@@ -2429,7 +2431,7 @@ class projectModel extends model
         $this->lang->switcherMenu   = $this->getSwitcher($projectID, $this->app->rawModule, $this->app->rawMethod);
 
         /* 无迭代项目不开启过程删除导航。 */
-        if($this->config->edition != 'open')
+        if(in_array($this->config->edition, array('max', 'ipd')))
         {
             $this->loadModel('workflowgroup');
             if(!$this->workflowgroup->hasFeature((int)$project->workflowGroup, 'process')) unset($lang->project->menu->other['dropMenu']->pssp);
