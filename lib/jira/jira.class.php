@@ -319,7 +319,7 @@ class jira
                     $link['linktype']    = $issueLink['type']['id'];
                     $link['source']      = $issue['id'];
                     $link['destination'] = $issueLink['outwardIssue']['id'];
-                    $links[$link['id']] = $link;
+                    $links[$link['id']]  = $link;
                 }
                 $issue['links'] = $links;
             }

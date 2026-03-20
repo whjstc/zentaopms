@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace zin;
 
+$yesterdayClassName = $app->getClientLang() === 'en' ? 'items-center text-gray border-r pr-2 col-reverse' : 'items-center text-gray border-r pr-2';
+$todayClassName     = $app->getClientLang() === 'en' ? 'items-center text-success pl-2 col-reverse' : 'items-center text-success pl-2';
+
 blockPanel
 (
     to::titleSuffix
@@ -54,13 +57,13 @@ blockPanel
                         setClass('mt-2 items-center flex pl-1'),
                         cell
                         (
-                            setClass('items-center text-gray border-r pr-2'),
+                            setClass($yesterdayClassName),
                             span(setClass('text-base'), $lang->yesterday),
                             span(setClass('text-md pl-1 font-bold num'), $yesterdayTasks)
                         ),
                         cell
                         (
-                            setClass('items-center text-success pl-2'),
+                            setClass($todayClassName),
                             span(setClass('text-base'), $lang->today),
                             span(setClass('text-md pl-1 font-bold num'), $finishedTasks)
                         )
@@ -78,13 +81,13 @@ blockPanel
                         setClass('mt-2 items-center flex pl-1'),
                         cell
                         (
-                            setClass('items-center text-gray border-r pr-2'),
+                            setClass($yesterdayClassName),
                             span(setClass('text-base'), $lang->yesterday),
                             span(setClass('text-md pl-1 font-bold num'), $yesterdayStories)
                         ),
                         cell
                         (
-                            setClass('items-center text-success pl-2'),
+                            setClass($todayClassName),
                             span(setClass('text-base'), $lang->today),
                             span(setClass('text-md pl-1 font-bold num'), $createdStories)
                         )
@@ -110,13 +113,13 @@ blockPanel
                         setClass('mt-2 items-center flex pl-1'),
                         cell
                         (
-                            setClass('items-center text-gray border-r pr-2'),
+                            setClass($yesterdayClassName),
                             span(setClass('text-base'), $lang->yesterday),
                             span(setClass('text-md pl-1 font-bold num'), $yesterdayBugs)
                         ),
                         cell
                         (
-                            setClass('items-center text-success pl-2'),
+                            setClass($todayClassName),
                             span(setClass('text-base'), $lang->today),
                             span(setClass('text-md pl-1 font-bold num'), $closedBugs)
                         )
@@ -133,13 +136,13 @@ blockPanel
                         setClass('mt-2 items-center flex pl-1'),
                         cell
                         (
-                            setClass('items-center text-gray border-r pr-2'),
+                            setClass($yesterdayClassName),
                             span(setClass('text-base'), $lang->yesterday),
                             span(setClass('text-md pl-1 font-bold num'), $yesterdayCases)
                         ),
                         cell
                         (
-                            setClass('items-center text-success pl-2'),
+                            setClass($todayClassName),
                             span(setClass('text-base'), $lang->today),
                             span(setClass('text-md pl-1 font-bold num'), $runCases)
                         )
@@ -165,13 +168,13 @@ blockPanel
                         setClass('mt-2 items-center flex pl-1'),
                         cell
                         (
-                            setClass('items-center text-gray border-r pr-2'),
+                            setClass($yesterdayClassName),
                             span(setClass('text-base'), $lang->yesterday),
                             span(setClass('text-md pl-1 font-bold num'), $yesterdayHours)
                         ),
                         cell
                         (
-                            setClass('items-center text-success pl-2'),
+                            setClass($todayClassName),
                             span(setClass('text-base'), $lang->today),
                             span(setClass('text-md pl-1 font-bold num'), $consumedHours)
                         )
