@@ -196,7 +196,7 @@ $lang->second      = 'Second';
 $lang->workingHour = 'Working hours';
 
 $lang->idAB         = 'ID';
-$lang->priAB        = 'P';
+$lang->priAB        = 'Priority';
 $lang->statusAB     = 'Status';
 $lang->openedByAB   = 'Creator';
 $lang->assignedToAB = 'Assignee';
