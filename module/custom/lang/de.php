@@ -67,6 +67,8 @@ $lang->custom->limitTaskDateAction  = 'Set start and end date required';
 $lang->custom->closeSetting         = 'Close Setting';
 $lang->custom->gradeRule            = 'Allow cross-level segmentation';
 $lang->custom->setExecutionClose    = 'Execution Close Setting';
+$lang->custom->kanbanExpireReminder = 'Kanban Expire Reminder';
+$lang->custom->kanbanExpireDays     = 'Kanban Expire Days';
 
 $lang->custom->gradeRuleList['cross']    = 'Yes';
 $lang->custom->gradeRuleList['stepwise'] = 'No';
@@ -101,11 +103,6 @@ $lang->custom->closedProject   = 'Closed ' . $lang->projectCommon;
 $lang->custom->closedExecution = 'Closed ' . $lang->executionCommon;
 $lang->custom->closedKanban    = 'Closed ' . $lang->custom->kanban;
 $lang->custom->closedProduct   = 'Closed ' . $lang->productCommon;
-
-$lang->custom->kanbanExpireDays         = 'Karte Ablauf Erinnerung';
-$lang->custom->kanbanReminderFrequency  = 'Erinnerungsfrequenz';
-$lang->custom->kanbanReminderFrequencyList['daily'] = 'Täglich';
-$lang->custom->kanbanReminderFrequencyList['once']  = 'Einmal';
 
 $lang->custom->gradeStatusList['enable']  = 'Normal';
 $lang->custom->gradeStatusList['disable'] = 'Disabled';
