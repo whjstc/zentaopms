@@ -122,7 +122,7 @@ $lang->block->budget          = 'Budget';
 $lang->block->left            = 'left';
 
 $lang->block->summary = new stdclass();
-$lang->block->summary->welcome    = 'Day %s with Sanplex! %s  looking forward to your great work today!';
+$lang->block->summary->welcome    = 'Day %s with Zentao! %s  looking forward to your great work today!';
 $lang->block->summary->yesterday  = '<strong>yesterday</strong>,';
 $lang->block->summary->noWork     = 'No tasks or bugs handled';
 $lang->block->summary->finishTask = 'You have completed <a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a> tasks';

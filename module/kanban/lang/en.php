@@ -334,7 +334,7 @@ $lang->kanbanspace->empty = 'No space yet.';
 $lang->kanbanspace->aclList['open']    = 'Public (Accessible for users who has the Kanban space view permission.)';
 $lang->kanbanspace->aclList['private'] = 'Private (Accessible for Kanban space owner, team members and whilte lists.)';
 
-$lang->kanban->featureBar['space']['involved']    = 'Involved';
+$lang->kanban->featureBar['space']['involved']    = 'My Involvement';
 $lang->kanban->featureBar['space']['cooperation'] = 'Collaboration Space';
 $lang->kanban->featureBar['space']['public']      = 'Public Space';
 $lang->kanban->featureBar['space']['private']     = 'Private Space';
