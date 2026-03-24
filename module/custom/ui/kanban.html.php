@@ -10,72 +10,104 @@ declare(strict_types=1);
  */
 namespace zin;
 
-$reminder   = isset($config->kanban->reminder) ? $config->kanban->reminder : null;
-$expireDays = isset($reminder->expireDays) ? $reminder->expireDays : 3;
-$frequency  = isset($reminder->frequency) ? $reminder->frequency : 'daily';
-
-div
-(
-    setClass('flex'),
-    formPanel
+$expireDays = isset($config->kanban->reminder->expireDays) ? $config->kanban->reminder->expireDays : 3;
+$menuItems  = array(
+    li
     (
-        setID('closedExecutionForm'),
-        set::actions(array('submit')),
-        set::labelWidth('120px'),
-        setClass('flex-auto'),
-        formGroup
+        setClass('menu-item'),
+        a
         (
-            set::width('2/3'),
-            set::label($lang->custom->closedKanban),
-            radioList
-            (
-                set::name('kanban'),
-                set::items($lang->custom->CRKanban),
-                set::value(isset($config->CRKanban) ? $config->CRKanban : 0),
-                set::inline(true)
-            )
-        ),
-        formGroup
+            set::href(createLink('custom', 'kanban', 'type=closedSetting')),
+            $type == 'closedSetting' ? setClass('active') : null,
+            $lang->custom->closeSetting
+        )
+    ),
+    li
+    (
+        setClass('menu-item'),
+        a
         (
-            set::label(''),
-            span
-            (
-                icon('info text-warning mr-2'),
-                $lang->custom->notice->readOnlyOfKanban
-            )
-        ),
-        formGroup
+            set::href(createLink('custom', 'kanban', 'type=expireReminder')),
+            $type == 'expireReminder' ? setClass('active') : null,
+            $lang->custom->kanbanExpireReminder
+        )
+    )
+);
+
+if($type == 'closedSetting')
+{
+    $form[] = formGroup
+    (
+        set::width('2/3'),
+        set::label($lang->custom->closedKanban),
+        radioList
         (
-            set::width('1/3'),
-            set::label($lang->custom->kanbanExpireDays),
-            input
+            set::name('kanban'),
+            set::items($lang->custom->CRKanban),
+            set::value(isset($config->CRKanban) ? $config->CRKanban : 0),
+            set::inline(true)
+        )
+    );
+
+    $form[] = formGroup
+    (
+        set::label(''),
+        span
+        (
+            icon('info text-warning mr-2'),
+            $lang->custom->notice->readOnlyOfKanban
+        )
+    );
+}
+else
+{
+    $form[] = formGroup
+    (
+        set::width('1/3'),
+        set::label($lang->custom->kanbanExpireDays),
+        inputGroup
+        (
+            control
             (
                 set::name('expireDays'),
                 set::type('number'),
                 set::min(0),
                 set::value($expireDays)
-            )
-        ),
-        formGroup
+            ),
+            $lang->custom->unitList['days']
+        )
+    );
+
+    $form[] = formGroup
+    (
+        set::label(''),
+        span
         (
-            set::width('2/3'),
-            set::label($lang->custom->kanbanReminderFrequency),
-            radioList
-            (
-                set::name('frequency'),
-                set::items($lang->custom->kanbanReminderFrequencyList),
-                set::value($frequency),
-                set::inline(true)
-            )
-        ),
-        formGroup
+            icon('info text-warning mr-2'),
+            $lang->custom->notice->kanbanReminder
+        )
+    );
+}
+div
+(
+    setClass('flex'),
+    sidebar
+    (
+        div
         (
-            set::label(''),
-            span
+            setClass('cell p-2.5 bg-white'),
+            menu
             (
-                icon('info text-warning mr-2'),
-                $lang->custom->notice->kanbanReminder
+                $menuItems
             )
         )
+    ),
+    formPanel
+    (
+        set::actions(array('submit')),
+        set::labelWidth('120px'),
+        setClass('flex-auto'),
+        setClass('ml-4'),
+        $form
     )
 );
