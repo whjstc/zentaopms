@@ -326,9 +326,14 @@ class custom extends control
      */
     public function kanban()
     {
+        $this->loadModel('kanban');
         if($_POST)
         {
             $this->loadModel('setting')->setItem("system.common.CRKanban", $this->post->kanban);
+            $this->loadModel('setting')->setItems('system.kanban.reminder', array(
+                'expireDays' => max(0, (int)$this->post->expireDays),
+                'frequency'  => in_array($this->post->frequency, array('daily', 'once')) ? $this->post->frequency : 'daily'
+            ));
             return $this->sendSuccess(array('load' => true));
         }
 

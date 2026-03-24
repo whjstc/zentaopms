@@ -102,6 +102,11 @@ $lang->custom->closedExecution = 'Closed ' . $lang->executionCommon;
 $lang->custom->closedKanban    = 'Closed ' . $lang->custom->kanban;
 $lang->custom->closedProduct   = 'Closed ' . $lang->productCommon;
 
+$lang->custom->kanbanExpireDays         = 'Card Expiration Reminder';
+$lang->custom->kanbanReminderFrequency  = 'Reminder Frequency';
+$lang->custom->kanbanReminderFrequencyList['daily'] = 'Daily';
+$lang->custom->kanbanReminderFrequencyList['once']  = 'Once';
+
 $lang->custom->gradeStatusList['enable']  = 'Normal';
 $lang->custom->gradeStatusList['disable'] = 'Disabled';
 
@@ -215,6 +220,7 @@ $lang->custom->notice->readOnlyOfProject   = "Once set Changes Prohibited, any c
 2. For {$lang->productCommon}-based {$lang->projectCommon}s with{$lang->custom->executionCommon} disabled: The following will not be editable under closed {$lang->projectCommon}s: tasks, stories, builds, releases, efforts, test request, test reports, documents, etc.<br/>
 3. For non-{$lang->productCommon}-based {$lang->projectCommon}s with {$lang->custom->executionCommon} enabled: The following will not be editable under closed {$lang->projectCommon}s: {$lang->custom->executionCommon}, stories, design, reviews, review issues, baselines, bugs, test cases, test requestd, test reports, documents, builds, releases, efforts, process tailoring, research, estimation, issues, risks, opportunities, meetings, QA plans, non-conformities, etc.<br/>
 4. For non-{$lang->productCommon}-based {$lang->projectCommon}s with {$lang->custom->executionCommon} disabled: The following will not be editable under closed {$lang->projectCommon}s: tasks, stories, bugs, test cases, test requestd, test reports, documents, builds, releases, efforts, etc.";
+$lang->custom->notice->kanbanReminder      = 'When the card deadline is less than the set number of days, the impending expiration reminder is triggered; the expiration reminder is triggered on the deadline day.';
 if(in_array($config->edition, array('open', 'biz')))
 {
     $lang->custom->notice->readOnlyOfExecution = "If Change Forbidden, any change on tasks, builds, efforts, test tasks, test reports, documents and stories of the closed {$lang->executionCommon} is also forbidden.";
