@@ -152,7 +152,7 @@ $lang->block->titleList['statistic']      = "{$lang->projectCommon}Statistics";
 
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->projectCommon} Overview",   'module' => 'scrumproject', 'code' => 'scrumoverview',  'width' => '2');
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->executionCommon} List",     'module' => 'scrumproject', 'code' => 'scrumlist',      'width' => '2', 'params' => array('type' => 'undone', 'count' => '20', 'orderBy' => 'id_desc'));
-$lang->block->default['scrumproject'][] = array('title' => 'Test Requests of Waiting',          'module' => 'scrumproject', 'code' => 'scrumtest',      'width' => '2', 'params' => array('type' => 'wait', 'count' => '15', 'orderBy' => 'id_desc'));
+$lang->block->default['scrumproject'][] = array('title' => 'Pending Test Requests',             'module' => 'scrumproject', 'code' => 'scrumtest',      'width' => '2', 'params' => array('type' => 'wait', 'count' => '15', 'orderBy' => 'id_desc'));
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->executionCommon} Overview", 'module' => 'scrumproject', 'code' => 'sprint',         'width' => '1');
 $lang->block->default['scrumproject'][] = array('title' => 'Recent Activity',                   'module' => 'scrumproject', 'code' => 'projectdynamic', 'width' => '1');
 
@@ -186,10 +186,10 @@ $lang->block->default['singleproduct'][] = array('title' => "{$lang->productComm
 $lang->block->default['singleproduct'][] = array('title' => "Dynamic",                                           'module' => 'singleproduct', 'code' => 'singledynamic',          'width' => '1');
 $lang->block->default['singleproduct'][] = array('title' => "Monthly{$lang->productCommon}Progress Analysis",       'module' => 'singleproduct', 'code' => 'singlemonthlyprogress',  'width' => '1');
 
-$lang->block->default['qa'][] = array('title' => 'Test Report',    'module' => 'qa', 'code' => 'statistic', 'width' => '2', 'params' => array('type' => 'noclosed',   'count' => '20'));
-$lang->block->default['qa'][] = array('title' => 'Wait Test List', 'module' => 'qa', 'code' => 'testtask',  'width' => '2', 'params' => array('type' => 'wait',       'count' => '15', 'orderBy' => 'id_desc'));
-$lang->block->default['qa'][] = array('title' => 'My Bug List',    'module' => 'qa', 'code' => 'bug',       'width' => '1', 'params' => array('type' => 'assignedTo', 'count' => '15', 'orderBy' => 'id_desc'));
-$lang->block->default['qa'][] = array('title' => 'Cases Assigned to Me', 'module' => 'qa', 'code' => 'case',      'width' => '1', 'params' => array('type' => 'assigntome', 'count' => '15', 'orderBy' => 'id_desc'));
+$lang->block->default['qa'][] = array('title' => 'Test Report',           'module' => 'qa', 'code' => 'statistic', 'width' => '2', 'params' => array('type' => 'noclosed',   'count' => '20'));
+$lang->block->default['qa'][] = array('title' => 'Pending Test Requests', 'module' => 'qa', 'code' => 'testtask',  'width' => '2', 'params' => array('type' => 'wait',       'count' => '15', 'orderBy' => 'id_desc'));
+$lang->block->default['qa'][] = array('title' => 'My Bugs',               'module' => 'qa', 'code' => 'bug',       'width' => '1', 'params' => array('type' => 'assignedTo', 'count' => '15', 'orderBy' => 'id_desc'));
+$lang->block->default['qa'][] = array('title' => 'Cases Assigned to Me',  'module' => 'qa', 'code' => 'case',      'width' => '1', 'params' => array('type' => 'assigntome', 'count' => '15', 'orderBy' => 'id_desc'));
 
 $lang->block->default['full']['my'][] = array('title' => 'welcome',                                         'module' => 'welcome',         'code' => 'welcome',         'width' => '2');
 $lang->block->default['full']['my'][] = array('title' => 'Guides',                                          'module' => 'guide',           'code' => 'guide',           'width' => '2');
@@ -634,8 +634,8 @@ $lang->block->qastatistic->bugStatusStat     = 'Monthly Bug Trend';
 
 $lang->block->bugstatistic = new stdclass();
 $lang->block->bugstatistic->effective = 'Valid Bugs';
-$lang->block->bugstatistic->fixed     = 'fixed';
-$lang->block->bugstatistic->activated = 'activated';
+$lang->block->bugstatistic->fixed     = 'Fixed';
+$lang->block->bugstatistic->activated = 'Activated';
 
 $lang->block->executionstatistic = new stdclass();
 $lang->block->executionstatistic->allProject        = 'All Projects';
