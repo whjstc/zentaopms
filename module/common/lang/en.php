@@ -340,7 +340,7 @@ $lang->personnel->invest     = 'Allocated members';
 $lang->personnel->accessible = 'Accessible members';
 
 $lang->stakeholder->common = 'Stakeholders';
-$lang->release->common     = 'Releases';
+$lang->release->common     = 'Release';
 $lang->message->common     = 'System notifications';
 $lang->mail->common        = 'Email';
 
