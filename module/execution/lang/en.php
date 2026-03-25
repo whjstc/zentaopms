@@ -100,7 +100,7 @@ $lang->execution->storyTitle          = "Story Name";
 $lang->execution->storyView           = "Story Detail";
 $lang->execution->all                 = "All {$lang->executionCommon}s";
 $lang->execution->undone              = 'Unfinished ';
-$lang->execution->unclosed            = 'Assigned to Me';
+$lang->execution->unclosed            = 'Unclosed';
 $lang->execution->closedExecution     = 'Closed Execution';
 $lang->execution->typeDesc            = "OPS {$lang->executionCommon} has no {$lang->SRCommon}, Bug, Build, or Test features.";
 $lang->execution->mine                = 'Mine: ';
@@ -308,7 +308,7 @@ $lang->execution->RDKanban                  = 'Research & Development Kanban';
 
 /* Group browsing. */
 $lang->execution->allTasks     = 'All';
-$lang->execution->assignedToMe = 'My';
+$lang->execution->assignedToMe = 'Assigned to Me';
 $lang->execution->myInvolved   = 'My Involvement';
 $lang->execution->assignedByMe = 'Assigned by Me';
 
