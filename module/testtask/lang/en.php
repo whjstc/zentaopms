@@ -56,7 +56,7 @@ $lang->testtask->run              = 'Test Run ID';
 $lang->testtask->job              = 'Job';
 $lang->testtask->compile          = 'Compile';
 $lang->testtask->duration         = 'Duration';
-$lang->testtask->myInvolved       = 'Involved';
+$lang->testtask->myInvolved       = 'My Involvement';
 
 $lang->testtask->viewAction     = "View Request";
 $lang->testtask->casesAction    = 'Browse Cases List';

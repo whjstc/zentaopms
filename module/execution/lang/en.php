@@ -309,7 +309,7 @@ $lang->execution->RDKanban                  = 'Research & Development Kanban';
 /* Group browsing. */
 $lang->execution->allTasks     = 'All';
 $lang->execution->assignedToMe = 'My';
-$lang->execution->myInvolved   = 'Involved';
+$lang->execution->myInvolved   = 'My Involvement';
 $lang->execution->assignedByMe = 'AssignedByMe';
 
 $lang->execution->statusSelects['']             = 'More';

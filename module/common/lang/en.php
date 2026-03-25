@@ -196,7 +196,7 @@ $lang->second      = 'Second';
 $lang->workingHour = 'Working hours';
 
 $lang->idAB         = 'ID';
-$lang->priAB        = 'P';
+$lang->priAB        = 'Priority';
 $lang->statusAB     = 'Status';
 $lang->openedByAB   = 'Creator';
 $lang->assignedToAB = 'Assignee';
@@ -414,7 +414,7 @@ $lang->doc->custom        = 'Custom Library';
 $lang->doc->wiki          = 'Wiki';
 $lang->doc->apiDoc        = 'API Documentation';
 $lang->doc->apiStruct     = 'Data Structures';
-$lang->doc->quick         = 'Quick access';
+$lang->doc->quick         = 'Quick Access';
 $lang->doc->mySpace       = 'My Space';
 $lang->doc->productSpace  = "{$lang->productCommon} Space";
 $lang->doc->projectSpace  = "{$lang->projectCommon} Space";
