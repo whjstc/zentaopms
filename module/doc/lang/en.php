@@ -166,10 +166,10 @@ $lang->doc->keywords     = 'Keywords';
 $lang->doc->status       = 'Status';
 $lang->doc->url          = 'URL';
 $lang->doc->files        = 'File';
-$lang->doc->addedBy      = 'Author';
-$lang->doc->addedDate    = 'Created on';
+$lang->doc->addedBy      = 'Creator';
+$lang->doc->addedDate    = 'Created Date';
 $lang->doc->editedBy     = 'Edited by';
-$lang->doc->editedDate   = 'Edited on';
+$lang->doc->editedDate   = 'Last Updated';
 $lang->doc->editingDate  = 'Current Editor & Time';
 $lang->doc->lastEditedBy = 'Last Editor';
 $lang->doc->updateInfo   = 'Update info';
@@ -599,9 +599,9 @@ $lang->doc->whitelistDeny['doc']       = "<i class='icon pr-1 text-important ico
 
 $lang->doc->filterTypes[] = array('all', 'All');
 $lang->doc->filterTypes[] = array('draft', 'Draft');
-$lang->doc->filterTypes[] = array('collect', 'Collected by me');
-$lang->doc->filterTypes[] = array('createdByMe', 'Creator me');
-$lang->doc->filterTypes[] = array('editedByMe', 'Edited by me');
+$lang->doc->filterTypes[] = array('collect', 'My Favorites');
+$lang->doc->filterTypes[] = array('createdByMe', 'Created by Me');
+$lang->doc->filterTypes[] = array('editedByMe', 'Edited by Me');
 
 $lang->doc->fileFilterTypes[] = array('all', 'All');
 $lang->doc->fileFilterTypes[] = array('addedByMe', 'Added by Me');
