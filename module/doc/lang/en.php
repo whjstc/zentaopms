@@ -248,16 +248,16 @@ $lang->doc->sortCatalog   = 'Sort Catalogs';
 $lang->doc->sortDoclib    = 'Sort Libraries';
 $lang->doc->sortDoc       = 'Sort Docs';
 $lang->doc->docStatistic  = 'Docs Summary';
-$lang->doc->docCreated    = 'Docs Created';
-$lang->doc->docEdited     = 'Docs Edited';
-$lang->doc->docViews      = 'Total Views';
-$lang->doc->docCollects   = 'Total Favorites';
+$lang->doc->docCreated    = 'Created';
+$lang->doc->docEdited     = 'Edited';
+$lang->doc->docViews      = 'Views';
+$lang->doc->docCollects   = 'Favorites';
 $lang->doc->todayUpdated  = "Updated Today";
-$lang->doc->daysUpdated   = 'Updated %s days ago';
-$lang->doc->monthsUpdated = 'Updated %s months ago';
-$lang->doc->yearsUpdated  = 'Updated %s years ago';
-$lang->doc->viewCount     = '%s Views';
-$lang->doc->collectCount  = '%s Favorites';
+$lang->doc->daysUpdated   = 'Updated %s day(s) ago';
+$lang->doc->monthsUpdated = 'Updated %s month(s) ago';
+$lang->doc->yearsUpdated  = 'Updated %s year(s) ago';
+$lang->doc->viewCount     = '%s View(s)';
+$lang->doc->collectCount  = '%s Favorite(s)';
 
 /* Methods list */
 $lang->doc->index            = 'Dashboard';
