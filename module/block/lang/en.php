@@ -134,7 +134,7 @@ $lang->block->dashboard['my']      = 'Dashboard';
 
 $lang->block->titleList['flowchart']      = 'Flowchart';
 $lang->block->titleList['guide']          = 'User Guide';
-$lang->block->titleList['statistic']      = 'Statistic';
+$lang->block->titleList['statistic']      = 'Statistics';
 $lang->block->titleList['recentproject']  = "My Recent {$lang->projectCommon}";
 $lang->block->titleList['assigntome']     = 'Pending Items';
 $lang->block->titleList['project']        = "{$lang->projectCommon}List";
@@ -207,15 +207,15 @@ if($config->vision != 'lite') $lang->block->default['full']['my'][] = array('tit
 $lang->block->default['full']['my'][] = array('title' => "{$lang->projectCommon} Overview",                 'module' => 'project',         'code' => 'overview',        'width' => '1');
 $lang->block->default['full']['my'][] = array('title' => "{$lang->execution->common} Overview",             'module' => 'execution',       'code' => 'overview',        'width' => '1');
 
-$lang->block->default['doc'][] = array('title' => 'Statistic',                       'module' => 'doc', 'code' => 'docstatistic',    'width' => '2');
-$lang->block->default['doc'][] = array('title' => 'My Collection Document',          'module' => 'doc', 'code' => 'docmycollection', 'width' => '2');
-$lang->block->default['doc'][] = array('title' => 'My Created Document',             'module' => 'doc', 'code' => 'docmycreated',    'width' => '2');
-$lang->block->default['doc'][] = array('title' => 'Recently Update Document',        'module' => 'doc', 'code' => 'docrecentupdate', 'width' => '2');
+$lang->block->default['doc'][] = array('title' => 'Statistics',                      'module' => 'doc', 'code' => 'docstatistic',    'width' => '2');
+$lang->block->default['doc'][] = array('title' => 'My Favorites',                    'module' => 'doc', 'code' => 'docmycollection', 'width' => '2');
+$lang->block->default['doc'][] = array('title' => 'Created by Me',                   'module' => 'doc', 'code' => 'docmycreated',    'width' => '2');
+$lang->block->default['doc'][] = array('title' => 'Recently Updated',                'module' => 'doc', 'code' => 'docrecentupdate', 'width' => '2');
 if($config->vision == 'rnd') $lang->block->default['doc'][] = array('title' => "{$lang->productCommon} Document", 'module' => 'doc', 'code' => 'productdoc',      'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['doc'][] = array('title' => "{$lang->projectCommon} Document", 'module' => 'doc', 'code' => 'projectdoc',      'width' => '2', 'params' => array('count' => '20'));
-$lang->block->default['doc'][] = array('title' => 'Dynamic',                         'module' => 'doc', 'code' => 'docdynamic',      'width' => '1');
-$lang->block->default['doc'][] = array('title' => 'Browse Leaderboard',              'module' => 'doc', 'code' => 'docviewlist',     'width' => '1');
-$lang->block->default['doc'][] = array('title' => 'Top Saved',                 'module' => 'doc', 'code' => 'doccollectlist',  'width' => '1');
+$lang->block->default['doc'][] = array('title' => 'Recents',                         'module' => 'doc', 'code' => 'docdynamic',      'width' => '1');
+$lang->block->default['doc'][] = array('title' => 'Most Viewed',                     'module' => 'doc', 'code' => 'docviewlist',     'width' => '1');
+$lang->block->default['doc'][] = array('title' => 'Top Favorites',                   'module' => 'doc', 'code' => 'doccollectlist',  'width' => '1');
 
 $lang->block->count   = 'Count';
 $lang->block->type    = 'Type';
@@ -303,14 +303,14 @@ $lang->block->modules['todo']->availableBlocks['list'] = 'To-Do';
 
 $lang->block->modules['doc'] = new stdclass();
 $lang->block->modules['doc']->availableBlocks['docstatistic']    = 'Statistics';
-$lang->block->modules['doc']->availableBlocks['docdynamic']      = 'Recent Activity';
-$lang->block->modules['doc']->availableBlocks['docmycollection'] = 'My Saved';
+$lang->block->modules['doc']->availableBlocks['docdynamic']      = 'Recents';
+$lang->block->modules['doc']->availableBlocks['docmycollection'] = 'My Favorites';
 $lang->block->modules['doc']->availableBlocks['docmycreated']    = 'My Created';
 $lang->block->modules['doc']->availableBlocks['docrecentupdate'] = 'Recently Updated';
 $lang->block->modules['doc']->availableBlocks['docviewlist']     = 'Top Viewed';
-if($config->vision == 'rnd') $lang->block->modules['doc']->availaableBlocks['productdoc'] = $lang->productCommon . 'Document';
-$lang->block->modules['doc']->availableBlocks['doccollectlist']  = 'Top Saved';
-$lang->block->modules['doc']->availableBlocks['projectdoc']      = $lang->projectCommon . 'Document';
+if($config->vision == 'rnd') $lang->block->modules['doc']->availaableBlocks['productdoc'] = $lang->productCommon . ' Document';
+$lang->block->modules['doc']->availableBlocks['doccollectlist']  = 'Top Favorites';
+$lang->block->modules['doc']->availableBlocks['projectdoc']      = $lang->projectCommon . ' Document';
 
 $lang->block->orderByList = new stdclass();
 $lang->block->orderByList->product = array();
