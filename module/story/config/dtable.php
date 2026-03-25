@@ -1,5 +1,6 @@
 <?php
 global $lang, $app;
+$isEn = $app->getClientLang() == 'en';
 $config->story->dtable = new stdclass();
 
 $config->story->dtable->defaultField = array('id', 'title', 'pri', 'plan', 'roadmap', 'status', 'openedBy', 'estimate', 'reviewedBy', 'stage', 'assignedTo', 'taskCount', 'actions');
@@ -22,6 +23,7 @@ if($app->tab == 'execution')
     $config->story->dtable->fieldList['order']['sortType'] = true;
     $config->story->dtable->fieldList['order']['width']    = '45';
     $config->story->dtable->fieldList['order']['show']     = true;
+    if($isEn) $config->story->dtable->fieldList['order']['width'] = '60';
 }
 
 $config->story->dtable->fieldList['title']['name']         = 'title';
@@ -46,6 +48,7 @@ $config->story->dtable->fieldList['pri']['type']     = 'pri';
 $config->story->dtable->fieldList['pri']['priList']  = $lang->story->priList;
 $config->story->dtable->fieldList['pri']['show']     = true;
 $config->story->dtable->fieldList['pri']['group']    = 2;
+if($isEn) $config->story->dtable->fieldList['pri']['width'] = '80';
 
 $config->story->dtable->fieldList['branch']['name']       = 'branch';
 $config->story->dtable->fieldList['branch']['title']      = $lang->story->branch;
@@ -130,6 +133,7 @@ $config->story->dtable->fieldList['estimate']['sortType'] = true;
 $config->story->dtable->fieldList['estimate']['type']     = 'number';
 $config->story->dtable->fieldList['estimate']['show']     = true;
 $config->story->dtable->fieldList['estimate']['group']    = 5;
+if($isEn) $config->story->dtable->fieldList['estimate']['width'] = '90';
 
 $config->story->dtable->fieldList['reviewer']['name']     = 'reviewer';
 $config->story->dtable->fieldList['reviewer']['type']     = 'text';
@@ -162,6 +166,7 @@ $config->story->dtable->fieldList['assignedTo']['assignLink']  = array('module' 
 $config->story->dtable->fieldList['assignedTo']['type']        = 'assign';
 $config->story->dtable->fieldList['assignedTo']['show']        = true;
 $config->story->dtable->fieldList['assignedTo']['group']       = 6;
+if($isEn) $config->story->dtable->fieldList['assignedTo']['width'] = '120';
 
 $config->story->dtable->fieldList['assignedDate']['name']     = 'assignedDate';
 $config->story->dtable->fieldList['assignedDate']['title']    = $lang->story->assignedDate;
