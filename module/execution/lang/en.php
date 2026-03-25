@@ -100,7 +100,7 @@ $lang->execution->storyTitle          = "Story Name";
 $lang->execution->storyView           = "Story Detail";
 $lang->execution->all                 = "All {$lang->executionCommon}s";
 $lang->execution->undone              = 'Unfinished ';
-$lang->execution->unclosed            = 'Unclosed';
+$lang->execution->unclosed            = 'Assigned to Me';
 $lang->execution->closedExecution     = 'Closed Execution';
 $lang->execution->typeDesc            = "OPS {$lang->executionCommon} has no {$lang->SRCommon}, Bug, Build, or Test features.";
 $lang->execution->mine                = 'Mine: ';
@@ -310,13 +310,13 @@ $lang->execution->RDKanban                  = 'Research & Development Kanban';
 $lang->execution->allTasks     = 'All';
 $lang->execution->assignedToMe = 'My';
 $lang->execution->myInvolved   = 'My Involvement';
-$lang->execution->assignedByMe = 'AssignedByMe';
+$lang->execution->assignedByMe = 'Assigned by Me';
 
 $lang->execution->statusSelects['']             = 'More';
 $lang->execution->statusSelects['wait']         = 'Waiting';
 $lang->execution->statusSelects['doing']        = 'Doing';
-$lang->execution->statusSelects['undone']       = 'Unfinished';
-$lang->execution->statusSelects['finishedbyme'] = 'FinishedByMe';
+$lang->execution->statusSelects['undone']       = 'Uncompleted';
+$lang->execution->statusSelects['finishedbyme'] = 'Completed by Me';
 $lang->execution->statusSelects['done']         = 'Done';
 $lang->execution->statusSelects['closed']       = 'Closed';
 $lang->execution->statusSelects['cancel']       = 'Cancelled';
@@ -326,9 +326,9 @@ $lang->execution->groups['']           = 'View by Groups';
 $lang->execution->groups['story']      = 'Group by Story';
 $lang->execution->groups['status']     = 'Group by Status';
 $lang->execution->groups['pri']        = 'Group by Priority';
-$lang->execution->groups['assignedTo'] = 'Group by AssignedTo';
-$lang->execution->groups['finishedBy'] = 'Group by FinishedBy';
-$lang->execution->groups['closedBy']   = 'Group by ClosedBy';
+$lang->execution->groups['assignedTo'] = 'Group by Assigned to';
+$lang->execution->groups['finishedBy'] = 'Group by Finished by';
+$lang->execution->groups['closedBy']   = 'Group by Closed by';
 $lang->execution->groups['type']       = 'Group by Type';
 
 $lang->execution->groupFilter['story']['all']         = 'All';
@@ -569,12 +569,12 @@ $lang->execution->featureBar['bug']['unresolved'] = 'Active';
 $lang->execution->featureBar['build']['all'] = 'Build List';
 
 $lang->execution->featureBar['story']['all']       = 'All';
-$lang->execution->featureBar['story']['unclosed']  = 'Unclosed';
+$lang->execution->featureBar['story']['unclosed']  = 'Open';
 $lang->execution->featureBar['story']['draft']     = 'Draft';
 $lang->execution->featureBar['story']['reviewing'] = 'Reviewing';
 
 $lang->execution->featureBar['testcase']['all']         = 'All';
-$lang->execution->featureBar['testcase']['wait']        = 'Waiting';
+$lang->execution->featureBar['testcase']['wait']        = 'Waiting Review';
 $lang->execution->featureBar['testcase'][]              = '-';
 $lang->execution->featureBar['testcase']['needconfirm'] = "{$lang->common->story} Changed";
 
