@@ -114,6 +114,7 @@ $config->project->noSprintPriv['testreport']  = array('create', 'view', 'delete'
 $config->project->noSprintPriv['auditplan']   = array('browse', 'create', 'edit', 'view', 'batchCreate', 'batchEdit', 'batchCheck', 'check', 'nc', 'result', 'assignTo', 'delete');
 $config->project->noSprintPriv['nc']          = array('browse', 'create', 'edit', 'view', 'close', 'assignTo', 'resolve', 'activate', 'export', 'delete');
 $config->project->noSprintPriv['productplan'] = array();
+$config->project->noSprintPriv['projectplan'] = array();
 
 $config->project->includedPriv = $config->project->noSprintPriv;
 $config->project->includedPriv['project'][]   = 'execution';
@@ -144,6 +145,7 @@ if($config->edition != 'max') $config->project->projectPriv['stakeholder'] = arr
 
 
 $config->project->noProductPriv['productplan'] = array('linkStory', 'unlinkStory', 'batchUnlinkStory', 'linkBug', 'unlinkBug', 'batchUnlinkBug', 'batchEdit', 'start', 'finish', 'close', 'activate', 'batchChangeStatus', 'delete');
+$config->project->noProductPriv['projectplan'] = array('browse', 'create', 'edit', 'view');
 
 $config->project->browseTable = new stdClass();
 $config->project->browseTable->cols = array();
