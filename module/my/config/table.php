@@ -1261,9 +1261,10 @@ $config->my->project->dtable = $config->project->dtable;
 
 if($isEn)
 {
-    $config->my->task->dtable->fieldList['finishedBy']['width'] = 100;
+    $config->my->task->dtable->fieldList['finishedBy']['width'] = 120;
     $config->my->task->dtable->fieldList['left']['width']       = 100;
     $config->my->task->dtable->fieldList['assignedTo']['width'] = 100;
+    $config->my->task->dtable->fieldList['estimate']['width']   = 100;
 
     $config->my->bug->dtable->fieldList['resolvedBy']['width'] = 100;
     $config->my->bug->dtable->fieldList['assignedTo']['width'] = 120;
