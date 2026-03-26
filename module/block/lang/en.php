@@ -552,9 +552,9 @@ if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignLi
 if($config->enableER && $config->vision != 'or') $lang->block->welcome->assignList['epic']        = "{$lang->ERCommon}";
 
 $lang->block->customModeTip = new stdClass();
-$lang->block->customModeTip->common = 'There are 2 running modes of ZenTao:  Lightweight Management Mode and ALM Mode.';
-$lang->block->customModeTip->ALM    = 'Designed for mid-to-large teams, offering a comprehensive and rigorous management framework with an extensive feature set.';
-$lang->block->customModeTip->light  = "Designed for small R&D teams, providing the core functionalities of {$lang->projectCommon} management.";
+$lang->block->customModeTip->common = 'ZenTao offers two operating modes:';
+$lang->block->customModeTip->ALM    = '';
+$lang->block->customModeTip->light  = "";
 
 $lang->block->productstatistic = new stdclass();
 $lang->block->productstatistic->effectiveStory  = 'Effective stories';
