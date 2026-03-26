@@ -10,7 +10,7 @@ declare(strict_types=1);
  */
 namespace zin;
 
-$expireDays = isset($config->kanban->reminder->expireDays) ? $config->kanban->reminder->expireDays : 3;
+$expireDays = isset($config->kanban->reminder->expireDays) ? $config->kanban->reminder->expireDays : 1;
 $menuItems  = array(
     li
     (

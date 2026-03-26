@@ -55,7 +55,7 @@ foreach($regions as $currentRegionID => $regionName) $regionMenu[] = li(set::cla
 $app->loadLang('release');
 $app->loadLang('execution');
 $this->loadModel('productplan');
-$expireDays = isset($config->kanban->reminder->expireDays) ? $config->kanban->reminder->expireDays : 3;
+$expireDays = isset($config->kanban->reminder->expireDays) ? $config->kanban->reminder->expireDays : 1;
 jsVar('laneCount',  $laneCount);
 jsVar('kanbanLang', $lang->kanban);
 jsVar('columnLang', $lang->kanbancolumn);
