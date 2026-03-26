@@ -516,7 +516,7 @@ $lang->block->themes['red']        = 'Red';
 $lang->block->themes['purple']     = 'Purple';
 $lang->block->themes['blackberry'] = 'Blackberry';
 
-$lang->block->visionTitle            = 'Sanplex offers two interfaces:';
+$lang->block->visionTitle            = 'ZenTao offers two interfaces:';
 $lang->block->visions['rnd']         = new stdclass();
 $lang->block->visions['rnd']->key    = 'rnd';
 $lang->block->visions['rnd']->title  = 'R&D interface';
@@ -552,7 +552,7 @@ if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignLi
 if($config->enableER && $config->vision != 'or') $lang->block->welcome->assignList['epic']        = "{$lang->ERCommon}";
 
 $lang->block->customModeTip = new stdClass();
-$lang->block->customModeTip->common = 'There are 2 running modes of Sanplex:  Lightweight Management Mode and ALM Mode.';
+$lang->block->customModeTip->common = 'There are 2 running modes of ZenTao:  Lightweight Management Mode and ALM Mode.';
 $lang->block->customModeTip->ALM    = 'Designed for mid-to-large teams, offering a comprehensive and rigorous management framework with an extensive feature set.';
 $lang->block->customModeTip->light  = "Designed for small R&D teams, providing the core functionalities of {$lang->projectCommon} management.";
 
