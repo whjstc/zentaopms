@@ -122,12 +122,12 @@ $lang->block->budget          = 'Budget';
 $lang->block->left            = 'left';
 
 $lang->block->summary = new stdclass();
-$lang->block->summary->welcome    = 'Day %s with Zentao! %s  looking forward to your great work today!';
+$lang->block->summary->welcome    = '%s with Zentao! %s  and your tasks and bugs are waiting for your great work today!';
 $lang->block->summary->yesterday  = '<strong>yesterday</strong>,';
-$lang->block->summary->noWork     = 'No tasks or bugs handled';
-$lang->block->summary->finishTask = 'You have completed <a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a> tasks';
-$lang->block->summary->fixBug     = 'You have resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> Bugs';
-$lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> Bugs';
+$lang->block->summary->noWork     = 'A quiet day ';
+$lang->block->summary->finishTask = 'You completed <a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a> task(s)';
+$lang->block->summary->fixBug     = 'You resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> bug(s)';
+$lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> bug(s)';
 
 $lang->block->dashboard['default'] = 'My Overview';
 $lang->block->dashboard['my']      = 'Dashboard';
@@ -516,7 +516,7 @@ $lang->block->themes['red']        = 'Red';
 $lang->block->themes['purple']     = 'Purple';
 $lang->block->themes['blackberry'] = 'Blackberry';
 
-$lang->block->visionTitle            = 'Sanplex offers two interfaces:';
+$lang->block->visionTitle            = 'ZenTao offers two interfaces:';
 $lang->block->visions['rnd']         = new stdclass();
 $lang->block->visions['rnd']->key    = 'rnd';
 $lang->block->visions['rnd']->title  = 'R&D interface';
@@ -536,7 +536,7 @@ $lang->block->honorary['review'] = 'Review King';
 
 $lang->block->welcome = new stdclass();
 $lang->block->welcome->common     = 'Welcome Overview';
-$lang->block->welcome->reviewByMe = 'My Pending Review';
+$lang->block->welcome->reviewByMe = 'My Pending Reviews';
 $lang->block->welcome->assignToMe = 'Assigned to Me';
 
 $lang->block->welcome->reviewList = array();
@@ -552,9 +552,9 @@ if($config->URAndSR && $config->vision != 'or')  $lang->block->welcome->assignLi
 if($config->enableER && $config->vision != 'or') $lang->block->welcome->assignList['epic']        = "{$lang->ERCommon}";
 
 $lang->block->customModeTip = new stdClass();
-$lang->block->customModeTip->common = 'There are 2 running modes of Sanplex:  Lightweight Management Mode and ALM Mode.';
-$lang->block->customModeTip->ALM    = 'Designed for mid-to-large teams, offering a comprehensive and rigorous management framework with an extensive feature set.';
-$lang->block->customModeTip->light  = "Designed for small R&D teams, providing the core functionalities of {$lang->projectCommon} management.";
+$lang->block->customModeTip->common = 'ZenTao offers two operating modes:';
+$lang->block->customModeTip->ALM    = '';
+$lang->block->customModeTip->light  = "";
 
 $lang->block->productstatistic = new stdclass();
 $lang->block->productstatistic->effectiveStory  = 'Effective stories';
