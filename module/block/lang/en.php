@@ -122,12 +122,12 @@ $lang->block->budget          = 'Budget';
 $lang->block->left            = 'left';
 
 $lang->block->summary = new stdclass();
-$lang->block->summary->welcome    = 'Day %s with Zentao! %s  looking forward to your great work today!';
+$lang->block->summary->welcome    = '%s with Zentao! %s  and your tasks and bugs are waiting for your great work today!';
 $lang->block->summary->yesterday  = '<strong>yesterday</strong>,';
-$lang->block->summary->noWork     = 'No tasks or bugs handled';
-$lang->block->summary->finishTask = 'You have completed <a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a> tasks';
-$lang->block->summary->fixBug     = 'You have resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> Bugs';
-$lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> Bugs';
+$lang->block->summary->noWork     = 'A quiet day ';
+$lang->block->summary->finishTask = 'You completed <a href="' .  helper::createLink('my', 'contribute', 'mode=task&type=finishedBy') . '" class="text-success">%s</a> task(s)';
+$lang->block->summary->fixBug     = 'You resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> bug(s)';
+$lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('my', 'contribute', 'mode=bug&type=resolvedBy') . '" class="text-success">%s</a> bug(s)';
 
 $lang->block->dashboard['default'] = 'My Overview';
 $lang->block->dashboard['my']      = 'Dashboard';
@@ -536,7 +536,7 @@ $lang->block->honorary['review'] = 'Review King';
 
 $lang->block->welcome = new stdclass();
 $lang->block->welcome->common     = 'Welcome Overview';
-$lang->block->welcome->reviewByMe = 'My Pending Review';
+$lang->block->welcome->reviewByMe = 'My Pending Reviews';
 $lang->block->welcome->assignToMe = 'Assigned to Me';
 
 $lang->block->welcome->reviewList = array();
