@@ -237,7 +237,7 @@ class reportModel extends model
      */
     public function getUserKanbanCards(): array
     {
-        $expireDays = isset($config->kanban->reminder->expireDays) ? $config->kanban->reminder->expireDays : 1;
+        $expireDays = isset($this->config->kanban->reminder->expireDays) ? $this->config->kanban->reminder->expireDays : 1;
         return $this->dao->select('t1.id, t1.name, t2.account as user, t1.end as deadline, t1.kanban')
             ->from(TABLE_KANBANCARD)->alias('t1')
             ->leftJoin(TABLE_USER)->alias('t2')
