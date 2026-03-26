@@ -448,7 +448,7 @@ $lang->story->report->select = 'Select Report Type';
 $lang->story->report->create = 'Create Report';
 $lang->story->report->value  = 'Stories';
 
-$lang->story->report->charts['storiesPerProduct']      = '$lang->productCommon . Stories';
+$lang->story->report->charts['storiesPerProduct']      = "$lang->productCommon Stories";
 $lang->story->report->charts['storiesPerModule']       = 'Stories in Module';
 $lang->story->report->charts['storiesPerSource']       = 'By Story Source';
 $lang->story->report->charts['storiesPerPlan']         = 'By Plan';
