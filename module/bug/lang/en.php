@@ -41,7 +41,7 @@ $lang->bug->status           = 'Status';
 $lang->bug->subStatus        = 'Sub-status';
 $lang->bug->activatedCount   = 'Activation Count';
 $lang->bug->activatedDate    = 'Activated on';
-$lang->bug->confirmed        = 'Confirmation Status';
+$lang->bug->confirmed        = 'Confirmed';
 $lang->bug->toTask           = 'Convert to Task';
 $lang->bug->toStory          = "Convert to {$lang->SRCommon}";
 $lang->bug->feedbackBy       = 'Discovered by';
@@ -273,8 +273,8 @@ $lang->bug->statusList['resolved'] = 'Resolved';
 $lang->bug->statusList['closed']   = 'Closed';
 
 $lang->bug->confirmedList[''] = '';
-$lang->bug->confirmedList[1] = 'confirmed';
-$lang->bug->confirmedList[0] = 'unconfirmed';
+$lang->bug->confirmedList[1] = 'Yes';
+$lang->bug->confirmedList[0] = 'No';
 
 $lang->bug->resolutionList['']           = '';
 $lang->bug->resolutionList['bydesign']   = 'As Designed';
