@@ -83,7 +83,7 @@ $config->task->dtable->fieldList['finishedBy']['type']     = 'user';
 $config->task->dtable->fieldList['finishedBy']['sortType'] = true;
 $config->task->dtable->fieldList['finishedBy']['show']     = true;
 $config->task->dtable->fieldList['finishedBy']['group']    = 4;
-if($isEn) $config->task->dtable->fieldList['finishedBy']['width'] = '100';
+if($isEn) $config->task->dtable->fieldList['finishedBy']['width'] = '120';
 
 $config->task->dtable->fieldList['finishedDate']['title']    = $lang->task->finishedDateAB;
 $config->task->dtable->fieldList['finishedDate']['type']     = 'date';
@@ -101,6 +101,7 @@ $config->task->dtable->fieldList['estimate']['type']     = 'number';
 $config->task->dtable->fieldList['estimate']['sortType'] = true;
 $config->task->dtable->fieldList['estimate']['show']     = true;
 $config->task->dtable->fieldList['estimate']['group']    = 5;
+if($isEn) $config->task->dtable->fieldList['estimate']['width'] = '100';
 
 $config->task->dtable->fieldList['consumed']['title']    = $lang->task->consumedAB;
 $config->task->dtable->fieldList['consumed']['type']     = 'number';
