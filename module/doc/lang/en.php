@@ -102,7 +102,7 @@ $lang->docTemplate->oldDocEditingTip             = 'This template was created wi
 $lang->docTemplate->leaveEditingConfirm          = 'You are currently editing a document template. Are you sure you want to leave?';
 $lang->docTemplate->searchScopePlaceholder       = 'Search Scope';
 $lang->docTemplate->searchTypePlaceholder        = 'Search Categories';
-$lang->docTemplate->moveDocTemplate              = 'Move Template';
+$lang->docTemplate->moveDocTemplate              = 'Move Document Template';
 $lang->docTemplate->moveSubTemplate              = 'Move Sub Template';
 $lang->docTemplate->createTypeFirst              = 'Please create a document template category first.';
 $lang->docTemplate->editedList                   = 'Template editor';
@@ -120,7 +120,7 @@ $lang->docTemplate->needEditable                 = 'You do not have permission t
 
 $lang->docTemplate->create = 'More';
 $lang->docTemplate->edit   = 'Scope';
-$lang->docTemplate->delete = 'No document templates.';
+$lang->docTemplate->delete = 'Delete Document Template';
 
 $lang->docTemplate->more       = 'No description.';
 $lang->docTemplate->scopeLabel = 'of';
