@@ -367,7 +367,7 @@ $lang->devopssetting->common    = 'Settings';
 $lang->deployment->common       = 'Host';
 
 $lang->dashboard       = 'Overview';
-$lang->contribute      = 'Contributions';
+$lang->contribute      = 'Contribution';
 $lang->dynamic         = 'Recents';
 $lang->whitelist       = 'Whitelist';
 $lang->roadmap         = 'Roadmap';
