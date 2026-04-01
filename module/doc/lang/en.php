@@ -567,7 +567,7 @@ $lang->doc->noticeAcl['doc']['private'] = 'Accessible only for the creator.';
 
 $lang->doc->placeholder = new stdclass();
 $lang->doc->placeholder->url       = 'URL';
-$lang->doc->placeholder->execution = 'When the execution is empty, the document will be created in the project library.';
+$lang->doc->placeholder->execution = 'In project library if no execution.';
 
 $lang->doc->summary = "<strong>%s</strong> files on this page with the total size <strong>%s</strong>. <strong>%s</strong>: ";
 $lang->doc->ge      = ':';
