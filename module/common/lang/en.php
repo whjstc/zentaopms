@@ -368,7 +368,7 @@ $lang->deployment->common       = 'Host';
 
 $lang->dashboard       = 'Overview';
 $lang->contribute      = 'Contributions';
-$lang->dynamic         = 'Activities';
+$lang->dynamic         = 'Recents';
 $lang->whitelist       = 'Whitelist';
 $lang->roadmap         = 'Roadmap';
 $lang->track           = 'Matrix';
