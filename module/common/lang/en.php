@@ -217,6 +217,7 @@ $lang->contactUs->wechat = 'Wechat';
 
 $lang->common->common       = 'Common Module';
 $lang->common->story        = 'Story';
+$lang->common->stories      = 'Stories';
 $lang->cache->common        = 'Cache';
 $lang->my->common           = 'Dashboard';
 $lang->todo->common         = 'To-do';
