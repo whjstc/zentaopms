@@ -217,6 +217,7 @@ $lang->contactUs->wechat = 'Wechat';
 
 $lang->common->common       = 'Common Module';
 $lang->common->story        = 'Story';
+$lang->common->stories      = 'Stories';
 $lang->cache->common        = 'Cache';
 $lang->my->common           = 'Dashboard';
 $lang->todo->common         = 'To-do';
@@ -366,8 +367,8 @@ $lang->devopssetting->common    = 'Settings';
 $lang->deployment->common       = 'Host';
 
 $lang->dashboard       = 'Overview';
-$lang->contribute      = 'Contributions';
-$lang->dynamic         = 'Activities';
+$lang->contribute      = 'Contribution';
+$lang->dynamic         = 'Recents';
 $lang->whitelist       = 'Whitelist';
 $lang->roadmap         = 'Roadmap';
 $lang->track           = 'Matrix';
