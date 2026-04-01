@@ -69,6 +69,7 @@ $lang->custom->gradeRule            = 'Allow Cross-Level Subdivision';
 $lang->custom->setExecutionClose    = 'Execution Close Setting';
 $lang->custom->kanbanExpireReminder = 'Kanban Expire Reminder';
 $lang->custom->kanbanExpireDays     = 'Kanban Expire Days';
+$lang->custom->feature              = 'Feature';
 
 $lang->custom->gradeRuleList['cross']    = 'Yes';
 $lang->custom->gradeRuleList['stepwise'] = 'No';
