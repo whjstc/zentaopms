@@ -158,6 +158,7 @@ $lang->noticeDrag      = 'Click or drag files here to upload. Maximum size: %s.'
 $lang->allProgress     = 'Progress';
 $lang->hasReviewed     = 'This content has already been reviewed. No further action is required.';
 $lang->appNotFound     = 'You do not have permission to access this application. Please check your permission settings.';
+$lang->uploadFiles     = 'Upload Files';
 
 $lang->fieldDisplaySetting = 'Field display settings';
 $lang->fieldSettingTip     = 'The following fields are collapsed by default. Please click "Show more fields" to expand them, or use the pin icon to keep specific fields visible.';
