@@ -63,7 +63,7 @@ $lang->block->delay               = 'delay';
 $lang->block->delayed             = 'Delayed';
 $lang->block->noData              = 'No data for this report type';
 $lang->block->emptyTip            = 'No data';
-$lang->block->createdTodos        = 'To-Dos Created';
+$lang->block->createdTodos        = 'To-dos Created';
 $lang->block->createdRequirements = 'Created' . $lang->URCommon . 'Count';
 $lang->block->createdStories      = 'Created' . $lang->SRCommon . 'Count';
 $lang->block->finishedTasks       = 'Tasks Completed';
@@ -139,7 +139,7 @@ $lang->block->titleList['recentproject']  = "My Recent {$lang->projectCommon}";
 $lang->block->titleList['assigntome']     = 'Pending Items';
 $lang->block->titleList['project']        = "{$lang->projectCommon}List";
 $lang->block->titleList['dynamic']        = 'Recent Activity';
-$lang->block->titleList['list']           = 'My To-Dos';
+$lang->block->titleList['list']           = 'My To-dos';
 $lang->block->titleList['scrumoverview']  = "{$lang->projectCommon}Overview";
 $lang->block->titleList['scrumtest']      = 'Test Requests';
 $lang->block->titleList['scrumlist']      = 'Iterations';
@@ -193,7 +193,7 @@ $lang->block->default['qa'][] = array('title' => 'Cases Assigned to Me',  'modul
 
 $lang->block->default['full']['my'][] = array('title' => 'welcome',                                         'module' => 'welcome',         'code' => 'welcome',         'width' => '2');
 $lang->block->default['full']['my'][] = array('title' => 'Guides',                                          'module' => 'guide',           'code' => 'guide',           'width' => '2');
-$lang->block->default['full']['my'][] = array('title' => 'Todo',                                            'module' => 'assigntome',      'code' => 'assigntome',      'width' => '2', 'params' => array('todoCount' => '20',  'taskCount' => '20', 'bugCount' => '20', 'riskCount' => '20', 'issueCount' => '20', 'storyCount' => '20', 'reviewCount' => '20', 'meetingCount' => '20', 'feedbackCount' => '20'));
+$lang->block->default['full']['my'][] = array('title' => 'My Work',                                         'module' => 'assigntome',      'code' => 'assigntome',      'width' => '2', 'params' => array('todoCount' => '20',  'taskCount' => '20', 'bugCount' => '20', 'riskCount' => '20', 'issueCount' => '20', 'storyCount' => '20', 'reviewCount' => '20', 'meetingCount' => '20', 'feedbackCount' => '20'));
 $lang->block->default['full']['my'][] = array('title' => "Recent {$lang->projectCommon}s",                  'module' => 'project',         'code' => 'recentproject',   'width' => '2');
 $lang->block->default['full']['my'][] = array('title' => "Undone {$lang->projectCommon} list",              'module' => 'project',         'code' => 'project',         'width' => '2', 'params' => array('type' => 'undone',   'count' => '20', 'orderBy' => 'id_desc'));
 $lang->block->default['full']['my'][] = array('title' => "{$lang->projectCommon} Statistic",                'module' => 'project',         'code' => 'statistic',       'width' => '2', 'params' => array('type' => 'undone',   'count' => '20'));
@@ -221,7 +221,7 @@ $lang->block->count   = 'Count';
 $lang->block->type    = 'Type';
 $lang->block->orderBy = 'Order';
 
-$lang->block->availableBlocks['todo']        = 'To-Do';
+$lang->block->availableBlocks['todo']        = 'To-dos';
 $lang->block->availableBlocks['task']        = 'Tasks';
 $lang->block->availableBlocks['bug']         = 'Bugs';
 $lang->block->availableBlocks['case']        = 'Cases';
@@ -299,7 +299,7 @@ $lang->block->modules['qa']->availableBlocks['case']      = 'Cases';
 $lang->block->modules['qa']->availableBlocks['testtask']  = 'Test Requests';
 
 $lang->block->modules['todo'] = new stdclass();
-$lang->block->modules['todo']->availableBlocks['list'] = 'To-Do';
+$lang->block->modules['todo']->availableBlocks['list'] = 'To-dos';
 
 $lang->block->modules['doc'] = new stdclass();
 $lang->block->modules['doc']->availableBlocks['docstatistic']    = 'Statistics';
@@ -367,7 +367,7 @@ $lang->block->orderByList->story['status_desc'] = 'Status Descending';
 $lang->block->orderByList->story['stage_asc']   = 'Phase Ascending';
 $lang->block->orderByList->story['stage_desc']  = 'Phase Descending';
 
-$lang->block->todoCount     = 'To-Dos';
+$lang->block->todoCount     = 'To-dos';
 $lang->block->taskCount     = 'Tasks';
 $lang->block->bugCount      = 'Bugs';
 $lang->block->riskCount     = 'Risks';
@@ -483,13 +483,13 @@ $lang->block->zentaoapp->customIndexCard      = 'Customize Dashboard';
 $lang->block->zentaoapp->createStory          = 'Create Story';
 $lang->block->zentaoapp->createEffort         = 'Log Effort';
 $lang->block->zentaoapp->createDoc            = 'Create Doc';
-$lang->block->zentaoapp->createTodo           = 'Create To-Do';
+$lang->block->zentaoapp->createTodo           = 'Create To-do';
 $lang->block->zentaoapp->workbench            = 'Workspace';
 $lang->block->zentaoapp->notSupportKanban     = 'R&D Kanban Mode is not supported on mobile.';
 $lang->block->zentaoapp->notSupportVersion    = 'This version of ZenTao is not currently supported on the mobile terminal';
 $lang->block->zentaoapp->incompatibleVersion  = 'Your ZenTao version is outdated. Please upgrade to the latest version and try again.';
 $lang->block->zentaoapp->canNotGetVersion     = 'Failed to retrieve ZenTao version. Please check if the URL is correct.';
-$lang->block->zentaoapp->desc                 = "ZenTao Mobile APP provides you with a mobile work environment to manage personal To-Dos and track {$lang->projectCommon} progress anytime, enhancing the flexibility and agility of {$lang->projectCommon} management.";
+$lang->block->zentaoapp->desc                 = "ZenTao Mobile APP provides you with a mobile work environment to manage personal To-dos and track {$lang->projectCommon} progress anytime, enhancing the flexibility and agility of {$lang->projectCommon} management.";
 $lang->block->zentaoapp->downloadTip          = 'Scan QR code to download';
 
 $lang->block->zentaoclient = new stdClass();
