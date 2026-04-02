@@ -41,7 +41,7 @@ $lang->execution->suspendedDate       = 'Suspended Date';
 $lang->execution->vision              = 'Vision';
 $lang->execution->displayCards        = 'Max cards per column';
 $lang->execution->fluidBoard          = 'Column Width';
-$lang->execution->stage               = 'Stage';
+$lang->execution->stage               = 'Phase';
 $lang->execution->pri                 = 'Priority';
 $lang->execution->openedBy            = 'Opened by';
 $lang->execution->openedDate          = 'Opened Date';
@@ -532,7 +532,7 @@ $lang->printKanban->typeList['all']       = 'All';
 $lang->printKanban->typeList['increment'] = 'Increment';
 
 $lang->execution->typeList['']       = '';
-$lang->execution->typeList['stage']  = 'Stage';
+$lang->execution->typeList['stage']  = 'Phase';
 $lang->execution->typeList['sprint'] = $lang->executionCommon;
 $lang->execution->typeList['kanban'] = 'Kanban';
 
