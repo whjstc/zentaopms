@@ -267,7 +267,7 @@ if($config->edition != 'open' && $zaiConfig)
     }
 }
 
-to::headBefore(h::css('.icon-app-empty::before{content: "\e919"}'));
+to::headBefore(h::css('.icon-app-empty::before{content: "\ea6e"}'));
 
 to::head
 (
