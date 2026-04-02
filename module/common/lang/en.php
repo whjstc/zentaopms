@@ -343,7 +343,7 @@ $lang->personnel->accessible = 'Accessible members';
 
 $lang->stakeholder->common = 'Stakeholders';
 $lang->release->common     = 'Release';
-$lang->message->common     = 'System notifications';
+$lang->message->common     = 'System Notification';
 $lang->mail->common        = 'Email';
 
 $lang->my->shortCommon          = 'Dashboard';
