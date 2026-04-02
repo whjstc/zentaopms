@@ -194,7 +194,7 @@ $lang->month       = 'month(s)';
 $lang->hour        = 'Hour';
 $lang->minute      = 'Minute';
 $lang->second      = 'Second';
-$lang->workingHour = 'Working hours';
+$lang->workingHour = 'Working Hours';
 
 $lang->idAB         = 'ID';
 $lang->priAB        = 'Priority';
@@ -260,7 +260,7 @@ $lang->team->common         = 'Team';
 $lang->user->common         = 'User';
 $lang->custom->common       = 'Custom';
 $lang->custom->mode         = 'Mode';
-$lang->custom->flow         = 'Workflow Settings';
+$lang->custom->flow         = 'Workflow';
 $lang->extension->common    = 'Extension';
 $lang->company->common      = 'Company';
 $lang->dept->common         = 'Department';
