@@ -463,7 +463,7 @@ $lang->admin->module      = 'Feature Settings';
 $lang->admin->system      = 'System';
 $lang->admin->entry       = 'Integrations';
 $lang->admin->data        = 'Data';
-$lang->admin->cron        = 'Cron Jobs';
+$lang->admin->cron        = 'Cron Job';
 $lang->admin->buildIndex  = 'Rebuild Index';
 $lang->admin->tableEngine = 'Table Engine';
 
