@@ -96,7 +96,7 @@ $lang->tutorial->tasks->createTask->desc           = "<p>To break down execution
 $lang->tutorial->tasks->createBug = new stdClass();
 $lang->tutorial->tasks->createBug->title          = "Report Bug";
 $lang->tutorial->tasks->createBug->targetPageName = "Report Bug";
-$lang->tutorial->tasks->createBug->desc           = "<p>To report a bug in the system:</p><ul><li data-target='nav'>Go to <span class='task-nav'>QA <i class='icon icon-angle-right'></i> Bug <i class='icon icon-angle-right'></i> Report Bug</span>;</li><li data-target='form'>Fill in the bug information in the form;</li><li data-target='submit'>Save the bug information.</li></ul>";
+$lang->tutorial->tasks->createBug->desc           = "<p>To report a bug in the system:</p><ul><li data-target='nav'>Go to <span class='task-nav'>Test <i class='icon icon-angle-right'></i> Bug <i class='icon icon-angle-right'></i> Report Bug</span>;</li><li data-target='form'>Fill in the bug information in the form;</li><li data-target='submit'>Save the bug information.</li></ul>";
 
 $lang->tutorial->starter = new stdClass();
 $lang->tutorial->starter->title = 'Quick Start Tutorial';
@@ -311,7 +311,7 @@ $lang->tutorial->starter->createBug = new stdClass();
 $lang->tutorial->starter->createBug->title = 'Create Bug';
 
 $lang->tutorial->starter->createBug->step1 = new stdClass();
-$lang->tutorial->starter->createBug->step1->name = 'Click on QA';
+$lang->tutorial->starter->createBug->step1->name = 'Click on Test';
 $lang->tutorial->starter->createBug->step1->desc = 'You can manage your testing activities here.';
 
 $lang->tutorial->starter->createBug->step2 = new stdClass();
@@ -378,15 +378,15 @@ $lang->tutorial->scrumProjectManage->manageProject->step11->name = 'Save the for
 $lang->tutorial->scrumProjectManage->manageProject->step11->desc = 'After saving, you can view team members in the Team.';
 
 $lang->tutorial->scrumProjectManage->manageExecution = new stdClass();
-$lang->tutorial->scrumProjectManage->manageExecution->title = 'Iteration Management';
+$lang->tutorial->scrumProjectManage->manageExecution->title = 'Execution Management';
 
 $lang->tutorial->scrumProjectManage->manageExecution->step1 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageExecution->step1->name = 'Click on Iteration';
-$lang->tutorial->scrumProjectManage->manageExecution->step1->desc = 'Click on Iteration to add new iterations.';
+$lang->tutorial->scrumProjectManage->manageExecution->step1->name = 'Click on Execution';
+$lang->tutorial->scrumProjectManage->manageExecution->step1->desc = 'Click on Execution to add new executions.';
 
 $lang->tutorial->scrumProjectManage->manageExecution->step2 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageExecution->step2->name = 'Click on Create Iteration';
-$lang->tutorial->scrumProjectManage->manageExecution->step2->desc = 'You can add iterations here.';
+$lang->tutorial->scrumProjectManage->manageExecution->step2->name = 'Click on Create Execution';
+$lang->tutorial->scrumProjectManage->manageExecution->step2->desc = 'You can add executions here.';
 
 $lang->tutorial->scrumProjectManage->manageExecution->step3 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageExecution->step3->name = 'Fill out the form';
@@ -396,8 +396,8 @@ $lang->tutorial->scrumProjectManage->manageExecution->step4->name = 'Save the fo
 $lang->tutorial->scrumProjectManage->manageExecution->step4->desc = 'After saving, you can set up the team, link requirements, create tasks, or return to Task and Execution lists.';
 
 $lang->tutorial->scrumProjectManage->manageExecution->step5 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageExecution->step5->name = 'Click on Iteration';
-$lang->tutorial->scrumProjectManage->manageExecution->step5->desc = 'Click on the iteration name to enter the iteration.';
+$lang->tutorial->scrumProjectManage->manageExecution->step5->name = 'Click on Execution';
+$lang->tutorial->scrumProjectManage->manageExecution->step5->desc = 'Click on the execution name to enter the execution.';
 
 $lang->tutorial->scrumProjectManage->manageExecution->step6 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageExecution->step6->name = 'Click on Story';
@@ -405,7 +405,7 @@ $lang->tutorial->scrumProjectManage->manageExecution->step6->desc = 'You can man
 
 $lang->tutorial->scrumProjectManage->manageExecution->step7 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageExecution->step7->name = 'Click on Link Story';
-$lang->tutorial->scrumProjectManage->manageExecution->step7->desc = 'You can link stories with the iteration';
+$lang->tutorial->scrumProjectManage->manageExecution->step7->desc = 'You can link stories with the execution';
 
 $lang->tutorial->scrumProjectManage->manageExecution->step8 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageExecution->step8->name = 'Select Stories';
@@ -416,7 +416,7 @@ $lang->tutorial->scrumProjectManage->manageExecution->step9->desc = 'Click on Sa
 
 $lang->tutorial->scrumProjectManage->manageExecution->step10 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageExecution->step10->name = 'Click on Burndown';
-$lang->tutorial->scrumProjectManage->manageExecution->step10->desc = 'Clicking on the Burn-down Chart allows you to view the burn-down chart within an iteration.';
+$lang->tutorial->scrumProjectManage->manageExecution->step10->desc = 'Clicking on the Burn-down Chart allows you to view the burn-down chart within an execution.';
 
 $lang->tutorial->scrumProjectManage->manageTask = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTask->title = 'Task Management';
@@ -511,7 +511,7 @@ $lang->tutorial->scrumProjectManage->manageTest = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTest->title = 'Test Management';
 
 $lang->tutorial->scrumProjectManage->manageTest->step1 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageTest->step1->name = 'Click on QA';
+$lang->tutorial->scrumProjectManage->manageTest->step1->name = 'Click on Test';
 $lang->tutorial->scrumProjectManage->manageTest->step1->desc = 'You can manage your tests here.';
 
 $lang->tutorial->scrumProjectManage->manageTest->step2 = new stdClass();
@@ -613,7 +613,7 @@ $lang->tutorial->scrumProjectManage->manageBug = new stdClass();
 $lang->tutorial->scrumProjectManage->manageBug->title = 'Bug Management';
 
 $lang->tutorial->scrumProjectManage->manageBug->step1 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageBug->step1->name = 'Click on QA';
+$lang->tutorial->scrumProjectManage->manageBug->step1->name = 'Click on Test';
 $lang->tutorial->scrumProjectManage->manageBug->step1->desc = 'You can manage bugs here.';
 
 $lang->tutorial->scrumProjectManage->manageBug->step2 = new stdClass();
@@ -808,31 +808,31 @@ $lang->tutorial->waterfallProjectManage->setStage = new stdClass();
 $lang->tutorial->waterfallProjectManage->setStage->title = 'Stage Settings';
 
 $lang->tutorial->waterfallProjectManage->setStage->step1 = new stdClass();
-$lang->tutorial->waterfallProjectManage->setStage->step1->name = 'Click on stages';
-$lang->tutorial->waterfallProjectManage->setStage->step1->desc = 'Here, you can manage the stages.';
+$lang->tutorial->waterfallProjectManage->setStage->step1->name = 'Click on Phase';
+$lang->tutorial->waterfallProjectManage->setStage->step1->desc = 'Here, you can manage the Phases.';
 
 $lang->tutorial->waterfallProjectManage->setStage->step2 = new stdClass();
-$lang->tutorial->waterfallProjectManage->setStage->step2->name = 'Click on Set Stage';
-$lang->tutorial->waterfallProjectManage->setStage->step2->desc = 'Click on Stage Settings to define your project stages. Mark a stage as a milestone to view its specific milestone report.';
+$lang->tutorial->waterfallProjectManage->setStage->step2->name = 'Click on Set Phase';
+$lang->tutorial->waterfallProjectManage->setStage->step2->desc = 'Click on Phase Settings to define your project phases. Mark a phase as a milestone to view its specific milestone report.';
 
 $lang->tutorial->waterfallProjectManage->setStage->step3 = new stdClass();
 $lang->tutorial->waterfallProjectManage->setStage->step3->name = 'Fill out Form';
 
 $lang->tutorial->waterfallProjectManage->setStage->step4 = new stdClass();
 $lang->tutorial->waterfallProjectManage->setStage->step4->name = 'Save Form';
-$lang->tutorial->waterfallProjectManage->setStage->step4->desc = 'Set start and end dates for each stage. Once saved, you can view the full timeline in the Stage List.';
+$lang->tutorial->waterfallProjectManage->setStage->step4->desc = 'Set start and end dates for each phase. Once saved, you can view the full timeline in the Phase List.';
 
 $lang->tutorial->waterfallProjectManage->setStage->step5 = new stdClass();
 $lang->tutorial->waterfallProjectManage->setStage->step5->name = 'Switch View';
-$lang->tutorial->waterfallProjectManage->setStage->step5->desc = 'You can switch to a list view to see Stages.';
+$lang->tutorial->waterfallProjectManage->setStage->step5->desc = 'You can switch to a list view to see Phases.';
 
 $lang->tutorial->waterfallProjectManage->setStage->step6 = new stdClass();
-$lang->tutorial->waterfallProjectManage->setStage->step6->name = 'Click on Development Stage';
-$lang->tutorial->waterfallProjectManage->setStage->step6->desc = 'You can allocate resources and tasks in each stage here.';
+$lang->tutorial->waterfallProjectManage->setStage->step6->name = 'Click on Development Phase';
+$lang->tutorial->waterfallProjectManage->setStage->step6->desc = 'You can allocate resources and tasks in each phase here.';
 
 $lang->tutorial->waterfallProjectManage->setStage->step7 = new stdClass();
 $lang->tutorial->waterfallProjectManage->setStage->step7->name = 'Click on Burndown';
-$lang->tutorial->waterfallProjectManage->setStage->step7->desc = 'View the Burndown Chart to track your progress through different stages.';
+$lang->tutorial->waterfallProjectManage->setStage->step7->desc = 'View the Burndown Chart to track your progress through different phases.';
 
 $lang->tutorial->waterfallProjectManage->manageTask = new stdClass();
 $lang->tutorial->waterfallProjectManage->manageTask = $lang->tutorial->scrumProjectManage->manageTask;
@@ -943,15 +943,15 @@ $lang->tutorial->kanbanProjectManage->manageKanban->step4 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageKanban->step4->name = 'Click on More';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step5 = new stdClass();
-$lang->tutorial->kanbanProjectManage->manageKanban->step5->name = 'Click on Create Session';
-$lang->tutorial->kanbanProjectManage->manageKanban->step5->desc = 'You can add a new session here.';
+$lang->tutorial->kanbanProjectManage->manageKanban->step5->name = 'Click on Create Area';
+$lang->tutorial->kanbanProjectManage->manageKanban->step5->desc = 'You can add a new area here.';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step6 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageKanban->step6->name = 'Fill out the Form';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step7 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageKanban->step7->name = 'Save the Form';
-$lang->tutorial->kanbanProjectManage->manageKanban->step7->desc = 'You can add new sessions to your Kanban project.';
+$lang->tutorial->kanbanProjectManage->manageKanban->step7->desc = 'You can add new areas to your Kanban project.';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step8 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageKanban->step8->name = 'Click Create';
@@ -972,7 +972,7 @@ $lang->tutorial->kanbanProjectManage->manageKanban->step12 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageKanban->step12->name = 'Click on More';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step13 = new stdClass();
-$lang->tutorial->kanbanProjectManage->manageKanban->step13->name = 'Click on Task Decomposition';
+$lang->tutorial->kanbanProjectManage->manageKanban->step13->name = 'Click on Create Task';
 $lang->tutorial->kanbanProjectManage->manageKanban->step13->desc = 'Here, you can break down stories into detailed tasks.';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step14 = new stdClass();
@@ -1128,7 +1128,7 @@ $lang->tutorial->testManage = new stdClass();
 $lang->tutorial->testManage->title = 'Test Management Tutorial';
 
 $lang->tutorial->testManage->step1 = new stdClass();
-$lang->tutorial->testManage->step1->name = 'Click on QA';
+$lang->tutorial->testManage->step1->name = 'Click on Test';
 $lang->tutorial->testManage->step1->desc = 'Click to manage tests.';
 
 $lang->tutorial->testManage->step2 = new stdClass();
@@ -1434,8 +1434,8 @@ $lang->tutorial->productManage->planManage->step7 = new stdClass();
 $lang->tutorial->productManage->planManage->step7->name = 'Check Stories';
 
 $lang->tutorial->productManage->planManage->step8 = new stdClass();
-$lang->tutorial->productManage->planManage->step8->name = 'Click Save';
-$lang->tutorial->productManage->planManage->step8->desc = 'After saving, the stories will be linked with the plan successfully.';
+$lang->tutorial->productManage->planManage->step8->name = 'Click Link Story';
+$lang->tutorial->productManage->planManage->step8->desc = 'After clicking, the stories will be linked with the plan successfully.';
 
 $lang->tutorial->productManage->planManage->step9 = new stdClass();
 $lang->tutorial->productManage->planManage->step9->name = 'Click on Bug';
@@ -1449,8 +1449,8 @@ $lang->tutorial->productManage->planManage->step11 = new stdClass();
 $lang->tutorial->productManage->planManage->step11->name = 'Check Bug';
 
 $lang->tutorial->productManage->planManage->step12 = new stdClass();
-$lang->tutorial->productManage->planManage->step12->name = 'Click Save';
-$lang->tutorial->productManage->planManage->step12->desc = 'After saving, the bugs linked to plan successfully.';
+$lang->tutorial->productManage->planManage->step12->name = 'Click Link Bug';
+$lang->tutorial->productManage->planManage->step12->desc = 'After clicking, the bugs will be linked to the plan successfully.';
 
 $lang->tutorial->productManage->releaseManage = new stdClass();
 $lang->tutorial->productManage->releaseManage->title = 'Release Management';
@@ -1482,8 +1482,8 @@ $lang->tutorial->productManage->releaseManage->step7 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step7->name = 'Check Stories';
 
 $lang->tutorial->productManage->releaseManage->step8 = new stdClass();
-$lang->tutorial->productManage->releaseManage->step8->name = 'Click Save';
-$lang->tutorial->productManage->releaseManage->step8->desc = 'After saving, the stories are linked to the release successfully .';
+$lang->tutorial->productManage->releaseManage->step8->name = 'Click Link Story';
+$lang->tutorial->productManage->releaseManage->step8->desc = 'After clicking, the stories will be linked to the release successfully.';
 
 $lang->tutorial->productManage->releaseManage->step9 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step9->name = 'Click on Fixed Bug';
@@ -1497,8 +1497,8 @@ $lang->tutorial->productManage->releaseManage->step11 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step11->name = 'Check Bugs';
 
 $lang->tutorial->productManage->releaseManage->step12 = new stdClass();
-$lang->tutorial->productManage->releaseManage->step12->name = 'Click Save';
-$lang->tutorial->productManage->releaseManage->step12->desc = 'After saving, the bugs are successfully linked to the release.';
+$lang->tutorial->productManage->releaseManage->step12->name = 'Click Link Bug';
+$lang->tutorial->productManage->releaseManage->step12->desc = 'After clicking, the bugs will be linked to the release successfully.';
 
 $lang->tutorial->productManage->releaseManage->step13 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step13->name = 'Click on Active Bug';
@@ -1512,8 +1512,8 @@ $lang->tutorial->productManage->releaseManage->step15 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step15->name = 'Check Bugs';
 
 $lang->tutorial->productManage->releaseManage->step16 = new stdClass();
-$lang->tutorial->productManage->releaseManage->step16->name = 'Click Save';
-$lang->tutorial->productManage->releaseManage->step16->desc = 'After saving, the bugs are successfully linked to the release.';
+$lang->tutorial->productManage->releaseManage->step16->name = 'Click Link Bug';
+$lang->tutorial->productManage->releaseManage->step16->desc = 'After clicking, the bugs are successfully linked to the release.';
 
 $lang->tutorial->productManage->releaseManage->step17 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step17->name = 'Click on Publish';
