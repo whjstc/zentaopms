@@ -317,8 +317,8 @@ class jira
                     $link = array();
                     $link['id']          = $issueLink['id'];
                     $link['linktype']    = $issueLink['type']['id'];
-                    $link['source']      = $issue['id'];
-                    $link['destination'] = $issueLink['outwardIssue']['id'];
+                    $link['source']      = $issueLink['outwardIssue']['id'];
+                    $link['destination'] = $issue['id'];
                     $links[$link['id']]  = $link;
                 }
                 $issue['links'] = $links;
