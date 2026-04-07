@@ -42,7 +42,7 @@ $lang->block->assignToMe      = 'Pending Items';
 $lang->block->wait            = 'Waiting';
 $lang->block->doing           = 'Doing';
 $lang->block->done            = 'Done';
-$lang->block->lblFlowchart    = 'Flowchart';
+$lang->block->lblFlowchart    = 'Essential Flow';
 $lang->block->lblTesttask     = 'View Test Details';
 $lang->block->contribute      = 'My Contributions';
 $lang->block->finish          = 'Done';
@@ -132,7 +132,7 @@ $lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('m
 $lang->block->dashboard['default'] = 'My Overview';
 $lang->block->dashboard['my']      = 'Dashboard';
 
-$lang->block->titleList['flowchart']      = 'Flowchart';
+$lang->block->titleList['flowchart']      = 'Essential Flow';
 $lang->block->titleList['guide']          = 'User Guide';
 $lang->block->titleList['statistic']      = 'Statistics';
 $lang->block->titleList['recentproject']  = "My Recent {$lang->projectCommon}";
@@ -465,7 +465,7 @@ $lang->block->flowchart['admin']   = array('Admins', 'Manage Departments', 'Add 
 if($config->systemMode == 'ALM') $lang->block->flowchart['program'] = array('Program Owner', 'Create Program', "Link {$lang->productCommon}", "Create {$lang->projectCommon}", "Budgeting and planning", 'Add Stakeholder');
 $lang->block->flowchart['product'] = array($lang->productCommon . ' Manager', 'Create' . $lang->productCommon, 'Manage Modules', 'Manage Plans', 'Manage Stories', 'Create Release');
 $lang->block->flowchart['project'] = array('Project Manager', "Create {$lang->projectCommon} & " . $lang->execution->common, 'Manage Team', 'Link Stories', 'Decompose Tasks', 'Track Progress');
-$lang->block->flowchart['dev']     = array('Developers', 'Claim Tasks & Bugs', 'Design Solution', 'Update Status', 'Complete Tasks & Bugs', 'Commit Code');
+$lang->block->flowchart['dev']     = array('Developers', 'Claim Tasks & Bugs', 'Design Solution', 'Commit Code', 'Update Status', 'Complete Tasks & Bugs');
 $lang->block->flowchart['tester']  = array('Test Team', 'Write Cases', 'Execute Cases', 'Report Bugs', 'Verify Bugs', 'Close Bugs');
 
 $lang->block->zentaoapp = new stdclass();
@@ -501,7 +501,7 @@ $lang->block->zentaoclient->edition->win64   = 'Windows';
 $lang->block->zentaoclient->edition->linux64 = 'Linux';
 $lang->block->zentaoclient->edition->mac64   = 'Mac OS';
 
-$lang->block->guideTabs['flowchart']      = 'Flowchart';
+$lang->block->guideTabs['flowchart']      = 'Essential Flow';
 if($config->systemMode != 'PLM') $lang->block->guideTabs['systemMode']     = 'Operating Modes';
 $lang->block->guideTabs['visionSwitch']   = 'Switch Interface';
 $lang->block->guideTabs['themeSwitch']    = 'Switch Theme ';
