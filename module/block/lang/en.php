@@ -36,13 +36,13 @@ $lang->block->lblBlock        = 'Block';
 $lang->block->lblNum          = 'Item Count';
 $lang->block->lblHtml         = 'HTML Content';
 $lang->block->html            = 'HTML';
-$lang->block->dynamic         = 'Recent Activity';
+$lang->block->dynamic         = 'Recents';
 $lang->block->zentaoDynamic   = 'ZenTao News';
 $lang->block->assignToMe      = 'Pending Items';
 $lang->block->wait            = 'Waiting';
 $lang->block->doing           = 'Doing';
 $lang->block->done            = 'Done';
-$lang->block->lblFlowchart    = 'Flowchart';
+$lang->block->lblFlowchart    = 'Essential Flow';
 $lang->block->lblTesttask     = 'View Test Details';
 $lang->block->contribute      = 'My Contributions';
 $lang->block->finish          = 'Done';
@@ -132,19 +132,19 @@ $lang->block->summary->fixBugEn   = 'resolved <a href="' . helper::createLink('m
 $lang->block->dashboard['default'] = 'My Overview';
 $lang->block->dashboard['my']      = 'Dashboard';
 
-$lang->block->titleList['flowchart']      = 'Flowchart';
+$lang->block->titleList['flowchart']      = 'Essential Flow';
 $lang->block->titleList['guide']          = 'User Guide';
 $lang->block->titleList['statistic']      = 'Statistics';
 $lang->block->titleList['recentproject']  = "My Recent {$lang->projectCommon}";
 $lang->block->titleList['assigntome']     = 'Pending Items';
 $lang->block->titleList['project']        = "{$lang->projectCommon}List";
-$lang->block->titleList['dynamic']        = 'Recent Activity';
+$lang->block->titleList['dynamic']        = 'Recents';
 $lang->block->titleList['list']           = 'My To-dos';
 $lang->block->titleList['scrumoverview']  = "{$lang->projectCommon}Overview";
 $lang->block->titleList['scrumtest']      = 'Test Requests';
 $lang->block->titleList['scrumlist']      = 'Iterations';
 $lang->block->titleList['sprint']         = 'Iteration Overview';
-$lang->block->titleList['projectdynamic'] = "Recent Activity";
+$lang->block->titleList['projectdynamic'] = "Recents";
 $lang->block->titleList['bug']            = 'Bugs Assigned to Me';
 $lang->block->titleList['case']           = 'Cases Assigned to Me';
 $lang->block->titleList['testtask']       = 'Test Requests';
@@ -154,14 +154,14 @@ $lang->block->default['scrumproject'][] = array('title' => "{$lang->projectCommo
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->executionCommon} List",     'module' => 'scrumproject', 'code' => 'scrumlist',      'width' => '2', 'params' => array('type' => 'undone', 'count' => '20', 'orderBy' => 'id_desc'));
 $lang->block->default['scrumproject'][] = array('title' => 'Pending Test Requests',             'module' => 'scrumproject', 'code' => 'scrumtest',      'width' => '2', 'params' => array('type' => 'wait', 'count' => '15', 'orderBy' => 'id_desc'));
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->executionCommon} Overview", 'module' => 'scrumproject', 'code' => 'sprint',         'width' => '1');
-$lang->block->default['scrumproject'][] = array('title' => 'Recent Activity',                   'module' => 'scrumproject', 'code' => 'projectdynamic', 'width' => '1');
+$lang->block->default['scrumproject'][] = array('title' => 'Recents',                   'module' => 'scrumproject', 'code' => 'projectdynamic', 'width' => '1');
 
 $lang->block->default['kanbanproject']    = $lang->block->default['scrumproject'];
 unset($lang->block->default['kanbanproject'][2]);
 $lang->block->default['agileplusproject'] = $lang->block->default['scrumproject'];
 
 $lang->block->default['waterfallproject'][] = array('title' => "{$lang->projectCommon}Plan", 'module' => 'waterfallproject', 'code' => 'waterfallgantt', 'width' => '2');
-$lang->block->default['waterfallproject'][] = array('title' => 'Recent Activity',                   'module' => 'waterfallproject', 'code' => 'projectdynamic', 'width' => '1');
+$lang->block->default['waterfallproject'][] = array('title' => 'Recents',                   'module' => 'waterfallproject', 'code' => 'projectdynamic', 'width' => '1');
 
 $lang->block->default['waterfallplusproject'] = $lang->block->default['waterfallproject'];
 $lang->block->default['ipdproject']           = $lang->block->default['waterfallproject'];
@@ -253,11 +253,11 @@ $lang->block->modules['scrumproject']->availableBlocks['scrumoverview']  = "{$la
 $lang->block->modules['scrumproject']->availableBlocks['scrumlist']      = $lang->executionCommon . ' List';
 $lang->block->modules['scrumproject']->availableBlocks['sprint']         = $lang->executionCommon . ' Overview';
 $lang->block->modules['scrumproject']->availableBlocks['scrumtest']      = 'Test Requests';
-$lang->block->modules['scrumproject']->availableBlocks['projectdynamic'] = 'Recent Activity';
+$lang->block->modules['scrumproject']->availableBlocks['projectdynamic'] = 'Recents';
 
 $lang->block->modules['waterfallproject'] = new stdclass();
 $lang->block->modules['waterfallproject']->availableBlocks['waterfallgantt'] = "{$lang->projectCommon} Plan";
-$lang->block->modules['waterfallproject']->availableBlocks['projectdynamic'] = 'Recent Activity';
+$lang->block->modules['waterfallproject']->availableBlocks['projectdynamic'] = 'Recents';
 
 $lang->block->modules['agileplusproject']     = $lang->block->modules['scrumproject'];
 $lang->block->modules['waterfallplusproject'] = $lang->block->modules['waterfallproject'];
@@ -282,7 +282,7 @@ $lang->block->modules['singleproduct']->availableBlocks['roadmap']              
 $lang->block->modules['singleproduct']->availableBlocks['singlestory']           = "{$lang->SRCommon} List";
 $lang->block->modules['singleproduct']->availableBlocks['singleplan']            = "{$lang->productCommon} Plans";
 $lang->block->modules['singleproduct']->availableBlocks['singlerelease']         = "{$lang->productCommon} Releases";
-$lang->block->modules['singleproduct']->availableBlocks['singledynamic']         = 'Recent Activity';
+$lang->block->modules['singleproduct']->availableBlocks['singledynamic']         = 'Recents';
 $lang->block->modules['singleproduct']->availableBlocks['singlemonthlyprogress'] = "Monthly {$lang->productCommon} Progress Analysis";
 
 $lang->block->modules['execution'] = new stdclass();
@@ -465,7 +465,7 @@ $lang->block->flowchart['admin']   = array('Admins', 'Manage Departments', 'Add 
 if($config->systemMode == 'ALM') $lang->block->flowchart['program'] = array('Program Owner', 'Create Program', "Link {$lang->productCommon}", "Create {$lang->projectCommon}", "Budgeting and planning", 'Add Stakeholder');
 $lang->block->flowchart['product'] = array($lang->productCommon . ' Manager', 'Create' . $lang->productCommon, 'Manage Modules', 'Manage Plans', 'Manage Stories', 'Create Release');
 $lang->block->flowchart['project'] = array('Project Manager', "Create {$lang->projectCommon} & " . $lang->execution->common, 'Manage Team', 'Link Stories', 'Decompose Tasks', 'Track Progress');
-$lang->block->flowchart['dev']     = array('Developers', 'Claim Tasks & Bugs', 'Design Solution', 'Update Status', 'Complete Tasks & Bugs', 'Commit Code');
+$lang->block->flowchart['dev']     = array('Developers', 'Claim Tasks & Bugs', 'Design Solution', 'Commit Code', 'Update Status', 'Complete Tasks & Bugs');
 $lang->block->flowchart['tester']  = array('Test Team', 'Write Cases', 'Execute Cases', 'Report Bugs', 'Verify Bugs', 'Close Bugs');
 
 $lang->block->zentaoapp = new stdclass();
@@ -501,7 +501,7 @@ $lang->block->zentaoclient->edition->win64   = 'Windows';
 $lang->block->zentaoclient->edition->linux64 = 'Linux';
 $lang->block->zentaoclient->edition->mac64   = 'Mac OS';
 
-$lang->block->guideTabs['flowchart']      = 'Flowchart';
+$lang->block->guideTabs['flowchart']      = 'Essential Flow';
 if($config->systemMode != 'PLM') $lang->block->guideTabs['systemMode']     = 'Operating Modes';
 $lang->block->guideTabs['visionSwitch']   = 'Switch Interface';
 $lang->block->guideTabs['themeSwitch']    = 'Switch Theme ';

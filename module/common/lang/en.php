@@ -427,7 +427,7 @@ $lang->doc->template      = 'Document Templates';
 $lang->product->list   = $lang->productCommon . ' List';
 $lang->product->kanban = $lang->productCommon . ' Kanban';
 
-$lang->project->report = 'Reports';
+$lang->project->report = 'Report';
 
 $lang->report->weekly       = 'Weekly Report';
 $lang->report->notice       = new stdclass();
