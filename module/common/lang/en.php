@@ -431,7 +431,7 @@ $lang->project->report = 'Reports';
 
 $lang->report->weekly       = 'Weekly Report';
 $lang->report->notice       = new stdclass();
-$lang->report->notice->help = '<i class="icon icon-help text-warning text-xl mr-2"></i>Reports are generated based on search results. For example, click "Assigned to me", then click "Create report".';
+$lang->report->notice->help = '<i class="icon icon-help text-warning text-xl mr-2"></i>Report data originates from your list page search results. Please conduct a search on the list page prior to report generation. Example: If you search for open stories, the report will perform statistics specifically on the resulting dataset.';
 
 $lang->testcase->case      = 'Test Case';
 $lang->testcase->testsuite = 'Test Suite';
