@@ -4,7 +4,7 @@ global $config;
 /* Method List。*/
 $lang->my->index           = 'Home';
 $lang->my->data            = 'My Data';
-$lang->my->todo            = 'My Todo';
+$lang->my->todo            = 'My To-do';
 $lang->my->todoAction      = 'Schedule List';
 $lang->my->calendar        = 'Schedule';
 $lang->my->work            = 'Work';
@@ -37,7 +37,7 @@ $lang->my->shareContacts   = 'Public Contacts';
 $lang->my->limited         = 'Permission restricted. You can only edit your own data.';
 $lang->my->score           = 'My Points';
 $lang->my->scoreRule       = 'Point Rules';
-$lang->my->noTodo          = 'No Todo yet.';
+$lang->my->noTodo          = 'No To-do yet.';
 $lang->my->noData          = 'No %s yet.';
 $lang->my->storyChanged    = "Story Changed";
 $lang->my->hours           = "Hours/day";
