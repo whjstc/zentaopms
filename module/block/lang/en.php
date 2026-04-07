@@ -250,7 +250,7 @@ $lang->block->modules['project']->availableBlocks['project']       = "{$lang->pr
 
 $lang->block->modules['scrumproject'] = new stdclass();
 $lang->block->modules['scrumproject']->availableBlocks['scrumoverview']  = "{$lang->projectCommon} Overview";
-$lang->block->modules['scrumproject']->availableBlocks['scrumlist']      = $lang->executionCommon . 'List';
+$lang->block->modules['scrumproject']->availableBlocks['scrumlist']      = $lang->executionCommon . ' List';
 $lang->block->modules['scrumproject']->availableBlocks['sprint']         = $lang->executionCommon . ' Overview';
 $lang->block->modules['scrumproject']->availableBlocks['scrumtest']      = 'Test Requests';
 $lang->block->modules['scrumproject']->availableBlocks['projectdynamic'] = 'Recent Activity';
