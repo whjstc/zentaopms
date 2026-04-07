@@ -360,7 +360,7 @@ row
                                 div
                                 (
                                     setClass('flex items-center justify-between'),
-                                    span($lang->projectCommon . $lang->project->team),
+                                    span($lang->projectCommon . ($isEn ? ' ' : '') . $lang->project->team),
                                     hasPriv('project', 'team') ? btn
                                     (
                                         setClass('ghost text-gray'),
