@@ -37,7 +37,7 @@ $lang->action->to            = 'To';
 $lang->action->superReviewer = 'Super Reviewer';
 $lang->action->byRule        = '(Triggered by Rule %s)';
 
-$lang->action->trash         = 'Bin';
+$lang->action->trash         = 'Trash';
 $lang->action->undelete      = 'Restore';
 $lang->action->hideOne       = 'Hide';
 $lang->action->hideAll       = 'Hide All';
@@ -49,7 +49,7 @@ $lang->action->lastComment   = 'Comment';
 $lang->action->byQuery       = 'Search';
 $lang->action->noLimit       = 'Unlimited';
 
-$lang->action->trashAction    = 'Bin List';
+$lang->action->trashAction    = 'Trash List';
 $lang->action->undeleteAction = 'Restore Data';
 $lang->action->hideOneAction  = 'Hide Data';
 
