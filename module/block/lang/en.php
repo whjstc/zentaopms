@@ -113,7 +113,7 @@ $lang->block->totalBug      = 'Total Bugs';
 $lang->block->totalRelease  = 'Total Releases';
 $lang->block->totalTask     = 'Total ' . $lang->task->common;
 $lang->block->projectMember = 'Team Members';
-$lang->block->totalMember   = '%s members in total';
+$lang->block->totalMember   = '%s member(s) in total';
 
 $lang->block->totalInvestment = 'Invested';
 $lang->block->totalPeople     = 'Headcount';
