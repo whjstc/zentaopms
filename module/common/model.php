@@ -2336,6 +2336,7 @@ eof;
         $varsReplaced = true;
         foreach($lang->menu as $menu)
         {
+            if(!is_array($menu)) continue;
             if(isset($menu['link']) and strpos($menu['link'], '%s') !== false) $varsReplaced = false;
             if(!isset($menu['link']) and is_string($menu) and strpos($menu, '%s') !== false) $varsReplaced = false;
             if(!$varsReplaced) break;
@@ -2680,10 +2681,11 @@ eof;
         global $config;
         if($config->edition != 'open')
         {
-            $flowAction = $this->loadModel('workflowaction')->getByModuleAndAction($moduleName, $action);
-            if($flowAction && $flowAction->extensionType != 'none' && $flowAction->status == 'enable' && !empty($flowAction->conditions))
+            $flowAction     = $this->loadModel('workflowaction')->getByModuleAndAction($moduleName, $action);
+            $isActionEnable = $flowAction && $flowAction->extensionType != 'none' && $flowAction->status == 'enable' && !empty($flowAction->conditions);
+            if($isActionEnable && !$this->loadModel('flow')->checkConditions($flowAction->conditions, $data))
             {
-                if(!$this->loadModel('flow')->checkConditions($flowAction->conditions, $data)) return false;
+                return false;
             }
         }
 
