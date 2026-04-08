@@ -37,6 +37,10 @@ $block3 = new stdclass();
 $block3->params = new stdclass();
 $block3->params->count = 5;
 
+global $tester;
+$tester->app->rawModule = 'my';
+$tester->app->rawMethod = 'index';
+
 // 5. 强制要求：必须包含至少5个测试步骤
 r($blockTest->printAssignToMeBlockTest($block1)) && p('success') && e('1'); // 步骤1:测试方法执行成功返回success为true
 r($blockTest->printAssignToMeBlockTest($block1)) && p('hasViewPriv') && e('1'); // 步骤2:测试返回对象包含权限验证信息
