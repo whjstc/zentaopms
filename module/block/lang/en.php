@@ -84,7 +84,7 @@ $lang->block->time                = 'No.';
 $lang->block->week                = 'Week';
 $lang->block->month               = 'Month';
 $lang->block->selectProduct       = "{$lang->productCommon} selection";
-$lang->block->blockTitle          = '%2$s of %1$s';
+$lang->block->blockTitle          = '%1$s %2$s';
 $lang->block->remain              = 'Left';
 $lang->block->allStories          = 'Total Stories';
 
@@ -137,10 +137,10 @@ $lang->block->titleList['guide']          = 'User Guide';
 $lang->block->titleList['statistic']      = 'Statistics';
 $lang->block->titleList['recentproject']  = "My Recent {$lang->projectCommon}";
 $lang->block->titleList['assigntome']     = 'Pending Items';
-$lang->block->titleList['project']        = "{$lang->projectCommon}List";
+$lang->block->titleList['project']        = "{$lang->projectCommon}s";
 $lang->block->titleList['dynamic']        = 'Recents';
 $lang->block->titleList['list']           = 'My To-dos';
-$lang->block->titleList['scrumoverview']  = "{$lang->projectCommon}Overview";
+$lang->block->titleList['scrumoverview']  = "{$lang->projectCommon} Overview";
 $lang->block->titleList['scrumtest']      = 'Test Requests';
 $lang->block->titleList['scrumlist']      = 'Iterations';
 $lang->block->titleList['sprint']         = 'Iteration Overview';
@@ -148,7 +148,7 @@ $lang->block->titleList['projectdynamic'] = "Recents";
 $lang->block->titleList['bug']            = 'Bugs Assigned to Me';
 $lang->block->titleList['case']           = 'Cases Assigned to Me';
 $lang->block->titleList['testtask']       = 'Test Requests';
-$lang->block->titleList['statistic']      = "{$lang->projectCommon}Statistics";
+$lang->block->titleList['statistic']      = "{$lang->projectCommon}s Statistics";
 
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->projectCommon} Overview",   'module' => 'scrumproject', 'code' => 'scrumoverview',  'width' => '2');
 $lang->block->default['scrumproject'][] = array('title' => "{$lang->executionCommon} List",     'module' => 'scrumproject', 'code' => 'scrumlist',      'width' => '2', 'params' => array('type' => 'undone', 'count' => '20', 'orderBy' => 'id_desc'));
@@ -160,7 +160,7 @@ $lang->block->default['kanbanproject']    = $lang->block->default['scrumproject'
 unset($lang->block->default['kanbanproject'][2]);
 $lang->block->default['agileplusproject'] = $lang->block->default['scrumproject'];
 
-$lang->block->default['waterfallproject'][] = array('title' => "{$lang->projectCommon}Plan", 'module' => 'waterfallproject', 'code' => 'waterfallgantt', 'width' => '2');
+$lang->block->default['waterfallproject'][] = array('title' => "{$lang->projectCommon} Plan", 'module' => 'waterfallproject', 'code' => 'waterfallgantt', 'width' => '2');
 $lang->block->default['waterfallproject'][] = array('title' => 'Recents',                   'module' => 'waterfallproject', 'code' => 'projectdynamic', 'width' => '1');
 
 $lang->block->default['waterfallplusproject'] = $lang->block->default['waterfallproject'];
@@ -175,7 +175,7 @@ $lang->block->default['product'][] = array('title' => "Unclosed {$lang->productC
 $lang->block->default['product'][] = array('title' => "Unclosed {$lang->productCommon} Releases",          'module' => 'product', 'code' => 'release',          'width' => '2', 'params' => array('type' => 'noclosed', 'count' => '20'));
 $lang->block->default['product'][] = array('title' => "Unclosed {$lang->productCommon} Plans",             'module' => 'product', 'code' => 'plan',             'width' => '2', 'params' => array('type' => 'noclosed', 'count' => '20'));
 $lang->block->default['product'][] = array('title' => "{$lang->productCommon} Release Statistic",          'module' => 'product', 'code' => 'releasestatistic', 'width' => '1');
-$lang->block->default['product'][] = array('title' => "{$lang->SRCommon}Assigned to Me",            'module' => 'product', 'code' => 'story',            'width' => '1', 'params' => array('type' => 'assignedTo', 'count' => '20', 'orderBy' => 'id_desc'));
+$lang->block->default['product'][] = array('title' => "{$lang->SRCommon} Assigned to Me",            'module' => 'product', 'code' => 'story',            'width' => '1', 'params' => array('type' => 'assignedTo', 'count' => '20', 'orderBy' => 'id_desc'));
 
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Statistic",                  'module' => 'singleproduct', 'code' => 'singlestatistic',        'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['singleproduct'][] = array('title' => "{$lang->productCommon} Bug Statistic",              'module' => 'singleproduct', 'code' => 'singlebugstatistic',     'width' => '2', 'params' => array('count' => '20'));
@@ -195,7 +195,7 @@ $lang->block->default['full']['my'][] = array('title' => 'welcome',             
 $lang->block->default['full']['my'][] = array('title' => 'Guides',                                          'module' => 'guide',           'code' => 'guide',           'width' => '2');
 $lang->block->default['full']['my'][] = array('title' => 'My Work',                                         'module' => 'assigntome',      'code' => 'assigntome',      'width' => '2', 'params' => array('todoCount' => '20',  'taskCount' => '20', 'bugCount' => '20', 'riskCount' => '20', 'issueCount' => '20', 'storyCount' => '20', 'reviewCount' => '20', 'meetingCount' => '20', 'feedbackCount' => '20'));
 $lang->block->default['full']['my'][] = array('title' => "Recent {$lang->projectCommon}s",                  'module' => 'project',         'code' => 'recentproject',   'width' => '2');
-$lang->block->default['full']['my'][] = array('title' => "Undone {$lang->projectCommon} list",              'module' => 'project',         'code' => 'project',         'width' => '2', 'params' => array('type' => 'undone',   'count' => '20', 'orderBy' => 'id_desc'));
+$lang->block->default['full']['my'][] = array('title' => "Undone {$lang->projectCommon}s",              'module' => 'project',         'code' => 'project',         'width' => '2', 'params' => array('type' => 'undone',   'count' => '20', 'orderBy' => 'id_desc'));
 $lang->block->default['full']['my'][] = array('title' => "{$lang->projectCommon} Statistic",                'module' => 'project',         'code' => 'statistic',       'width' => '2', 'params' => array('type' => 'undone',   'count' => '20'));
 $lang->block->default['full']['my'][] = array('title' => "Undone {$lang->execution->common} Statistic",     'module' => 'execution',       'code' => 'statistic',       'width' => '2', 'params' => array('type' => 'undone',   'count' => '20'));
 if($config->vision != 'lite') $lang->block->default['full']['my'][] = array('title' => "Unclosed {$lang->productCommon} Statistic",       'module' => 'product',         'code' => 'statistic',       'width' => '2', 'params' => array('type' => 'noclosed', 'count' => '20'));
@@ -245,8 +245,8 @@ $lang->block->availableBlocks['demand']      = 'Stories';
 $lang->block->modules['project'] = new stdclass();
 $lang->block->modules['project']->availableBlocks['overview']      = "{$lang->projectCommon} Overview";
 $lang->block->modules['project']->availableBlocks['recentproject'] = "My Recent {$lang->projectCommon}s";
-$lang->block->modules['project']->availableBlocks['statistic']     = "{$lang->projectCommon} Statistics";
-$lang->block->modules['project']->availableBlocks['project']       = "{$lang->projectCommon} List";
+$lang->block->modules['project']->availableBlocks['statistic']     = "{$lang->projectCommon}s Statistics";
+$lang->block->modules['project']->availableBlocks['project']       = "{$lang->projectCommon}s";
 
 $lang->block->modules['scrumproject'] = new stdclass();
 $lang->block->modules['scrumproject']->availableBlocks['scrumoverview']  = "{$lang->projectCommon} Overview";
@@ -265,9 +265,9 @@ $lang->block->modules['ipdproject']           = $lang->block->modules['waterfall
 
 $lang->block->modules['product'] = new stdclass();
 $lang->block->modules['product']->availableBlocks['overview']         = "{$lang->productCommon} Overview";
-$lang->block->modules['product']->availableBlocks['statistic']        = "{$lang->productCommon} Statistics";
+$lang->block->modules['product']->availableBlocks['statistic']        = "{$lang->productCommon}s Statistics";
 $lang->block->modules['product']->availableBlocks['releasestatistic'] = "{$lang->productCommon} Release Statistics";
-$lang->block->modules['product']->availableBlocks['bugstatistic']     = "{$lang->productCommon} Bug Statistics";
+$lang->block->modules['product']->availableBlocks['bugstatistic']     = "{$lang->productCommon}'s Test Statistics";
 $lang->block->modules['product']->availableBlocks['annualworkload']   = "{$lang->productCommon} Annual Workload Statistics";
 $lang->block->modules['product']->availableBlocks['monthlyprogress']  = "Monthly {$lang->productCommon} Progress Analysis";
 $lang->block->modules['product']->availableBlocks['list']             = "{$lang->productCommon} List";
@@ -286,7 +286,7 @@ $lang->block->modules['singleproduct']->availableBlocks['singledynamic']        
 $lang->block->modules['singleproduct']->availableBlocks['singlemonthlyprogress'] = "Monthly {$lang->productCommon} Progress Analysis";
 
 $lang->block->modules['execution'] = new stdclass();
-$lang->block->modules['execution']->availableBlocks['statistic'] = $lang->execution->common . ' Statistics';
+$lang->block->modules['execution']->availableBlocks['statistic'] = $lang->execution->common . 's Statistics';
 $lang->block->modules['execution']->availableBlocks['overview']  = $lang->execution->common . ' Overview';
 $lang->block->modules['execution']->availableBlocks['list']      = $lang->execution->common . ' List';
 $lang->block->modules['execution']->availableBlocks['task']      = 'Tasks';
@@ -557,7 +557,7 @@ $lang->block->customModeTip->ALM    = '';
 $lang->block->customModeTip->light  = "";
 
 $lang->block->productstatistic = new stdclass();
-$lang->block->productstatistic->effectiveStory  = 'Effective stories';
+$lang->block->productstatistic->effectiveStory  = 'Effective Stories';
 $lang->block->productstatistic->delivered       = 'Delivered';
 $lang->block->productstatistic->unclosed        = 'Open';
 $lang->block->productstatistic->storyStatistics = 'Story Statistics';
@@ -598,13 +598,13 @@ $lang->block->projectstatistic->unit             = 'unit';
 $lang->block->projectstatistic->total            = 'Total';
 $lang->block->projectstatistic->SP               = $config->hourUnit;
 $lang->block->projectstatistic->personDay        = 'PD';
-$lang->block->projectstatistic->day              = 'day';
-$lang->block->projectstatistic->hour             = 'hours';
+$lang->block->projectstatistic->day              = 'day(s)';
+$lang->block->projectstatistic->hour             = 'Hours';
 $lang->block->projectstatistic->leftDaysPre      = 'Time Remaining';
 $lang->block->projectstatistic->delayDaysPre     = 'Overdue by';
 $lang->block->projectstatistic->existRisks       = 'Risks';
 $lang->block->projectstatistic->existIssues      = 'Issues';
-$lang->block->projectstatistic->lastestExecution = 'Lastest Execution';
+$lang->block->projectstatistic->lastestExecution = 'Latest Execution';
 $lang->block->projectstatistic->projectClosed    = "{$lang->projectCommon} has been closed.";
 $lang->block->projectstatistic->longTimeProject  = "Long Term {$lang->projectCommon}";
 $lang->block->projectstatistic->totalProgress    = 'Total Progress';
@@ -643,8 +643,8 @@ $lang->block->executionstatistic->progress          = 'Progress';
 $lang->block->executionstatistic->totalEstimate     = 'Estimate';
 $lang->block->executionstatistic->totalConsumed     = 'Cost';
 $lang->block->executionstatistic->totalLeft         = 'Left';
-$lang->block->executionstatistic->burn              = $lang->execution->common . 'Burndown Chart';
-$lang->block->executionstatistic->cfd               = $lang->execution->common . 'Cumulative Flow Diagram';
+$lang->block->executionstatistic->burn              = $lang->execution->common . ' Burndown Chart';
+$lang->block->executionstatistic->cfd               = $lang->execution->common . ' Cumulative Flow Diagram';
 $lang->block->executionstatistic->story             = 'Story';
 $lang->block->executionstatistic->doneStory         = 'Done';
 $lang->block->executionstatistic->totalStory        = 'Total';
@@ -656,7 +656,7 @@ $lang->block->executionstatistic->yesterdayDoneTask = 'Complated Yesterday';
 $lang->block->executionoverview = new stdclass();
 $lang->block->executionoverview->totalExecution = "Total {$lang->execution->common}s";
 $lang->block->executionoverview->thisYear       = 'Completed This Year';
-$lang->block->executionoverview->statusCount    = "Status Distribution of Open {$lang->execution->common}";
+$lang->block->executionoverview->statusCount    = "Status Distribution of Open {$lang->execution->common}s";
 
 $lang->block->productoverview = new stdclass();
 $lang->block->productoverview->overview                = 'Overview Data';
@@ -664,7 +664,7 @@ $lang->block->productoverview->yearFinished            = 'Annual Product Progres
 $lang->block->productoverview->productLineCount        = 'Total Product Lines';
 $lang->block->productoverview->productCount            = 'Total Products';
 $lang->block->productoverview->releaseCount            = 'Released This Year';
-$lang->block->productoverview->milestoneCount          = 'Release Milestones';
+$lang->block->productoverview->milestoneCount          = 'Released Milestones';
 $lang->block->productoverview->unfinishedPlanCount     = 'Uncompleted Plans';
 $lang->block->productoverview->unclosedStoryCount      = 'Uncompleted Stories';
 $lang->block->productoverview->activeBugCount          = 'Active Bugs';
@@ -682,7 +682,7 @@ $lang->block->productlist->activatedBug      = 'Active Bugs';
 $lang->block->sprint = new stdclass();
 $lang->block->sprint->totalExecution = "Total{$lang->executionCommon}";
 $lang->block->sprint->thisYear       = 'Completed This Year';
-$lang->block->sprint->statusCount    = "{$lang->executionCommon}Status Distribution";
+$lang->block->sprint->statusCount    = "{$lang->executionCommon} Status Distribution";
 
 $lang->block->zentaodynamic = new stdclass();
 $lang->block->zentaodynamic->zentaosalon  = 'ZenTao · China Travel';
