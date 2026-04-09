@@ -1347,7 +1347,7 @@ $lang->tutorial->productManage->storyManage->step1->desc = 'Here you can manage 
 
 $lang->tutorial->productManage->storyManage->step2 = new stdClass();
 $lang->tutorial->productManage->storyManage->step2->name = 'Click on Create Epic';
-$lang->tutorial->productManage->storyManage->step2->desc = 'Click to submit create epics of the product.';
+$lang->tutorial->productManage->storyManage->step2->desc = 'Click to create epics of the product.';
 
 $lang->tutorial->productManage->storyManage->step3 = new stdClass();
 $lang->tutorial->productManage->storyManage->step3->name = 'Fill in the Form';

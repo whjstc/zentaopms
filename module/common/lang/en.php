@@ -30,10 +30,10 @@ $lang->and       = 'and';
 $lang->to        = 'To';
 
 $lang->zentaoPMS      = 'ZenTao';
-$lang->pmsName        = 'Free';
+$lang->pmsName        = 'ALM';
 $lang->proName        = 'Pro';
-$lang->bizName        = 'Standard';
-$lang->maxName        = 'Premium';
+$lang->bizName        = 'Biz';
+$lang->maxName        = 'Max';
 $lang->liteName       = 'Lite';
 $lang->devopsPrefix   = 'ZenTao DevOps Platform';
 $lang->logoImg        = 'zt-logo-en.png';
