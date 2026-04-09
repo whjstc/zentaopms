@@ -162,7 +162,7 @@ $fnBuildCreateStoryButton = function() use ($lang, $product, $isProjectStory, $s
             }
         }
 
-        if(!empty($productID)) $items[] = array('text' => $lang->story->batchCreate, 'items' => $batchItems);
+        if(!empty($productID) && !empty($batchItems)) $items[] = array('text' => $lang->story->batchCreate, 'items' => $batchItems);
     }
     elseif(hasPriv($storyType, 'batchCreate'))
     {
