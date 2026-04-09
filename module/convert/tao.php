@@ -820,6 +820,7 @@ class convertTao extends convertModel
             $project    = $this->createProject($data, $projectRoleActor);
             $executions = $this->createExecution($id, $project, $sprintGroup, $projectRoleActor);
             $productID  = $this->createProduct($project, $executions);
+            $systemID   = $this->createSystem($productID);
 
             $this->createTmpRelation('jproject', $id, 'zproject', $project->id);
             $this->createTmpRelation('jproject', $id, 'zproduct', $productID);
@@ -838,7 +839,7 @@ class convertTao extends convertModel
                     $zentaoBuild->released     = isset($version['released']) ? $version['released'] : 0;
                     $zentaoBuild->startdate    = null;
 
-                    $build = $this->createBuild((int)$productID, (int)$project->id, 0, $zentaoBuild, array(), array());
+                    $build = $this->createBuild((int)$productID, (int)$project->id, $systemID, $zentaoBuild, array(), array());
 
                     $this->createRelease($build, $zentaoBuild, array(), array());
                     $this->createTmpRelation('jversion', $version['id'], 'zversion', $build->id);
@@ -1622,6 +1623,37 @@ class convertTao extends convertModel
 
         return $productID;
     }
+
+    /**
+     * 创建应用。
+     * Create system.
+     *
+     * @param  int       $productID
+     * @access protected
+     * @return int
+     */
+    protected function createSystem(int $productID): int
+    {
+        $product = $this->fetchByID($productID, 'product');
+
+        /* 创建产品同名的应用。 */
+        $system = new stdclass();
+        $system->name        = substr($product->name, 0, 80);
+        $system->product     = $productID;
+        $system->status      = 'active';
+        $system->desc        = '';
+        $system->integrated  = 0;
+        $system->createdBy   = $this->app->user->account;
+        $system->createdDate = helper::now();
+
+        $this->dao->insert(TABLE_SYSTEM)->data($system)->autoCheck()->exec();
+
+        $systemID = $this->dao->lastInsertID();
+        $this->loadModel('action')->create('system', $systemID, 'created');
+
+        return $systemID;
+    }
+
 
     /**
      * 处理工作流内置字段数据。
