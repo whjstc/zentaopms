@@ -911,6 +911,24 @@ class convertTaoTest extends baseTest
     }
 
     /**
+     * Test createSystem method.
+     *
+     * @param  int    $productID
+     * @access public
+     * @return bool
+     */
+    public fuction createSystemTest(int $productID)
+    {
+        $reflection = new ReflectionClass($this->instance);
+        $method = $reflection->getMethod('createSystem');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->instance, $objectID, $createdBy, $type);
+        if(dao::isError()) return false;
+        return $result;
+    }
+
+    /**
      * Test createTicket method.
      *
      * @param  int $productID
