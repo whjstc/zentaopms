@@ -2722,10 +2722,11 @@ class screenModel extends model
         $executionData = array();
         $executions    = $this->execution->getList(0, 'sprint', 'doing') + $this->execution->getList(0, 'stage', 'doing');
         $projectIdList = array_column($executions, 'project');
+        $parents       = array_column($executions, 'parent');
         $projectPairs  = $this->dao->select('id,name')->from(TABLE_PROJECT)->where('id')->in($projectIdList)->fetchPairs();
         foreach($executions as $executionID => $execution)
         {
-            if(isset($executionData[$execution->parent])) unset($executionData[$execution->parent]); // 过滤父阶段
+            if(in_array($executionID, $parents)) continue; // 过滤父阶段
 
             /* Splice project name for the execution name. */
             $projectName     = zget($projectPairs, $execution->project, '');
