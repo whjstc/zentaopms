@@ -709,7 +709,6 @@
                     ;
                     data = [{name: hasFatal ? 'fatal' : 'html', data: rawData}];
                 }
-                if(options.success && options.success.call(ajax, data, options) === false) return;
                 if(Array.isArray(data))
                 {
                     if(workspaceType)
@@ -753,6 +752,7 @@
                 }
                 else
                 {
+                    if(options.success && options.success.call(ajax, data, options) === false) return;
                     if(data.closeModal) zui.Modal.hide(typeof data.closeModal === 'string' ? data.closeModal : undefined);
                     if(data.autoLoad) autoLoad(data.autoLoad);
                     if(data.result === 'fail')
