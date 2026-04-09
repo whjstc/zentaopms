@@ -181,6 +181,7 @@ jsVar('delayWarning',   $lang->task->delayWarning);
 
 dtable
 (
+    set::id('tasks'),
     set::groupDivider(true),
     set::userMap($memberPairs),
     set::cols($cols),
