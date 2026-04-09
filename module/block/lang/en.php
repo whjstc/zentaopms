@@ -209,8 +209,8 @@ $lang->block->default['full']['my'][] = array('title' => "{$lang->execution->com
 
 $lang->block->default['doc'][] = array('title' => 'Statistics',                      'module' => 'doc', 'code' => 'docstatistic',    'width' => '2');
 $lang->block->default['doc'][] = array('title' => 'My Favorites',                    'module' => 'doc', 'code' => 'docmycollection', 'width' => '2');
-$lang->block->default['doc'][] = array('title' => 'Created by Me',                   'module' => 'doc', 'code' => 'docmycreated',    'width' => '2');
-$lang->block->default['doc'][] = array('title' => 'Recently Updated',                'module' => 'doc', 'code' => 'docrecentupdate', 'width' => '2');
+$lang->block->default['doc'][] = array('title' => 'My Created Documents',            'module' => 'doc', 'code' => 'docmycreated',    'width' => '2');
+$lang->block->default['doc'][] = array('title' => 'Recently Updated Documents',      'module' => 'doc', 'code' => 'docrecentupdate', 'width' => '2');
 if($config->vision == 'rnd') $lang->block->default['doc'][] = array('title' => "{$lang->productCommon} Document", 'module' => 'doc', 'code' => 'productdoc',      'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['doc'][] = array('title' => "{$lang->projectCommon} Document", 'module' => 'doc', 'code' => 'projectdoc',      'width' => '2', 'params' => array('count' => '20'));
 $lang->block->default['doc'][] = array('title' => 'Recents',                         'module' => 'doc', 'code' => 'docdynamic',      'width' => '1');
