@@ -19,6 +19,9 @@ cid=15248
 include dirname(__FILE__, 5) . '/test/lib/init.php';
 include dirname(__FILE__, 2) . '/lib/zen.class.php';
 
+zenData('project')->gen(15);
+zenData('product')->gen(15);
+
 // 2. 用户登录（选择合适角色）
 su('admin');
 
@@ -46,5 +49,5 @@ $view = $blockTest->printAssignToMeBlockTest($block1);
 r($view) && p('users:admin') && e('admin'); // 步骤1:测试方法执行成功返回success为true
 r($view) && p('products:1') && e('正常产品1'); // 步骤2:测试返回对象包含的产品信息
 r($view) && p('products:2') && e('正常产品2'); // 步骤3:测试返回对象包含的产品信息
-r($view) && p('projects:1') && e('项目'); // 步骤4:测试返回对象包含的项目信息
-r($view) && p('projects:2') && e('迭代'); // 步骤5:测试返回对象包含的迭代信息
+r($view) && p('projects:1') && e('项目集1'); // 步骤4:测试返回对象包含的项目集信息
+r($view) && p('projects:2') && e('项目集2'); // 步骤5:测试返回对象包含的项目集信息
