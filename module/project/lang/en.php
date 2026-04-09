@@ -252,8 +252,8 @@ $lang->project->stageBySwitchList['1'] = "Enable";
 
 $lang->project->waitProjects    = "Waiting {$lang->projectCommon}s";
 $lang->project->doingProjects   = "Ongoing {$lang->projectCommon}s";
-$lang->project->doingExecutions = 'Ongoing Execution (The latest one.)';
-$lang->project->closedProjects  = "Closed {$lang->projectCommon}s (Last 2.)";
+$lang->project->doingExecutions = 'Ongoing Execution (Latest)';
+$lang->project->closedProjects  = "Closed {$lang->projectCommon}s (Last 2)";
 $lang->project->closedProject   = "Closed {$lang->projectCommon}s";
 $lang->project->noProgram       = "Independent {$lang->projectCommon}s";
 

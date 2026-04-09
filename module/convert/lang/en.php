@@ -174,7 +174,7 @@ $lang->convert->jira->zentaoAction     = 'Zentao %s Action';
 $lang->convert->jira->zentaoReason     = 'Zentao %s Closure Reason';
 $lang->convert->jira->zentaoResolution = 'Zentao %s Resolution';
 $lang->convert->jira->initJiraUser     = 'Set Jira Users';
-$lang->convert->jira->importJira       = 'Migrate From Jira';
+$lang->convert->jira->importJira       = 'Select Import Method';
 $lang->convert->jira->start            = 'Start Migration';
 
 $lang->convert->jira->dbNameEmpty        = 'Jira database name is required.';

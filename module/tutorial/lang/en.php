@@ -175,7 +175,7 @@ $lang->tutorial->starter->createStory->step2->name = 'Click on Product Name';
 $lang->tutorial->starter->createStory->step2->desc = 'Click the product to view its details.';
 
 $lang->tutorial->starter->createStory->step3 = new stdClass();
-$lang->tutorial->starter->createStory->step3->name = 'Click to Create Story';
+$lang->tutorial->starter->createStory->step3->name = 'Click on Create Story';
 $lang->tutorial->starter->createStory->step3->desc = 'Here you can create a story.';
 
 $lang->tutorial->starter->createStory->step4 = new stdClass();
@@ -289,11 +289,11 @@ $lang->tutorial->starter->createTask = new stdClass();
 $lang->tutorial->starter->createTask->title = 'Decompose Tasks';
 
 $lang->tutorial->starter->createTask->step1 = new stdClass();
-$lang->tutorial->starter->createTask->step1->name = 'Click Execution';
+$lang->tutorial->starter->createTask->step1->name = 'Click on Execution';
 $lang->tutorial->starter->createTask->step1->desc = 'You can manage iterations here.';
 
 $lang->tutorial->starter->createTask->step2 = new stdClass();
-$lang->tutorial->starter->createTask->step2->name = 'Click Story';
+$lang->tutorial->starter->createTask->step2->name = 'Click on Story';
 $lang->tutorial->starter->createTask->step2->desc = 'Enter the story list, and you will see previously linked stories here.';
 
 $lang->tutorial->starter->createTask->step3 = new stdClass();
@@ -558,7 +558,7 @@ $lang->tutorial->scrumProjectManage->manageTest->step13 = new stdClass();
 $lang->tutorial->scrumProjectManage->manageTest->step13->name = 'Save form';
 
 $lang->tutorial->scrumProjectManage->manageTest->step14 = new stdClass();
-$lang->tutorial->scrumProjectManage->manageTest->step14->name = 'Click Request';
+$lang->tutorial->scrumProjectManage->manageTest->step14->name = 'Click on Request';
 $lang->tutorial->scrumProjectManage->manageTest->step14->desc = 'Click to manage the test request.';
 
 $lang->tutorial->scrumProjectManage->manageTest->step15 = new stdClass();
@@ -954,7 +954,7 @@ $lang->tutorial->kanbanProjectManage->manageKanban->step7->name = 'Save the Form
 $lang->tutorial->kanbanProjectManage->manageKanban->step7->desc = 'You can add new areas to your Kanban project.';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step8 = new stdClass();
-$lang->tutorial->kanbanProjectManage->manageKanban->step8->name = 'Click Create';
+$lang->tutorial->kanbanProjectManage->manageKanban->step8->name = 'Click on Create';
 $lang->tutorial->kanbanProjectManage->manageKanban->step8->desc = 'You can choose to link or create stories.';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step9 = new stdClass();
@@ -983,7 +983,7 @@ $lang->tutorial->kanbanProjectManage->manageKanban->step15->name = 'Save the For
 $lang->tutorial->kanbanProjectManage->manageKanban->step15->desc = 'You can add tasks to the task lane.';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step16 = new stdClass();
-$lang->tutorial->kanbanProjectManage->manageKanban->step16->name = 'Click Create';
+$lang->tutorial->kanbanProjectManage->manageKanban->step16->name = 'Click on Create';
 
 $lang->tutorial->kanbanProjectManage->manageKanban->step17 = new stdClass();
 $lang->tutorial->kanbanProjectManage->manageKanban->step17->name = 'Click on Report Bug';
@@ -1147,11 +1147,11 @@ $lang->tutorial->testManage->step5->name = 'Save form';
 $lang->tutorial->testManage->step5->desc = 'After saving, you can view cases in the case list.';
 
 $lang->tutorial->testManage->step6 = new stdClass();
-$lang->tutorial->testManage->step6->name = 'Click Test Request';
+$lang->tutorial->testManage->step6->name = 'Click on Test Request';
 $lang->tutorial->testManage->step6->desc = 'Click to manage test request information.';
 
 $lang->tutorial->testManage->step7 = new stdClass();
-$lang->tutorial->testManage->step7->name = 'Click Submit Request';
+$lang->tutorial->testManage->step7->name = 'Click on Submit Request';
 $lang->tutorial->testManage->step7->desc = 'Clicking submit will generate a test request.';
 
 $lang->tutorial->testManage->step8 = new stdClass();
@@ -1189,7 +1189,7 @@ $lang->tutorial->testManage->step16->name = 'Save form';
 $lang->tutorial->testManage->step16->desc = 'Complete case execution after saving.';
 
 $lang->tutorial->testManage->step17 = new stdClass();
-$lang->tutorial->testManage->step17->name = 'Click Results';
+$lang->tutorial->testManage->step17->name = 'Click on Results';
 $lang->tutorial->testManage->step17->desc = 'Execute cases here.';
 
 $lang->tutorial->testManage->step18 = new stdClass();
@@ -1434,7 +1434,7 @@ $lang->tutorial->productManage->planManage->step7 = new stdClass();
 $lang->tutorial->productManage->planManage->step7->name = 'Check Stories';
 
 $lang->tutorial->productManage->planManage->step8 = new stdClass();
-$lang->tutorial->productManage->planManage->step8->name = 'Click Link Story';
+$lang->tutorial->productManage->planManage->step8->name = 'Click on Link Story';
 $lang->tutorial->productManage->planManage->step8->desc = 'After clicking, the stories will be linked with the plan successfully.';
 
 $lang->tutorial->productManage->planManage->step9 = new stdClass();
@@ -1449,7 +1449,7 @@ $lang->tutorial->productManage->planManage->step11 = new stdClass();
 $lang->tutorial->productManage->planManage->step11->name = 'Check Bug';
 
 $lang->tutorial->productManage->planManage->step12 = new stdClass();
-$lang->tutorial->productManage->planManage->step12->name = 'Click Link Bug';
+$lang->tutorial->productManage->planManage->step12->name = 'Click on Link Bug';
 $lang->tutorial->productManage->planManage->step12->desc = 'After clicking, the bugs will be linked to the plan successfully.';
 
 $lang->tutorial->productManage->releaseManage = new stdClass();
@@ -1482,7 +1482,7 @@ $lang->tutorial->productManage->releaseManage->step7 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step7->name = 'Check Stories';
 
 $lang->tutorial->productManage->releaseManage->step8 = new stdClass();
-$lang->tutorial->productManage->releaseManage->step8->name = 'Click Link Story';
+$lang->tutorial->productManage->releaseManage->step8->name = 'Click on Link Story';
 $lang->tutorial->productManage->releaseManage->step8->desc = 'After clicking, the stories will be linked to the release successfully.';
 
 $lang->tutorial->productManage->releaseManage->step9 = new stdClass();
@@ -1497,7 +1497,7 @@ $lang->tutorial->productManage->releaseManage->step11 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step11->name = 'Check Bugs';
 
 $lang->tutorial->productManage->releaseManage->step12 = new stdClass();
-$lang->tutorial->productManage->releaseManage->step12->name = 'Click Link Bug';
+$lang->tutorial->productManage->releaseManage->step12->name = 'Click on Link Bug';
 $lang->tutorial->productManage->releaseManage->step12->desc = 'After clicking, the bugs will be linked to the release successfully.';
 
 $lang->tutorial->productManage->releaseManage->step13 = new stdClass();
@@ -1512,7 +1512,7 @@ $lang->tutorial->productManage->releaseManage->step15 = new stdClass();
 $lang->tutorial->productManage->releaseManage->step15->name = 'Check Bugs';
 
 $lang->tutorial->productManage->releaseManage->step16 = new stdClass();
-$lang->tutorial->productManage->releaseManage->step16->name = 'Click Link Bug';
+$lang->tutorial->productManage->releaseManage->step16->name = 'Click on Link Bug';
 $lang->tutorial->productManage->releaseManage->step16->desc = 'After clicking, the bugs are successfully linked to the release.';
 
 $lang->tutorial->productManage->releaseManage->step17 = new stdClass();
@@ -2028,7 +2028,7 @@ $lang->tutorial->orTutorial->charterManage->step1->name = "Click on Charter";
 $lang->tutorial->orTutorial->charterManage->step1->desc = "You can manage Charter initiation here";
 
 $lang->tutorial->orTutorial->charterManage->step2 = new stdClass();
-$lang->tutorial->orTutorial->charterManage->step2->name = "Click Create Charter";
+$lang->tutorial->orTutorial->charterManage->step2->name = "Click on Create Charter";
 $lang->tutorial->orTutorial->charterManage->step2->desc = "Click to submit the Charter initiation request";
 
 $lang->tutorial->orTutorial->charterManage->step3 = new stdClass();
@@ -2039,7 +2039,7 @@ $lang->tutorial->orTutorial->charterManage->step4->name = "Save the form";
 $lang->tutorial->orTutorial->charterManage->step4->desc = "After saving, track the progress of the application in the initiation list";
 
 $lang->tutorial->orTutorial->charterManage->step5 = new stdClass();
-$lang->tutorial->orTutorial->charterManage->step5->name = "Click Review Result";
+$lang->tutorial->orTutorial->charterManage->step5->name = "Click on Review Result";
 $lang->tutorial->orTutorial->charterManage->step5->desc = "Click to review the initiation application";
 
 $lang->tutorial->orTutorial->charterManage->step6 = new stdClass();
@@ -2050,7 +2050,7 @@ $lang->tutorial->orTutorial->charterManage->step7->name = "Save the form";
 $lang->tutorial->orTutorial->charterManage->step7->desc = "After saving, the initiation status will be updated based on the review results.";
 
 $lang->tutorial->orTutorial->charterManage->step8 = new stdClass();
-$lang->tutorial->orTutorial->charterManage->step8->name = "Click Close";
+$lang->tutorial->orTutorial->charterManage->step8->name = "Click on Close";
 $lang->tutorial->orTutorial->charterManage->step8->desc = "Click the close button to finalize the Charter once completed.";
 
 $lang->tutorial->orTutorial->charterManage->step9 = new stdClass();

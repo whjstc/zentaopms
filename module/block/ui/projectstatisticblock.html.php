@@ -144,7 +144,7 @@ if($project)
             }
             $cells[] = cell
             (
-                setClass('flex-1 overflow-hidden whitespace-nowrap project-statistic-table scrum bg-gray-50 border border-1 pt-2 px-1' . ($isEn ? ' en-statistics' : '')),
+                setClass('flex-1 overflow-hidden whitespace-nowrap project-statistic-table scrum bg-gray-50 border border-1 pt-2 px-1'),
                 set::width($longBlock ? '25%' : 'calc(50% - 1rem)'),
                 div
                 (
