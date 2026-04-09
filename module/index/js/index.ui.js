@@ -646,7 +646,7 @@ function goBack(target, url, startState)
     }
 
     if(url) return openApp(url);
-    if(target)
+    if(target && !target.endsWith('APP'))
     {
         if($.apps.openedMap[target]) return openApp(target);
         if(target.includes('-'))
