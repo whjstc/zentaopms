@@ -3987,7 +3987,7 @@ EOF;
      */
     public static function getWorkspaceInfo(): array
     {
-        global $app, $config;
+        global $app, $config, $lang;
 
         if(isset($app->workspaceInfo)) return $app->workspaceInfo;
 
@@ -3997,7 +3997,13 @@ EOF;
             return $app->workspaceInfo;
         }
 
-        if(empty($app->lang->workspaceList[$app->tab]) || commonModel::setMainMenu())
+        if($app->tab === 'project' && $lang->project->common == $lang->project->template)
+        {
+            $app->workspaceInfo = array('enabled' => false, 'type' => '', 'opened' => false);
+            return $app->workspaceInfo;
+        }
+
+        if(empty($lang->workspaceList[$app->tab]) || commonModel::setMainMenu())
         {
             $app->workspaceInfo = array('enabled' => true, 'type' => '', 'opened' => false);
             return $app->workspaceInfo;
