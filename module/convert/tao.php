@@ -835,9 +835,9 @@ class convertTao extends convertModel
                     $zentaoBuild->id           = $version['id'];
                     $zentaoBuild->vname        = $version['name'];
                     $zentaoBuild->releasedDate = isset($version['releasedDate']) ? $version['releasedDate'] : null;
-                    $zentaoBuild->archived     = isset($version['archived']) ? $version['archived'] : 0;
-                    $zentaoBuild->released     = isset($version['released']) ? $version['released'] : 0;
-                    $zentaoBuild->startdate    = null;
+                    $zentaoBuild->archived     = isset($version['archived'])     ? $version['archived'] : 0;
+                    $zentaoBuild->released     = isset($version['released'])     ? $version['released'] : 0;
+                    $zentaoBuild->startdate    = isset($version['startDate'])    ? $version['startDate'] : null;
 
                     $build = $this->createBuild((int)$productID, (int)$project->id, $systemID, $zentaoBuild, array(), array());
 
