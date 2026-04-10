@@ -1731,7 +1731,9 @@ class testcaseModel extends model
      */
     protected function processStepsChanged(object $case, array $oldStep): bool
     {
-        $stepChanged = (count($oldStep) != count($case->steps));
+        $oldSteps    = array_filter($oldStep);
+        $newSteps    = array_filter($case->steps);
+        $stepChanged = (count($oldStep) != count($newSteps));
         if(!$stepChanged)
         {
             $desc     = array_values($case->steps);
