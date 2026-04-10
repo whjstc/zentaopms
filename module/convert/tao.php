@@ -802,7 +802,7 @@ class convertTao extends convertModel
         $this->app->loadConfig('execution');
         $this->app->loadLang('doc');
 
-        $projectRoleActor    = $this->session->jiraMethod == 'api' ? array() : $this->getJiraProjectRoleActor();
+        $projectRoleActor    = $this->getJiraProjectRoleActor($dataList);
         $archivedProject     = $this->session->jiraMethod == 'api' ? array() : $this->getJiraArchivedProject($dataList);
         $sprintGroup         = $this->getJiraSprint(array_keys($dataList));
         $jiraProjectRelation = $this->dao->dbh($this->dbh)->select('*')->from(JIRA_TMPRELATION)->where('AType')->eq('jproject')->fetchAll('AID');
@@ -1345,20 +1345,18 @@ class convertTao extends convertModel
      */
     protected function createTeamMember(int $objectID, string $createdBy, string $type): bool
     {
-        $account = $this->getJiraAccount($createdBy);
-        if($account)
-        {
-            $member = new stdclass();
-            $member->root    = $objectID;
-            $member->account = $account;
-            $member->role    = '';
-            $member->join    = helper::now();
-            $member->type    = $type;
-            $member->days    = 0;
-            $member->hours   = $this->config->execution->defaultWorkhours;
+        if(!$createdBy) return false;
 
-            $this->dao->dbh($this->dbh)->replace(TABLE_TEAM)->data($member)->exec();
-        }
+        $member = new stdclass();
+        $member->root    = $objectID;
+        $member->account = $createdBy;
+        $member->role    = '';
+        $member->join    = helper::now();
+        $member->type    = $type;
+        $member->days    = 0;
+        $member->hours   = $this->config->execution->defaultWorkhours;
+
+        $this->dao->dbh($this->dbh)->replace(TABLE_TEAM)->data($member)->exec();
 
         return true;
     }
