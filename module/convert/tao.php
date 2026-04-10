@@ -912,6 +912,10 @@ class convertTao extends convertModel
                         {
                             $data->{$fieldValue->customfield} = $fieldValue->numbervalue; // 数字类型是numbervalue
                         }
+                        elseif(!empty($fieldValue->textvalue))
+                        {
+                            $data->{$fieldValue->customfield} = $fieldValue->textvalue; // 文本类型是textvalue
+                        }
                         elseif(isset($data->{$fieldValue->customfield}))
                         {
                             $data->{$fieldValue->customfield} .= ',' . $fieldValue->stringvalue; // 多选的情况
@@ -1701,8 +1705,6 @@ class convertTao extends convertModel
         $this->loadModel('action');
 
         $story = new stdclass();
-        $story = $this->processBuildinFieldData('story', $data, $story, $relations);
-
         $story->title      = $data->summary;
         $story->type       = $type;
         $story->product    = $productID;
@@ -1722,6 +1724,8 @@ class convertTao extends convertModel
             $story->closedReason = zget($relations["zentaoReason{$data->issuetype}"], $data->resolution, '');
             if($story->closedReason && !isset($this->lang->story->reasonList[$story->closedReason])) $story->closedReason = 'done';
         }
+
+        $story = $this->processBuildinFieldData('story', $data, $story, $relations);
 
         $this->dao->dbh($this->dbh)->insert(TABLE_STORY)->data($story)->exec();
 
@@ -1798,8 +1802,6 @@ class convertTao extends convertModel
         $this->loadModel('action');
 
         $task = new stdclass();
-        $task = $this->processBuildinFieldData('task', $data, $task, $relations);
-
         $task->project    = $projectID;
         $task->execution  = $executionID;
         $task->name       = $data->summary;
@@ -1823,6 +1825,8 @@ class convertTao extends convertModel
             $task->closedReason = zget($reasonList, $data->resolution, '');
             if($task->closedReason && !isset($this->lang->task->reasonList[$task->closedReason])) $task->closedReason = 'cancel';
         }
+
+        $task = $this->processBuildinFieldData('task', $data, $task, $relations);
 
         $this->dao->dbh($this->dbh)->insert(TABLE_TASK)->data($task)->exec();
         $taskID = $this->dao->dbh($this->dbh)->lastInsertID();
@@ -1865,8 +1869,6 @@ class convertTao extends convertModel
         $this->loadModel('action');
 
         $bug = new stdclass();
-        $bug = $this->processBuildinFieldData('bug', $data, $bug, $relations);
-
         $bug->product     = $productID;
         $bug->project     = $projectID;
         $bug->execution   = $executionID;
@@ -1889,6 +1891,8 @@ class convertTao extends convertModel
             $bug->resolution = zget($resolutionList, $data->resolution, '');
             if($bug->resolution && !isset($this->lang->bug->resolutionList[$bug->resolution])) $bug->resolution = 'fixed';
         }
+
+        $bug = $this->processBuildinFieldData('bug', $data, $bug, $relations);
 
         $this->dao->dbh($this->dbh)->insert(TABLE_BUG)->data($bug)->exec();
         $bugID = $this->dao->dbh($this->dbh)->lastInsertID();
@@ -1940,8 +1944,6 @@ class convertTao extends convertModel
         $this->loadModel('action');
 
         $case = new stdclass();
-        $case = $this->processBuildinFieldData('testcase', $data, $case, $relations);
-
         $case->product    = $productID;
         $case->project    = $projectID;
         $case->execution  = $executionID;
@@ -1952,6 +1954,8 @@ class convertTao extends convertModel
         $case->status     = $this->convertStatus('testcase', $data->issuestatus, $data->issuetype, $relations);
         $case->openedBy   = $this->getJiraAccount(isset($data->creator) ? $data->creator : '');
         $case->openedDate = !empty($data->created) ? substr($data->created, 0, 19) : null;
+
+        $case = $this->processBuildinFieldData('testcase', $data, $case, $relations);
 
         $this->dao->dbh($this->dbh)->insert(TABLE_CASE)->data($case)->exec();
         $caseID = $this->dao->dbh($this->dbh)->lastInsertID();
@@ -1999,8 +2003,6 @@ class convertTao extends convertModel
         $this->loadModel('action');
 
         $feedback = new stdclass();
-        $feedback = $this->processBuildinFieldData('feedback', $data, $feedback, $relations);
-
         $feedback->product     = $productID;
         $feedback->title       = $data->summary;
         $feedback->public      = '1';
@@ -2019,6 +2021,8 @@ class convertTao extends convertModel
             $feedback->closedReason = zget($reasonList, $data->resolution, '');
             if($feedback->closedReason && !isset($this->lang->feedback->closedReasonList[$feedback->closedReason])) $feedback->closedReason = 'refuse';
         }
+
+        $feedback = $this->processBuildinFieldData('feedback', $data, $feedback, $relations);
 
         $this->dao->dbh($this->dbh)->insert(TABLE_FEEDBACK)->data($feedback)->exec();
         $feedbackID = $this->dao->dbh($this->dbh)->lastInsertID();
@@ -2057,8 +2061,6 @@ class convertTao extends convertModel
         $this->loadModel('action');
 
         $ticket = new stdclass();
-        $ticket = $this->processBuildinFieldData('ticket', $data, $ticket, $relations);
-
         $ticket->product     = $productID;
         $ticket->title       = $data->summary;
         $ticket->type        = 'code';
@@ -2078,6 +2080,8 @@ class convertTao extends convertModel
             $ticket->closedReason = zget($reasonList, $data->resolution, '');
             if($ticket->closedReason && !isset($this->lang->ticket->closedReasonList[$ticket->closedReason])) $ticket->closedReason = 'refuse';
         }
+
+        $ticket = $this->processBuildinFieldData('ticket', $data, $ticket, $relations);
 
         $this->dao->dbh($this->dbh)->insert(TABLE_TICKET)->data($ticket)->exec();
         $ticketID = $this->dao->dbh($this->dbh)->lastInsertID();
