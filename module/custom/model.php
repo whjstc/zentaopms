@@ -225,7 +225,8 @@ class customModel extends model
         $group   = 0;
         foreach($menu as $item)
         {
-            if($module == 'main' && isset($item->name) && $item->name != 'other' && isset($dividerOrders[$item->name]) && $dividerOrders[$item->name] > $group)
+            $isNormalItem = $module == 'main' && isset($item->name) && $item->name != 'other';
+            if($isNormalItem && isset($dividerOrders[$item->name]) && $dividerOrders[$item->name] > $group)
             {
                 $menu[$item->order]->divider = $isFirst ? false : true;
                 $group = $dividerOrders[$item->name];
@@ -276,7 +277,7 @@ class customModel extends model
             {
                 $menuOrder = $lang->menuOrder;
             }
-            else if(isset($lang->menu->{$module}))
+            elseif(isset($lang->menu->{$module}))
             {
                 $moduleMenu = is_object($lang->menu->$module) ? (array)$lang->menu->$module : $lang->menu->$module;
                 if(is_array($moduleMenu) && isset($moduleMenu['menuOrder'])) $menuOrder = $moduleMenu['menuOrder'];
