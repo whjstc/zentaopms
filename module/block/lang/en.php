@@ -463,7 +463,7 @@ $lang->block->widthOptions['3'] = 'Max Block';
 $lang->block->flowchart            = array();
 $lang->block->flowchart['admin']   = array('Admins', 'Manage Departments', 'Add User', 'Manage Permissions');
 if($config->systemMode == 'ALM') $lang->block->flowchart['program'] = array('Program Owner', 'Create Program', "Link {$lang->productCommon}", "Create {$lang->projectCommon}", "Budgeting and planning", 'Add Stakeholder');
-$lang->block->flowchart['product'] = array($lang->productCommon . ' Manager', 'Create' . $lang->productCommon, 'Manage Modules', 'Manage Plans', 'Manage Stories', 'Create Release');
+$lang->block->flowchart['product'] = array($lang->productCommon . ' Manager', 'Create ' . $lang->productCommon, 'Manage Modules', 'Manage Plans', 'Manage Stories', 'Create Release');
 $lang->block->flowchart['project'] = array('Project Manager', "Create {$lang->projectCommon} & " . $lang->execution->common, 'Manage Team', 'Link Stories', 'Decompose Tasks', 'Track Progress');
 $lang->block->flowchart['dev']     = array('Developers', 'Claim Tasks & Bugs', 'Design Solution', 'Commit Code', 'Update Status', 'Complete Tasks & Bugs');
 $lang->block->flowchart['tester']  = array('Test Team', 'Write Cases', 'Execute Cases', 'Report Bugs', 'Verify Bugs', 'Close Bugs');
