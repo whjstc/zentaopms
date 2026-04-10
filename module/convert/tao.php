@@ -110,6 +110,7 @@ class convertTao extends convertModel
             else
             {
                 $issue->{$customFieldKey} = $fieldValue;
+                if(!empty($fieldValue) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{4}$/', (string)$fieldValue)) $issue->{$customFieldKey} = date('Y-m-d H:i:s', strtotime($fieldValue));
             }
         }
 
@@ -820,6 +821,7 @@ class convertTao extends convertModel
             $project    = $this->createProject($data, $projectRoleActor);
             $executions = $this->createExecution($id, $project, $sprintGroup, $projectRoleActor);
             $productID  = $this->createProduct($project, $executions);
+            $systemID   = $this->createSystem($productID);
 
             $this->createTmpRelation('jproject', $id, 'zproject', $project->id);
             $this->createTmpRelation('jproject', $id, 'zproduct', $productID);
@@ -834,11 +836,11 @@ class convertTao extends convertModel
                     $zentaoBuild->id           = $version['id'];
                     $zentaoBuild->vname        = $version['name'];
                     $zentaoBuild->releasedDate = isset($version['releasedDate']) ? $version['releasedDate'] : null;
-                    $zentaoBuild->archived     = isset($version['archived']) ? $version['archived'] : 0;
-                    $zentaoBuild->released     = isset($version['released']) ? $version['released'] : 0;
-                    $zentaoBuild->startdate    = null;
+                    $zentaoBuild->archived     = isset($version['archived'])     ? $version['archived'] : 0;
+                    $zentaoBuild->released     = isset($version['released'])     ? $version['released'] : 0;
+                    $zentaoBuild->startdate    = isset($version['startDate'])    ? $version['startDate'] : null;
 
-                    $build = $this->createBuild((int)$productID, (int)$project->id, 0, $zentaoBuild, array(), array());
+                    $build = $this->createBuild((int)$productID, (int)$project->id, $systemID, $zentaoBuild, array(), array());
 
                     $this->createRelease($build, $zentaoBuild, array(), array());
                     $this->createTmpRelation('jversion', $version['id'], 'zversion', $build->id);
@@ -1597,6 +1599,29 @@ class convertTao extends convertModel
         $productID = $this->dao->dbh($this->dbh)->lastInsertID();
         $this->loadModel('action')->create('product', $productID, 'opened');
 
+        $this->dao->dbh($this->dbh)->update(TABLE_PRODUCT)->set('`order`')->eq($productID * 5)->where('id')->eq($productID)->exec();
+        $this->dao->dbh($this->dbh)->replace(TABLE_PROJECTPRODUCT)->set('project')->eq($project->id)->set('product')->eq($productID)->set('branch')->eq('0')->exec();
+
+        $this->createDocLib($productID, 0, 0, $this->lang->doclib->main['product'], 'product');
+
+        /* 关联产品与迭代。 */
+        foreach($executions as $executionID) $this->dao->dbh($this->dbh)->replace(TABLE_PROJECTPRODUCT)->set('project')->eq($executionID)->set('product')->eq($productID)->set('branch')->eq('0')->exec();
+
+        return $productID;
+    }
+
+    /**
+     * 创建应用。
+     * Create system.
+     *
+     * @param  int       $productID
+     * @access protected
+     * @return int
+     */
+    protected function createSystem(int $productID): int
+    {
+        $product = $this->fetchByID($productID, 'product');
+
         /* 创建产品同名的应用。 */
         $system = new stdclass();
         $system->name        = substr($product->name, 0, 80);
@@ -1612,16 +1637,9 @@ class convertTao extends convertModel
         $systemID = $this->dao->lastInsertID();
         $this->loadModel('action')->create('system', $systemID, 'created');
 
-        $this->dao->dbh($this->dbh)->update(TABLE_PRODUCT)->set('`order`')->eq($productID * 5)->where('id')->eq($productID)->exec();
-        $this->dao->dbh($this->dbh)->replace(TABLE_PROJECTPRODUCT)->set('project')->eq($project->id)->set('product')->eq($productID)->set('branch')->eq('0')->exec();
-
-        $this->createDocLib($productID, 0, 0, $this->lang->doclib->main['product'], 'product');
-
-        /* 关联产品与迭代。 */
-        foreach($executions as $executionID) $this->dao->dbh($this->dbh)->replace(TABLE_PROJECTPRODUCT)->set('project')->eq($executionID)->set('product')->eq($productID)->set('branch')->eq('0')->exec();
-
-        return $productID;
+        return $systemID;
     }
+
 
     /**
      * 处理工作流内置字段数据。
