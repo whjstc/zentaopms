@@ -110,6 +110,7 @@ class convertTao extends convertModel
             else
             {
                 $issue->{$customFieldKey} = $fieldValue;
+                if(!empty($fieldValue) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{4}$/', (string)$fieldValue)) $issue->{$customFieldKey} = date('Y-m-d H:i:s', strtotime($fieldValue));
             }
         }
 
