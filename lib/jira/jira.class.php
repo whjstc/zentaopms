@@ -375,7 +375,6 @@ class jira
             $user['id'] = $index;
             $user['lowerUserName']    = $user['accountId'];
             $user['lowerDisplayName'] = $user['displayName'];
-            $user['emailAddress']     = $user['emailAddress'];
             $user['createdDate']      = '';
 
             $users[$index] = $user;
