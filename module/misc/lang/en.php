@@ -114,7 +114,7 @@ $lang->misc->feature->promptExecImage   = 'theme/default/images/main/prompt_exec
 $lang->misc->feature->promptLearnMore   = 'https://www.zentao.pm/book/zentaopms/1097.html';
 
 /* Release Date. */
-$lang->misc->releaseDate['22.1']        = '2026-03-26';
+$lang->misc->releaseDate['22.1']        = '2026-04-13';
 $lang->misc->releaseDate['22.0']        = '2026-03-05';
 $lang->misc->releaseDate['22.0.beta']   = '2026-01-27';
 $lang->misc->releaseDate['21.7.9']      = '2026-03-02';
@@ -293,7 +293,7 @@ $lang->misc->feature->all['20.0.alpha1'][] = array('title' => 'Internal release 
 $lang->misc->feature->all['18.10'][]       = array('title' => 'Supported importing test cases from other libraries; allowed exporting documents with adaptive image scaling for Word; saved history sorting preferences in cookies; optimized log editing logic; carried over attachments when converting feedback or tickets; added keyword and CC fields to feedback; added liquid fill gauge charts; optimized metric collection and display.', 'desc' => '');
 $lang->misc->feature->all['18.9'][]        = array('title' => 'Integrated AI Large Language Models (LLMs); introducedan upgraded client version for meetings; added participants to test requests; supported online preview for video attachments; allowed customizing review inspection categories.', 'desc' => '');
 $lang->misc->feature->all['18.8'][]        = array('title' => 'Added metrics and application inspection dashboards to BI; added a configuration wizard to the DevOps Platform; added market management to the Requirement and Market Management view; revamped client navigation and personal center.', 'desc' => '');
-$lang->misc->feature->all['18.7'][]        = array('title' => 'Added cloud-native platform, artifact repository, and application management to DevOps; optimized navigation and UI interactions; 
+$lang->misc->feature->all['18.7'][]        = array('title' => 'Added cloud-native platform, artifact repository, and application management to DevOps; optimized navigation and UI interactions;
 added AI prompt designer with LLM integration and custom AI apps.', 'desc' => '');
 $lang->misc->feature->all['18.6'][]        = array('title' => 'Optimized performance of frequently used lists; improved feature details for BI and Waterfall projects; fixed bugs.', 'desc' => '');
 $lang->misc->feature->all['18.5'][]        = array('title' => 'Supported importing Academy courses from the cloud and previewing PDFs within courses; optimized loading speeds for frequently used lists; fixed bugs.', 'desc' => '');
