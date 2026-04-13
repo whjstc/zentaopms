@@ -266,7 +266,7 @@ class extensionZen extends extension
         $removePath = isset($pathinfo['dirname']) && $pathinfo['dirname'] != '.' ? $pathinfo['dirname'] : $pathinfo['basename'];
 
         /* 修复漏洞：过滤不安全的文件。 Fix vulnerability: filter unsafe files. */
-        $unsafePatterns = '/\.\.\/|\.\.\\/|^.*\.\.\/.*$/';
+        $unsafePatterns = '/\.\.[\/\\\]|^[^\w]|\w:[\/\\\]/'; // 非法路径包括： ../ | ..\ | /opt/ | c:/ | c:\
         $filteredFiles  = array();
         $lastIndex      = 0;
         foreach($files as $file)
@@ -280,10 +280,14 @@ class extensionZen extends extension
         $startIndex = 0;
         foreach($filteredFiles as $index)
         {
-            $indexes[]  = $startIndex . '-' . ($index - 1);
+            $preIndex = $index - 1;
+            if($preIndex < 0) return $return;
+
+            $indexes[]  = $preIndex == $startIndex ? $startIndex : $startIndex . '-' . $preIndex;
             $startIndex = $index + 1;
         }
-        if($startIndex != $lastIndex) $indexes[] = $startIndex . '-' . $lastIndex;
+        if($startIndex <= $lastIndex) $indexes[] = $startIndex == $lastIndex ? $startIndex : $startIndex . '-' . $lastIndex;
+
         if($indexes && $zip->extract(PCLZIP_OPT_PATH, $extensionPath, PCLZIP_OPT_BY_INDEX, $indexes, PCLZIP_OPT_REMOVE_PATH, $removePath) == 0)
         {
             $return->result = 'fail';
