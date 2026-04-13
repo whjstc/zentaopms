@@ -336,6 +336,7 @@ class convertTao extends convertModel
         $fieldValue->stringvalue = zget($data, 'stringvalue', '');
         $fieldValue->datevalue   = zget($data, 'datevalue', '');
         $fieldValue->numbervalue = zget($data, 'numbervalue', '');
+        $fieldValue->textvalue   = zget($data, 'textvalue', '');
 
         return $fieldValue;
     }
