@@ -21,7 +21,7 @@ cid=1
  - 测试结果 @myinvolved下显示条数正确
 - 检查由我指派标签下显示条数
  - 最终测试状态 @SUCCESS
- - 测试结果 @assignedyyme下显示条数正确
+ - 测试结果 @assignedbyme下显示条数正确
 - 检查研发需求变更标签下显示条数
  - 最终测试状态 @SUCCESS
  - 测试结果 @needconfirm下显示条数正确
