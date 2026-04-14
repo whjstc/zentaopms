@@ -1678,7 +1678,15 @@ class convertTao extends convertModel
             {
                 $fields      = $this->session->jiraMethod == 'api' ? zget($customFields, $data->issuetype, array()) : $customFields;
                 $controlCode = !empty($fields[$jiraField]->customfieldtypekey) ? $fields[$jiraField]->customfieldtypekey : 'com.atlassian.jira.plugin.system.customfieldtypes:textfield';
-                if(strpos($controlCode, 'userpicker') !== false || strpos($controlCode, 'people') !== false)
+
+                if(strpos($controlCode, 'multiuserpicker') !== false)
+                {
+                    $users = explode(',', $data->{$jiraField});
+
+                    $object->{$zentaoField} = '';
+                    foreach($users as $user) $object->{$zentaoField} .= $this->getJiraAccount($user) . ',';
+                }
+                elseif(strpos($controlCode, 'userpicker') !== false || strpos($controlCode, 'people') !== false)
                 {
                     $object->{$zentaoField} = $this->getJiraAccount($data->{$jiraField});
                 }
