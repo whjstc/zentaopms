@@ -788,8 +788,8 @@ class convertTaoTest extends baseTest
         $project->begin         = !empty($data->created) ? substr($data->created, 0, 10) : date('Y-m-d');
         $project->end           = date('Y-m-d', time() + 30 * 24 * 3600);
         $project->days          = abs(strtotime($project->end) - strtotime($project->begin)) / (24 * 3600) + 1;
-        $project->PM            = $this->mockGetJiraAccount(isset($data->lead) ? $data->lead : '');
-        $project->openedBy      = $this->mockGetJiraAccount(isset($data->lead) ? $data->lead : '');
+        $project->PM            = isset($data->lead) ? $data->lead : '';
+        $project->openedBy      = isset($data->lead) ? $data->lead : '';
         $project->openedDate    = date('Y-m-d H:i:s');
         $project->openedVersion = '18.0';
         $project->storyType     = 'story,epic,requirement';
