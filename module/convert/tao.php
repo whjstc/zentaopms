@@ -597,7 +597,7 @@ class convertTao extends convertModel
         $worklog->author      = zget($data, 'author',     '');
         $worklog->worklogbody = zget($data, 'body',       '');
         $worklog->timeworked  = zget($data, 'timeworked', 0);
-        $worklog->created     = zget($data, 'created',    NULL);
+        $worklog->created     = zget($data, 'created',    null);
 
         return $worklog;
     }
@@ -2221,7 +2221,7 @@ class convertTao extends convertModel
         $release->system       = $build->system;
         $release->build        = $build->id;
         $release->name         = $build->name;
-        $release->date         = helper::isZeroDate($data->startdate) ? NULL : $this->formatDate(substr($data->startdate, 0, 10));
+        $release->date         = helper::isZeroDate($data->startdate) ? null : $this->formatDate(substr($data->startdate, 0, 10));
         $release->desc         = isset($data->description) ? $data->description : '';
         $release->status       = $status;
         $release->releasedDate = !empty($data->released) && !empty($data->releasedate) ? $this->formatDate(substr($data->releasedate, 0, 10)) : null;
