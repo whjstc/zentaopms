@@ -89,9 +89,9 @@ class convertTao extends convertModel
             $customFieldKey = str_replace('customfield_', '', $fieldKey);
             if(is_array($fieldValue))
             {
-                if(!empty($fieldValue['content']) && !empty($fieldValue['renderedFields'][$fieldKey]))
+                if(!empty($fieldValue['content']) && !empty($data['renderedFields'][$fieldKey]))
                 {
-                    $issue->{$customFieldKey} = $fieldValue['renderedFields'][$fieldKey];
+                    $issue->{$customFieldKey} = $data['renderedFields'][$fieldKey];
                 }
                 elseif(!empty($fieldValue['id']))
                 {
