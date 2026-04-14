@@ -847,7 +847,7 @@ class convertTao extends convertModel
                     $zentaoBuild = new stdclass();
                     $zentaoBuild->id           = $version['id'];
                     $zentaoBuild->vname        = $version['name'];
-                    $zentaoBuild->releasedDate = isset($version['releasedDate']) ? $version['releasedDate'] : null;
+                    $zentaoBuild->releasedate  = isset($version['releaseDate'])  ? $version['releaseDate'] : null;
                     $zentaoBuild->archived     = isset($version['archived'])     ? $version['archived']     : 0;
                     $zentaoBuild->released     = isset($version['released'])     ? $version['released']     : 0;
                     $zentaoBuild->startdate    = isset($version['startDate'])    ? $version['startDate']    : null;
@@ -2224,7 +2224,7 @@ class convertTao extends convertModel
         $release->date         = helper::isZeroDate($data->startdate) ? NULL : substr($data->startdate, 0, 10);
         $release->desc         = isset($data->description) ? $data->description : '';
         $release->status       = $status;
-        $release->releasedDate = !empty($data->released) && !empty($data->releasedDate) ? substr($data->releasedDate, 0, 10) : null;
+        $release->releasedDate = !empty($data->released) && !empty($data->releasedate) ? substr($data->releasedate, 0, 10) : null;
         $release->createdBy    = $this->app->user->account;
         $release->createdDate  = helper::now();
         $this->dao->dbh($this->dbh)->insert(TABLE_RELEASE)->data($release)->exec();
