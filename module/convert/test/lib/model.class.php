@@ -939,4 +939,28 @@ class convertModelTest extends baseTest
             return 'error: ' . $e->getMessage();
         }
     }
+
+    /**
+     * Test formatDatetime method.
+     *
+     * @param  string $datetime
+     * @access public
+     * @return string
+     */
+    public function formatDatetimeTest(string $datetime): string
+    {
+        return $this->instance->formatDatetime($datetime);
+    }
+
+    /**
+     * Test formatDate method.
+     *
+     * @param  string $date
+     * @access public
+     * @return string
+     */
+    public function formatDateTest(string $date): string
+    {
+        return $this->instance->formatDate($date);
+    }
 }
