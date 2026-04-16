@@ -963,14 +963,18 @@ class projectModel extends model
      *
      * @param  string $model  scrum|waterfall|noSprint|agileplus|waterfallplus
      * @param  int    $projectID
+     * @param  int    $hasProduct
      * @access public
      * @return object|false
      */
-    public function getPrivsByModel(string $model = 'waterfall', int $projectID = 0): object|false
+    public function getPrivsByModel(string $model = 'waterfall', int $projectID = 0, int $hasProduct = 0): object|false
     {
         if(!isset($this->config->programPriv->$model)) return false;
+        if($projectID) $project = $this->fetchByID($projectID);
 
         if($model == 'noSprint') $this->config->project->includedPriv = $this->config->project->noSprintPriv;
+        if(!$hasProduct) $this->config->project->includedPriv = array_merge($this->config->project->includedPriv, $this->config->project->noProductPriv);
+        if(isset($project->coverExecutionPriv) && empty($project->coverExecutionPriv)) $this->config->project->includedPriv = $this->config->project->projectPriv;
 
         $hasBaseline    = true;
         $hasAuditplan   = true;
@@ -979,7 +983,6 @@ class projectModel extends model
         $hasChange      = true;
         if($this->config->edition != 'open' && $projectID)
         {
-            $project        = $this->fetchByID($projectID);
             $hasBaseline    = $this->loadModel('workflowgroup')->hasFeature((int)$project->workflowGroup, 'cm');
             $hasDeliverable = $this->workflowgroup->hasFeature((int)$project->workflowGroup, 'deliverable');
             $hasChange      = $this->workflowgroup->hasFeature((int)$project->workflowGroup, 'change');
@@ -1014,6 +1017,7 @@ class projectModel extends model
 
             foreach($methods as $method => $label)
             {
+                if($method == 'submitIpd' && $model != 'ipd') continue;
                 if(isset($this->config->project->includedPriv[$module]) and !in_array($method, $this->config->project->includedPriv[$module])) continue;
 
                 if(!isset($privs->$module)) $privs->$module = new stdclass();
@@ -1224,7 +1228,7 @@ class projectModel extends model
      */
     protected function addTeamMembers(int $projectID, object $project, array $members): bool
     {
-        /* Set team of project. */
+        /* Manage Team of project. */
         array_push($members, $project->PM, $project->openedBy);
         $members     = array_unique($members);
         $roles       = $this->loadModel('user')->getUserRoles(array_values($members));

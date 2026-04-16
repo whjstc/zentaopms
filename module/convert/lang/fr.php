@@ -143,7 +143,7 @@ $lang->convert->jira->dbNameNotice     = "Please enter the Jira database name.";
 $lang->convert->jira->importNotice     = 'Notice: Importing data is risky! Make sure to complete the following steps in sequence before merging.';
 $lang->convert->jira->accountNotice    = 'Those who use email will use the string before @ as their username, and those exceeding 30 characters will be truncated.';
 $lang->convert->jira->userExceeds      = 'The current system authorization limit is %s. Please confirm whether the number of imported users exceeds this limit. If exceeded, the import will be terminated.';
-$lang->convert->jira->apiError         = 'Unable to connect to Jira API interface, please check your Jira domain name and account, password/Token information.';
+$lang->convert->jira->apiError         = 'Unable to connect to Jira API interface, please check your Jira domain name and account, Token information.';
 $lang->convert->jira->dbDesc           = 'If your Jira is a locally deployed version, please choose this way.';
 $lang->convert->jira->fileDesc         = 'If your Jira is a cloud version or it is inconvenient to access the database, please choose this way';
 $lang->convert->jira->apiDesc          = 'If your Jira is a cloud version or it is inconvenient to access the database and file, please choose this way';
@@ -202,7 +202,7 @@ $lang->convert->jira->restore            = 'The last import of information was n
 
 $lang->convert->jira->zentaoObjectList['']            = '';
 $lang->convert->jira->zentaoObjectList['epic']        = 'Epic';
-$lang->convert->jira->zentaoObjectList['requirement'] = 'Requirement';
+$lang->convert->jira->zentaoObjectList['requirement'] = 'Feature';
 $lang->convert->jira->zentaoObjectList['story']       = 'Story';
 $lang->convert->jira->zentaoObjectList['task']        = 'Task';
 $lang->convert->jira->zentaoObjectList['testcase']    = 'Case';
@@ -234,7 +234,7 @@ $lang->convert->jira->importSteps['file'][6] = "After the above steps are comple
 
 $lang->convert->jira->importSteps['api'][1] = 'Backup ZenTao database.';
 $lang->convert->jira->importSteps['api'][2] = 'Using ZenTao when importing data will cause performance pressure on the server, please try to ensure that no one is using ZenTao when importing data.';
-$lang->convert->jira->importSteps['api'][3] = 'Enter the domain name, administrator account, Token of the current Jira environment.';
+$lang->convert->jira->importSteps['api'][3] = 'Enter the domain name, administrator account, password/Token of the current Jira environment.';
 $lang->convert->jira->importSteps['api'][4] = "After the above steps are completed, click Next.";
 
 $lang->convert->jira->objectList['user']       = 'User';

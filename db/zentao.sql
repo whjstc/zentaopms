@@ -1631,6 +1631,7 @@ CREATE TABLE IF NOT EXISTS `zt_project` (
   `colWidth` smallint unsigned NOT NULL DEFAULT 264,
   `minColWidth` smallint unsigned NOT NULL DEFAULT 200,
   `maxColWidth` smallint unsigned NOT NULL DEFAULT 384,
+  `coverExecutionPriv` tinyint unsigned NOT NULL DEFAULT 1 COMMENT '是否开启执行权限控制',
   `vision` varchar(10) NOT NULL DEFAULT 'rnd',
   `frozen` varchar(30) NOT NULL DEFAULT '' COMMENT '冻结状态',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0,
@@ -2484,6 +2485,7 @@ CREATE TABLE IF NOT EXISTS `zt_user` (
   `resetExpired` int unsigned NOT NULL DEFAULT 0 COMMENT '重置密码令牌的过期时间戳',
   `clientStatus` varchar(10) NOT NULL DEFAULT 'offline',
   `clientLang` varchar(10) NOT NULL DEFAULT 'zh-cn',
+  `jira` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '是否为jira导入用户',
   `deleted` tinyint unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -2652,7 +2654,6 @@ REPLACE INTO `zt_lang` (`lang`, `module`, `section`, `key`, `value`, `system`, `
 ('zh-cn', 'custom', 'URSRList', '6', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Feature\"}',     '0', 'rnd'),
 ('en',    'custom', 'URSRList', '1', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Feature\"}',     '0', 'rnd'),
 ('en',    'custom', 'URSRList', '2', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Requirement\"}', '0', 'rnd'),
-('en',    'custom', 'URSRList', '3', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Feature\"}',     '0', 'rnd'),
 ('fr',    'custom', 'URSRList', '1', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Feature\"}',     '0', 'rnd'),
 ('fr',    'custom', 'URSRList', '2', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Requirement\"}', '0', 'rnd'),
 ('fr',    'custom', 'URSRList', '3', '{\"ERName\":\"Epic\",\"SRName\":\"Story\",\"URName\":\"Feature\"}',     '0', 'rnd'),

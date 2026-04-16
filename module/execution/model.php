@@ -3856,7 +3856,7 @@ class executionModel extends model
             ->page($pager, 't1.id')
             ->fetchAll('id');
 
-        $this->loadModel('common')->saveQueryCondition($this->dao->get(), 'task', true);
+        $this->loadModel('common')->saveQueryCondition($this->dao->get(), 'task', false);
 
         return $this->processTasks($tasks);
     }
@@ -3941,6 +3941,7 @@ class executionModel extends model
         if(!empty($execution->frozen) && in_array($action, array('edit', 'createChildStage', 'delete', 'putoff'))) return false;
         if($action == 'createChildStage') return commonModel::hasPriv('programplan', 'create') && $execution->type == 'stage';
         if($action == 'createTask')  return commonModel::hasPriv('task', 'create') && commonModel::hasPriv('execution', 'create') && empty($execution->isParent);
+        if($action == 'edit') return isset($execution->projectModel) && in_array($execution->projectModel, array('waterfall', 'waterfallplus', 'ipd')) ? commonModel::hasPriv('programplan', 'edit') : commonModel::hasPriv('execution', 'edit');
         if(!commonModel::hasPriv('execution', $action)) return false;
 
         $action = strtolower($action);
@@ -4954,20 +4955,22 @@ class executionModel extends model
             $execution->isParent    = !empty($execution->isParent) or !empty($execution->tasks);
             $execution->actions     = array();
 
-            $canModify = common::canModify('execution', $execution);
-            if($canModify && isset($this->config->project->execution->dtable->actionsRule[$execution->projectModel]))
+            if(isset($this->config->project->execution->dtable->actionsRule[$execution->projectModel]))
             {
-                $isStage = in_array($execution->projectModel, array('waterfall', 'waterfallplus', 'ipd'));
+                $canModify = common::canModify('execution', $execution);
+                $isStage   = in_array($execution->projectModel, array('waterfall', 'waterfallplus', 'ipd'));
                 foreach($this->config->project->execution->dtable->actionsRule[$execution->projectModel] as $actionKey)
                 {
                     $action  = array();
                     $actions = explode('|', $actionKey);
                     foreach($actions as $actionName)
                     {
+                        if(!$canModify && !in_array($actionName, array('edit', 'delete', 'activate'))) continue;
                         if($actionName == 'createChildStage' && !$canCreateChildStage) continue;
                         if($actionName == 'createTask' && !$canCreateTask)  continue;
                         if($actionName == 'edit' && $isStage && !$canEditStage) continue;
-                        if(!in_array($actionName, array('createTask', 'createChildStage')) && !commonModel::hasPriv('execution', $actionName)) continue;
+                        if($actionName == 'edit' && !$isStage && !commonModel::hasPriv('execution', 'edit')) continue;
+                        if(!in_array($actionName, array('createTask', 'createChildStage', 'edit')) && !commonModel::hasPriv('execution', $actionName)) continue;
 
                         $action = array('name' => $actionName, 'disabled' => $this->isClickable($execution, $actionName) ? false : true);
 
