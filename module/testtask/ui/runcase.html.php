@@ -142,8 +142,8 @@ if($confirm != 'yes')
             ),
             h::td
             (
-                setClass('text-left border break-all'),
-                nl2br(zget($step, 'expect'))
+                setClass('text-left border break-all whitespace-pre-line'),
+                html_entity_decode(str_replace(' ', '&nbsp;', $step->expect))
             ),
             h::td
             (
