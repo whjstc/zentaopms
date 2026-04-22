@@ -11,6 +11,7 @@ cid=16509
 - 获取 3.ppt 的扩展名 @txt
 - 获取 4.txt 的扩展名 @mp4
 - 获取 5.zip 的扩展名 @zip
+- 获取 README.md 的扩展名 @md
 - 获取 1.php 的扩展名 @txt
 - 获取 2.phtml 的扩展名 @txt
 - 获取 3.jsp 的扩展名 @txt
@@ -32,6 +33,7 @@ r($file->getExtensionTest($fileNames[1]))      && p() && e('jpg');  // 获取 2.
 r($file->getExtensionTest($fileNames[2]))      && p() && e('txt');  // 获取 3.ppt 的扩展名
 r($file->getExtensionTest($fileNames[3]))      && p() && e('mp4');  // 获取 4.txt 的扩展名
 r($file->getExtensionTest($fileNames[4]))      && p() && e('zip');  // 获取 5.zip 的扩展名
+r($file->getExtensionTest('README.md'))        && p() && e('md');   // 获取 README.md 的扩展名
 r($file->getExtensionTest($errorFileNames[0])) && p() && e('txt');  // 获取 1.php 的扩展名
 r($file->getExtensionTest($errorFileNames[1])) && p() && e('txt');  // 获取 2.phtml 的扩展名
 r($file->getExtensionTest($errorFileNames[2])) && p() && e('txt');  // 获取 3.jsp 的扩展名
