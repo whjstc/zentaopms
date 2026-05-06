@@ -1978,7 +1978,7 @@ class docModel extends model
         if($object->acl == 'default' && (!empty($object->product) || !empty($object->execution)))
         {
             $acls = $this->app->user->rights['acls'];
-            if(!empty($acls['products']) && !in_array($object->product, $acls['products']))
+            if(!empty($object->product) && !empty($acls['products']) && !in_array($object->product, $acls['products']))
             {
                 $this->setDocPrivError($docID, $object->product, 'product');
                 $hasPrivLibs[$object->id] = false;
