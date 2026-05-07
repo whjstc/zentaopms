@@ -654,7 +654,7 @@ class api extends router
         call_user_func_array(array($this->control, $method), $this->params);
 
         /* Clean the output in get method. */
-        ob_clean();
+        if(ob_get_level() > 0) ob_clean();
 
         $this->control->getFormData       = false;
         $this->control->viewType          = 'json';
