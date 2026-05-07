@@ -15,7 +15,9 @@ Options -Indexes
 php_value post_max_size 100M
 php_flag  file_uploads On
 php_value upload_max_filesize 100M
-php_value display_errors 1
+php_flag  log_errors On
+php_value error_log /proc/self/fd/2
+php_value display_errors 0
 # for post vars limit.
 php_value max_input_vars 100000
 </IfModule>
@@ -25,7 +27,9 @@ php_value max_input_vars 100000
 php_value post_max_size 100M
 php_flag  file_uploads On
 php_value upload_max_filesize 100M
-php_value display_errors 1
+php_flag  log_errors On
+php_value error_log /proc/self/fd/2
+php_value display_errors 0
 # for post vars limit.
 php_value max_input_vars 100000
 </IfModule>
@@ -35,7 +39,9 @@ php_value max_input_vars 100000
 Php_value post_max_size 100M
 Php_flag  file_uploads On
 Php_value upload_max_filesize 100M
-Php_value display_errors 1
+Php_flag  log_errors On
+Php_value error_log /proc/self/fd/2
+Php_value display_errors 0
 # for post vars limit.
 Php_value max_input_vars 100000
 </IfModule>

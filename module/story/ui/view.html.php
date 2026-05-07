@@ -16,6 +16,20 @@ include($this->app->getModuleRoot() . 'ai/ui/promptmenu.html.php');
 
 jsVar('gradeGroup', $gradeGroup);
 
+$isMarkdownContent = static function(string $content): bool
+{
+    $content = trim(htmlspecialchars_decode($content, ENT_QUOTES));
+    if($content === '' || isHTML($content)) return false;
+
+    return preg_match('/(^|\n)(#{1,6}\s+\S+|[-*+]\s+\S+|\d+\.\s+\S+|>\s+\S+|```|~~~|\|.+\||\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/m', $content) === 1;
+};
+
+$renderStoryContent = static function(string $content, string $emptyText) use($isMarkdownContent): string
+{
+    if($content === '') return $emptyText;
+    return $isMarkdownContent($content) ? \commonModel::processMarkdown($content) : $content;
+};
+
 $isInModal     = isInModal();
 $isRequirement = $story->type == 'requirement';
 $isStoryType   = $story->type == 'story';
@@ -65,13 +79,13 @@ $sections = array();
 $sections[] = setting()
     ->title($lang->story->legendSpec)
     ->control('html')
-    ->content(empty($story->spec) ? $lang->noDesc : $story->spec);
+    ->content($renderStoryContent($story->spec, $lang->noDesc));
 if($this->config->vision != 'lite')
 {
     $sections[] = setting()
         ->title($lang->story->legendVerify)
         ->control('html')
-        ->content(empty($story->verify) ? $lang->noDesc : $story->verify);
+        ->content($renderStoryContent($story->verify, $lang->noDesc));
 }
 if($story->files)
 {

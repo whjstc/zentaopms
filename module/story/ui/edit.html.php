@@ -11,6 +11,19 @@ declare(strict_types=1);
  */
 namespace zin;
 
+$isMarkdownContent = static function(string $content): bool
+{
+    $content = trim(htmlspecialchars_decode($content, ENT_QUOTES));
+    if($content === '' || isHTML($content)) return false;
+
+    return preg_match('/(^|\n)(#{1,6}\s+\S+|[-*+]\s+\S+|\d+\.\s+\S+|>\s+\S+|```|~~~|\|.+\||\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/m', $content) === 1;
+};
+
+$renderStoryContent = static function(string $content) use($isMarkdownContent): string
+{
+    return $isMarkdownContent($content) ? \commonModel::processMarkdown($content) : $content;
+};
+
 $uid            = uniqid();
 $canEditContent = str_contains(',draft,changing,', ",{$story->status},");
 $forceReview    = $this->story->checkForceReview($story->type);
@@ -162,13 +175,13 @@ detailBody
         section
         (
             set::title($lang->story->legendSpec),
-            $canEditContent ? formGroup(editor(set::name('spec'), set::uid($uid), html($story->spec))) : set::content($story->spec),
+            $canEditContent ? formGroup(editor(set::name('spec'), set::uid($uid), set::markdown($isMarkdownContent($story->spec)), html($story->spec))) : set::content($renderStoryContent($story->spec)),
             $canEditContent ? null : set::useHtml(true)
         ),
         section
         (
             set::title($lang->story->verify),
-            $canEditContent ? formGroup(editor(set::name('verify'), set::uid($uid), html($story->verify))) : set::content($story->verify),
+            $canEditContent ? formGroup(editor(set::name('verify'), set::uid($uid), set::markdown($isMarkdownContent($story->verify)), html($story->verify))) : set::content($renderStoryContent($story->verify)),
             $canEditContent ? null : set::useHtml(true)
         ),
         empty($twins) ? null : section
