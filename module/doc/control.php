@@ -1428,6 +1428,89 @@ class doc extends control
     }
 
     /**
+     * 获取文档正文数据。
+     * Get document content data.
+     *
+     * @param  int    $docID
+     * @param  int    $version
+     * @access public
+     * @return void
+     */
+    public function content(int $docID, int $version = 0)
+    {
+        $doc = $this->doc->getByID($docID, $version, true);
+        if(!$doc || !isset($doc->id)) return $this->send(array('status' => 'fail', 'code' => 404, 'message' => '404 Not found'));
+        if(!$this->doc->checkPrivDoc($doc)) return $this->send(array('status' => 'fail', 'code' => 403, 'message' => $this->lang->doc->accessDenied));
+
+        $files = array();
+        foreach($doc->files as $file)
+        {
+            $files[] = array(
+                'id'          => (int)$file->id,
+                'title'       => $file->title,
+                'extension'   => $file->extension,
+                'size'        => (int)$file->size,
+                'objectType'  => $file->objectType,
+                'objectID'    => (int)$file->objectID,
+                'downloadUrl' => rtrim(common::getSysURL(), '/') . "/api.php/v2/files/{$file->id}/download",
+            );
+        }
+
+        if(!empty($doc->rawContent))
+        {
+            $doc->html    = $this->replaceFileLinksWithApiLinks((string)$doc->content);
+            $doc->content = $this->replaceFileLinksWithApiLinks((string)$doc->rawContent);
+        }
+        else
+        {
+            $doc->content = $this->replaceFileLinksWithApiLinks((string)$doc->content);
+        }
+
+        return $this->send(array(
+            'doc' => array(
+                'id'             => (int)$doc->id,
+                'title'          => $doc->title,
+                'type'           => $doc->type,
+                'acl'            => $doc->acl,
+                'status'         => $doc->status,
+                'lib'            => (int)$doc->lib,
+                'module'         => (int)$doc->module,
+                'version'        => (int)$doc->version,
+                'contentVersion' => (int)$doc->contentVersion,
+                'contentType'    => $doc->contentType,
+                'content'        => $doc->content,
+                'html'           => zget($doc, 'html', ''),
+                'digest'         => $doc->digest,
+                'addedBy'        => $doc->addedBy,
+                'addedDate'      => $doc->addedDate,
+                'editedBy'       => $doc->editedBy,
+                'editedDate'     => $doc->editedDate,
+                'files'          => $files,
+            )
+        ));
+    }
+
+    /**
+     * 将正文中的文件读取链接改写为 API 下载链接。
+     * Replace file read links in content with API download links.
+     *
+     * @param  string $content
+     * @access private
+     * @return string
+     */
+    private function replaceFileLinksWithApiLinks(string $content): string
+    {
+        if($content === '') return $content;
+
+        $apiPrefix = rtrim(common::getSysURL(), '/') . '/api.php/v2/files/';
+        $content   = preg_replace('/index\.php\?m=file&f=(?:read|download)&fileID=([0-9]+)/', 'api.php/v2/files/$1/download', $content);
+        $content   = preg_replace('/file-(?:read|download)-([0-9]+)(?:\.[a-zA-Z0-9]+)?\.html/', 'api.php/v2/files/$1/download', $content);
+        $content   = preg_replace('/(?<!api\.php\/v2\/)files\/([0-9]+)\/(?:read|download)/', 'api.php/v2/files/$1/download', $content);
+
+        return preg_replace('/(?<!https?:\/\/)(?<!\/)api\.php\/v2\/files\/([0-9]+)\/download/', $apiPrefix . '$1/download', $content);
+    }
+
+    /**
      * 产品/项目/执行/团队空间。
      * ProductSpace/ProjectSpace/ExecutionSpace/TeamSpace.
      *
