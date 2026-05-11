@@ -503,7 +503,7 @@ class api extends router
             'deptID'        => TABLE_DEPT,
         ];
 
-        if($this->rawModule == 'testtask' && $this->rawMethod == 'cases') $objectMap['taskID'] = TABLE_TESTTASK;
+        if($this->rawModule == 'testtask') $objectMap['taskID'] = TABLE_TESTTASK;
 
         /* Check assignedTo. */
         if(isset($_POST['assignedTo']) && $_POST['assignedTo'])
