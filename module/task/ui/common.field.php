@@ -19,6 +19,15 @@ $fields->field('name')
     ->control('colorInput', array('colorValue' => data('task.color')))
     ->value(data('task.name'));
 
+$fields->field('complexity')
+    ->label($lang->task->complexity)
+    ->labelClass('required')
+    ->width('1/4')
+    ->control('picker')
+    ->items($lang->task->complexityList)
+    ->value(data('task.complexity') ? data('task.complexity') : 'L1')
+    ->required(strpos($config->task->create->requiredFields, 'complexity') !== false);
+
 $fields->field('datePlan')
     ->lable($lang->task->datePlan)
     ->required(strpos($config->task->create->requiredFields, 'estStarted') !== false || strpos($config->task->create->requiredFields, 'deadline') !== false)

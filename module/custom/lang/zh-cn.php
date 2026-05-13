@@ -145,6 +145,7 @@ $lang->custom->task = new stdClass();
 $lang->custom->task->fields['required']      = $lang->custom->required;
 $lang->custom->task->fields['priList']       = '优先级';
 $lang->custom->task->fields['typeList']      = '类型';
+$lang->custom->task->fields['complexityList'] = '复杂度';
 $lang->custom->task->fields['reasonList']    = '关闭原因';
 $lang->custom->task->fields['statusList']    = '状态';
 $lang->custom->task->fields['limitTaskDate'] = '起止日期';

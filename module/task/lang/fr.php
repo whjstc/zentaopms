@@ -97,6 +97,7 @@ $lang->task->storyFiles        = 'Story Dateien';
 $lang->task->designVersion     = "Design Version";
 $lang->task->color             = 'Couleur';
 $lang->task->name              = 'Nom';
+$lang->task->complexity        = 'Complexity';
 $lang->task->type              = 'Type';
 $lang->task->typeAB            = 'Type';
 $lang->task->mode              = 'Mode';
@@ -234,6 +235,13 @@ $lang->task->typeList['discuss'] = 'Discussion';
 $lang->task->typeList['ui']      = 'UI';
 $lang->task->typeList['affair']  = 'Commercial';
 $lang->task->typeList['misc']    = 'Divers';
+
+$lang->task->complexityList['']   = '';
+$lang->task->complexityList['L1'] = 'L1';
+$lang->task->complexityList['L2'] = 'L2';
+$lang->task->complexityList['L3'] = 'L3';
+$lang->task->complexityList['L4'] = 'L4';
+$lang->task->complexityList['L5'] = 'L5';
 
 $lang->task->priList[0]  = '';
 $lang->task->priList[1]  = '1';

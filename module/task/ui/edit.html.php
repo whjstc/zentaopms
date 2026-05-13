@@ -362,6 +362,18 @@ detailBody
             ) : formHidden('status', $taskStatus),
             item
             (
+                set::name($lang->task->complexity),
+                set::required(true),
+                picker
+                (
+                    set::name('complexity'),
+                    set::value(!empty($task->complexity) ? $task->complexity : 'L1'),
+                    set::items($lang->task->complexityList),
+                    set::required(true)
+                )
+            ),
+            item
+            (
                 set::name($lang->task->pri),
                 set::required(strpos(",{$this->config->task->edit->requiredFields},", ",pri,") !== false),
                 formGroup

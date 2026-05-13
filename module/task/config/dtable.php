@@ -40,6 +40,13 @@ $config->task->dtable->fieldList['type']['map']      = $lang->task->typeList;
 $config->task->dtable->fieldList['type']['sortType'] = true;
 $config->task->dtable->fieldList['type']['group']    = 1;
 
+$config->task->dtable->fieldList['complexity']['title']    = $lang->task->complexity;
+$config->task->dtable->fieldList['complexity']['type']     = 'category';
+$config->task->dtable->fieldList['complexity']['map']      = $lang->task->complexityList;
+$config->task->dtable->fieldList['complexity']['sortType'] = true;
+$config->task->dtable->fieldList['complexity']['width']    = '80';
+$config->task->dtable->fieldList['complexity']['group']    = 1;
+
 $config->task->dtable->fieldList['branch']['title']    = $lang->branchName;
 $config->task->dtable->fieldList['branch']['type']     = 'text';
 $config->task->dtable->fieldList['branch']['sortType'] = false;

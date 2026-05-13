@@ -98,6 +98,7 @@ $lang->task->storyFiles        = "{$lang->SRCommon} Attachments";
 $lang->task->designVersion     = "Design Version";
 $lang->task->color             = 'Color';
 $lang->task->name              = 'Task Name';
+$lang->task->complexity        = 'Complexity';
 $lang->task->type              = 'Task Type';
 $lang->task->typeAB            = 'Type';
 $lang->task->mode              = 'Task Mode';
@@ -236,6 +237,13 @@ $lang->task->typeList['discuss'] = 'Discussion';
 $lang->task->typeList['ui']      = 'UI';
 $lang->task->typeList['affair']  = 'Transaction';
 $lang->task->typeList['misc']    = 'Misc';
+
+$lang->task->complexityList['']   = '';
+$lang->task->complexityList['L1'] = 'L1';
+$lang->task->complexityList['L2'] = 'L2';
+$lang->task->complexityList['L3'] = 'L3';
+$lang->task->complexityList['L4'] = 'L4';
+$lang->task->complexityList['L5'] = 'L5';
 
 $lang->task->priList[0]  = '';
 $lang->task->priList[1]  = '1';

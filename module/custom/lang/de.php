@@ -145,6 +145,7 @@ $lang->custom->task = new stdClass();
 $lang->custom->task->fields['required']      = $lang->custom->required;
 $lang->custom->task->fields['priList']       = 'Priority';
 $lang->custom->task->fields['typeList']      = 'Type';
+$lang->custom->task->fields['complexityList'] = 'Complexity';
 $lang->custom->task->fields['reasonList']    = 'Close Reason';
 $lang->custom->task->fields['statusList']    = 'Status';
 $lang->custom->task->fields['limitTaskDate'] = 'Begin & End';

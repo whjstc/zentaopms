@@ -110,6 +110,7 @@ $lang->custom->story->fields['review']           = '評審流程';
 $lang->custom->task = new stdClass();
 $lang->custom->task->fields['priList']    = '優先順序';
 $lang->custom->task->fields['typeList']   = '類型';
+$lang->custom->task->fields['complexityList'] = '複雜度';
 $lang->custom->task->fields['reasonList'] = '關閉原因';
 $lang->custom->task->fields['statusList'] = '狀態';
 $lang->custom->task->fields['hours']      = '工時';

@@ -92,11 +92,12 @@ $fields->field('assignedToBox')
     ->control($buildAssignedTo);
 
 /* Set name field width. */
-$nameWidth = 'w-full';
+$nameWidth = 'w-3/4 full:w-3/4';
 if(empty(data('features.story')) && data('execution.type') != 'kanban' && !empty(data('execution.multiple'))) $nameWidth .= ' full:w-full';
 if(data('execution.type') == 'kanban')  $nameWidth .= ' lite:w-full';
 if(data('execution.lifetime') == 'ops') $nameWidth  = ' w-1/2';
 $fields->field('name')->className($nameWidth);
+$fields->field('complexity')->className('w-1/4 full:w-1/4');
 
 if(!empty(data('features.story')) && (data('execution.type') == 'kanban' || empty(data('execution.multiple'))))
 {

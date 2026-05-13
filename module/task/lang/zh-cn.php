@@ -97,6 +97,7 @@ $lang->task->storyFiles        = '需求附件';
 $lang->task->designVersion     = "设计版本";
 $lang->task->color             = '标题颜色';
 $lang->task->name              = '任务名称';
+$lang->task->complexity        = '复杂度';
 $lang->task->type              = '任务类型';
 $lang->task->typeAB            = '类型';
 $lang->task->mode              = '任务模式';
@@ -235,6 +236,13 @@ $lang->task->typeList['discuss'] = '讨论';
 $lang->task->typeList['ui']      = '界面';
 $lang->task->typeList['affair']  = '事务';
 $lang->task->typeList['misc']    = '其他';
+
+$lang->task->complexityList['']   = '';
+$lang->task->complexityList['L1'] = 'L1';
+$lang->task->complexityList['L2'] = 'L2';
+$lang->task->complexityList['L3'] = 'L3';
+$lang->task->complexityList['L4'] = 'L4';
+$lang->task->complexityList['L5'] = 'L5';
 
 $lang->task->priList[0] = '';
 $lang->task->priList[1] = '1';

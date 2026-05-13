@@ -2165,6 +2165,7 @@ CREATE TABLE IF NOT EXISTS `zt_task` (
   `docs` text DEFAULT NULL,
   `docVersions` text DEFAULT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
+  `complexity` varchar(20) NOT NULL DEFAULT 'L1',
   `type` varchar(20) NOT NULL DEFAULT '',
   `mode` varchar(10) NOT NULL DEFAULT '',
   `pri` tinyint unsigned NOT NULL DEFAULT 0,
