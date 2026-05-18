@@ -22,18 +22,18 @@ select
     t1.closedDate,
     t1.realduration,
     t1.realduration - t1.planduration as duration_deviation,
-    round((t1.realduration - t1.planduration) / t1.planduration, 3) as rate
+    round(if(t1.planduration = 0, 0, (t1.realduration - t1.planduration) / t1.planduration), 3) as rate
 from
     (select
         name,
         CAST(substr(path,2,4) AS DECIMAL) as program1,
         begin,
         `end`,
-        realBegan,
-        realEnd,
-        left(closedDate, 10) as closedDate,
+        coalesce(nullif(realBegan, '0000-00-00'), begin) as realBegan,
+        coalesce(nullif(realEnd, '0000-00-00'), left(nullif(closedDate, '0000-00-00 00:00:00'), 10), `end`) as realEnd,
+        coalesce(left(nullif(closedDate, '0000-00-00 00:00:00'), 10), nullif(realEnd, '0000-00-00'), `end`) as closedDate,
         datediff(`end`, `begin`) as planduration,
-        ifnull(if(left(`realEnd`,4) != '0000',datediff(`realEnd`,`realBegan`),datediff(`closedDate`,`realBegan`)),0) realduration
+        datediff(coalesce(nullif(realEnd, '0000-00-00'), left(nullif(closedDate, '0000-00-00 00:00:00'), 10), `end`), coalesce(nullif(realBegan, '0000-00-00'), begin)) as realduration
     from zt_project
     where type='project' and status='closed' and deleted='0') t1
 left join
@@ -49,11 +49,11 @@ EOT,
     (
         'columns'  => array
         (
-            array('field' => 'begin', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
-            array('field' => 'end', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
-            array('field' => 'realBegan', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
-            array('field' => 'realEnd', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
-            array('field' => 'closedDate', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
+            array('field' => 'begin', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'showOrigin' => 1, 'monopolize' => '0', 'showTotal' => 'noShow'),
+            array('field' => 'end', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'showOrigin' => 1, 'monopolize' => '0', 'showTotal' => 'noShow'),
+            array('field' => 'realBegan', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'showOrigin' => 1, 'monopolize' => '0', 'showTotal' => 'noShow'),
+            array('field' => 'realEnd', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'showOrigin' => 1, 'monopolize' => '0', 'showTotal' => 'noShow'),
+            array('field' => 'closedDate', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'showOrigin' => 1, 'monopolize' => '0', 'showTotal' => 'noShow'),
             array('field' => 'realduration', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
             array('field' => 'duration_deviation', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow'),
             array('field' => 'rate', 'stat' => 'sum', 'slice' => 'noSlice', 'showMode' => 'default', 'monopolize' => '0', 'showTotal' => 'noShow')
@@ -606,7 +606,11 @@ select
     t1.product,
     t2.name,
     1 as releases
-from zt_release as t1
+from (
+    select product, deleted from zt_release
+    union all
+    select product, deleted from zt_build where not exists(select 1 from zt_release where deleted='0')
+) as t1
 left join zt_product as t2 on t1.product=t2.id
 left join zt_project as t3 on t2.program=t3.id
 where t1.deleted='0'

@@ -40,6 +40,9 @@ class screenModel extends model
         $this->filter->month   = '';
         $this->filter->dept    = '';
         $this->filter->account = '';
+        $this->filter->product = '';
+        $this->filter->project = '';
+        $this->filter->execution = '';
         $this->filter->charts  = array();
     }
 
@@ -88,14 +91,14 @@ class screenModel extends model
      * @access public
      * @return object|bool
      */
-    public function getByID(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '', $withChartData = true): object|bool
+    public function getByID(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '', $withChartData = true, int $product = 0, int $project = 0, int $execution = 0): object|bool
     {
         $screen = $this->dao->select('*')->from(TABLE_SCREEN)->where('id')->eq($screenID)->fetch();
         if(!$screen) return false;
 
         if(empty($screen->scheme)) $screen->scheme = file_get_contents(__DIR__ . '/json/screen.json');
 
-        if($withChartData) $screen->chartData = $this->genChartData($screen, $year, $month, $dept, $account);
+        if($withChartData) $screen->chartData = $this->genChartData($screen, $year, $month, $dept, $account, $product, $project, $execution);
 
         return $screen;
     }
@@ -129,7 +132,7 @@ class screenModel extends model
      * @access public
      * @return object
      */
-    public function genChartData(object $screen, int $year, int $month, int $dept, string $account): object
+    public function genChartData(object $screen, int $year, int $month, int $dept, string $account, int $product = 0, int $project = 0, int $execution = 0): object
     {
         $this->filter = new stdclass();
         $this->filter->screen  = $screen->id;
@@ -137,6 +140,9 @@ class screenModel extends model
         $this->filter->month   = $month;
         $this->filter->dept    = $dept;
         $this->filter->account = $account;
+        $this->filter->product = $product;
+        $this->filter->project = $project;
+        $this->filter->execution = $execution;
         $this->filter->charts  = array();
 
         $scheme = json_decode($screen->scheme);
@@ -1768,7 +1774,7 @@ class screenModel extends model
                 for($year = date('Y'); $year >= $beginYear; $year--) $options[] = array('label' => $year, 'value' => $year);
                 $component->option->dataset = $options;
 
-                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen. "&year=' + value + '&month=" . $this->filter->month . "&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "')";
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen. "&year=' + value + '&month=" . $this->filter->month . "&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "&product=" . $this->filter->product . "&project=" . $this->filter->project . "&execution=" . $this->filter->execution . "')";
                 $component->option->onChange = "window.location.href = $url";
                 break;
             case 'month':
@@ -1790,7 +1796,7 @@ class screenModel extends model
                 }
                 $component->option->dataset = $options;
 
-                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen. "&year=" . $this->filter->year . "&month=' + value + '&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "')";
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen. "&year=" . $this->filter->year . "&month=' + value + '&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "&product=" . $this->filter->product . "&project=" . $this->filter->project . "&execution=" . $this->filter->execution . "')";
                 $component->option->onChange = "window.location.href = $url";
                 break;
             case 'dept':
@@ -1804,7 +1810,7 @@ class screenModel extends model
                 }
                 $component->option->dataset = $options;
 
-                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&dept=' + value + '&account=')";
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&month=" . $this->filter->month . "&dept=' + value + '&account=&product=" . $this->filter->product . "&project=" . $this->filter->project . "&execution=" . $this->filter->execution . "')";
                 $component->option->onChange = "window.location.href = $url";
                 break;
             case 'account':
@@ -1823,11 +1829,45 @@ class screenModel extends model
                 }
                 $component->option->dataset = $options;
 
-                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&dept=" . $this->filter->dept . "&account=' + value)";
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&month=" . $this->filter->month . "&dept=" . $this->filter->dept . "&account=' + value + '&product=" . $this->filter->product . "&project=" . $this->filter->project . "&execution=" . $this->filter->execution . "')";
+                $component->option->onChange = "window.location.href = $url";
+                break;
+            case 'product':
+                $component->option->value = (string)$this->filter->product;
+
+                $options  = array(array('label' => '全部产品', 'value' => '0'));
+                $products = $this->dao->select('id,name')->from(TABLE_PRODUCT)->where('deleted')->eq('0')->andWhere('shadow')->eq(0)->orderBy('order_desc,id_desc')->fetchAll();
+                foreach($products as $product) $options[] = array('label' => $product->name, 'value' => $product->id);
+                $component->option->dataset = $options;
+
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&month=" . $this->filter->month . "&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "&product=' + value + '&project=0&execution=0')";
+                $component->option->onChange = "window.location.href = $url";
+                break;
+            case 'project':
+                $component->option->value = (string)$this->filter->project;
+
+                $options  = array(array('label' => '全部项目', 'value' => '0'));
+                $projects = $this->dao->select('id,name')->from(TABLE_PROJECT)->where('deleted')->eq('0')->andWhere('type')->eq('project')->orderBy('id_desc')->fetchAll();
+                foreach($projects as $project) $options[] = array('label' => $project->name, 'value' => $project->id);
+                $component->option->dataset = $options;
+
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&month=" . $this->filter->month . "&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "&product=" . $this->filter->product . "&project=' + value + '&execution=0')";
+                $component->option->onChange = "window.location.href = $url";
+                break;
+            case 'execution':
+                $component->option->value = (string)$this->filter->execution;
+
+                $options    = array(array('label' => '全部执行', 'value' => '0'));
+                $executions = $this->dao->select('id,name')->from(TABLE_PROJECT)->where('deleted')->eq('0')->andWhere('type')->ne('project')->beginIF($this->filter->project)->andWhere('project')->eq($this->filter->project)->fi()->orderBy('id_desc')->fetchAll();
+                foreach($executions as $execution) $options[] = array('label' => $execution->name, 'value' => $execution->id);
+                $component->option->dataset = $options;
+
+                $url = "createLink('screen', 'view', 'screenID=" . $this->filter->screen . "&year=" . $this->filter->year . "&month=" . $this->filter->month . "&dept=" . $this->filter->dept . "&account=" . $this->filter->account . "&product=" . $this->filter->product . "&project=" . $this->filter->project . "&execution=' + value)";
                 $component->option->onChange = "window.location.href = $url";
                 break;
         }
 
+        if(empty($component->filterCharts)) $component->filterCharts = array();
         foreach($component->filterCharts as $chart)
         {
             if(!isset($this->filter->charts[$chart->chart])) $this->filter->charts[$chart->chart] = array();
@@ -1933,6 +1973,11 @@ class screenModel extends model
                         break;
                     case 'account':
                         if($this->filter->account) $conditions[] = $field . " = '" . $this->filter->$key . "'";
+                        break;
+                    case 'product':
+                    case 'project':
+                    case 'execution':
+                        if($this->filter->$key) $conditions[] = $field . " = '" . (int)$this->filter->$key . "'";
                         break;
                 }
             }

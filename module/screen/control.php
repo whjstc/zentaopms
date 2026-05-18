@@ -86,7 +86,7 @@ class screen extends control
      * @access public
      * @return void
      */
-    public function view(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '')
+    public function view(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '', int $product = 0, int $project = 0, int $execution = 0)
     {
         $this->screen->checkAccess($screenID);
 
@@ -99,7 +99,7 @@ class screen extends control
             return;
         }
 
-        $screen = $this->screen->getByID($screenID, $year, $month, $dept, $account, false);
+        $screen = $this->screen->getByID($screenID, $year, $month, $dept, $account, false, $product, $project, $execution);
 
         $this->view->title    = $screen->name;
         $this->view->screenID = $screenID;
@@ -118,6 +118,9 @@ class screen extends control
         $this->view->month    = $month;
         $this->view->dept     = $dept;
         $this->view->account  = $account;
+        $this->view->product  = $product;
+        $this->view->project  = $project;
+        $this->view->execution = $execution;
         $this->display();
     }
 
@@ -132,12 +135,12 @@ class screen extends control
      * @access public
      * @return void
      */
-    public function viewOld(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '')
+    public function viewOld(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '', int $product = 0, int $project = 0, int $execution = 0)
     {
         if(empty($year))  $year  = date('Y');
         if(empty($month)) $month = date('m');
 
-        $screen = $this->screen->getByID($screenID, $year, $month, $dept, $account, false);
+        $screen = $this->screen->getByID($screenID, $year, $month, $dept, $account, false, $product, $project, $execution);
 
         $this->view->title   = $screen->name;
         $this->view->screen  = $screen;
@@ -145,6 +148,9 @@ class screen extends control
         $this->view->month   = $month;
         $this->view->dept    = $dept;
         $this->view->account = $account;
+        $this->view->product = $product;
+        $this->view->project = $project;
+        $this->view->execution = $execution;
         $this->display();
     }
     /**
@@ -159,9 +165,9 @@ class screen extends control
         $this->display();
     }
 
-    public function ajaxGetScreenScheme(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '')
+    public function ajaxGetScreenScheme(int $screenID, int $year = 0, int $month = 0, int $dept = 0, string $account = '', int $product = 0, int $project = 0, int $execution = 0)
     {
-        $screen = $this->screen->getByID($screenID, $year, $month, $dept, $account);
+        $screen = $this->screen->getByID($screenID, $year, $month, $dept, $account, true, $product, $project, $execution);
         echo(json_encode($screen));
     }
 
@@ -172,7 +178,7 @@ class screen extends control
      * @access public
      * @return void
      */
-    public function ajaxGetChart(int $year = 0, int $month = 0, int $dept = 0, string $account = '')
+    public function ajaxGetChart(int $year = 0, int $month = 0, int $dept = 0, string $account = '', int $product = 0, int $project = 0, int $execution = 0)
     {
         if(!empty($_POST))
         {
@@ -194,9 +200,17 @@ class screen extends control
             $this->screen->filter->month   = $month;
             $this->screen->filter->dept    = $dept;
             $this->screen->filter->account = $account;
+            $this->screen->filter->product = $product;
+            $this->screen->filter->project = $project;
+            $this->screen->filter->execution = $execution;
             $this->screen->filter->charts  = $this->screenZen->setSelectFilter($sourceID, $selectFilter);
 
             $type = $this->screen->getChartType($type);
+            if($type == 'pivot')
+            {
+                $chart = $this->dao->select('id')->from(TABLE_CHART)->where('id')->eq($sourceID)->fetch();
+                if($chart) $type = 'chart';
+            }
 
             if($type == 'metric')
             {

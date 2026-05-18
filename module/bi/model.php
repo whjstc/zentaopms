@@ -376,7 +376,7 @@ class biModel extends model
 
         /* 过滤掉模板数据。 */
         if(strpos($sql, 'zt_project') !== false) $sql = preg_replace('/\bzt_project\b(?!\w)/', 'ztv_projectnotpl', $sql);
-        if(strpos($sql, 'zt_task') !== false)    $sql = preg_replace('/\bzt_task\b(?!\w)/', 'ztv_tasknotpl', $sql);
+        if(strpos($sql, 'zt_task') !== false and strpos($sql, '/*keepTaskTable*/') === false) $sql = preg_replace('/\bzt_task\b(?!\w)/', 'ztv_tasknotpl', $sql);
 
         if($fetchAll) $results = $dbh->query($sql)->fetchAll();
         else $results = $dbh->query($sql)->fetch();
