@@ -32,6 +32,15 @@ class api extends router
     public $params = array();
 
     /**
+     * 请求参数默认值和类型。
+     * Default values and types of requested params.
+     *
+     * @var array
+     * @access public
+     */
+    public $defaultParams = array();
+
+    /**
      * 请求API的参数名
      * The requested param names of api.
      *
@@ -654,7 +663,7 @@ class api extends router
         {
             if(isset($this->params[$key]))
             {
-                $type = gettype($this->params[$key]);
+                $type = $this->defaultParams[$key]['type'] ?? gettype($this->params[$key]);
                 if($type != 'NULL') settype($value, $type);
                 $this->params[$key] = $value;
             }
@@ -713,6 +722,7 @@ class api extends router
     public function setParams()
     {
         $defaultParams = $this->getDefaultParams();
+        $this->defaultParams = $defaultParams;
 
         $this->params = array();
 
