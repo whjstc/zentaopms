@@ -300,6 +300,7 @@ class api extends router
     public function routeV2($routes)
     {
         $this->action = strtolower((string) $_SERVER['REQUEST_METHOD']);
+        if($this->action == 'head') $this->action = 'get';
 
         $methodName = '';
         if($this->action == 'get') $methodName = $this->parseRouteV2($routes);
