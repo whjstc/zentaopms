@@ -11,6 +11,8 @@ cid=16187
 - 执行docTest模块的checkPrivForCreateTest方法，参数是$doclibCustomWithUser, 'custom'  @1
 - 执行docTest模块的checkPrivForCreateTest方法，参数是$doclibPrivateNoAccess, 'custom'  @0
 - 执行docTest模块的checkPrivForCreateTest方法，参数是$doclibCustomWithGroup, 'custom'  @1
+- 执行docTest模块的checkPrivForCreateTest方法，参数是$doclibProduct, 'custom'，按文档库真实类型检查  @1
+- 执行docTest模块的checkPrivForCreateTest方法，参数是$doclibProject, 'custom'，按文档库真实类型检查  @1
 
 */
 
@@ -98,3 +100,5 @@ r($docTest->checkPrivForCreateTest($doclibCustomWithGroup, 'custom')) && p() && 
 $tester->app->user->account = 'admin'; $tester->app->user->admin = true; r($docTest->checkPrivForCreateTest($doclibPrivateAdmin, 'custom')) && p() && e('1');
 $tester->app->user->account = 'admin'; $tester->app->user->admin = true; r($docTest->checkPrivForCreateTest($doclibProduct, 'product')) && p() && e('1');
 $tester->app->user->account = 'admin'; $tester->app->user->admin = true; r($docTest->checkPrivForCreateTest($doclibProject, 'project')) && p() && e('1');
+$tester->app->user->account = 'admin'; $tester->app->user->admin = true; r($docTest->checkPrivForCreateTest($doclibProduct, 'custom')) && p() && e('1');
+$tester->app->user->account = 'admin'; $tester->app->user->admin = true; r($docTest->checkPrivForCreateTest($doclibProject, 'custom')) && p() && e('1');
