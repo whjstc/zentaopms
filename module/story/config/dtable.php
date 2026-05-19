@@ -1,6 +1,7 @@
 <?php
 global $lang, $app;
 $isEn = $app->getClientLang() == 'en';
+$account = isset($app->user->account) ? $app->user->account : '';
 $config->story->dtable = new stdclass();
 
 $config->story->dtable->defaultField = array('id', 'title', 'pri', 'plan', 'roadmap', 'status', 'openedBy', 'estimate', 'reviewedBy', 'stage', 'assignedTo', 'taskCount', 'actions');
@@ -163,7 +164,7 @@ if($isEn) $config->story->dtable->fieldList['stage']['width'] = '120';
 $config->story->dtable->fieldList['assignedTo']['name']        = 'assignedTo';
 $config->story->dtable->fieldList['assignedTo']['title']       = $lang->story->assignedTo;
 $config->story->dtable->fieldList['assignedTo']['sortType']    = true;
-$config->story->dtable->fieldList['assignedTo']['currentUser'] = $app->user->account;
+$config->story->dtable->fieldList['assignedTo']['currentUser'] = $account;
 $config->story->dtable->fieldList['assignedTo']['assignLink']  = array('module' => 'story', 'method' => 'assignTo', 'params' => 'storyID={id}');
 $config->story->dtable->fieldList['assignedTo']['type']        = 'assign';
 $config->story->dtable->fieldList['assignedTo']['show']        = true;
