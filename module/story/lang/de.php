@@ -154,6 +154,7 @@ $lang->story->spec             = 'Beschreibung';
 $lang->story->assign           = 'Assign';
 $lang->story->verify           = 'Akzeptanz';
 $lang->story->pri              = 'Priorität';
+$lang->story->complexity       = 'Complexity';
 $lang->story->estimate         = 'Schätzung(h)';
 $lang->story->estimateAB       = 'Schätzung(h)';
 $lang->story->hour             = 'Stunde';
@@ -321,6 +322,13 @@ $lang->story->priList[1] = '1';
 $lang->story->priList[2] = '2';
 $lang->story->priList[3] = '3';
 $lang->story->priList[4] = '4';
+
+$lang->story->complexityList['']   = '';
+$lang->story->complexityList['L1'] = 'L1';
+$lang->story->complexityList['L2'] = 'L2';
+$lang->story->complexityList['L3'] = 'L3';
+$lang->story->complexityList['L4'] = 'L4';
+$lang->story->complexityList['L5'] = 'L5';
 
 $lang->story->changeList = array();
 $lang->story->changeList['no']  = 'Cancel';

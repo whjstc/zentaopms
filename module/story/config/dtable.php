@@ -51,6 +51,14 @@ $config->story->dtable->fieldList['pri']['show']     = true;
 $config->story->dtable->fieldList['pri']['group']    = 2;
 if($isEn) $config->story->dtable->fieldList['pri']['width'] = '80';
 
+$config->story->dtable->fieldList['complexity']['name']     = 'complexity';
+$config->story->dtable->fieldList['complexity']['title']    = $lang->story->complexity;
+$config->story->dtable->fieldList['complexity']['sortType'] = true;
+$config->story->dtable->fieldList['complexity']['type']     = 'category';
+$config->story->dtable->fieldList['complexity']['map']      = $lang->story->complexityList;
+$config->story->dtable->fieldList['complexity']['width']    = '80';
+$config->story->dtable->fieldList['complexity']['group']    = 2;
+
 $config->story->dtable->fieldList['branch']['name']       = 'branch';
 $config->story->dtable->fieldList['branch']['title']      = $lang->story->branch;
 $config->story->dtable->fieldList['branch']['sortType']   = true;

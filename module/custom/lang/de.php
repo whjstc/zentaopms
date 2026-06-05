@@ -130,6 +130,7 @@ $lang->custom->story = new stdClass();
 $lang->custom->story->fields['required']         = $lang->custom->required;
 $lang->custom->story->fields['categoryList']     = 'Category';
 $lang->custom->story->fields['priList']          = 'Priority';
+$lang->custom->story->fields['complexityList']   = 'Complexity';
 $lang->custom->story->fields['sourceList']       = 'Source';
 $lang->custom->story->fields['reasonList']       = 'Close Reason';
 $lang->custom->story->fields['stageList']        = 'Development Phase';

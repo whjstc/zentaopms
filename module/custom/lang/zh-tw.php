@@ -99,6 +99,7 @@ $lang->custom->project->fields['unitList'] = '預算單位';
 $lang->custom->story = new stdClass();
 $lang->custom->story->fields['categoryList']     = '類型';
 $lang->custom->story->fields['priList']          = '優先順序';
+$lang->custom->story->fields['complexityList']   = '複雜度';
 $lang->custom->story->fields['sourceList']       = '來源';
 $lang->custom->story->fields['reasonList']       = '關閉原因';
 $lang->custom->story->fields['stageList']        = '階段';

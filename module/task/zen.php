@@ -354,6 +354,11 @@ class taskZen extends task
             if($story->status != 'active' && $task->story != $story->id) continue;
             $stories[$story->id] = $story->title;
         }
+        if($task->story && !isset($stories[$task->story]))
+        {
+            $linkedStory = $this->story->fetchByID($task->story);
+            if($linkedStory && empty($linkedStory->deleted)) $stories += $this->story->formatStories(array($linkedStory));
+        }
 
         $syncChildren   = array();
         $childDateLimit = array('estStarted' => '', 'deadline' => '');
@@ -567,16 +572,32 @@ class taskZen extends task
         if(!empty($_POST['lastEditedDate']) && $oldTask->lastEditedDate != $this->post->lastEditedDate) dao::$errors[] = $this->lang->error->editedByOther;
         if(dao::isError()) return false;
 
+        $preserveStory = false;
+        if($oldTask->story > 0 && empty($task->story) && empty($_POST['storyCleared']))
+        {
+            $moduleID = $task->module;
+            if($moduleID)
+            {
+                $moduleID = $this->loadModel('tree')->getStoryModule($moduleID);
+                $moduleID = $this->tree->getAllChildID($moduleID);
+            }
+
+            $storyPairs    = $this->loadModel('story')->getExecutionStoryPairs($oldTask->execution, 0, 'all', $moduleID, 'full', 'all', 'story', false);
+            $preserveStory = !isset($storyPairs[$oldTask->story]);
+        }
+
         $now  = helper::now();
         $task = form::data($this->config->task->form->edit, $task->id)
             ->add('id', $task->id)
             ->add('lastEditedDate', $now)
             ->setDefault('design', $oldTask->design)
+            ->setIF($preserveStory, 'story', $oldTask->story)
+            ->setIF($preserveStory, 'storyVersion', $oldTask->storyVersion)
             ->setIF(!$task->assignedTo && !empty($oldTask->team) && !empty($this->post->team), 'assignedTo', $this->task->getAssignedTo4Multi($this->post->team, $oldTask))
             ->setIF($task->assignedTo != $oldTask->assignedTo, 'assignedDate', $now)
             ->setIF($task->mode == 'single', 'mode', '')
             ->setIF(!$oldTask->mode && !$task->assignedTo && !empty($this->post->team), 'assignedTo', zget($this->post->team, 0, ''))
-            ->setIF($task->story !== false && $task->story != $oldTask->story, 'storyVersion', $this->loadModel('story')->getVersion((int)$task->story))
+            ->setIF(!$preserveStory && $task->story !== false && $task->story != $oldTask->story, 'storyVersion', $this->loadModel('story')->getVersion((int)$task->story))
             ->setIF($task->status == 'wait' && $task->left == $oldTask->left && $task->consumed == 0 && $task->estimate, 'left', $task->estimate)
             ->setIF($task->status == 'done', 'left', 0)
             ->setIF($task->status == 'done'   && empty($task->finishedBy),   'finishedBy',   $this->app->user->account)

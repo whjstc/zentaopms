@@ -146,6 +146,17 @@ formBatchPanel
     ),
     formBatchItem
     (
+        set::name('complexity'),
+        set::label($lang->task->complexity),
+        set::control('picker'),
+        set::items(array_filter($lang->task->complexityList)),
+        set::width('160px'),
+        set::required(true),
+        set::ditto(true),
+        set::defaultDitto('off')
+    ),
+    formBatchItem
+    (
         set::name('pri'),
         set::label($lang->task->pri),
         set::control('priPicker'),

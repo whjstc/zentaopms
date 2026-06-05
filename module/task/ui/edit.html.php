@@ -211,7 +211,7 @@ detailBody
                     set::name('story'),
                     set::value($task->story),
                     set::items($storyOptions),
-                    on::change('setStoryModule')
+                    on::change('handleStoryChange')
                 )
             )
         ) : null,

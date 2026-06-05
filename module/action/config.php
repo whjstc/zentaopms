@@ -128,6 +128,7 @@ $config->action->multipleUserFields = 'mailto,whitelist,reviewer,users,assignee,
 
 $config->action->objectFields['task']['closedReason'] = 'reasonList';
 $config->action->objectFields['task']['complexity']   = 'complexityList';
+$config->action->objectFields['story']['complexity']  = 'complexityList';
 
 $config->action->multipleObjectFields['bug']['os']        = 'osList';
 $config->action->multipleObjectFields['bug']['browser']   = 'browserList';

@@ -104,6 +104,7 @@ $config->task->form->batchedit['name']           = array('type' => 'string',   '
 $config->task->form->batchedit['color']          = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->batchedit['type']           = array('type' => 'string',   'required' => true,  'default' => '');
 $config->task->form->batchedit['status']         = array('type' => 'string',   'required' => false, 'default' => '');
+$config->task->form->batchedit['complexity']     = array('type' => 'string',   'required' => true,  'default' => 'L1');
 $config->task->form->batchedit['pri']            = array('type' => 'int',      'required' => false, 'default' => 0);
 $config->task->form->batchedit['assignedTo']     = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->batchedit['estimate']       = array('type' => 'float',    'required' => false, 'default' => 0);

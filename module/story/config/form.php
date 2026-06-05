@@ -21,6 +21,7 @@ $config->story->form->create['grade']       = array('type' => 'int',     'contro
 $config->story->form->create['region']      = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
 $config->story->form->create['lane']        = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
 $config->story->form->create['title']       = array('type' => 'string',  'control' => 'text',         'required' => true,  'filter'  => 'trim');
+$config->story->form->create['complexity']  = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => 'L1', 'options' => $lang->story->complexityList);
 $config->story->form->create['color']       = array('type' => 'string',  'control' => 'color',        'required' => false, 'default' => '');
 $config->story->form->create['category']    = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => 'feature', 'options' => $lang->story->categoryList);
 $config->story->form->create['pri']         = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => $config->story->defaultPriority, 'options' => array_filter($lang->story->priList));
@@ -46,6 +47,7 @@ $config->story->form->edit['module']         = array('type' => 'int',     'contr
 $config->story->form->edit['parent']         = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
 $config->story->form->edit['grade']          = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 1,  'options' => array());
 $config->story->form->edit['title']          = array('type' => 'string',  'control' => 'text',         'required' => false, 'default' => '', 'filter'  => 'trim');
+$config->story->form->edit['complexity']     = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => 'L1', 'options' => $lang->story->complexityList);
 $config->story->form->edit['color']          = array('type' => 'string',  'control' => 'color',        'required' => false, 'default' => '');
 $config->story->form->edit['spec']           = array('type' => 'string',  'control' => 'editor',       'required' => false, 'default' => '');
 $config->story->form->edit['verify']         = array('type' => 'string',  'control' => 'editor',       'required' => false, 'default' => '');
@@ -100,6 +102,7 @@ $config->story->form->batchEdit['title']        = array('type' => 'string', 'wid
 $config->story->form->batchEdit['color']        = array('type' => 'string',                     'control' => 'color',  'required' => false, 'default' => '', 'filter'  => 'trim');
 $config->story->form->batchEdit['estimate']     = array('type' => 'float',  'width' => '76px',  'control' => 'text',   'required' => false, 'default' => '0');
 $config->story->form->batchEdit['category']     = array('type' => 'string', 'width' => '160px', 'control' => 'picker', 'required' => false, 'default' => 'feature', 'options' => array_filter($lang->story->categoryList));
+$config->story->form->batchEdit['complexity']   = array('type' => 'string', 'width' => '92px',  'control' => 'picker', 'required' => false, 'default' => 'L1', 'options' => array_filter($lang->story->complexityList));
 $config->story->form->batchEdit['pri']          = array('type' => 'string', 'width' => '92px',  'control' => array('control' => 'picker', 'required' => true), 'required' => false, 'default' => $config->story->defaultPriority,  'options' => array_filter($lang->story->priList));
 $config->story->form->batchEdit['assignedTo']   = array('type' => 'string', 'width' => '136px', 'control' => 'picker', 'required' => false, 'default' => '', 'options' => 'users');
 $config->story->form->batchEdit['source']       = array('type' => 'string', 'width' => '160px', 'control' => 'picker', 'required' => false, 'default' => '', 'options' => array_filter($lang->story->sourceList));

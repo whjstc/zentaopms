@@ -333,6 +333,11 @@ detailBody
             ),
             item
             (
+                set::name($lang->story->complexity),
+                picker(setID('complexity'), set::name('complexity'), set::items($lang->{$story->type}->complexityList), set::value(zget($story, 'complexity', 'L1')))
+            ),
+            item
+            (
                 set::name($lang->story->pri),
                 priPicker(set::name('pri'), set::items($lang->{$story->type}->priList), set::value($fields['pri']['default']))
             ),

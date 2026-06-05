@@ -2007,6 +2007,7 @@ CREATE TABLE IF NOT EXISTS `zt_story` (
   `fromBug` int unsigned NOT NULL DEFAULT 0,
   `feedback` int unsigned NOT NULL DEFAULT 0,
   `title` varchar(255) NOT NULL DEFAULT '',
+  `complexity` varchar(20) NOT NULL DEFAULT 'L1',
   `keywords` varchar(255) NOT NULL DEFAULT '',
   `type` varchar(20) NOT NULL DEFAULT 'story',
   `category` varchar(30) NOT NULL DEFAULT 'feature',

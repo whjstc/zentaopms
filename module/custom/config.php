@@ -1,8 +1,8 @@
 <?php
 $config->custom = new stdClass();
-$config->custom->canAdd['epic']        = 'reasonList,sourceList,priList,categoryList';
-$config->custom->canAdd['story']       = 'reasonList,sourceList,priList,categoryList';
-$config->custom->canAdd['requirement'] = 'reasonList,sourceList,priList,categoryList';
+$config->custom->canAdd['epic']        = 'reasonList,sourceList,priList,categoryList,complexityList';
+$config->custom->canAdd['story']       = 'reasonList,sourceList,priList,categoryList,complexityList';
+$config->custom->canAdd['requirement'] = 'reasonList,sourceList,priList,categoryList,complexityList';
 $config->custom->canAdd['task']        = 'priList,typeList,complexityList,reasonList';
 $config->custom->canAdd['bug']         = 'priList,severityList,osList,browserList,typeList,resolutionList';
 $config->custom->canAdd['testcase']    = 'priList,typeList,stageList,resultList,statusList';

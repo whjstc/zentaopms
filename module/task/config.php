@@ -55,14 +55,14 @@ $config->task->exportFields = '
 $config->task->list = new stdclass();
 $config->task->list->customCreateFields      = 'module,story,keywords,mailto,files';
 $config->task->list->customBatchCreateFields = 'module,story,assignedTo,estimate,estStarted,deadline,desc,pri';
-$config->task->list->customBatchEditFields   = 'module,assignedTo,status,pri,estimate,record,left,estStarted,deadline';
+$config->task->list->customBatchEditFields   = 'module,assignedTo,status,complexity,pri,estimate,record,left,estStarted,deadline';
 
 $config->task->defaultLoadCount = 50;
 
 $config->task->custom = new stdclass();
 $config->task->custom->createFields      = $config->task->list->customCreateFields;
 $config->task->custom->batchCreateFields = 'module,story,assignedTo,estimate,estStarted,deadline,desc,pri';
-$config->task->custom->batchEditFields   = 'module,assignedTo,status,pri,estimate,record,left';
+$config->task->custom->batchEditFields   = 'module,assignedTo,status,complexity,pri,estimate,record,left';
 
 $config->task->excludeCheckFields = ',pri,estStartedDitto,deadlineDitto,parent,regions,lanes,vision,region,';
 

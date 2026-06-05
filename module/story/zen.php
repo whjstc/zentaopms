@@ -1321,6 +1321,7 @@ class storyZen extends story
             ->setIF(!in_array($this->post->source, $this->config->story->feedbackSource), 'notifyEmail', '')
             ->setIF(!empty($_POST['plan'][0]) and $oldStory->stage == 'wait', 'stage', 'planned')
             ->setIF(!isset($_POST['title']), 'title', $oldStory->title)
+            ->setIF(!isset($_POST['complexity']), 'complexity', zget($oldStory, 'complexity', 'L1'))
             ->setIF(!isset($_POST['spec']), 'spec', $oldStory->spec)
             ->setIF(!isset($_POST['verify']), 'verify', $oldStory->verify)
             ->setIF(!isset($_POST['estimate']), 'estimate', $oldStory->estimate)
