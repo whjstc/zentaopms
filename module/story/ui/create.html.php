@@ -39,8 +39,8 @@ if(!empty($objectID))
     $createFields->field('source')->className('full:w-1/2');
     $createFields->field('sourceNote')->className('full:w-1/2');
 
-    $orders         = 'product,module,twinsStory,parent,grade,assignedTo,reviewer,region,lane,title,category,pri,estimate,spec,verify,files';
-    $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,category,title,pri,estimate,spec,verify,files';
+    $orders         = 'product,module,twinsStory,parent,grade,assignedTo,reviewer,region,lane,title,complexity,category,pri,estimate,spec,verify,files';
+    $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,category,title,complexity,pri,estimate,spec,verify,files';
     if(!isset($fields['plan']))
     {
         $createFields->field('source')->width('1/2');
@@ -48,16 +48,16 @@ if(!empty($objectID))
         $createFields->field('category')->width('1/2');
         $createFields->field('pri')->width('1/4');
         $createFields->field('estimate')->width('1/4');
-        $orders         = 'product,module,twinsStory,parent,grade,assignedTo,category,reviewer,region,lane,title,pri,estimate,spec,verify,files';
-        $fullModeOrders = 'product,module,twinsStory,parent,grade,assignedTo,category,reviewer,region,lane,title,pri,estimate,spec,verify,files';
+        $orders         = 'product,module,twinsStory,parent,grade,assignedTo,category,reviewer,region,lane,title,complexity,pri,estimate,spec,verify,files';
+        $fullModeOrders = 'product,module,twinsStory,parent,grade,assignedTo,category,reviewer,region,lane,title,complexity,pri,estimate,spec,verify,files';
     }
     else
     {
         $createFields->field('category')->className('full:w-1/6');
         $createFields->field('pri')->className('full:w-1/6');
         $createFields->field('estimate')->className('full:w-1/6');
-        $orders         = 'product,module,twinsStory,reviewer,region,lane,parent,grade,assignedTo,category,title,pri,estimate,spec,verify,files';
-        $fullModeOrders = 'product,module,twinsStory,reviewer,region,lane,plan,parent,grade,assignedTo,title,category,pri,estimate,spec,verify,files';
+        $orders         = 'product,module,twinsStory,reviewer,region,lane,parent,grade,assignedTo,category,title,complexity,pri,estimate,spec,verify,files';
+        $fullModeOrders = 'product,module,twinsStory,reviewer,region,lane,plan,parent,grade,assignedTo,title,complexity,category,pri,estimate,spec,verify,files';
     }
 
     $createFields->orders($orders);
@@ -75,14 +75,14 @@ else
         $createFields->field('estimate')->width('1/4')->className('full:w-1/6');
     }
 
-    $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,assignedTo,reviewer,region,lane,title,category,pri,estimate,spec,verify,files';
-    if($type != 'story') $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,category,title,pri,estimate,spec,verify,files';
+    $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,assignedTo,reviewer,region,lane,title,complexity,category,pri,estimate,spec,verify,files';
+    if($type != 'story') $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,category,title,complexity,pri,estimate,spec,verify,files';
     if($type == 'story' and isset($fields['branch']))
     {
-        $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,title,category,pri,estimate,spec,verify,files';
+        $fullModeOrders = 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,title,complexity,category,pri,estimate,spec,verify,files';
     }
 
-    $createFields->orders('product,module,twinsStory,parent,grade,reviewer,region,lane,assignedTo,category,title,pri,estimate,spec,verify,files');
+    $createFields->orders('product,module,twinsStory,parent,grade,reviewer,region,lane,assignedTo,category,title,complexity,pri,estimate,spec,verify,files');
     $createFields->fullModeOrders($fullModeOrders);
 }
 
@@ -96,7 +96,7 @@ jsVar('feedbackSource', $config->story->feedbackSource);
 
 $pinnedItems = !empty($this->config->{$type}->custom->createFields) ? $this->config->{$type}->custom->createFields : array();
 
-$createFields->autoLoad('product', array('items' => 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,' . (!empty($lang->{$type}->flowExtraFields) ? implode(',', $lang->{$type}->flowExtraFields) : ''), 'updateOrders' => true));
+$createFields->autoLoad('product', array('items' => 'product,module,twinsStory,plan,parent,grade,reviewer,region,lane,assignedTo,complexity,' . (!empty($lang->{$type}->flowExtraFields) ? implode(',', $lang->{$type}->flowExtraFields) : ''), 'updateOrders' => true));
 if($type != 'story') $createFields->autoLoad('branch', 'module');
 
 formGridPanel

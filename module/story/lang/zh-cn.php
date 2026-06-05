@@ -154,6 +154,7 @@ $lang->story->spec             = "描述";
 $lang->story->assign           = '指派给';
 $lang->story->verify           = '验收标准';
 $lang->story->pri              = '优先级';
+$lang->story->complexity       = '复杂度';
 $lang->story->estimate         = "预计{$lang->hourCommon}";
 $lang->story->estimateAB       = '预计';
 $lang->story->hour             = $lang->hourCommon;
@@ -321,6 +322,13 @@ $lang->story->priList[1] = '1';
 $lang->story->priList[2] = '2';
 $lang->story->priList[3] = '3';
 $lang->story->priList[4] = '4';
+
+$lang->story->complexityList['']   = '';
+$lang->story->complexityList['L1'] = 'L1';
+$lang->story->complexityList['L2'] = 'L2';
+$lang->story->complexityList['L3'] = 'L3';
+$lang->story->complexityList['L4'] = 'L4';
+$lang->story->complexityList['L5'] = 'L5';
 
 $lang->story->changeList = array();
 $lang->story->changeList['no']  = '不变更';

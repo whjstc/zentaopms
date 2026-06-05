@@ -70,6 +70,8 @@ $routes['/testcases/:caseID']                 = array('response' => 'testcase,ac
 $routes['/products/:productID/testtasks']     = array('redirect' => '/testtasks?productID=:productID', 'response' => 'tasks(array)|testtasks,pager');
 $routes['/projects/:projectID/testtasks']     = array('redirect' => '/projects/testtask?projectID=:projectID');
 $routes['/executions/:executionID/testtasks'] = array('redirect' => '/executions/testtask?executionID=:executionID');
+$routes['/testtasks/cases']                   = array('response' => 'task|testtask,runs(array),pager');
+$routes['/testtasks/:testtaskID/cases']       = array('redirect' => '/testtasks/cases?taskID=:testtaskID', 'response' => 'task|testtask,runs(array),pager');
 $routes['/testtasks/:testtaskID']             = array('response' => 'task|testtask,actions(array)');
 
 $routes['/products/:productID/testreports']     = array('redirect' => '/testreports?objectID=:productID', 'response' => 'reports(array)|testreports,pager');
@@ -118,6 +120,9 @@ $routes['/depts/:deptID'] = array('redirect' => '/depts/browse?deptID=:deptID', 
 
 $routes['/users']         = array('redirect' => '/companies/browse', 'response' => 'users,pager');
 $routes['/users/:userID'] = array('redirect' => '/users/:userID/profile', 'response' => 'user');
+
+$routes['/docs/:docID']         = array('redirect' => '/docs/:docID/content');
+$routes['/docs/:docID/content'] = array('method' => 'content');
 
 $routes['/files/:fileID'] = array('redirect' => '/files/:fileID/ajaxQuery');
 $routes['/files/:fileID/download'] = array('method' => 'download');

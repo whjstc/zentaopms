@@ -104,6 +104,7 @@ $lang->story->spec           = "描述";
 $lang->story->assign         = '指派給';
 $lang->story->verify         = '驗收標準';
 $lang->story->pri            = '優先順序';
+$lang->story->complexity     = '複雜度';
 $lang->story->estimate       = "預計{$lang->hourCommon}";
 $lang->story->estimateAB     = '預計';
 $lang->story->hour           = $lang->hourCommon;
@@ -233,6 +234,13 @@ $lang->story->priList[1]  = '1';
 $lang->story->priList[2]  = '2';
 $lang->story->priList[3]  = '3';
 $lang->story->priList[4]  = '4';
+
+$lang->story->complexityList['']   = '';
+$lang->story->complexityList['L1'] = 'L1';
+$lang->story->complexityList['L2'] = 'L2';
+$lang->story->complexityList['L3'] = 'L3';
+$lang->story->complexityList['L4'] = 'L4';
+$lang->story->complexityList['L5'] = 'L5';
 
 $lang->story->changeList = array();
 $lang->story->changeList['no']  = '不變更';

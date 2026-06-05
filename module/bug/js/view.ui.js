@@ -54,3 +54,16 @@ window.waitDom('body.body-modal .toolbar', function()
 {
     $('.body-modal .toolbar a[data-load="modal"]').attr('data-toggle', 'modal').removeAttr('data-load');
 })
+
+/* Keep pasted rich-text tables from overflowing into the side panel. */
+$(function()
+{
+    $(".detail-section table").each(function()
+    {
+        const $table = $(this);
+        if($table.parent().hasClass("zentao-rich-table-scroll")) return;
+        if($table.closest(".datatable, .dtable, .table-data").length) return;
+
+        $table.wrap("<div class=\"zentao-rich-table-scroll\"></div>");
+    });
+});

@@ -814,7 +814,7 @@ class baseRouter
             if(isset($_SERVER['REQUEST_SCHEME']) and strtolower((string) $_SERVER['REQUEST_SCHEME']) == 'https') $httpType = 'https';
 
             $httpHost = zget($_SERVER, 'HTTP_HOST', '');
-            $apiMode  = $this->apiVersion || isset($_GET[$this->config->sessionVar]);
+            $apiMode  = $this->apiVersion || (isset($_GET[$this->config->sessionVar]) && !isset($_COOKIE[$this->config->sessionVar]));
             if(!$apiMode && (empty($httpHost) or !str_starts_with((string) $this->server->http_referer, "$httpType://$httpHost"))) $_FILES = $_POST = array();
         }
 
@@ -1204,7 +1204,7 @@ class baseRouter
         if(defined('SESSION_STARTED')) return;
 
         /* API session use tmp/apisession directory. */
-        $apiMode = $this->apiVersion || isset($_GET[$this->config->sessionVar]);
+        $apiMode = $this->apiVersion || (isset($_GET[$this->config->sessionVar]) && !isset($_COOKIE[$this->config->sessionVar]));
 
         if(ini_get('session.save_handler') == 'files' || $apiMode)
         {
@@ -1232,7 +1232,7 @@ class baseRouter
             helper::restartSession($_SERVER['HTTP_TOKEN']);
             $this->sessionID = isset($ztSessionHandler) ? $ztSessionHandler->getSessionID() : session_id();
         }
-        elseif(isset($_GET[$this->config->sessionVar]))
+        elseif(isset($_GET[$this->config->sessionVar]) && !isset($_COOKIE[$this->config->sessionVar]))
         {
             /* 为了避免安全漏洞，必须在从GET参数恢复会话之前记录sessionID，以便在index.php判断session_id() != $app->sessionID后重启会话。*/
             /* To avoid security issue, we have to record sessionID before restart session from GET param, so that we can restart session in index.php when session_id() != $app->sessionID. */
@@ -3916,7 +3916,7 @@ class ztSessionHandler implements SessionHandlerInterface
     {
         /* API session never expires. */
         global $config;
-        if((defined('RUN_MODE') && RUN_MODE == 'api') || isset($_GET[$config->sessionVar])) return 0;
+        if((defined('RUN_MODE') && RUN_MODE == 'api') || (isset($_GET[$config->sessionVar]) && !isset($_COOKIE[$config->sessionVar]))) return 0;
 
         $time  = time();
         $count = 0;

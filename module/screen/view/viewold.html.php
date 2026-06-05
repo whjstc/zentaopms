@@ -5,6 +5,9 @@
 <?php js::set('month', $month);?>
 <?php js::set('dept', $dept);?>
 <?php js::set('account', $account);?>
+<?php js::set('product', $product);?>
+<?php js::set('project', $project);?>
+<?php js::set('execution', $execution);?>
 <div id="appProvider" style="display: none;"></div>
 <div id="app">
   <div class="first-loading-wrp">

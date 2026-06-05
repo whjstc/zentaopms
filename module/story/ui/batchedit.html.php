@@ -38,6 +38,7 @@ foreach($fields as $fieldName => $field)
     if($fieldName == 'source')   $field['options'] = $lang->{$storyType}->sourceList;
     if($fieldName == 'pri')      $field['options'] = $lang->{$storyType}->priList;
     if($fieldName == 'category') $field['options'] = $lang->{$storyType}->categoryList;
+    if($fieldName == 'complexity') $field['options'] = array_filter($lang->{$storyType}->complexityList);
     $items[$fieldName] = array('name' => $fieldName, 'label' => zget($lang->story, $fieldName), 'control' => $field['control'], 'width' => $field['width'], 'required' => $field['required']);
     if(isset($field['options'])) $items[$fieldName]['items'] = $field['options'];
     if(isset($customFields[$fieldName]) && strpos(",$showFields,", ",$fieldName,") === false) $items[$fieldName]['hidden'] = true;

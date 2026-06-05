@@ -69,6 +69,7 @@ $lang->task->storyVersion      = "{$lang->SRCommon}版本";
 $lang->task->designVersion     = "設計版本";
 $lang->task->color             = '標題顏色';
 $lang->task->name              = '任務名稱';
+$lang->task->complexity        = '複雜度';
 $lang->task->type              = '任務類型';
 $lang->task->typeAB            = '類型';
 $lang->task->sync2Gitlab       = '同步到GitLab';
@@ -180,6 +181,13 @@ $lang->task->typeList['discuss'] = '討論';
 $lang->task->typeList['ui']      = '界面';
 $lang->task->typeList['affair']  = '事務';
 $lang->task->typeList['misc']    = '其他';
+
+$lang->task->complexityList['']   = '';
+$lang->task->complexityList['L1'] = 'L1';
+$lang->task->complexityList['L2'] = 'L2';
+$lang->task->complexityList['L3'] = 'L3';
+$lang->task->complexityList['L4'] = 'L4';
+$lang->task->complexityList['L5'] = 'L5';
 
 $lang->task->priList[0] = '';
 $lang->task->priList[1] = '1';

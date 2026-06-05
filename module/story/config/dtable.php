@@ -1,6 +1,7 @@
 <?php
 global $lang, $app;
 $isEn = $app->getClientLang() == 'en';
+$account = isset($app->user->account) ? $app->user->account : '';
 $config->story->dtable = new stdclass();
 
 $config->story->dtable->defaultField = array('id', 'title', 'pri', 'plan', 'roadmap', 'status', 'openedBy', 'estimate', 'reviewedBy', 'stage', 'assignedTo', 'taskCount', 'actions');
@@ -49,6 +50,14 @@ $config->story->dtable->fieldList['pri']['priList']  = $lang->story->priList;
 $config->story->dtable->fieldList['pri']['show']     = true;
 $config->story->dtable->fieldList['pri']['group']    = 2;
 if($isEn) $config->story->dtable->fieldList['pri']['width'] = '80';
+
+$config->story->dtable->fieldList['complexity']['name']     = 'complexity';
+$config->story->dtable->fieldList['complexity']['title']    = $lang->story->complexity;
+$config->story->dtable->fieldList['complexity']['sortType'] = true;
+$config->story->dtable->fieldList['complexity']['type']     = 'category';
+$config->story->dtable->fieldList['complexity']['map']      = $lang->story->complexityList;
+$config->story->dtable->fieldList['complexity']['width']    = '80';
+$config->story->dtable->fieldList['complexity']['group']    = 2;
 
 $config->story->dtable->fieldList['branch']['name']       = 'branch';
 $config->story->dtable->fieldList['branch']['title']      = $lang->story->branch;
@@ -163,7 +172,7 @@ if($isEn) $config->story->dtable->fieldList['stage']['width'] = '120';
 $config->story->dtable->fieldList['assignedTo']['name']        = 'assignedTo';
 $config->story->dtable->fieldList['assignedTo']['title']       = $lang->story->assignedTo;
 $config->story->dtable->fieldList['assignedTo']['sortType']    = true;
-$config->story->dtable->fieldList['assignedTo']['currentUser'] = $app->user->account;
+$config->story->dtable->fieldList['assignedTo']['currentUser'] = $account;
 $config->story->dtable->fieldList['assignedTo']['assignLink']  = array('module' => 'story', 'method' => 'assignTo', 'params' => 'storyID={id}');
 $config->story->dtable->fieldList['assignedTo']['type']        = 'assign';
 $config->story->dtable->fieldList['assignedTo']['show']        = true;

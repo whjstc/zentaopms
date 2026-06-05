@@ -1,0 +1,727 @@
+{
+  "id": 10006,
+  "dimension": "2",
+  "name": "PMO-人员任务大屏",
+  "desc": "人员任务数量、延期阻塞、工时偏差、复杂度和任务进度。",
+  "cover": "static/images/screen1.png",
+  "builtin": "1",
+  "scheme": {
+    "editCanvasConfig": {
+      "projectName": "PMO",
+      "width": 1920,
+      "height": 1080,
+      "filterShow": false,
+      "hueRotate": 0,
+      "saturate": 1,
+      "contrast": 1,
+      "brightness": 1,
+      "opacity": 1,
+      "rotateZ": 0,
+      "rotateX": 0,
+      "rotateY": 0,
+      "skewX": 0,
+      "skewY": 0,
+      "blendMode": "normal",
+      "background": "#07111F",
+      "selectColor": true,
+      "chartThemeColor": "dark",
+      "previewScaleType": "fit",
+      "globalFilter": [],
+      "chartCustomThemeColorInfo": []
+    },
+    "componentList": [
+      {
+        "id": "title",
+        "isGroup": false,
+        "attr": {
+          "x": 0,
+          "y": 18,
+          "w": 1920,
+          "h": 54,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "PMO-人员任务大屏",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "PMO-人员任务大屏",
+          "fontSize": 34,
+          "fontColor": "#EAF6FF",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "subtitle",
+        "isGroup": false,
+        "attr": {
+          "x": 0,
+          "y": 70,
+          "w": 1920,
+          "h": 28,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "人员任务数量、延期阻塞、工时偏差、复杂度和任务进度。",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "人员任务数量、延期阻塞、工时偏差、复杂度和任务进度。",
+          "fontSize": 15,
+          "fontColor": "#8FB8D8",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "filter_project",
+        "isGroup": false,
+        "attr": {
+          "x": 1460,
+          "y": 28,
+          "w": 190,
+          "h": 38,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "Select",
+        "type": "project",
+        "filterCharts": [
+          {
+            "chart": 41100,
+            "field": "project"
+          },
+          {
+            "chart": 41101,
+            "field": "project"
+          },
+          {
+            "chart": 41102,
+            "field": "project"
+          },
+          {
+            "chart": 41103,
+            "field": "project"
+          },
+          {
+            "chart": 41104,
+            "field": "project"
+          },
+          {
+            "chart": 41105,
+            "field": "project"
+          },
+          {
+            "chart": 41106,
+            "field": "project"
+          },
+          {
+            "chart": 41200,
+            "field": "project"
+          },
+          {
+            "chart": 41201,
+            "field": "project"
+          },
+          {
+            "chart": 41202,
+            "field": "project"
+          },
+          {
+            "chart": 41203,
+            "field": "project"
+          },
+          {
+            "chart": 41204,
+            "field": "project"
+          },
+          {
+            "chart": 41205,
+            "field": "project"
+          },
+          {
+            "chart": 41206,
+            "field": "project"
+          },
+          {
+            "chart": 41300,
+            "field": "project"
+          },
+          {
+            "chart": 41301,
+            "field": "project"
+          },
+          {
+            "chart": 41302,
+            "field": "project"
+          },
+          {
+            "chart": 41303,
+            "field": "project"
+          },
+          {
+            "chart": 41304,
+            "field": "project"
+          },
+          {
+            "chart": 41307,
+            "field": "project"
+          },
+          {
+            "chart": 41400,
+            "field": "project"
+          },
+          {
+            "chart": 41401,
+            "field": "project"
+          },
+          {
+            "chart": 41402,
+            "field": "project"
+          },
+          {
+            "chart": 41403,
+            "field": "project"
+          },
+          {
+            "chart": 41404,
+            "field": "project"
+          },
+          {
+            "chart": 41405,
+            "field": "project"
+          },
+          {
+            "chart": 41406,
+            "field": "project"
+          },
+          {
+            "chart": 41407,
+            "field": "project"
+          }
+        ],
+        "chartConfig": {
+          "key": "Select",
+          "chartKey": "VSelect",
+          "conKey": "VCSelect",
+          "title": "筛选器",
+          "category": "Controls",
+          "categoryName": "控件",
+          "package": "Controls",
+          "image": "select.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "value": "0",
+          "dataset": [
+            {
+              "label": "全部",
+              "value": "0"
+            }
+          ],
+          "fontSize": 14,
+          "fontColor": "#DCEEFF",
+          "backgroundColor": "#0B243D",
+          "borderColor": "#2A6F9F",
+          "borderWidth": 1,
+          "borderRadius": 4
+        }
+      },
+      {
+        "id": "filter_execution",
+        "isGroup": false,
+        "attr": {
+          "x": 1660,
+          "y": 28,
+          "w": 190,
+          "h": 38,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "Select",
+        "type": "execution",
+        "filterCharts": [
+          {
+            "chart": 41101,
+            "field": "execution"
+          },
+          {
+            "chart": 41102,
+            "field": "execution"
+          },
+          {
+            "chart": 41200,
+            "field": "execution"
+          },
+          {
+            "chart": 41201,
+            "field": "execution"
+          },
+          {
+            "chart": 41202,
+            "field": "execution"
+          },
+          {
+            "chart": 41203,
+            "field": "execution"
+          },
+          {
+            "chart": 41204,
+            "field": "execution"
+          },
+          {
+            "chart": 41205,
+            "field": "execution"
+          },
+          {
+            "chart": 41206,
+            "field": "execution"
+          },
+          {
+            "chart": 41300,
+            "field": "execution"
+          },
+          {
+            "chart": 41301,
+            "field": "execution"
+          },
+          {
+            "chart": 41303,
+            "field": "execution"
+          },
+          {
+            "chart": 41304,
+            "field": "execution"
+          },
+          {
+            "chart": 41307,
+            "field": "execution"
+          },
+          {
+            "chart": 41400,
+            "field": "execution"
+          },
+          {
+            "chart": 41401,
+            "field": "execution"
+          },
+          {
+            "chart": 41402,
+            "field": "execution"
+          },
+          {
+            "chart": 41403,
+            "field": "execution"
+          },
+          {
+            "chart": 41404,
+            "field": "execution"
+          },
+          {
+            "chart": 41405,
+            "field": "execution"
+          },
+          {
+            "chart": 41406,
+            "field": "execution"
+          },
+          {
+            "chart": 41407,
+            "field": "execution"
+          }
+        ],
+        "chartConfig": {
+          "key": "Select",
+          "chartKey": "VSelect",
+          "conKey": "VCSelect",
+          "title": "筛选器",
+          "category": "Controls",
+          "categoryName": "控件",
+          "package": "Controls",
+          "image": "select.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "value": "0",
+          "dataset": [
+            {
+              "label": "全部",
+              "value": "0"
+            }
+          ],
+          "fontSize": 14,
+          "fontColor": "#DCEEFF",
+          "backgroundColor": "#0B243D",
+          "borderColor": "#2A6F9F",
+          "borderWidth": 1,
+          "borderRadius": 4
+        }
+      },
+      {
+        "id": "c41400",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-个人任务数",
+          "sourceID": "41400"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41400",
+        "title": "个人任务数",
+        "type": "card"
+      },
+      {
+        "id": "c41401",
+        "isGroup": false,
+        "attr": {
+          "x": 308,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-个人进行中任务数",
+          "sourceID": "41401"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41401",
+        "title": "个人进行中任务数",
+        "type": "card"
+      },
+      {
+        "id": "c41402",
+        "isGroup": false,
+        "attr": {
+          "x": 568,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-个人延期任务数",
+          "sourceID": "41402"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41402",
+        "title": "个人延期任务数",
+        "type": "card"
+      },
+      {
+        "id": "c41403",
+        "isGroup": false,
+        "attr": {
+          "x": 828,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-个人阻塞任务数",
+          "sourceID": "41403"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41403",
+        "title": "个人阻塞任务数",
+        "type": "card"
+      },
+      {
+        "id": "c41404",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 280,
+          "w": 860,
+          "h": 360,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "chartFrame": "common",
+          "title": "PMO-人员任务工时Top",
+          "sourceID": "41404"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41404",
+        "title": "人员任务工时Top",
+        "type": "table"
+      },
+      {
+        "id": "c41405",
+        "isGroup": false,
+        "attr": {
+          "x": 950,
+          "y": 280,
+          "w": 430,
+          "h": 360,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "title": "任务复杂度分布",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "chartFrame": "common",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "sourceID": "41405"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41405",
+        "title": "任务复杂度分布",
+        "type": "table"
+      },
+      {
+        "id": "c41406",
+        "isGroup": false,
+        "attr": {
+          "x": 1420,
+          "y": 280,
+          "w": 450,
+          "h": 360,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "title": "人员任务进度",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "chartFrame": "common",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "sourceID": "41406"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41406",
+        "title": "人员任务进度",
+        "type": "table"
+      },
+      {
+        "id": "c41407",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 670,
+          "w": 1822,
+          "h": 310,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "chartFrame": "common",
+          "title": "PMO-人员实际工时日志",
+          "sourceID": "41407"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41407",
+        "title": "人员实际工时日志",
+        "type": "table"
+      }
+    ]
+  }
+}

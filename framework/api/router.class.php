@@ -32,6 +32,15 @@ class api extends router
     public $params = array();
 
     /**
+     * 请求参数默认值和类型。
+     * Default values and types of requested params.
+     *
+     * @var array
+     * @access public
+     */
+    public $defaultParams = array();
+
+    /**
      * 请求API的参数名
      * The requested param names of api.
      *
@@ -300,6 +309,7 @@ class api extends router
     public function routeV2($routes)
     {
         $this->action = strtolower((string) $_SERVER['REQUEST_METHOD']);
+        if($this->action == 'head') $this->action = 'get';
 
         $methodName = '';
         if($this->action == 'get') $methodName = $this->parseRouteV2($routes);
@@ -431,6 +441,15 @@ class api extends router
             case TABLE_BUILD:
             case TABLE_TASK:
                 return (!$object->execution || strpos(",{$userView->sprints},", ",$object->execution,") !== false);
+            case TABLE_TESTTASK:
+                $projects = ",{$userView->sprints},{$userView->projects},";
+                return (!$object->product || strpos(",{$userView->products},", ",$object->product,") !== false)
+                    && (!$object->project || strpos($projects, ",$object->project,") !== false)
+                    && (!$object->execution || strpos(",{$userView->sprints},", ",$object->execution,") !== false);
+            case TABLE_DOC:
+                return $this->control->loadModel('doc')->checkPrivDoc($object);
+            case TABLE_FILE:
+                return $this->control->loadModel('file')->checkPriv($object);
             default:
                 return true;
         }
@@ -480,6 +499,12 @@ class api extends router
             'caseID'        => TABLE_CASE,
             'testcase'      => TABLE_CASE,
             'testcaseID'    => TABLE_CASE,
+            'testtask'      => TABLE_TESTTASK,
+            'testtaskID'    => TABLE_TESTTASK,
+            'doc'           => TABLE_DOC,
+            'docID'         => TABLE_DOC,
+            'file'          => TABLE_FILE,
+            'fileID'        => TABLE_FILE,
             'user'          => TABLE_USER,
             'userID'        => TABLE_USER,
             'ticket'        => TABLE_TICKET,
@@ -487,6 +512,8 @@ class api extends router
             'dept'          => TABLE_DEPT,
             'deptID'        => TABLE_DEPT,
         ];
+
+        if($this->rawModule == 'testtask') $objectMap['taskID'] = TABLE_TESTTASK;
 
         /* Check assignedTo. */
         if(isset($_POST['assignedTo']) && $_POST['assignedTo'])
@@ -612,9 +639,13 @@ class api extends router
      */
     public function setFormData()
     {
-        $requestBody = file_get_contents("php://input");
-
-        $_POST = json_decode($requestBody, true);
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
+        if(stripos($contentType, 'multipart/form-data') === false)
+        {
+            $requestBody = file_get_contents("php://input");
+            $_POST      = json_decode($requestBody, true);
+        }
+        if(!is_array($_POST)) $_POST = array();
 
         /* Avoid empty post body. */
         if(in_array($this->control->moduleName, ['feedback', 'ticket']))
@@ -630,7 +661,12 @@ class api extends router
         /* 以POST的值为准。 Set GET value from POST data. */
         foreach($_POST as $key => $value)
         {
-            if(isset($this->params[$key])) $this->params[$key] = $value;
+            if(isset($this->params[$key]))
+            {
+                $type = $this->defaultParams[$key]['type'] ?? gettype($this->params[$key]);
+                if($type != 'NULL') settype($value, $type);
+                $this->params[$key] = $value;
+            }
         }
 
         $this->checkAccess();
@@ -654,7 +690,7 @@ class api extends router
         call_user_func_array(array($this->control, $method), $this->params);
 
         /* Clean the output in get method. */
-        ob_clean();
+        if(ob_get_level() > 0) ob_clean();
 
         $this->control->getFormData       = false;
         $this->control->viewType          = 'json';
@@ -686,6 +722,7 @@ class api extends router
     public function setParams()
     {
         $defaultParams = $this->getDefaultParams();
+        $this->defaultParams = $defaultParams;
 
         $this->params = array();
 

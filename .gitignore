@@ -25,6 +25,7 @@ test/data/sql/
 .vscode
 .gitignore
 .DS_Store
+.env
 docker
 .docker-sync
 CodeSniffer.conf

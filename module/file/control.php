@@ -66,6 +66,18 @@ class file extends control
      */
     public function ajaxUpload(string $uid = '', string $objectType = '', int $objectID = 0, string $extra = '', string $field = 'imgFile', bool $api = false, string $gid = '')
     {
+        if($objectType && $objectID)
+        {
+            $objectFile = new stdclass();
+            $objectFile->objectType = $objectType;
+            $objectFile->objectID   = $objectID;
+            $objectFile->extra      = $extra;
+            if(!$this->file->checkPriv($objectFile))
+            {
+                return $this->send(array('result' => 'fail', 'message' => $this->lang->file->accessDenied));
+            }
+        }
+
         $file = $this->file->getUpload($field);
 
         if(!isset($file[0]) or strpos(",{$this->config->file->allowed},", ",{$file[0]['extension']},") === false) return $this->send(array('result' => 'fail', 'message' => $this->lang->file->errorFileFormat));

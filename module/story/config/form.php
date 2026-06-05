@@ -3,6 +3,7 @@ $now   = helper::now();
 $today = helper::today();
 
 global $app, $lang;
+$account = isset($app->user->account) ? $app->user->account : '';
 $config->story->form = new stdclass();
 $config->story->form->create = array();
 $config->story->form->create['product']     = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
@@ -20,6 +21,7 @@ $config->story->form->create['grade']       = array('type' => 'int',     'contro
 $config->story->form->create['region']      = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
 $config->story->form->create['lane']        = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
 $config->story->form->create['title']       = array('type' => 'string',  'control' => 'text',         'required' => true,  'filter'  => 'trim');
+$config->story->form->create['complexity']  = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => 'L1', 'options' => $lang->story->complexityList);
 $config->story->form->create['color']       = array('type' => 'string',  'control' => 'color',        'required' => false, 'default' => '');
 $config->story->form->create['category']    = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => 'feature', 'options' => $lang->story->categoryList);
 $config->story->form->create['pri']         = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => $config->story->defaultPriority, 'options' => array_filter($lang->story->priList));
@@ -35,7 +37,7 @@ $config->story->form->create['modules']     = array('type' => 'array',   'contro
 $config->story->form->create['plans']       = array('type' => 'array',   'control' => 'select',       'required' => false, 'default' => 0, 'options' => array());
 $config->story->form->create['vision']      = array('type' => 'string',  'control' => '',             'required' => false, 'default' => $config->vision);
 $config->story->form->create['version']     = array('type' => 'int',     'control' => '',             'required' => false, 'default' => 1);
-$config->story->form->create['openedBy']    = array('type' => 'string',  'control' => '',             'required' => false, 'default' => $app->user->account);
+$config->story->form->create['openedBy']    = array('type' => 'string',  'control' => '',             'required' => false, 'default' => $account);
 $config->story->form->create['openedDate']  = array('type' => 'string',  'control' => '',             'required' => false, 'default' => helper::now());
 
 $config->story->form->edit = array();
@@ -45,6 +47,7 @@ $config->story->form->edit['module']         = array('type' => 'int',     'contr
 $config->story->form->edit['parent']         = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 0,  'options' => array());
 $config->story->form->edit['grade']          = array('type' => 'int',     'control' => 'select',       'required' => false, 'default' => 1,  'options' => array());
 $config->story->form->edit['title']          = array('type' => 'string',  'control' => 'text',         'required' => false, 'default' => '', 'filter'  => 'trim');
+$config->story->form->edit['complexity']     = array('type' => 'string',  'control' => 'select',       'required' => false, 'default' => 'L1', 'options' => $lang->story->complexityList);
 $config->story->form->edit['color']          = array('type' => 'string',  'control' => 'color',        'required' => false, 'default' => '');
 $config->story->form->edit['spec']           = array('type' => 'string',  'control' => 'editor',       'required' => false, 'default' => '');
 $config->story->form->edit['verify']         = array('type' => 'string',  'control' => 'editor',       'required' => false, 'default' => '');
@@ -99,6 +102,7 @@ $config->story->form->batchEdit['title']        = array('type' => 'string', 'wid
 $config->story->form->batchEdit['color']        = array('type' => 'string',                     'control' => 'color',  'required' => false, 'default' => '', 'filter'  => 'trim');
 $config->story->form->batchEdit['estimate']     = array('type' => 'float',  'width' => '76px',  'control' => 'text',   'required' => false, 'default' => '0');
 $config->story->form->batchEdit['category']     = array('type' => 'string', 'width' => '160px', 'control' => 'picker', 'required' => false, 'default' => 'feature', 'options' => array_filter($lang->story->categoryList));
+$config->story->form->batchEdit['complexity']   = array('type' => 'string', 'width' => '92px',  'control' => 'picker', 'required' => false, 'default' => 'L1', 'options' => array_filter($lang->story->complexityList));
 $config->story->form->batchEdit['pri']          = array('type' => 'string', 'width' => '92px',  'control' => array('control' => 'picker', 'required' => true), 'required' => false, 'default' => $config->story->defaultPriority,  'options' => array_filter($lang->story->priList));
 $config->story->form->batchEdit['assignedTo']   = array('type' => 'string', 'width' => '136px', 'control' => 'picker', 'required' => false, 'default' => '', 'options' => 'users');
 $config->story->form->batchEdit['source']       = array('type' => 'string', 'width' => '160px', 'control' => 'picker', 'required' => false, 'default' => '', 'options' => array_filter($lang->story->sourceList));
@@ -116,7 +120,7 @@ $config->story->form->batchclose['duplicateStory'] = array('type' => 'int',    '
 
 $config->story->form->assignTo = array();
 $config->story->form->assignTo['assignedTo']     = array('type' => 'string',   'control' => 'picker', 'required' => false, 'default' => '');
-$config->story->form->assignTo['lastEditedBy']   = array('type' => 'string',   'control' => 'hidden', 'required' => false, 'default' => $app->user->account);
+$config->story->form->assignTo['lastEditedBy']   = array('type' => 'string',   'control' => 'hidden', 'required' => false, 'default' => $account);
 $config->story->form->assignTo['lastEditedDate'] = array('type' => 'datetime', 'control' => 'hidden', 'required' => false, 'default' => $now);
 $config->story->form->assignTo['assignedDate']   = array('type' => 'datetime', 'control' => 'hidden', 'required' => false, 'default' => $now);
 
@@ -146,7 +150,7 @@ $config->story->form->activate = array();
 $config->story->form->activate['assignedTo']      = array('type' => 'string',   'required' => false, 'default' => '');
 $config->story->form->activate['activatedDate']   = array('type' => 'datetime', 'required' => false, 'default' => $now);
 $config->story->form->activate['lastEditedDate']  = array('type' => 'datetime', 'required' => false, 'default' => $now);
-$config->story->form->activate['lastEditedBy']    = array('type' => 'string',   'required' => false, 'default' => $app->user->account);
+$config->story->form->activate['lastEditedBy']    = array('type' => 'string',   'required' => false, 'default' => $account);
 $config->story->form->activate['closedBy']        = array('type' => 'string',   'required' => false, 'default' => '');
 $config->story->form->activate['closedReason']    = array('type' => 'string',   'required' => false, 'default' => '');
 $config->story->form->activate['closedDate']      = array('type' => 'datetime', 'required' => false, 'default' => null);
@@ -160,8 +164,8 @@ $config->story->form->close = array();
 $config->story->form->close['status']         = array('type' => 'string',   'required' => false, 'default' => 'closed');
 $config->story->form->close['stage']          = array('type' => 'string',   'required' => false, 'default' => 'closed');
 $config->story->form->close['lastEditedDate'] = array('type' => 'datetime', 'required' => false, 'default' => $now);
-$config->story->form->close['lastEditedBy']   = array('type' => 'string',   'required' => false, 'default' => $app->user->account);
-$config->story->form->close['closedBy']       = array('type' => 'string',   'required' => false, 'default' => $app->user->account);
+$config->story->form->close['lastEditedBy']   = array('type' => 'string',   'required' => false, 'default' => $account);
+$config->story->form->close['closedBy']       = array('type' => 'string',   'required' => false, 'default' => $account);
 $config->story->form->close['closedReason']   = array('type' => 'string',   'required' => false, 'default' => '');
 $config->story->form->close['closedDate']     = array('type' => 'datetime', 'required' => false, 'default' => $now);
 $config->story->form->close['assignedDate']   = array('type' => 'datetime', 'required' => false, 'default' => $now);
@@ -185,6 +189,6 @@ $config->story->form->batchToTask['deadline']   = array('type' => 'date',   'req
 $config->story->form->batchToTask['pri']        = array('type' => 'int',    'required' => false, 'default' => 3);
 $config->story->form->batchToTask['status']     = array('type' => 'string', 'required' => false, 'default' => 'wait');
 $config->story->form->batchToTask['vision']     = array('type' => 'string', 'required' => false, 'default' => 'rnd');
-$config->story->form->batchToTask['openedBy']   = array('type' => 'string', 'required' => false, 'default' => $app->user->account);
+$config->story->form->batchToTask['openedBy']   = array('type' => 'string', 'required' => false, 'default' => $account);
 $config->story->form->batchToTask['openedDate'] = array('type' => 'string', 'required' => false, 'default' => $now);
 $config->story->form->batchToTask['version']    = array('type' => 'int',    'required' => false, 'default' => 1);

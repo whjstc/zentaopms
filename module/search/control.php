@@ -45,14 +45,17 @@ class search extends control
             $this->lang->search->common = $this->lang->search->common . $space . $this->session->objectName;
         }
 
+        $sessionSearchParams = $this->session->$searchParams;
+        if(!is_array($sessionSearchParams)) $sessionSearchParams = array();
+
         $this->view->module      = $module;
         $this->view->fields      = $fields;
         $this->view->fieldParams = $this->search->setDefaultParams($module, $fields, $params);
         $this->view->queries     = $this->search->getQueryList($module);
-        $this->view->actionURL   = $this->session->$searchParams['actionURL'];
-        $this->view->queryID     = $this->session->$searchParams['queryID']   ?? 0;
-        $this->view->style       = $this->session->$searchParams['style']     ?? 'full';
-        $this->view->onMenuBar   = $this->session->$searchParams['onMenuBar'] ?? 'no';
+        $this->view->actionURL   = $sessionSearchParams['actionURL'] ?? null;
+        $this->view->queryID     = $sessionSearchParams['queryID']   ?? 0;
+        $this->view->style       = $sessionSearchParams['style']     ?? 'full';
+        $this->view->onMenuBar   = $sessionSearchParams['onMenuBar'] ?? 'no';
         $this->view->formSession = $this->session->$searchForm;
 
         if($module == 'program') $this->view->options = $this->searchZen->setOptions($fields, $this->view->fieldParams, $this->view->queries);

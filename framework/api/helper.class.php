@@ -347,7 +347,7 @@ class helper extends baseHelper
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Headers: Origin,X-Requested-With,Content-Type,Accept,Authorization,Token,Referer,User-Agent");
-        header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS,PATCH');
+        header('Access-Control-Allow-Methods: GET,HEAD,POST,PUT,DELETE,OPTIONS,PATCH');
         header("Content-type: application/json");
         header("HTTP/1.1 {$statusCode[$code]}");
 

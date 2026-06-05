@@ -18,6 +18,7 @@ $config->task->form->create['story']        = array('type' => 'int',      'requi
 $config->task->form->create['mode']         = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->create['color']        = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->create['name']         = array('type' => 'string',   'required' => true,  'default' => '');
+$config->task->form->create['complexity']   = array('type' => 'string',   'required' => true,  'default' => 'L1');
 $config->task->form->create['pri']          = array('type' => 'int',      'required' => false, 'default' => $config->task->default->pri);
 $config->task->form->create['estimate']     = array('type' => 'float',    'required' => false, 'default' => 0);
 $config->task->form->create['desc']         = array('type' => 'string',   'required' => false, 'default' => '', 'control' => 'editor');
@@ -54,6 +55,7 @@ $config->task->form->manageTeam['assignedDate']   = array('type' => 'string',   
 
 $config->task->form->edit = array();
 $config->task->form->edit['name']           = array('type' => 'string',   'required' => true);
+$config->task->form->edit['complexity']     = array('type' => 'string',   'required' => true,  'default' => 'L1');
 $config->task->form->edit['color']          = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->edit['desc']           = array('type' => 'string',   'required' => false, 'default' => '', 'control' => 'editor');
 $config->task->form->edit['execution']      = array('type' => 'int',      'required' => true);
@@ -102,6 +104,7 @@ $config->task->form->batchedit['name']           = array('type' => 'string',   '
 $config->task->form->batchedit['color']          = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->batchedit['type']           = array('type' => 'string',   'required' => true,  'default' => '');
 $config->task->form->batchedit['status']         = array('type' => 'string',   'required' => false, 'default' => '');
+$config->task->form->batchedit['complexity']     = array('type' => 'string',   'required' => true,  'default' => 'L1');
 $config->task->form->batchedit['pri']            = array('type' => 'int',      'required' => false, 'default' => 0);
 $config->task->form->batchedit['assignedTo']     = array('type' => 'string',   'required' => false, 'default' => '');
 $config->task->form->batchedit['estimate']       = array('type' => 'float',    'required' => false, 'default' => 0);

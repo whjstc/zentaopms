@@ -347,6 +347,8 @@ class docZen extends doc
     {
         $canVisit = true;
         if(!empty($doclib->groups)) $groupAccounts = $this->loadModel('group')->getGroupAccounts(explode(',', $doclib->groups));
+        if(isset($doclib->type) && in_array($doclib->type, array('custom', 'product', 'project', 'execution'), true)) $objectType = $doclib->type;
+
         switch($objectType)
         {
             case 'custom':

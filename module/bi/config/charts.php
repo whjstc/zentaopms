@@ -515,7 +515,7 @@ GROUP BY tt.account, tt.year, tt.id) tt
 LEFT JOIN zt_story t1 on t1.product = tt.id and YEAR(t1.closedDate) = tt.year and t1.closedBy = tt.account and t1.deleted = '0'
 LEFT JOIN zt_product t2 on t2.id = tt.id
 GROUP BY tt.account, tt.year, tt.id) tt
-WHERE tt.account = 'zhangpeng'
+WHERE tt.account != ''
 EOT
 ,
     'settings'  => array
@@ -1025,6 +1025,8 @@ $config->bi->builtin->charts[] = array
     'group'     => '50',
     'sql'       => <<<EOT
 SELECT id FROM zt_release WHERE deleted='0'
+UNION ALL
+SELECT id FROM zt_build WHERE deleted='0' AND NOT EXISTS(SELECT 1 FROM zt_release WHERE deleted='0')
 EOT
 ,
     'settings'  => array
@@ -2422,7 +2424,11 @@ SELECT
 	t2.name
 FROM
 	( SELECT DISTINCT YEAR ( `date` ) AS `year` FROM zt_action ) AS t1
-	LEFT JOIN ( SELECT id, name, YEAR ( `date` ) AS `year` FROM zt_release WHERE deleted = '0') AS t2 ON t1.`year` = t2.`year`
+		LEFT JOIN (
+            SELECT id, name, YEAR ( `date` ) AS `year` FROM zt_release WHERE deleted = '0'
+            UNION ALL
+            SELECT id, name, YEAR ( `date` ) AS `year` FROM zt_build WHERE deleted = '0' AND NOT EXISTS(SELECT 1 FROM zt_release WHERE deleted = '0')
+        ) AS t2 ON t1.`year` = t2.`year`
 WHERE t2.id IS NOT NULL
 EOT
 ,
@@ -2555,7 +2561,11 @@ SELECT
 	t2.name
 FROM
 	( SELECT DISTINCT YEAR ( `date` ) AS `year` FROM zt_action ) AS t1
-	LEFT JOIN ( SELECT id, name, YEAR ( `date` ) AS `year` FROM zt_release WHERE deleted = '0') AS t2 ON t1.`year` = t2.`year`
+		LEFT JOIN (
+            SELECT id, name, YEAR ( `date` ) AS `year` FROM zt_release WHERE deleted = '0'
+            UNION ALL
+            SELECT id, name, YEAR ( `date` ) AS `year` FROM zt_build WHERE deleted = '0' AND NOT EXISTS(SELECT 1 FROM zt_release WHERE deleted = '0')
+        ) AS t2 ON t1.`year` = t2.`year`
  WHERE t2.id IS NOT NULL
 EOT
 ,
@@ -4106,12 +4116,18 @@ $config->bi->builtin->charts[] = array
     'group'     => '42',
     'sql'       => <<<EOT
 SELECT `year`, id,name,status,`begin`,`end`,realBegan,realEnd,
-ROUND((IF(LEFT(realEnd,4) != '0000', DATEDIFF(realEnd, realBegan), DATEDIFF(NOW(),realBegan)) - DATEDIFF(`end`, `begin`)) / DATEDIFF(`end`,`begin`) * 100) as duration
+ROUND(IF(DATEDIFF(`end`,`begin`) = 0, 0, (DATEDIFF(realEnd, realBegan) - DATEDIFF(`end`, `begin`)) / DATEDIFF(`end`,`begin`) * 100)) as duration
+FROM (
+SELECT t1.`year`, t2.id, t2.name, t2.status, t2.`begin`, t2.`end`,
+COALESCE(NULLIF(t2.realBegan, '0000-00-00'), t2.`begin`) AS realBegan,
+COALESCE(NULLIF(t2.realEnd, '0000-00-00'), LEFT(NULLIF(t2.closedDate, '0000-00-00 00:00:00'), 10), t2.`end`) AS realEnd
 FROM (SELECT DISTINCT YEAR(`date`) as `year` FROM zt_action) AS t1
 LEFT JOIN zt_project AS t2 ON 1 = 1
 WHERE deleted = '0' AND type = 'project'
-AND YEAR(realBegan) <= `year` AND LEFT(realBegan, 4) != '0000'
-AND (YEAR(realEnd) >= `year` OR LEFT(realEnd, 4) = '0000') AND YEAR(`end`) != '2059'
+AND YEAR(COALESCE(NULLIF(t2.realBegan, '0000-00-00'), t2.`begin`)) <= `year`
+AND YEAR(COALESCE(NULLIF(t2.realEnd, '0000-00-00'), LEFT(NULLIF(t2.closedDate, '0000-00-00 00:00:00'), 10), t2.`end`)) >= `year`
+AND YEAR(`end`) != '2059'
+) AS t
 ORDER BY duration ASC LIMIT 999999
 EOT
 ,
@@ -5102,7 +5118,11 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '74',
     'sql'       => <<<EOT
-SELECT COUNT(1) AS number,YEAR(`date`) AS `year` FROM zt_release WHERE deleted='0' GROUP BY `year`
+SELECT COUNT(1) AS number, `year` FROM (
+    SELECT id, YEAR(`date`) AS `year` FROM zt_release WHERE deleted='0'
+    UNION ALL
+    SELECT id, YEAR(`date`) AS `year` FROM zt_build WHERE deleted='0' AND NOT EXISTS(SELECT 1 FROM zt_release WHERE deleted='0')
+) AS t GROUP BY `year`
 EOT
 ,
     'settings'  => array
@@ -5171,7 +5191,13 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '73',
     'sql'       => <<<EOT
-SELECT COUNT(1) AS number,YEAR(`closedDate`) AS `year` FROM (SELECT id, begin, `end`, IF(LEFT(realEnd,4) = '0000', LEFT(closedDate,10), realEnd) AS realEnd,closedDate FROM zt_project WHERE deleted='0' AND type='sprint' AND status='closed') t1 WHERE t1.realEnd<=t1.`end` GROUP BY `year`
+SELECT SUM(IF(t1.realEnd <= t1.`end`, 1, 0)) AS number, YEAR(t1.closedDate) AS `year`
+FROM (
+    SELECT id, begin, `end`, COALESCE(NULLIF(realEnd, '0000-00-00'), LEFT(NULLIF(closedDate, '0000-00-00 00:00:00'), 10), `end`) AS realEnd, closedDate
+    FROM zt_project
+    WHERE deleted='0' AND type='sprint' AND status='closed' AND LEFT(closedDate, 4) != '0000'
+) t1
+GROUP BY `year`
 EOT
 ,
     'settings'  => array
@@ -5286,7 +5312,11 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '78',
     'sql'       => <<<EOT
-SELECT SUM(t2.people*DATEDIFF(t1.realEnd,t1.realBegan)) AS number,YEAR(`closedDate`) AS `year` FROM (SELECT id, realBegan, IF(LEFT(realEnd, 4) = '0000', CAST(closedDate AS DATE), realEnd) AS realEnd, closedDate FROM zt_project WHERE deleted='0' AND status='closed' AND type='project' AND realBegan != '1970-01-01') t1 LEFT JOIN (SELECT root, COUNT(id) people FROM zt_team WHERE type='project' GROUP BY `root`) t2 ON t1.id=t2.root GROUP BY `year`
+SELECT ROUND(SUM(IFNULL(e.consumed, 0)) / 8, 2) AS number, YEAR(LEFT(p.closedDate, 10)) AS `year`
+FROM zt_project p
+LEFT JOIN zt_effort e ON e.project = p.id AND e.deleted = '0'
+WHERE p.deleted='0' AND p.status='closed' AND p.type='project' AND LEFT(p.closedDate, 4) != '0000'
+GROUP BY `year`
 EOT
 ,
     'settings'  => array
@@ -5480,18 +5510,18 @@ $config->bi->builtin->charts[] = array
 select
 t1.name,
 t1.closedDate,
-round(t1.realduration-t1.planduration)/t1.planduration as daterate
+round(if(t1.planduration = 0, 0, (t1.realduration-t1.planduration)/t1.planduration), 3) as daterate
 from(
 select
 name,
 id,
-closedDate,
+coalesce(left(nullif(closedDate, '0000-00-00 00:00:00'), 10), nullif(realEnd, '0000-00-00'), `end`) as closedDate,
 begin,
 `end`,
 datediff(`end`,`begin`) planduration,
-realBegan,
-realEnd,
-ifnull(if(left(realEnd,4) != '0000',datediff(`realEnd`,`realBegan`),datediff(`closedDate`,`realBegan`)),0) realduration
+coalesce(nullif(realBegan, '0000-00-00'), begin) as realBegan,
+coalesce(nullif(realEnd, '0000-00-00'), left(nullif(closedDate, '0000-00-00 00:00:00'), 10), `end`) as realEnd,
+datediff(coalesce(nullif(realEnd, '0000-00-00'), left(nullif(closedDate, '0000-00-00 00:00:00'), 10), `end`), coalesce(nullif(realBegan, '0000-00-00'), begin)) realduration
 from
 zt_project
 where deleted='0'
@@ -5618,9 +5648,9 @@ t1.closedDate
 from(
 select
 id,
-closedDate,
+coalesce(left(nullif(closedDate, '0000-00-00 00:00:00'), 10), nullif(realEnd, '0000-00-00'), `end`) as closedDate,
 `end`,
-if(left(realEnd, 4) = '0000', closedDate, realEnd) as realEnd
+coalesce(nullif(realEnd, '0000-00-00'), left(nullif(closedDate, '0000-00-00 00:00:00'), 10), `end`) as realEnd
 from
 zt_project
 where deleted='0'
@@ -5685,9 +5715,9 @@ t1.closedDate
 from(
 select
 id,
-closedDate,
+coalesce(left(nullif(closedDate, '0000-00-00 00:00:00'), 10), nullif(realEnd, '0000-00-00'), `end`) as closedDate,
 `end`,
-if(left(realEnd, 4) = '0000', closedDate, realEnd) as realEnd
+coalesce(nullif(realEnd, '0000-00-00'), left(nullif(closedDate, '0000-00-00 00:00:00'), 10), `end`) as realEnd
 from
 zt_project
 where deleted='0'
@@ -5857,7 +5887,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '73',
     'sql'       => <<<EOT
-SELECT id,type FROM zt_project WHERE deleted = '0' AND status = 'doing' AND type IN ('sprint', 'stage', 'kanban') AND multiple = '1'
+SELECT id, project, type FROM zt_project WHERE deleted = '0' AND status = 'doing' AND type IN ('sprint', 'stage', 'kanban') AND multiple = '1'
 EOT
 ,
     'settings'  => array
@@ -5930,9 +5960,9 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '73',
     'sql'       => <<<EOT
-SELECT id, prograss, planPrograss, `end`
+SELECT id, project, prograss, planPrograss, `end`
 FROM (
-SELECT t1.id,ROUND(DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100, 2) AS planPrograss,t1.`end`,
+SELECT t1.id,t1.project,ROUND(DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100, 2) AS planPrograss,t1.`end`,
 ROUND(IF(SUM(t2.consumed) + SUM(IF(t2.status != 'closed' AND t2.status != 'cancel', t2.`left`, 0)) > 0, SUM(t2.consumed) / (SUM(t2.consumed) + SUM(IF(t2.status != 'closed' AND t2.status != 'cancel', t2.`left`, 0))), 0) * 100, 2) AS prograss
 FROM zt_project AS t1
 LEFT JOIN zt_task AS t2 ON t1.id = t2.execution
@@ -5992,7 +6022,10 @@ WHERE t1.deleted = '0'
 AND t1.status = 'doing'
 AND t1.type = 'project'
 AND LEFT(t1.`end`, 4) != '2059'
-AND IFNULL(prograss, 0) < (DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100)  AND DATEDIFF(`end`, NOW()) >= 0
+AND (
+    DATEDIFF(t1.`end`, NOW()) < 0
+    OR IFNULL(prograss, 0) < (DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100)
+)
 EOT
 ,
     'settings'  => array
@@ -6015,9 +6048,9 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '73',
     'sql'       => <<<EOT
-SELECT id, prograss, planPrograss
+SELECT id, project, prograss, planPrograss
 FROM (
-SELECT t1.id,ROUND(DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100, 2) AS planPrograss,
+SELECT t1.id,t1.project,ROUND(DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100, 2) AS planPrograss,
 ROUND(IF(SUM(t2.consumed) + SUM(IF(t2.status != 'closed' AND t2.status != 'cancel', t2.`left`, 0)) > 0, SUM(t2.consumed) / (SUM(t2.consumed) + SUM(IF(t2.status != 'closed' AND t2.status != 'cancel', t2.`left`, 0))), 0) * 100, 2) AS prograss
 FROM zt_project AS t1
 LEFT JOIN zt_task AS t2 ON t1.id = t2.execution
@@ -6071,7 +6104,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '73',
     'sql'       => <<<EOT
-SELECT id, name FROM zt_project WHERE deleted = '0' AND status = 'doing' AND type IN ('sprint', 'stage', 'kanban') AND DATEDIFF(`end`, NOW()) < 0 AND multiple = '1'
+SELECT id, project, name FROM zt_project WHERE deleted = '0' AND status = 'doing' AND type IN ('sprint', 'stage', 'kanban') AND DATEDIFF(`end`, NOW()) < 0 AND multiple = '1'
 EOT
 ,
     'settings'  => array
@@ -6094,7 +6127,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '75',
     'sql'       => <<<EOT
-SELECT DISTINCT t3.id, t3.estimate
+SELECT DISTINCT t1.id AS project, t3.id, t3.estimate
 FROM zt_project AS t1
 LEFT JOIN zt_projectstory AS t2 ON t1.id = t2.project
 LEFT JOIN zt_story AS t3 ON t2.story = t3.id
@@ -6122,7 +6155,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '76',
     'sql'       => <<<EOT
-SELECT DISTINCT t2.id
+SELECT DISTINCT t2.id, t1.project
 FROM zt_project AS t1
 LEFT JOIN zt_task AS t2 ON t1.id = t2.execution
 WHERE t1.deleted = '0' AND t1.status = 'doing' AND t1.type IN ('sprint', 'stage', 'kanban')
@@ -6149,7 +6182,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'card',
     'group'     => '75',
     'sql'       => <<<EOT
-SELECT DISTINCT t3.id, t3.estimate
+SELECT DISTINCT t1.id AS project, t3.id, t3.estimate
 FROM zt_project AS t1
 LEFT JOIN zt_projectstory AS t2 ON t1.id = t2.project
 LEFT JOIN zt_story AS t3 ON t2.story = t3.id
@@ -6325,7 +6358,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'pie',
     'group'     => '69',
     'sql'       => <<<EOT
-SELECT id, name,IF(
+SELECT id, project, name,IF(
     DATEDIFF(`end`, NOW()) < 0,
     '延期',
     (IF(
@@ -6336,7 +6369,7 @@ SELECT id, name,IF(
 ) AS status,
 prograss, planPrograss, `end`
 FROM (
-SELECT t1.id,t1.name,ROUND(DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100, 2) AS planPrograss,t1.`end`,
+SELECT t1.id,t1.project,t1.name,ROUND(DATEDIFF(NOW(), t1.`begin`) / DATEDIFF(t1.`end`, t1.`begin`) * 100, 2) AS planPrograss,t1.`end`,
 ROUND(IF(SUM(t2.consumed) + SUM(IF(t2.status != 'closed' AND t2.status != 'cancel', t2.`left`, 0)) > 0, SUM(t2.consumed) / (SUM(t2.consumed) + SUM(IF(t2.status != 'closed' AND t2.status != 'cancel', t2.`left`, 0))), 0) * 100, 2) AS prograss
 FROM zt_project AS t1
 LEFT JOIN zt_task AS t2 ON t1.id = t2.execution
@@ -6463,7 +6496,7 @@ $config->bi->builtin->charts[] = array
     'type'      => 'table',
     'group'     => '84',
     'sql'       => <<<EOT
-SELECT id, name,project,`begin`, `end`, planDuration, IF(LEFT(realBegan, 4) = '0000', '/', realBegan) as realBegan, realDuration, CONCAT(prograss, '%') as prograss,
+SELECT id, name,project,projectID,`begin`, `end`, planDuration, IF(LEFT(realBegan, 4) = '0000', '/', realBegan) as realBegan, realDuration, CONCAT(prograss, '%') as prograss,
 IF(
     DATEDIFF(`end`, NOW()) < 0,
     '延期',
@@ -6554,6 +6587,7 @@ SELECT
   t1.id,
   t1.name AS execution,
   IFNULL(t2.name, '/') AS project,
+  t2.id AS projectID,
   IFNULL(t3.story, 0) AS story,
   IFNULL(t3.estimate, 0) AS estimate,
   IFNULL(t4.task, 0) AS task,
@@ -8406,3 +8440,474 @@ EOT
     'stage'   => 'published',
     'builtin' => '0'
 );
+
+$pmoField = function($field, $name, $type = 'number', $object = 'project')
+{
+    return array('name' => $name, 'object' => $object, 'field' => $field, 'type' => $type);
+};
+
+$pmoLang = function($name)
+{
+    return array('zh-cn' => $name, 'zh-tw' => $name, 'en' => $name, 'de' => $name, 'fr' => $name);
+};
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40000,
+    'name'      => 'PMO-项目总数',
+    'code'      => 'pmo_project_total',
+    'dimension' => '1',
+    'type'      => 'card',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT COUNT(1) AS projectCount
+FROM zt_project
+WHERE deleted = '0' AND isTpl = '0' AND type = 'project'
+EOT
+,
+    'settings' => array('value' => array('type' => 'value', 'field' => 'projectCount', 'agg' => 'sum'), 'title' => array('type' => 'text', 'name' => ''), 'type' => 'value'),
+    'filters'  => array(),
+    'fields'   => array('projectCount' => $pmoField('projectCount', '项目总数')),
+    'langs'    => array('projectCount' => $pmoLang('项目总数')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40001,
+    'name'      => 'PMO-进行中项目数',
+    'code'      => 'pmo_project_doing',
+    'dimension' => '1',
+    'type'      => 'card',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT COUNT(1) AS doingCount
+FROM zt_project
+WHERE deleted = '0' AND isTpl = '0' AND type = 'project' AND status = 'doing'
+EOT
+,
+    'settings' => array('value' => array('type' => 'value', 'field' => 'doingCount', 'agg' => 'sum'), 'title' => array('type' => 'text', 'name' => ''), 'type' => 'value'),
+    'filters'  => array(),
+    'fields'   => array('doingCount' => $pmoField('doingCount', '进行中项目数')),
+    'langs'    => array('doingCount' => $pmoLang('进行中项目数')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40002,
+    'name'      => 'PMO-延期项目数',
+    'code'      => 'pmo_project_delayed',
+    'dimension' => '1',
+    'type'      => 'card',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT COUNT(1) AS delayedCount
+FROM zt_project
+WHERE deleted = '0' AND isTpl = '0' AND type = 'project' AND status NOT IN ('closed') AND end IS NOT NULL AND end != '0000-00-00' AND end < CURDATE()
+EOT
+,
+    'settings' => array('value' => array('type' => 'value', 'field' => 'delayedCount', 'agg' => 'sum'), 'title' => array('type' => 'text', 'name' => ''), 'type' => 'value'),
+    'filters'  => array(),
+    'fields'   => array('delayedCount' => $pmoField('delayedCount', '延期项目数')),
+    'langs'    => array('delayedCount' => $pmoLang('延期项目数')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40003,
+    'name'      => 'PMO-项目逾期率',
+    'code'      => 'pmo_project_delay_rate',
+    'dimension' => '1',
+    'type'      => 'card',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT ROUND(IF(COUNT(1) = 0, 0, SUM(IF(status NOT IN ('closed') AND end IS NOT NULL AND end != '0000-00-00' AND end < CURDATE(), 1, 0)) / COUNT(1) * 100), 1) AS delayRate
+FROM zt_project
+WHERE deleted = '0' AND isTpl = '0' AND type = 'project'
+EOT
+,
+    'settings' => array('value' => array('type' => 'value', 'field' => 'delayRate', 'agg' => 'value'), 'title' => array('type' => 'text', 'name' => ''), 'type' => 'value'),
+    'filters'  => array(),
+    'fields'   => array('delayRate' => $pmoField('delayRate', '项目逾期率')),
+    'langs'    => array('delayRate' => $pmoLang('项目逾期率')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40004,
+    'name'      => 'PMO-需求完成率',
+    'code'      => 'pmo_story_completion_rate',
+    'dimension' => '1',
+    'type'      => 'card',
+    'group'     => '43',
+    'sql'       => <<<EOT
+SELECT ROUND(IF(COUNT(DISTINCT s.id) = 0, 0, SUM(IF(s.status = 'closed' OR s.stage IN ('released', 'closed'), 1, 0)) / COUNT(DISTINCT s.id) * 100), 1) AS storyRate
+FROM zt_project p
+LEFT JOIN zt_projectstory ps ON ps.project = p.id
+LEFT JOIN zt_story s ON s.id = ps.story AND s.deleted = '0'
+WHERE p.deleted = '0' AND p.isTpl = '0' AND p.type = 'project'
+EOT
+,
+    'settings' => array('value' => array('type' => 'value', 'field' => 'storyRate', 'agg' => 'value'), 'title' => array('type' => 'text', 'name' => ''), 'type' => 'value'),
+    'filters'  => array(),
+    'fields'   => array('storyRate' => $pmoField('storyRate', '需求完成率', 'number', 'story')),
+    'langs'    => array('storyRate' => $pmoLang('需求完成率')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40005,
+    'name'      => 'PMO-未关闭严重Bug',
+    'code'      => 'pmo_severe_unclosed_bug',
+    'dimension' => '1',
+    'type'      => 'card',
+    'group'     => '44',
+    'sql'       => <<<EOT
+SELECT COUNT(1) AS severeBugCount
+FROM zt_bug
+WHERE deleted = '0' AND status != 'closed' AND severity IN (1, 2)
+EOT
+,
+    'settings' => array('value' => array('type' => 'value', 'field' => 'severeBugCount', 'agg' => 'sum'), 'title' => array('type' => 'text', 'name' => ''), 'type' => 'value'),
+    'filters'  => array(),
+    'fields'   => array('severeBugCount' => $pmoField('severeBugCount', '未关闭严重Bug', 'number', 'bug')),
+    'langs'    => array('severeBugCount' => $pmoLang('未关闭严重Bug')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$pmoHealthSQL = <<<EOT
+SELECT health, COUNT(1) AS projectCount
+FROM
+(
+    SELECT p.id,
+           CASE
+             WHEN (p.status NOT IN ('closed') AND p.end IS NOT NULL AND p.end != '0000-00-00' AND p.end < CURDATE()) OR IFNULL(t.overdueTasks, 0) >= 10 OR IFNULL(b.severeBugs, 0) >= 5 THEN '严重'
+             WHEN IFNULL(t.overdueTasks, 0) > 0 OR IFNULL(b.severeBugs, 0) > 0 THEN '风险'
+             WHEN p.status = 'suspended' THEN '关注'
+             ELSE '正常'
+           END AS health
+    FROM zt_project p
+    LEFT JOIN
+    (
+        SELECT project, COUNT(1) AS overdueTasks
+        FROM zt_task
+        WHERE deleted = '0' AND status NOT IN ('done', 'closed', 'cancel') AND deadline IS NOT NULL AND deadline != '0000-00-00' AND deadline < CURDATE()
+        GROUP BY project
+    ) t ON t.project = p.id
+    LEFT JOIN
+    (
+        SELECT project, COUNT(1) AS severeBugs
+        FROM zt_bug
+        WHERE deleted = '0' AND status != 'closed' AND severity IN (1, 2)
+        GROUP BY project
+    ) b ON b.project = p.id
+    WHERE p.deleted = '0' AND p.isTpl = '0' AND p.type = 'project'
+) tt
+GROUP BY health
+EOT;
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40006,
+    'name'      => 'PMO-项目健康度分布',
+    'code'      => 'pmo_project_health_distribution',
+    'dimension' => '1',
+    'type'      => 'pie',
+    'group'     => '38',
+    'sql'       => $pmoHealthSQL,
+    'settings'  => array(array('type' => 'pie', 'group' => array(array('field' => 'health', 'name' => 'health', 'group' => '')), 'metric' => array(array('field' => 'projectCount', 'name' => 'projectCount', 'valOrAgg' => 'sum')))),
+    'filters'   => array(),
+    'fields'    => array('health' => $pmoField('health', '健康度', 'string'), 'projectCount' => $pmoField('projectCount', '项目数')),
+    'langs'     => array('health' => $pmoLang('健康度'), 'projectCount' => $pmoLang('项目数')),
+    'stage'     => 'published',
+    'builtin'   => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40007,
+    'name'      => 'PMO-项目状态分布',
+    'code'      => 'pmo_project_status_distribution',
+    'dimension' => '1',
+    'type'      => 'cluBarX',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT status, COUNT(1) AS projectCount
+FROM zt_project
+WHERE deleted = '0' AND isTpl = '0' AND type = 'project'
+GROUP BY status
+EOT
+,
+    'settings' => array(array('type' => 'cluBarX', 'xaxis' => array(array('field' => 'status', 'name' => 'status', 'group' => '')), 'yaxis' => array(array('field' => 'projectCount', 'name' => 'projectCount', 'valOrAgg' => 'sum')))),
+    'filters'  => array(),
+    'fields'   => array('status' => $pmoField('status', '项目状态', 'project.status'), 'projectCount' => $pmoField('projectCount', '项目数')),
+    'langs'    => array('status' => $pmoLang('项目状态'), 'projectCount' => $pmoLang('项目数')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40008,
+    'name'      => 'PMO-近12个月项目创建关闭趋势',
+    'code'      => 'pmo_project_monthly_trend',
+    'dimension' => '1',
+    'type'      => 'line',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT monthLabel, SUM(createdCount) AS createdCount, SUM(closedCount) AS closedCount
+FROM
+(
+    SELECT DATE_FORMAT(openedDate, '%Y-%m') AS monthLabel, COUNT(1) AS createdCount, 0 AS closedCount
+    FROM zt_project
+    WHERE deleted = '0' AND isTpl = '0' AND type = 'project' AND openedDate >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+    GROUP BY DATE_FORMAT(openedDate, '%Y-%m')
+    UNION ALL
+    SELECT DATE_FORMAT(closedDate, '%Y-%m') AS monthLabel, 0 AS createdCount, COUNT(1) AS closedCount
+    FROM zt_project
+    WHERE deleted = '0' AND isTpl = '0' AND type = 'project' AND closedDate IS NOT NULL AND closedDate != '0000-00-00 00:00:00' AND closedDate >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+    GROUP BY DATE_FORMAT(closedDate, '%Y-%m')
+) tt
+WHERE monthLabel IS NOT NULL
+GROUP BY monthLabel
+ORDER BY monthLabel
+EOT
+,
+    'settings' => array(array('type' => 'line', 'xaxis' => array(array('field' => 'monthLabel', 'name' => 'monthLabel', 'group' => '')), 'yaxis' => array(array('field' => 'createdCount', 'name' => 'createdCount', 'valOrAgg' => 'sum'), array('field' => 'closedCount', 'name' => 'closedCount', 'valOrAgg' => 'sum')))),
+    'filters'  => array(),
+    'fields'   => array('monthLabel' => $pmoField('monthLabel', '月份', 'string'), 'createdCount' => $pmoField('createdCount', '新增项目数'), 'closedCount' => $pmoField('closedCount', '关闭项目数')),
+    'langs'    => array('monthLabel' => $pmoLang('月份'), 'createdCount' => $pmoLang('新增项目数'), 'closedCount' => $pmoLang('关闭项目数')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40009,
+    'name'      => 'PMO-需求任务完成率排行',
+    'code'      => 'pmo_project_completion_rank',
+    'dimension' => '1',
+    'type'      => 'cluBarY',
+    'group'     => '38',
+    'sql'       => <<<EOT
+SELECT p.name AS projectName,
+       IFNULL(st.storyRate, 0) AS storyRate,
+       IFNULL(ta.taskRate, 0) AS taskRate
+FROM zt_project p
+LEFT JOIN
+(
+    SELECT ps.project, ROUND(IF(COUNT(DISTINCT s.id) = 0, 0, SUM(IF(s.status = 'closed' OR s.stage IN ('released', 'closed'), 1, 0)) / COUNT(DISTINCT s.id) * 100), 1) AS storyRate
+    FROM zt_projectstory ps
+    LEFT JOIN zt_story s ON s.id = ps.story AND s.deleted = '0'
+    GROUP BY ps.project
+) st ON st.project = p.id
+LEFT JOIN
+(
+    SELECT project, ROUND(IF(COUNT(1) = 0, 0, SUM(IF(status IN ('done', 'closed'), 1, 0)) / COUNT(1) * 100), 1) AS taskRate
+    FROM zt_task
+    WHERE deleted = '0'
+    GROUP BY project
+) ta ON ta.project = p.id
+WHERE p.deleted = '0' AND p.isTpl = '0' AND p.type = 'project'
+ORDER BY (IFNULL(st.storyRate, 0) + IFNULL(ta.taskRate, 0)) DESC
+LIMIT 10
+EOT
+,
+    'settings' => array(array('type' => 'cluBarY', 'xaxis' => array(array('field' => 'projectName', 'name' => 'projectName', 'group' => '')), 'yaxis' => array(array('field' => 'storyRate', 'name' => 'storyRate', 'valOrAgg' => 'sum'), array('field' => 'taskRate', 'name' => 'taskRate', 'valOrAgg' => 'sum')))),
+    'filters'  => array(),
+    'fields'   => array('projectName' => $pmoField('projectName', '项目名称', 'string'), 'storyRate' => $pmoField('storyRate', '需求完成率'), 'taskRate' => $pmoField('taskRate', '任务完成率')),
+    'langs'    => array('projectName' => $pmoLang('项目名称'), 'storyRate' => $pmoLang('需求完成率'), 'taskRate' => $pmoLang('任务完成率')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40010,
+    'name'      => 'PMO-近12个月Bug新增解决趋势',
+    'code'      => 'pmo_bug_monthly_trend',
+    'dimension' => '1',
+    'type'      => 'line',
+    'group'     => '44',
+    'sql'       => <<<EOT
+SELECT monthLabel, SUM(openedCount) AS openedCount, SUM(resolvedCount) AS resolvedCount
+FROM
+(
+    SELECT DATE_FORMAT(openedDate, '%Y-%m') AS monthLabel, COUNT(1) AS openedCount, 0 AS resolvedCount
+    FROM zt_bug
+    WHERE deleted = '0' AND openedDate >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+    GROUP BY DATE_FORMAT(openedDate, '%Y-%m')
+    UNION ALL
+    SELECT DATE_FORMAT(resolvedDate, '%Y-%m') AS monthLabel, 0 AS openedCount, COUNT(1) AS resolvedCount
+    FROM zt_bug
+    WHERE deleted = '0' AND resolvedDate IS NOT NULL AND resolvedDate != '0000-00-00 00:00:00' AND resolvedDate >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+    GROUP BY DATE_FORMAT(resolvedDate, '%Y-%m')
+) tt
+WHERE monthLabel IS NOT NULL
+GROUP BY monthLabel
+ORDER BY monthLabel
+EOT
+,
+    'settings' => array(array('type' => 'line', 'xaxis' => array(array('field' => 'monthLabel', 'name' => 'monthLabel', 'group' => '')), 'yaxis' => array(array('field' => 'openedCount', 'name' => 'openedCount', 'valOrAgg' => 'sum'), array('field' => 'resolvedCount', 'name' => 'resolvedCount', 'valOrAgg' => 'sum')))),
+    'filters'  => array(),
+    'fields'   => array('monthLabel' => $pmoField('monthLabel', '月份', 'string', 'bug'), 'openedCount' => $pmoField('openedCount', '新增Bug数', 'number', 'bug'), 'resolvedCount' => $pmoField('resolvedCount', '解决Bug数', 'number', 'bug')),
+    'langs'    => array('monthLabel' => $pmoLang('月份'), 'openedCount' => $pmoLang('新增Bug数'), 'resolvedCount' => $pmoLang('解决Bug数')),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$pmoRiskProjectSQL = <<<EOT
+SELECT p.name AS projectName,
+       IF(p.PM = '', '未设置', p.PM) AS PM,
+       IFNULL(DATE_FORMAT(p.end, '%Y-%m-%d'), '') AS endDate,
+       IFNULL(t.overdueTasks, 0) AS overdueTasks,
+       IFNULL(b.severeBugs, 0) AS severeBugs,
+       IFNULL(b.unclosedBugs, 0) AS unclosedBugs,
+       ROUND(IFNULL(e.consumed, 0), 1) AS consumed,
+       (IF((p.status NOT IN ('closed') AND p.end IS NOT NULL AND p.end != '0000-00-00' AND p.end < CURDATE()), 5, 0) + IFNULL(t.overdueTasks, 0) + IFNULL(b.severeBugs, 0) * 2) AS riskScore
+FROM zt_project p
+LEFT JOIN
+(
+    SELECT project, COUNT(1) AS overdueTasks
+    FROM zt_task
+    WHERE deleted = '0' AND status NOT IN ('done', 'closed', 'cancel') AND deadline IS NOT NULL AND deadline != '0000-00-00' AND deadline < CURDATE()
+    GROUP BY project
+) t ON t.project = p.id
+LEFT JOIN
+(
+    SELECT project, SUM(IF(severity IN (1, 2), 1, 0)) AS severeBugs, COUNT(1) AS unclosedBugs
+    FROM zt_bug
+    WHERE deleted = '0' AND status != 'closed'
+    GROUP BY project
+) b ON b.project = p.id
+LEFT JOIN
+(
+    SELECT project, SUM(consumed) AS consumed
+    FROM zt_effort
+    WHERE deleted = '0'
+    GROUP BY project
+) e ON e.project = p.id
+WHERE p.deleted = '0' AND p.isTpl = '0' AND p.type = 'project'
+ORDER BY riskScore DESC, overdueTasks DESC, severeBugs DESC
+LIMIT 10
+EOT;
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40011,
+    'name'      => 'PMO-风险项目Top10',
+    'code'      => 'pmo_risk_project_top',
+    'dimension' => '1',
+    'type'      => 'table',
+    'group'     => '38',
+    'sql'       => $pmoRiskProjectSQL,
+    'settings'  => array('column' => array(array('field' => 'projectName', 'name' => '项目'), array('field' => 'PM', 'name' => 'PM'), array('field' => 'endDate', 'name' => '计划结束'), array('field' => 'overdueTasks', 'name' => '逾期任务'), array('field' => 'severeBugs', 'name' => '严重Bug'), array('field' => 'riskScore', 'name' => '风险分'))),
+    'filters'   => array(),
+    'fields'    => array('projectName' => $pmoField('projectName', '项目', 'string'), 'PM' => $pmoField('PM', 'PM', 'string'), 'endDate' => $pmoField('endDate', '计划结束', 'string'), 'overdueTasks' => $pmoField('overdueTasks', '逾期任务'), 'severeBugs' => $pmoField('severeBugs', '严重Bug'), 'unclosedBugs' => $pmoField('unclosedBugs', '未关闭Bug'), 'consumed' => $pmoField('consumed', '消耗工时'), 'riskScore' => $pmoField('riskScore', '风险分')),
+    'langs'     => array(),
+    'stage'     => 'published',
+    'builtin'   => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40012,
+    'name'      => 'PMO-人员负载Top10',
+    'code'      => 'pmo_user_workload_top',
+    'dimension' => '1',
+    'type'      => 'table',
+    'group'     => '56',
+    'sql'       => <<<EOT
+SELECT IFNULL(u.realname, t.assignedTo) AS realname,
+       t.assignedTo,
+       COUNT(1) AS pendingTasks,
+       SUM(IF(t.deadline IS NOT NULL AND t.deadline != '0000-00-00' AND t.deadline < CURDATE(), 1, 0)) AS overdueTasks,
+       ROUND(SUM(t.`left`), 1) AS leftHours,
+       ROUND(SUM(t.estimate), 1) AS estimateHours
+FROM zt_task t
+LEFT JOIN zt_user u ON u.account = t.assignedTo
+WHERE t.deleted = '0' AND t.status NOT IN ('done', 'closed', 'cancel') AND t.assignedTo != ''
+GROUP BY t.assignedTo, u.realname
+ORDER BY pendingTasks DESC, overdueTasks DESC
+LIMIT 10
+EOT
+,
+    'settings' => array('column' => array(array('field' => 'realname', 'name' => '人员'), array('field' => 'pendingTasks', 'name' => '待办任务'), array('field' => 'overdueTasks', 'name' => '逾期任务'), array('field' => 'leftHours', 'name' => '剩余工时'), array('field' => 'estimateHours', 'name' => '预计工时'))),
+    'filters'  => array(),
+    'fields'   => array('realname' => $pmoField('realname', '人员', 'string', 'user'), 'assignedTo' => $pmoField('assignedTo', '账号', 'string', 'user'), 'pendingTasks' => $pmoField('pendingTasks', '待办任务', 'number', 'task'), 'overdueTasks' => $pmoField('overdueTasks', '逾期任务', 'number', 'task'), 'leftHours' => $pmoField('leftHours', '剩余工时', 'number', 'task'), 'estimateHours' => $pmoField('estimateHours', '预计工时', 'number', 'task')),
+    'langs'    => array(),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40013,
+    'name'      => 'PMO-项目工时消耗Top10',
+    'code'      => 'pmo_project_effort_top',
+    'dimension' => '1',
+    'type'      => 'table',
+    'group'     => '57',
+    'sql'       => <<<EOT
+SELECT p.name AS projectName,
+       ROUND(SUM(e.consumed), 1) AS consumed,
+       COUNT(DISTINCT e.account) AS peopleCount,
+       MAX(e.date) AS lastEffortDate
+FROM zt_effort e
+LEFT JOIN zt_project p ON p.id = e.project
+WHERE e.deleted = '0' AND e.project > 0 AND p.deleted = '0'
+GROUP BY e.project, p.name
+ORDER BY consumed DESC
+LIMIT 10
+EOT
+,
+    'settings' => array('column' => array(array('field' => 'projectName', 'name' => '项目'), array('field' => 'consumed', 'name' => '消耗工时'), array('field' => 'peopleCount', 'name' => '参与人数'), array('field' => 'lastEffortDate', 'name' => '最近日志'))),
+    'filters'  => array(),
+    'fields'   => array('projectName' => $pmoField('projectName', '项目', 'string'), 'consumed' => $pmoField('consumed', '消耗工时', 'number', 'effort'), 'peopleCount' => $pmoField('peopleCount', '参与人数', 'number', 'effort'), 'lastEffortDate' => $pmoField('lastEffortDate', '最近日志', 'date', 'effort')),
+    'langs'    => array(),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+$config->bi->builtin->charts[] = array
+(
+    'id'        => 40014,
+    'name'      => 'PMO-逾期任务Top项目',
+    'code'      => 'pmo_overdue_task_project_top',
+    'dimension' => '1',
+    'type'      => 'table',
+    'group'     => '39',
+    'sql'       => <<<EOT
+SELECT p.name AS projectName,
+       COUNT(1) AS overdueTasks,
+       ROUND(SUM(t.`left`), 1) AS leftHours,
+       MIN(t.deadline) AS earliestDeadline
+FROM zt_task t
+LEFT JOIN zt_project p ON p.id = t.project
+WHERE t.deleted = '0' AND t.status NOT IN ('done', 'closed', 'cancel') AND t.deadline IS NOT NULL AND t.deadline != '0000-00-00' AND t.deadline < CURDATE() AND p.deleted = '0'
+GROUP BY t.project, p.name
+ORDER BY overdueTasks DESC, leftHours DESC
+LIMIT 10
+EOT
+,
+    'settings' => array('column' => array(array('field' => 'projectName', 'name' => '项目'), array('field' => 'overdueTasks', 'name' => '逾期任务'), array('field' => 'leftHours', 'name' => '剩余工时'), array('field' => 'earliestDeadline', 'name' => '最早截止'))),
+    'filters'  => array(),
+    'fields'   => array('projectName' => $pmoField('projectName', '项目', 'string'), 'overdueTasks' => $pmoField('overdueTasks', '逾期任务', 'number', 'task'), 'leftHours' => $pmoField('leftHours', '剩余工时', 'number', 'task'), 'earliestDeadline' => $pmoField('earliestDeadline', '最早截止', 'date', 'task')),
+    'langs'    => array(),
+    'stage'    => 'published',
+    'builtin'  => '1'
+);
+
+unset($pmoField, $pmoLang, $pmoHealthSQL, $pmoRiskProjectSQL);
+
+include __DIR__ . '/pmocharts.php';

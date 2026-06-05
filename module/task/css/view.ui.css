@@ -4,3 +4,8 @@
 #mainContent .detail-body .section > .h4 {font-size: 1rem !important;}
 #mainContent .detail-body .section > .article {font-size: 13px; font-weight: 400;}
 #mainContent .detail-body .detail-card-header .detail-card-toolbar .toolbar .btn.toolbar-item {max-height: 20px;}
+
+/* Keep pasted rich-text tables inside the detail main column. */
+.zentao-rich-table-scroll {display: block; width: 100%; max-width: 100%; box-sizing: border-box; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; contain: inline-size;}
+.zentao-rich-table-scroll > table {width: max-content; min-width: 100%; max-width: none;}
+.detail-section, .detail-content.article-content {min-width: 0; max-width: 100%;}

@@ -18,7 +18,7 @@ $config->bi->duckdbExcludeTables = array('metriclib', 'repofiles', 'repohistory'
 
 $config->bi->builtin = new stdclass();
 $config->bi->builtin->modules = new stdclass();
-$config->bi->builtin->screens = array(1, 2, 3, 4, 5, 6, 7, 8,1001);
+$config->bi->builtin->screens = array(1, 2, 3, 4, 5, 6, 7, 8, 1001, 10002, 10003, 10004, 10005, 10006);
 
 $config->bi->default = new stdclass();
 $config->bi->default->styles  = json_decode('{"filterShow":false,"hueRotate":0,"saturate":1,"contrast":1,"brightness":1,"opacity":1,"rotateZ":0,"rotateX":0,"rotateY":0,"skewX":0,"skewY":0,"blendMode":"normal","animations":[]}');

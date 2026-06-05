@@ -347,6 +347,17 @@ window.setStoryModule = function()
     }
 }
 
+window.handleStoryChange = function()
+{
+    const storyID   = $('input[name=story]').val();
+    const $taskForm = $('[formid=taskEditForm' + taskID + ']');
+
+    $taskForm.find('[name=storyCleared]').remove();
+    if(oldStoryID && (!storyID || storyID == '0')) $taskForm.append('<input type="hidden" name="storyCleared" value="1" />');
+
+    setStoryModule();
+}
+
 window.clickSubmit = async function(e)
 {
     if(confirmSyncTip.length == 0 || $('[name=story]').length == 0 || $('[name=story]').val() == '' || $('[name=story]').val() == '0' || $('[name=story]').val() == taskStory) return true;
@@ -418,6 +429,17 @@ window.setStoryModule = function()
             if(storyInfo) $('input[name=module]').zui('picker').$.setValue(storyInfo.moduleID);
         });
     }
+}
+
+window.handleStoryChange = function()
+{
+    const storyID   = $('input[name=story]').val();
+    const $taskForm = $('[formid=taskEditForm' + taskID + ']');
+
+    $taskForm.find('[name=storyCleared]').remove();
+    if(oldStoryID && (!storyID || storyID == '0')) $taskForm.append('<input type="hidden" name="storyCleared" value="1" />');
+
+    setStoryModule();
 }
 
 getParentEstStartedAndDeadline = function()

@@ -541,7 +541,20 @@ class execution extends control
         $this->session->set('productList', $this->app->getURI(true), 'product');
 
         $story = $this->loadModel('story')->getByID($storyID);
-        echo $this->fetch('story', 'view', "storyID=$storyID&version=$story->version&param=" . ($executionID ? $executionID : $this->session->execution) . "&storyType={$story->type}");
+        if(!$executionID) $executionID = (int)$this->session->execution;
+        if(!$executionID && !empty($story->executions))
+        {
+            foreach($story->executions as $linkedExecution)
+            {
+                if(isset($this->executions[$linkedExecution->id]))
+                {
+                    $executionID = (int)$linkedExecution->id;
+                    break;
+                }
+            }
+        }
+
+        echo $this->fetch('story', 'view', "storyID=$storyID&version=$story->version&param=$executionID&storyType={$story->type}");
     }
 
     /**

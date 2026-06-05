@@ -43,14 +43,14 @@ $config->story->exportFields = '
 
 $config->story->list->customCreateFields      = '';
 $config->story->list->customBatchCreateFields = 'plan,assignedTo,spec,source,verify,pri,estimate,keywords,mailto';
-$config->story->list->customBatchEditFields   = 'branch,plan,estimate,pri,assignedTo,source,stage,closedBy,closedReason,keywords';
+$config->story->list->customBatchEditFields   = 'branch,plan,estimate,complexity,pri,assignedTo,source,stage,closedBy,closedReason,keywords';
 
 $config->story->list->actionsOperatedParentStory = ',edit,batchcreate,change,review,recall,submitreview,processstorychange,';
 
 $config->story->custom = new stdclass();
 $config->story->custom->createFields      = $config->story->list->customCreateFields;
 $config->story->custom->batchCreateFields = 'module,plan,spec,pri,estimate,review,%s';
-$config->story->custom->batchEditFields   = 'branch,module,plan,estimate,pri,source,stage,closedBy,closedReason';
+$config->story->custom->batchEditFields   = 'branch,module,plan,estimate,complexity,pri,source,stage,closedBy,closedReason';
 
 $config->story->excludeCheckFields = ',uploadImage,category,reviewer,reviewDitto,lanes,regions,branch,pri,';
 

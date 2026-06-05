@@ -14,7 +14,7 @@ $config->task->view        = new stdclass();
 $config->task->batchcreate = new stdclass();
 $config->task->batchedit   = new stdclass();
 
-$config->task->create->requiredFields      = 'execution,name,type';
+$config->task->create->requiredFields      = 'execution,name,type,complexity';
 $config->task->batchcreate->requiredFields = 'name,type';
 $config->task->edit->requiredFields        = $config->task->create->requiredFields;
 $config->task->batchedit->requiredFields   = $config->task->edit->requiredFields;
@@ -55,14 +55,14 @@ $config->task->exportFields = '
 $config->task->list = new stdclass();
 $config->task->list->customCreateFields      = 'module,story,keywords,mailto,files';
 $config->task->list->customBatchCreateFields = 'module,story,assignedTo,estimate,estStarted,deadline,desc,pri';
-$config->task->list->customBatchEditFields   = 'module,assignedTo,status,pri,estimate,record,left,estStarted,deadline';
+$config->task->list->customBatchEditFields   = 'module,assignedTo,status,complexity,pri,estimate,record,left,estStarted,deadline';
 
 $config->task->defaultLoadCount = 50;
 
 $config->task->custom = new stdclass();
 $config->task->custom->createFields      = $config->task->list->customCreateFields;
 $config->task->custom->batchCreateFields = 'module,story,assignedTo,estimate,estStarted,deadline,desc,pri';
-$config->task->custom->batchEditFields   = 'module,assignedTo,status,pri,estimate,record,left';
+$config->task->custom->batchEditFields   = 'module,assignedTo,status,complexity,pri,estimate,record,left';
 
 $config->task->excludeCheckFields = ',pri,estStartedDitto,deadlineDitto,parent,regions,lanes,vision,region,';
 
@@ -73,6 +73,7 @@ $config->task->create->template->module     = 0;
 $config->task->create->template->mode       = '';
 $config->task->create->template->assignedTo = '';
 $config->task->create->template->name       = '';
+$config->task->create->template->complexity = 'L1';
 $config->task->create->template->story      = 0;
 $config->task->create->template->type       = 'devel';
 $config->task->create->template->pri        = 3;

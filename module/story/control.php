@@ -586,7 +586,7 @@ class story extends control
         }
         elseif($this->app->tab == 'execution')
         {
-            $executionID = $param ? $param : $this->session->execution;
+            $executionID = (int)($param ? $param : $this->session->execution);
             $this->loadModel('execution')->setMenu($executionID);
             $this->view->executionID = $executionID;
             $this->view->execution   = $this->execution->fetchByID($executionID);
@@ -1565,6 +1565,19 @@ class story extends control
         }
 
         $stories = $this->story->getExecutionStoryPairs($executionID, $productID, $branch, $moduleID, $type, $status, 'story', false);
+        if($storyID && !isset($stories[$storyID]))
+        {
+            $linkedStory = $this->dao->select('t2.id, t2.title, t2.module, t2.pri, t2.estimate, t3.name AS product')
+                ->from(TABLE_PROJECTSTORY)->alias('t1')
+                ->leftJoin(TABLE_STORY)->alias('t2')->on('t1.story = t2.id')
+                ->leftJoin(TABLE_PRODUCT)->alias('t3')->on('t1.product = t3.id')
+                ->where('t1.project')->eq($executionID)
+                ->andWhere('t1.story')->eq($storyID)
+                ->andWhere('t2.type')->eq('story')
+                ->andWhere('t2.deleted')->eq('0')
+                ->fetch();
+            if($linkedStory) $stories += $this->story->formatStories(array($linkedStory), $type);
+        }
 
         if($this->app->getViewType() === 'json')
         {

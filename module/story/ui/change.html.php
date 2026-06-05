@@ -13,6 +13,14 @@ namespace zin;
 include($this->app->getModuleRoot() . 'ai/ui/inputinject.html.php');
 include './affected.html.php';
 
+$isMarkdownContent = static function(string $content): bool
+{
+    $content = trim(htmlspecialchars_decode($content, ENT_QUOTES));
+    if($content === '' || isHTML($content)) return false;
+
+    return preg_match('/(^|\n)(#{1,6}\s+\S+|[-*+]\s+\S+|\d+\.\s+\S+|>\s+\S+|```|~~~|\|.+\||\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/m', $content) === 1;
+};
+
 if($app->tab == 'product') data('activeMenuID', $story->type);
 jsVar('lastReviewer', explode(',', $lastReviewer));
 jsVar('storyID', $story->id);
@@ -115,6 +123,7 @@ $formItems['spec'] = section
     (
         set::name('spec'),
         set::uid($uid),
+        set::markdown($isMarkdownContent($fields['spec']['default'])),
         html($fields['spec']['default'])
     )
 );
@@ -138,6 +147,7 @@ foreach($fields as $field => $attr)
             (
                 set::name($fieldName),
                 set::uid($uid),
+                set::markdown($isMarkdownContent($attr['default'])),
                 html($attr['default'])
             )
         );

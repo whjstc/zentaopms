@@ -238,7 +238,7 @@ class chartModel extends model
 
         /* 过滤掉模板数据。 */
         if(strpos($chart->sql, 'zt_project') !== false) $chart->sql = preg_replace('/\bzt_project\b(?!\w)/', 'ztv_projectnotpl', $chart->sql);
-        if(strpos($chart->sql, 'zt_task') !== false)    $chart->sql = preg_replace('/\bzt_task\b(?!\w)/', 'ztv_tasknotpl', $chart->sql);
+        if(strpos($chart->sql, 'zt_task') !== false and strpos($chart->sql, '/*keepTaskTable*/') === false) $chart->sql = preg_replace('/\bzt_task\b(?!\w)/', 'ztv_tasknotpl', $chart->sql);
 
         if($type == 'pie')   $options = $this->genPie($chart->fieldSettings, $settings, $chart->sql, $filterFormat, $driver);
         if($type == 'radar') $options = $this->genRadar($chart->fieldSettings, $settings, $chart->sql, $filterFormat, $chart->langs, $driver);

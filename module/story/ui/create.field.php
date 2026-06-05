@@ -91,8 +91,16 @@ if($isKanban)
 $fields->field('title')
     ->wrapBefore(true)
     ->control('colorInput')
+    ->width('3/4')
     ->required($createFields['title']['required'])
     ->value($createFields['title']['default']);
+
+$fields->field('complexity')
+    ->width('1/4')
+    ->required(false)
+    ->control('picker')
+    ->items($lang->{$type}->complexityList)
+    ->value($createFields['complexity']['default']);
 
 $fields->field('pri')
     ->width('1/4')

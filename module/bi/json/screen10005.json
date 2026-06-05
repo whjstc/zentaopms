@@ -1,0 +1,858 @@
+{
+  "id": 10005,
+  "dimension": "3",
+  "name": "PMO-质量分析大屏",
+  "desc": "Bug 总量、严重级别、关闭率、线上遗留、重复和重新激活分析。",
+  "cover": "static/images/screen1.png",
+  "builtin": "1",
+  "scheme": {
+    "editCanvasConfig": {
+      "projectName": "PMO",
+      "width": 1920,
+      "height": 1080,
+      "filterShow": false,
+      "hueRotate": 0,
+      "saturate": 1,
+      "contrast": 1,
+      "brightness": 1,
+      "opacity": 1,
+      "rotateZ": 0,
+      "rotateX": 0,
+      "rotateY": 0,
+      "skewX": 0,
+      "skewY": 0,
+      "blendMode": "normal",
+      "background": "#07111F",
+      "selectColor": true,
+      "chartThemeColor": "dark",
+      "previewScaleType": "fit",
+      "globalFilter": [],
+      "chartCustomThemeColorInfo": []
+    },
+    "componentList": [
+      {
+        "id": "title",
+        "isGroup": false,
+        "attr": {
+          "x": 0,
+          "y": 18,
+          "w": 1920,
+          "h": 54,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "PMO-质量分析大屏",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "PMO-质量分析大屏",
+          "fontSize": 34,
+          "fontColor": "#EAF6FF",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "subtitle",
+        "isGroup": false,
+        "attr": {
+          "x": 0,
+          "y": 70,
+          "w": 1920,
+          "h": 28,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "Bug 总量、严重级别、关闭率、线上遗留、重复和重新激活分析。",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "Bug 总量、严重级别、关闭率、线上遗留、重复和重新激活分析。",
+          "fontSize": 15,
+          "fontColor": "#8FB8D8",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "filter_product",
+        "isGroup": false,
+        "attr": {
+          "x": 1260,
+          "y": 28,
+          "w": 190,
+          "h": 38,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "Select",
+        "type": "product",
+        "filterCharts": [
+          {
+            "chart": 41000,
+            "field": "product"
+          },
+          {
+            "chart": 41001,
+            "field": "product"
+          },
+          {
+            "chart": 41002,
+            "field": "product"
+          },
+          {
+            "chart": 41003,
+            "field": "product"
+          },
+          {
+            "chart": 41004,
+            "field": "product"
+          },
+          {
+            "chart": 41005,
+            "field": "product"
+          },
+          {
+            "chart": 41006,
+            "field": "product"
+          },
+          {
+            "chart": 41300,
+            "field": "product"
+          },
+          {
+            "chart": 41301,
+            "field": "product"
+          },
+          {
+            "chart": 41302,
+            "field": "product"
+          },
+          {
+            "chart": 41303,
+            "field": "product"
+          },
+          {
+            "chart": 41304,
+            "field": "product"
+          },
+          {
+            "chart": 41305,
+            "field": "product"
+          },
+          {
+            "chart": 41307,
+            "field": "product"
+          }
+        ],
+        "chartConfig": {
+          "key": "Select",
+          "chartKey": "VSelect",
+          "conKey": "VCSelect",
+          "title": "筛选器",
+          "category": "Controls",
+          "categoryName": "控件",
+          "package": "Controls",
+          "image": "select.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "value": "0",
+          "dataset": [
+            {
+              "label": "全部",
+              "value": "0"
+            }
+          ],
+          "fontSize": 14,
+          "fontColor": "#DCEEFF",
+          "backgroundColor": "#0B243D",
+          "borderColor": "#2A6F9F",
+          "borderWidth": 1,
+          "borderRadius": 4
+        }
+      },
+      {
+        "id": "filter_project",
+        "isGroup": false,
+        "attr": {
+          "x": 1460,
+          "y": 28,
+          "w": 190,
+          "h": 38,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "Select",
+        "type": "project",
+        "filterCharts": [
+          {
+            "chart": 41100,
+            "field": "project"
+          },
+          {
+            "chart": 41101,
+            "field": "project"
+          },
+          {
+            "chart": 41102,
+            "field": "project"
+          },
+          {
+            "chart": 41103,
+            "field": "project"
+          },
+          {
+            "chart": 41104,
+            "field": "project"
+          },
+          {
+            "chart": 41105,
+            "field": "project"
+          },
+          {
+            "chart": 41106,
+            "field": "project"
+          },
+          {
+            "chart": 41200,
+            "field": "project"
+          },
+          {
+            "chart": 41201,
+            "field": "project"
+          },
+          {
+            "chart": 41202,
+            "field": "project"
+          },
+          {
+            "chart": 41203,
+            "field": "project"
+          },
+          {
+            "chart": 41204,
+            "field": "project"
+          },
+          {
+            "chart": 41205,
+            "field": "project"
+          },
+          {
+            "chart": 41206,
+            "field": "project"
+          },
+          {
+            "chart": 41300,
+            "field": "project"
+          },
+          {
+            "chart": 41301,
+            "field": "project"
+          },
+          {
+            "chart": 41302,
+            "field": "project"
+          },
+          {
+            "chart": 41303,
+            "field": "project"
+          },
+          {
+            "chart": 41304,
+            "field": "project"
+          },
+          {
+            "chart": 41307,
+            "field": "project"
+          },
+          {
+            "chart": 41400,
+            "field": "project"
+          },
+          {
+            "chart": 41401,
+            "field": "project"
+          },
+          {
+            "chart": 41402,
+            "field": "project"
+          },
+          {
+            "chart": 41403,
+            "field": "project"
+          },
+          {
+            "chart": 41404,
+            "field": "project"
+          },
+          {
+            "chart": 41405,
+            "field": "project"
+          },
+          {
+            "chart": 41406,
+            "field": "project"
+          },
+          {
+            "chart": 41407,
+            "field": "project"
+          }
+        ],
+        "chartConfig": {
+          "key": "Select",
+          "chartKey": "VSelect",
+          "conKey": "VCSelect",
+          "title": "筛选器",
+          "category": "Controls",
+          "categoryName": "控件",
+          "package": "Controls",
+          "image": "select.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "value": "0",
+          "dataset": [
+            {
+              "label": "全部",
+              "value": "0"
+            }
+          ],
+          "fontSize": 14,
+          "fontColor": "#DCEEFF",
+          "backgroundColor": "#0B243D",
+          "borderColor": "#2A6F9F",
+          "borderWidth": 1,
+          "borderRadius": 4
+        }
+      },
+      {
+        "id": "filter_execution",
+        "isGroup": false,
+        "attr": {
+          "x": 1660,
+          "y": 28,
+          "w": 190,
+          "h": 38,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "Select",
+        "type": "execution",
+        "filterCharts": [
+          {
+            "chart": 41101,
+            "field": "execution"
+          },
+          {
+            "chart": 41102,
+            "field": "execution"
+          },
+          {
+            "chart": 41200,
+            "field": "execution"
+          },
+          {
+            "chart": 41201,
+            "field": "execution"
+          },
+          {
+            "chart": 41202,
+            "field": "execution"
+          },
+          {
+            "chart": 41203,
+            "field": "execution"
+          },
+          {
+            "chart": 41204,
+            "field": "execution"
+          },
+          {
+            "chart": 41205,
+            "field": "execution"
+          },
+          {
+            "chart": 41206,
+            "field": "execution"
+          },
+          {
+            "chart": 41300,
+            "field": "execution"
+          },
+          {
+            "chart": 41301,
+            "field": "execution"
+          },
+          {
+            "chart": 41303,
+            "field": "execution"
+          },
+          {
+            "chart": 41304,
+            "field": "execution"
+          },
+          {
+            "chart": 41307,
+            "field": "execution"
+          },
+          {
+            "chart": 41400,
+            "field": "execution"
+          },
+          {
+            "chart": 41401,
+            "field": "execution"
+          },
+          {
+            "chart": 41402,
+            "field": "execution"
+          },
+          {
+            "chart": 41403,
+            "field": "execution"
+          },
+          {
+            "chart": 41404,
+            "field": "execution"
+          },
+          {
+            "chart": 41405,
+            "field": "execution"
+          },
+          {
+            "chart": 41406,
+            "field": "execution"
+          },
+          {
+            "chart": 41407,
+            "field": "execution"
+          }
+        ],
+        "chartConfig": {
+          "key": "Select",
+          "chartKey": "VSelect",
+          "conKey": "VCSelect",
+          "title": "筛选器",
+          "category": "Controls",
+          "categoryName": "控件",
+          "package": "Controls",
+          "image": "select.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "value": "0",
+          "dataset": [
+            {
+              "label": "全部",
+              "value": "0"
+            }
+          ],
+          "fontSize": 14,
+          "fontColor": "#DCEEFF",
+          "backgroundColor": "#0B243D",
+          "borderColor": "#2A6F9F",
+          "borderWidth": 1,
+          "borderRadius": 4
+        }
+      },
+      {
+        "id": "c41300",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-Bug总数",
+          "sourceID": "41300"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41300",
+        "title": "Bug总数",
+        "type": "card"
+      },
+      {
+        "id": "c41301",
+        "isGroup": false,
+        "attr": {
+          "x": 308,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-严重Bug数",
+          "sourceID": "41301"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41301",
+        "title": "严重Bug数",
+        "type": "card"
+      },
+      {
+        "id": "c41302",
+        "isGroup": false,
+        "attr": {
+          "x": 568,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-线上遗留Bug数",
+          "sourceID": "41302"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41302",
+        "title": "线上遗留Bug数",
+        "type": "card"
+      },
+      {
+        "id": "c41303",
+        "isGroup": false,
+        "attr": {
+          "x": 828,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-重复Bug数",
+          "sourceID": "41303"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41303",
+        "title": "重复Bug数",
+        "type": "card"
+      },
+      {
+        "id": "c41304",
+        "isGroup": false,
+        "attr": {
+          "x": 1088,
+          "y": 126,
+          "w": 240,
+          "h": 110,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-重新激活Bug数",
+          "sourceID": "41304"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41304",
+        "title": "重新激活Bug数",
+        "type": "card"
+      },
+      {
+        "id": "c41305",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 280,
+          "w": 580,
+          "h": 320,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "title": "Bug关闭率",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "chartFrame": "common",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "sourceID": "41305"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41305",
+        "title": "Bug关闭率",
+        "type": "table"
+      },
+      {
+        "id": "c41306",
+        "isGroup": false,
+        "attr": {
+          "x": 680,
+          "y": 280,
+          "w": 610,
+          "h": 320,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "image": "/static/png/table-991356ca.png",
+          "chartFrame": "common",
+          "title": "PMO-Bug新增关闭趋势",
+          "sourceID": "41306"
+        },
+        "option": {
+          "headerBGC": "#0f4f73",
+          "oddRowBGC": "#0a223a",
+          "evenRowBGC": "#0d304c",
+          "fontColor": "#FFFFFF"
+        },
+        "sourceID": "41306",
+        "title": "Bug新增关闭趋势",
+        "type": "table"
+      },
+      {
+        "id": "c41307",
+        "isGroup": false,
+        "attr": {
+          "x": 1340,
+          "y": 280,
+          "w": 530,
+          "h": 320,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "title": "Bug严重级别分布",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "chartFrame": "common",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "sourceID": "41307"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41307",
+        "title": "Bug严重级别分布",
+        "type": "table"
+      },
+      {
+        "id": "c41006q",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 640,
+          "w": 1822,
+          "h": 340,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "chartFrame": "common",
+          "title": "PMO-产品当前版本",
+          "sourceID": "41006"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41006",
+        "title": "产品当前版本",
+        "type": "table"
+      }
+    ]
+  }
+}

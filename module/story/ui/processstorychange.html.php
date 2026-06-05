@@ -12,6 +12,19 @@ declare(strict_types=1);
 
 namespace zin;
 
+$isMarkdownContent = static function(string $content): bool
+{
+    $content = trim(htmlspecialchars_decode($content, ENT_QUOTES));
+    if($content === '' || isHTML($content)) return false;
+
+    return preg_match('/(^|\n)(#{1,6}\s+\S+|[-*+]\s+\S+|\d+\.\s+\S+|>\s+\S+|```|~~~|\|.+\||\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/m', $content) === 1;
+};
+
+$renderStoryContent = static function(string $content) use($isMarkdownContent): string
+{
+    return $isMarkdownContent($content) ? \commonModel::processMarkdown($content) : $content;
+};
+
 modalHeader(set::title($lang->story->URChanged));
 div(setClass('text-gray mb-2'), icon(setClass('text-warning pr-2'), 'exclamation'), $lang->story->changeTips);
 foreach($changedStories as $story)
@@ -24,9 +37,9 @@ foreach($changedStories as $story)
         (
             setClass('p-3'),
             p(setClass('text-gray pb-3'), "[{$lang->story->legendSpec}]"),
-            html($story->spec),
+            html($renderStoryContent($story->spec)),
             p(setClass('text-gray pb-3 pt-3'), "[{$lang->story->legendVerify}]"),
-            html($story->verify)
+            html($renderStoryContent($story->verify))
         )
     );
 }

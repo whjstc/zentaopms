@@ -114,6 +114,8 @@ class taskBasicInfo extends wg
 
         $items[$lang->task->progress] = "$task->progress %";
 
+        $items[$lang->task->complexity] = zget($lang->task->complexityList, zget($task, 'complexity', 'L1'), zget($task, 'complexity', 'L1'));
+
         $items[$lang->task->pri] = array
         (
             'control' => 'pri',

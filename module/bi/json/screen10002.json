@@ -1,0 +1,645 @@
+{
+  "id": 10002,
+  "dimension": "2",
+  "name": "PMO-产品总览大屏",
+  "desc": "产品需求、Bug、当前执行和版本发布概览。",
+  "cover": "static/images/screen1.png",
+  "builtin": "1",
+  "scheme": {
+    "editCanvasConfig": {
+      "projectName": "PMO",
+      "width": 1920,
+      "height": 1080,
+      "filterShow": false,
+      "hueRotate": 0,
+      "saturate": 1,
+      "contrast": 1,
+      "brightness": 1,
+      "opacity": 1,
+      "rotateZ": 0,
+      "rotateX": 0,
+      "rotateY": 0,
+      "skewX": 0,
+      "skewY": 0,
+      "blendMode": "normal",
+      "background": "#07111F",
+      "selectColor": true,
+      "chartThemeColor": "dark",
+      "previewScaleType": "fit",
+      "globalFilter": [],
+      "chartCustomThemeColorInfo": []
+    },
+    "componentList": [
+      {
+        "id": "title",
+        "isGroup": false,
+        "attr": {
+          "x": 0,
+          "y": 16,
+          "w": 1920,
+          "h": 44,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "PMO-产品总览大屏",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "PMO-产品总览大屏",
+          "fontSize": 34,
+          "fontColor": "#EAF6FF",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "subtitle",
+        "isGroup": false,
+        "attr": {
+          "x": 0,
+          "y": 60,
+          "w": 1920,
+          "h": 26,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "产品需求、Bug、当前执行和版本发布概览。",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "产品需求、Bug、当前执行、构建与发布概览",
+          "fontSize": 15,
+          "fontColor": "#8FB8D8",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "filter_product",
+        "isGroup": false,
+        "attr": {
+          "x": 1620,
+          "y": 26,
+          "w": 220,
+          "h": 38,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "Select",
+        "type": "product",
+        "filterCharts": [
+          {
+            "chart": 41000,
+            "field": "product"
+          },
+          {
+            "chart": 41001,
+            "field": "product"
+          },
+          {
+            "chart": 41002,
+            "field": "product"
+          },
+          {
+            "chart": 41003,
+            "field": "product"
+          },
+          {
+            "chart": 41004,
+            "field": "product"
+          },
+          {
+            "chart": 41005,
+            "field": "product"
+          },
+          {
+            "chart": 41006,
+            "field": "product"
+          },
+          {
+            "chart": 41300,
+            "field": "product"
+          },
+          {
+            "chart": 41301,
+            "field": "product"
+          },
+          {
+            "chart": 41302,
+            "field": "product"
+          },
+          {
+            "chart": 41303,
+            "field": "product"
+          },
+          {
+            "chart": 41304,
+            "field": "product"
+          },
+          {
+            "chart": 41305,
+            "field": "product"
+          },
+          {
+            "chart": 41307,
+            "field": "product"
+          }
+        ],
+        "chartConfig": {
+          "key": "Select",
+          "chartKey": "VSelect",
+          "conKey": "VCSelect",
+          "title": "筛选器",
+          "category": "Controls",
+          "categoryName": "控件",
+          "package": "Controls",
+          "image": "select.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "value": "0",
+          "dataset": [
+            {
+              "label": "全部",
+              "value": "0"
+            }
+          ],
+          "fontSize": 14,
+          "fontColor": "#DCEEFF",
+          "backgroundColor": "#0B243D",
+          "borderColor": "#2A6F9F",
+          "borderWidth": 1,
+          "borderRadius": 4
+        }
+      },
+      {
+        "id": "c41000",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 118,
+          "w": 270,
+          "h": 74,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-产品需求总数",
+          "sourceID": "41000"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41000",
+        "title": "产品需求总数",
+        "type": "card"
+      },
+      {
+        "id": "c41001",
+        "isGroup": false,
+        "attr": {
+          "x": 338,
+          "y": 118,
+          "w": 270,
+          "h": 74,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-产品进行中需求数",
+          "sourceID": "41001"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41001",
+        "title": "产品进行中需求数",
+        "type": "card"
+      },
+      {
+        "id": "c41002",
+        "isGroup": false,
+        "attr": {
+          "x": 628,
+          "y": 118,
+          "w": 270,
+          "h": 74,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-产品已关闭需求数",
+          "sourceID": "41002"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41002",
+        "title": "产品已关闭需求数",
+        "type": "card"
+      },
+      {
+        "id": "c41003",
+        "isGroup": false,
+        "attr": {
+          "x": 918,
+          "y": 118,
+          "w": 270,
+          "h": 74,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common",
+          "title": "PMO-产品未关闭Bug数",
+          "sourceID": "41003"
+        },
+        "option": {
+          "dataset": "0",
+          "fontSize": 34,
+          "fontColor": "#7DD3FC",
+          "textAlign": "center",
+          "fontWeight": "bold",
+          "borderWidth": 1,
+          "borderColor": "#1F6FA8",
+          "borderRadius": 4,
+          "backgroundColor": "#0B243D"
+        },
+        "sourceID": "41003",
+        "title": "产品未关闭Bug数",
+        "type": "card"
+      },
+      {
+        "id": "c41004",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 250,
+          "w": 1100,
+          "h": 380,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "title": "产品需求 Bug 概览",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "chartFrame": "common",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "sourceID": "41004"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41004",
+        "title": "产品需求 Bug 概览",
+        "type": "table"
+      },
+      {
+        "id": "c41005",
+        "isGroup": false,
+        "attr": {
+          "x": 1180,
+          "y": 250,
+          "w": 690,
+          "h": 380,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "chartFrame": "common",
+          "title": "PMO-产品当前执行",
+          "sourceID": "41005"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41005",
+        "title": "当前执行",
+        "type": "table"
+      },
+      {
+        "id": "c41006",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 670,
+          "w": 1822,
+          "h": 310,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": -1
+        },
+        "key": "TableScrollBoard",
+        "chartConfig": {
+          "key": "TableScrollBoard",
+          "chartKey": "VTableScrollBoard",
+          "conKey": "VCTableScrollBoard",
+          "category": "Tables",
+          "categoryName": "表格",
+          "package": "Charts",
+          "image": "/static/png/table_scrollboard-fb642e78.png",
+          "chartFrame": "common",
+          "title": "PMO-产品当前版本",
+          "sourceID": "41006"
+        },
+        "option": {
+          "header": [
+            "名称",
+            "数值"
+          ],
+          "dataset": [],
+          "rowNum": 6,
+          "waitTime": 2,
+          "headerHeight": 35,
+          "carousel": "single",
+          "headerBGC": "#114366",
+          "oddRowBGC": "#0B243D",
+          "evenRowBGC": "#102C45"
+        },
+        "sourceID": "41006",
+        "title": "当前构建与发布",
+        "type": "table"
+      },
+      {
+        "id": "label41000",
+        "isGroup": false,
+        "attr": {
+          "x": 48,
+          "y": 196,
+          "w": 270,
+          "h": 30,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": 5
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "产品需求总数",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "产品需求总数",
+          "fontSize": 15,
+          "fontColor": "#B9D6F2",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "label41001",
+        "isGroup": false,
+        "attr": {
+          "x": 338,
+          "y": 196,
+          "w": 270,
+          "h": 30,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": 5
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "进行中需求数",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "进行中需求数",
+          "fontSize": 15,
+          "fontColor": "#B9D6F2",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "label41002",
+        "isGroup": false,
+        "attr": {
+          "x": 628,
+          "y": 196,
+          "w": 270,
+          "h": 30,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": 5
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "已关闭需求数",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "已关闭需求数",
+          "fontSize": 15,
+          "fontColor": "#B9D6F2",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      },
+      {
+        "id": "label41003",
+        "isGroup": false,
+        "attr": {
+          "x": 918,
+          "y": 196,
+          "w": 270,
+          "h": 30,
+          "offsetX": 0,
+          "offsetY": 0,
+          "zIndex": 5
+        },
+        "key": "TextCommon",
+        "chartConfig": {
+          "key": "TextCommon",
+          "chartKey": "VTextCommon",
+          "conKey": "VCTextCommon",
+          "title": "未关闭 Bug 数",
+          "category": "Texts",
+          "categoryName": "文本",
+          "package": "Informations",
+          "image": "text_static.png",
+          "chartFrame": "common"
+        },
+        "option": {
+          "dataset": "未关闭 Bug 数",
+          "fontSize": 15,
+          "fontColor": "#B9D6F2",
+          "textAlign": "center",
+          "fontWeight": "normal",
+          "borderWidth": 0,
+          "borderColor": "#fff",
+          "borderRadius": 0,
+          "letterSpacing": 0,
+          "backgroundColor": "#00000000"
+        }
+      }
+    ]
+  }
+}

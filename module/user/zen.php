@@ -435,6 +435,22 @@ class userZen extends user
         if(!empty($referer)) $this->referer = helper::safe64Decode($referer);
         if($this->post->referer) $this->referer = $this->post->referer;
 
+
+        /* Remove session var from referer to avoid relogin loop caused by stale URL session. */
+        $parts = parse_url($this->referer);
+        if(!empty($parts['query']))
+        {
+            parse_str($parts['query'], $queryVars);
+            if(isset($queryVars[$this->config->sessionVar]))
+            {
+                unset($queryVars[$this->config->sessionVar]);
+                $path     = $parts['path'] ?? '';
+                $query    = http_build_query($queryVars);
+                $fragment = isset($parts['fragment']) ? '#' . $parts['fragment'] : '';
+                $this->referer = $path . ($query ? '?' . $query : '') . $fragment;
+            }
+        }
+
         /* 构建禅道链接的正则表达式。*/
         /* Build zentao link regular expression. */
         $webRoot = $this->config->webRoot;

@@ -1321,6 +1321,7 @@ class storyZen extends story
             ->setIF(!in_array($this->post->source, $this->config->story->feedbackSource), 'notifyEmail', '')
             ->setIF(!empty($_POST['plan'][0]) and $oldStory->stage == 'wait', 'stage', 'planned')
             ->setIF(!isset($_POST['title']), 'title', $oldStory->title)
+            ->setIF(!isset($_POST['complexity']), 'complexity', zget($oldStory, 'complexity', 'L1'))
             ->setIF(!isset($_POST['spec']), 'spec', $oldStory->spec)
             ->setIF(!isset($_POST['verify']), 'verify', $oldStory->verify)
             ->setIF(!isset($_POST['estimate']), 'estimate', $oldStory->estimate)
@@ -1347,7 +1348,7 @@ class storyZen extends story
         $oldStory   = $this->story->getByID($storyID);
         if(!empty($_POST['lastEditedDate']) and $oldStory->lastEditedDate != $this->post->lastEditedDate) dao::$errors[] = $this->lang->error->editedByOther;
         if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'spec') !== false and !$this->post->spec)       dao::$errors['spec'][]    = sprintf($this->lang->error->notempty, $this->lang->story->spec);
-        if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'verify') !== false and !$this->post->spec)     dao::$errors['verify'][]  = sprintf($this->lang->error->notempty, $this->lang->story->verify);
+        if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'verify') !== false and !$this->post->verify)   dao::$errors['verify'][]  = sprintf($this->lang->error->notempty, $this->lang->story->verify);
         if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'comment') !== false and !$this->post->comment) dao::$errors['comment']   = sprintf($this->lang->error->notempty, $this->lang->comment);
 
         if(isset($_POST['reviewer'])) $_POST['reviewer'] = array_filter($_POST['reviewer']);

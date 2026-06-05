@@ -1,6 +1,7 @@
 <?php
 global $app;
 $isEn = $app->getClientLang() == 'en';
+$account = isset($app->user->account) ? $app->user->account : '';
 
 $config->task->dtable = new stdclass();
 
@@ -40,6 +41,13 @@ $config->task->dtable->fieldList['type']['map']      = $lang->task->typeList;
 $config->task->dtable->fieldList['type']['sortType'] = true;
 $config->task->dtable->fieldList['type']['group']    = 1;
 
+$config->task->dtable->fieldList['complexity']['title']    = $lang->task->complexity;
+$config->task->dtable->fieldList['complexity']['type']     = 'category';
+$config->task->dtable->fieldList['complexity']['map']      = $lang->task->complexityList;
+$config->task->dtable->fieldList['complexity']['sortType'] = true;
+$config->task->dtable->fieldList['complexity']['width']    = '80';
+$config->task->dtable->fieldList['complexity']['group']    = 1;
+
 $config->task->dtable->fieldList['branch']['title']    = $lang->branchName;
 $config->task->dtable->fieldList['branch']['type']     = 'text';
 $config->task->dtable->fieldList['branch']['sortType'] = false;
@@ -57,7 +65,7 @@ $config->task->dtable->fieldList['openedDate']['group']    = 2;
 
 $config->task->dtable->fieldList['assignedTo']['title']       = $lang->task->assignedTo;
 $config->task->dtable->fieldList['assignedTo']['type']        = 'assign';
-$config->task->dtable->fieldList['assignedTo']['currentUser'] = $app->user->account;
+$config->task->dtable->fieldList['assignedTo']['currentUser'] = $account;
 $config->task->dtable->fieldList['assignedTo']['assignLink']  = array('module' => 'task', 'method' => 'assignTo', 'params' => 'executionID={execution}&taskID={id}');
 $config->task->dtable->fieldList['assignedTo']['sortType']    = true;
 $config->task->dtable->fieldList['assignedTo']['show']        = true;
@@ -320,7 +328,7 @@ $config->task->dtable->importTask->fieldList['status']['group']     = 1;
 $config->task->dtable->importTask->fieldList['assignedTo']['title']       = $lang->task->assignedTo;
 $config->task->dtable->importTask->fieldList['assignedTo']['name']        = 'assignedTo';
 $config->task->dtable->importTask->fieldList['assignedTo']['type']        = 'assign';
-$config->task->dtable->importTask->fieldList['assignedTo']['currentUser'] = $app->user->account;
+$config->task->dtable->importTask->fieldList['assignedTo']['currentUser'] = $account;
 $config->task->dtable->importTask->fieldList['assignedTo']['assignLink']  = helper::createLink('task', 'assignTo', "executionID={execution}&taskID={id}");
 $config->task->dtable->importTask->fieldList['assignedTo']['sortType']    = false;
 $config->task->dtable->importTask->fieldList['assignedTo']['group']       = 2;
