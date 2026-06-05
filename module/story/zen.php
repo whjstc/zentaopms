@@ -1347,7 +1347,7 @@ class storyZen extends story
         $oldStory   = $this->story->getByID($storyID);
         if(!empty($_POST['lastEditedDate']) and $oldStory->lastEditedDate != $this->post->lastEditedDate) dao::$errors[] = $this->lang->error->editedByOther;
         if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'spec') !== false and !$this->post->spec)       dao::$errors['spec'][]    = sprintf($this->lang->error->notempty, $this->lang->story->spec);
-        if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'verify') !== false and !$this->post->spec)     dao::$errors['verify'][]  = sprintf($this->lang->error->notempty, $this->lang->story->verify);
+        if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'verify') !== false and !$this->post->verify)   dao::$errors['verify'][]  = sprintf($this->lang->error->notempty, $this->lang->story->verify);
         if(strpos($this->config->{$oldStory->type}->change->requiredFields, 'comment') !== false and !$this->post->comment) dao::$errors['comment']   = sprintf($this->lang->error->notempty, $this->lang->comment);
 
         if(isset($_POST['reviewer'])) $_POST['reviewer'] = array_filter($_POST['reviewer']);
