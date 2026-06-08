@@ -25,6 +25,13 @@ $config->task->activate->requiredFields    = 'left';
 $config->task->default  = new stdclass();
 $config->task->default->pri = 3;
 
+$config->task->larkSync = new stdclass();
+$config->task->larkSync->token       = getenv('LARK_ZENTAO_SYNC_TOKEN') ?: '';
+$config->task->larkSync->account     = getenv('LARK_ZENTAO_SYNC_ACCOUNT') ?: 'admin';
+$config->task->larkSync->execution   = 37;
+$config->task->larkSync->assignees   = array('吴汉剑', '李思凡', '郭正国');
+$config->task->larkSync->defaultType = 'devel';
+
 $config->task->unfinishedStatus = array('wait', 'doing', 'pause');
 
 $config->task->editor = new stdclass();

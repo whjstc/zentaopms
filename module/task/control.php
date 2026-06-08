@@ -203,6 +203,380 @@ class task extends control
     }
 
     /**
+     * Sync a task from Lark Base automation.
+     *
+     * @access public
+     * @return void
+     */
+    public function syncFromLark()
+    {
+        if(strtoupper((string)$_SERVER['REQUEST_METHOD']) != 'POST') return $this->sendLarkSyncResponse(false, 'Only POST is allowed.', array(), 405);
+        if(!$this->checkLarkSyncToken()) return $this->sendLarkSyncResponse(false, 'Invalid sync token.', array(), 401);
+
+        $payload = $this->getLarkSyncPayload();
+        if(!$payload) return $this->sendLarkSyncResponse(false, 'Invalid JSON request body.', array(), 400);
+
+        $syncUser = $this->initLarkSyncUser();
+        if(!$syncUser) return $this->sendLarkSyncResponse(false, 'Sync account is not configured or does not exist.', array(), 500);
+
+        $data = $this->normalizeLarkTaskData($payload);
+        if(!empty($data->error)) return $this->sendLarkSyncResponse(false, $data->error, array(), 400);
+
+        dao::$errors = array();
+        $_POST['uid']     = 0;
+        $_POST['comment'] = '飞书多维表格同步';
+
+        if($data->taskID)
+        {
+            $oldTask = $this->task->getByID($data->taskID);
+            if(!$oldTask || !empty($oldTask->deleted)) return $this->sendLarkSyncResponse(false, "Task {$data->taskID} does not exist.", array(), 404);
+
+            $task = clone $oldTask;
+            $this->applyLarkDataToTask($task, $data, $oldTask);
+            $changes = $this->task->update($task, new stdclass());
+            if(dao::isError()) return $this->sendLarkSyncResponse(false, dao::getError(), array('taskID' => $data->taskID), 400);
+
+            return $this->sendLarkSyncResponse(true, $this->lang->saveSuccess, array('action' => 'updated', 'taskID' => $data->taskID, 'taskLink' => $this->buildTaskLink($data->taskID), 'changes' => $changes));
+        }
+
+        $execution = $this->dao->select('*')->from(TABLE_PROJECT)->where('id')->eq($data->execution)->andWhere('type')->in('stage,sprint,kanban')->fetch();
+        if(!$execution) return $this->sendLarkSyncResponse(false, "Execution {$data->execution} does not exist.", array(), 404);
+
+        $taskID = $this->createLarkTask($data, $execution);
+        if(!$taskID || dao::isError()) return $this->sendLarkSyncResponse(false, dao::getError(), array(), 400);
+
+        return $this->sendLarkSyncResponse(true, $this->lang->saveSuccess, array('action' => 'created', 'taskID' => $taskID, 'taskLink' => $this->buildTaskLink($taskID)));
+    }
+
+    /**
+     * Check sync token.
+     *
+     * @access private
+     * @return bool
+     */
+    private function checkLarkSyncToken(): bool
+    {
+        $expected = (string)zget($this->config->task->larkSync, 'token', '');
+        if($expected == '') $expected = (string)getenv('LARK_ZENTAO_SYNC_TOKEN');
+        if($expected == '') return false;
+
+        $actual = (string)zget($_SERVER, 'HTTP_X_LARK_ZENTAO_TOKEN', '');
+        if($actual == '' && !empty($_SERVER['HTTP_AUTHORIZATION']))
+        {
+            $authorization = (string)$_SERVER['HTTP_AUTHORIZATION'];
+            if(stripos($authorization, 'Bearer ') === 0) $actual = trim(substr($authorization, 7));
+        }
+
+        return function_exists('hash_equals') ? hash_equals($expected, $actual) : $expected === $actual;
+    }
+
+    /**
+     * Get JSON payload.
+     *
+     * @access private
+     * @return object|null
+     */
+    private function getLarkSyncPayload(): ?object
+    {
+        $raw = file_get_contents('php://input');
+        if(!$raw && !empty($_POST)) $raw = json_encode($_POST);
+        $payload = json_decode((string)$raw);
+        return is_object($payload) ? $payload : null;
+    }
+
+    /**
+     * Initialize current user for sync actions.
+     *
+     * @access private
+     * @return object|false
+     */
+    private function initLarkSyncUser(): object|false
+    {
+        $account = (string)zget($this->config->task->larkSync, 'account', 'admin');
+        $user = $this->dao->select('*')->from(TABLE_USER)->where('account')->eq($account)->andWhere('deleted')->eq('0')->fetch();
+        if(!$user) return false;
+
+        $this->app->user = $user;
+        $_SESSION['user'] = $user;
+        return $user;
+    }
+
+    /**
+     * Normalize Lark payload to ZenTao task data.
+     *
+     * @param  object    $payload
+     * @access private
+     * @return object
+     */
+    private function normalizeLarkTaskData(object $payload): object
+    {
+        $data = new stdclass();
+        $data->recordID    = $this->getLarkValue($payload, array('record_id', 'recordID', '飞书记录ID'));
+        $data->taskID      = (int)$this->getLarkValue($payload, array('zentaoTaskID', 'zentao_task_id', 'taskID', '禅道任务 ID', '禅道任务ID'));
+        $data->execution   = (int)($this->getLarkValue($payload, array('execution', 'executionID', '执行ID')) ?: zget($this->config->task->larkSync, 'execution', 37));
+        $data->name        = trim((string)$this->getLarkValue($payload, array('title', 'name', '任务标题')));
+        $data->desc        = (string)$this->getLarkValue($payload, array('desc', 'description', '任务描述'));
+        $data->assignedTo  = $this->resolveLarkAssignee($this->getLarkValue($payload, array('assignedTo', 'assignee', '负责人', '执行人', '飞书负责人')));
+        $data->openedDate  = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('createdDate', 'created_time', '创建日期', '创建时间')));
+        $data->deadline    = $this->normalizeLarkDate($this->getLarkValue($payload, array('deadline', 'dueDate', '截止日期', '截止时间')));
+        $data->estimate    = $this->normalizeLarkFloat($this->getLarkValue($payload, array('estimate', 'workhour', '工时', '预计工时', '工时 (/人时)')));
+        $data->pri         = $this->normalizeLarkPriority($this->getLarkValue($payload, array('pri', 'priority', '优先级')));
+        $data->type        = (string)zget($this->config->task->larkSync, 'defaultType', 'devel');
+
+        if($data->name == '') $data->error = '任务标题不能为空。';
+        if(!$data->assignedTo) $data->error = '负责人无法映射到禅道账号。';
+        if(!$data->execution) $data->error = '执行 ID 不能为空。';
+
+        return $data;
+    }
+
+    /**
+     * Get a value from payload by possible keys.
+     *
+     * @param  object    $payload
+     * @param  array     $keys
+     * @access private
+     * @return mixed
+     */
+    private function getLarkValue(object $payload, array $keys): mixed
+    {
+        foreach($keys as $key)
+        {
+            if(isset($payload->{$key})) return $payload->{$key};
+        }
+
+        if(isset($payload->fields) && is_object($payload->fields))
+        {
+            foreach($keys as $key)
+            {
+                if(isset($payload->fields->{$key})) return $payload->fields->{$key};
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve Lark assignee to ZenTao account.
+     *
+     * @param  mixed     $assignee
+     * @access private
+     * @return string
+     */
+    private function resolveLarkAssignee(mixed $assignee): string
+    {
+        $name = '';
+        if(is_array($assignee))
+        {
+            $first = current($assignee);
+            if(is_object($first)) $name = (string)($first->name ?? $first->realname ?? $first->en_name ?? $first->email ?? '');
+            if(is_string($first)) $name = $first;
+        }
+        elseif(is_object($assignee))
+        {
+            $name = (string)($assignee->name ?? $assignee->realname ?? $assignee->en_name ?? $assignee->email ?? '');
+        }
+        else
+        {
+            $name = trim((string)$assignee);
+        }
+
+        $name = trim($name);
+        $nameList = preg_split('/[,，、]/u', $name);
+        if(!empty($nameList)) $name = trim((string)current($nameList));
+        if($name == '') return '';
+
+        $allowed = (array)zget($this->config->task->larkSync, 'assignees', array());
+        if($allowed && !in_array($name, $allowed)) return '';
+
+        $users = $this->dao->select('account,realname,email')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('realname')->eq($name)->fetchAll();
+        if(count($users) == 1) return $users[0]->account;
+
+        $user = $this->dao->select('account')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('account')->eq($name)->fetch();
+        return $user ? $user->account : '';
+    }
+
+    /**
+     * Apply normalized data to existing task.
+     *
+     * @param  object    $task
+     * @param  object    $data
+     * @param  object    $oldTask
+     * @access private
+     * @return void
+     */
+    private function applyLarkDataToTask(object $task, object $data, object $oldTask): void
+    {
+        $task->name       = $data->name;
+        $task->desc       = $data->desc;
+        $task->assignedTo = $data->assignedTo;
+        $task->deadline   = $data->deadline;
+        $task->estimate   = $data->estimate;
+        $task->pri        = $data->pri;
+
+        if($task->assignedTo != $oldTask->assignedTo) $task->assignedDate = helper::now();
+        if($oldTask->status == 'wait' && (float)$oldTask->consumed == 0) $task->left = $data->estimate;
+        if($oldTask->name != $task->name || $oldTask->deadline != $task->deadline) $task->version = (int)$oldTask->version + 1;
+    }
+
+    /**
+     * Create ZenTao task from normalized Lark data.
+     *
+     * @param  object    $data
+     * @param  object    $execution
+     * @access private
+     * @return int|false
+     */
+    private function createLarkTask(object $data, object $execution): int|false
+    {
+        $task = new stdclass();
+        $task->project      = $execution->project;
+        $task->execution    = $data->execution;
+        $task->module       = 0;
+        $task->story        = 0;
+        $task->storyVersion = 1;
+        $task->parent       = 0;
+        $task->mode         = '';
+        $task->color        = '';
+        $task->name         = $data->name;
+        $task->complexity   = 'L1';
+        $task->type         = $data->type;
+        $task->pri          = $data->pri;
+        $task->estimate     = $data->estimate;
+        $task->left         = $data->estimate;
+        $task->desc         = $data->desc;
+        $task->estStarted   = null;
+        $task->deadline     = $data->deadline;
+        $task->status       = 'wait';
+        $task->openedBy     = $this->app->user->account;
+        $task->openedDate   = $data->openedDate ?: helper::now();
+        $task->assignedTo   = $data->assignedTo;
+        $task->assignedDate = $data->assignedTo ? helper::now() : null;
+        $task->version      = 1;
+        $task->vision       = $this->config->vision;
+        $task->mailto       = '';
+        $task->keywords     = '';
+
+        $this->dao->begin();
+        $taskID = $this->task->create($task);
+        if(!$taskID || dao::isError())
+        {
+            $this->dao->rollBack();
+            return false;
+        }
+
+        $task->id = $taskID;
+        $this->task->afterCreate($task, array($taskID), 0, 0);
+        if(dao::isError())
+        {
+            $this->dao->rollBack();
+            return false;
+        }
+        $this->dao->commit();
+
+        return (int)$taskID;
+    }
+
+    /**
+     * Normalize priority.
+     *
+     * @param  mixed     $priority
+     * @access private
+     * @return int
+     */
+    private function normalizeLarkPriority(mixed $priority): int
+    {
+        if(is_array($priority)) $priority = current($priority);
+        if(is_object($priority)) $priority = $priority->text ?? $priority->name ?? $priority->value ?? '';
+
+        $priority = trim((string)$priority);
+        if(is_numeric($priority)) return max(1, min(4, (int)$priority));
+
+        $map = array('最高' => 1, '紧急' => 1, '急' => 1, 'P0' => 1, '高' => 2, 'P1' => 2, '中' => 3, '普通' => 3, 'P2' => 3, '低' => 4, 'P3' => 4);
+        return zget($map, $priority, (int)$this->config->task->default->pri);
+    }
+
+    /**
+     * Normalize float.
+     *
+     * @param  mixed     $value
+     * @access private
+     * @return float
+     */
+    private function normalizeLarkFloat(mixed $value): float
+    {
+        if(is_array($value)) $value = current($value);
+        if(is_object($value)) $value = $value->value ?? $value->text ?? 0;
+        return max(0, round((float)$value, 2));
+    }
+
+    /**
+     * Normalize date.
+     *
+     * @param  mixed     $value
+     * @access private
+     * @return string|null
+     */
+    private function normalizeLarkDate(mixed $value): ?string
+    {
+        $datetime = $this->normalizeLarkDateTime($value);
+        return $datetime ? substr($datetime, 0, 10) : null;
+    }
+
+    /**
+     * Normalize datetime.
+     *
+     * @param  mixed     $value
+     * @access private
+     * @return string|null
+     */
+    private function normalizeLarkDateTime(mixed $value): ?string
+    {
+        if(is_array($value)) $value = current($value);
+        if(is_object($value)) $value = $value->timestamp ?? $value->value ?? $value->text ?? '';
+        if($value === null || $value === '') return null;
+
+        if(is_numeric($value))
+        {
+            $timestamp = (int)$value;
+            if($timestamp > 9999999999) $timestamp = (int)floor($timestamp / 1000);
+            return date('Y-m-d H:i:s', $timestamp);
+        }
+
+        $timestamp = strtotime((string)$value);
+        return $timestamp ? date('Y-m-d H:i:s', $timestamp) : null;
+    }
+
+    /**
+     * Build task link.
+     *
+     * @param  int       $taskID
+     * @access private
+     * @return string
+     */
+    private function buildTaskLink(int $taskID): string
+    {
+        return $this->createLink('task', 'view', "taskID={$taskID}");
+    }
+
+    /**
+     * Send JSON response.
+     *
+     * @param  bool      $success
+     * @param  mixed     $message
+     * @param  array     $extra
+     * @param  int       $status
+     * @access private
+     * @return void
+     */
+    private function sendLarkSyncResponse(bool $success, mixed $message, array $extra = array(), int $status = 200): void
+    {
+        http_response_code($status);
+        header('Content-Type: application/json; charset=utf-8');
+        helper::end(json_encode(array_merge(array('success' => $success, 'message' => $message), $extra), JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
      * 批量编辑任务。
      * Batch edit tasks.
      *
