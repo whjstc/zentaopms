@@ -4911,7 +4911,7 @@ class storyModel extends model
         if($this->session->$onlyCondition)
         {
             $queryCondition = $postData->exportType == 'selected' ? ' `id` ' . helper::dbIN($selectedIDList) : str_replace('`story`', '`id`', $this->session->$queryCondition);
-            $stories        = $this->dao->select('id,title,type,grade,linkStories,parent,mailto,reviewedBy')->from(TABLE_STORY)->where($queryCondition)->orderBy($orderBy)->fetchAll('id');
+            $stories        = $this->dao->select('id,title,complexity,type,grade,linkStories,parent,mailto,reviewedBy')->from(TABLE_STORY)->where($queryCondition)->orderBy($orderBy)->fetchAll('id');
         }
         else
         {

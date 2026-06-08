@@ -28,6 +28,7 @@ cid=18932
  - 属性estimate @最初预计
 - 步骤6:空字段列表返回数组长度 @1
 - 步骤7:单个字段属性status @任务状态
+- 步骤8:导出复杂度字段属性complexity @复杂度
 
 */
 
@@ -49,3 +50,4 @@ r($taskTest->getExportFieldsTest('id, name , type', array())) && p('id,name,type
 r($taskTest->getExportFieldsTest('id,name', array('exportFields' => array(' pri , estimate ')))) && p('pri,estimate') && e('优先级,最初预计'); // 步骤5:混合场景
 r(count($taskTest->getExportFieldsTest('', array()))) && p() && e('1'); // 步骤6:空字段列表返回数组长度
 r($taskTest->getExportFieldsTest('status', array())) && p('status') && e('任务状态'); // 步骤7:单个字段
+r($taskTest->getExportFieldsTest('id,name,complexity,type', array())) && p('complexity') && e('复杂度'); // 步骤8:导出复杂度字段
