@@ -318,6 +318,7 @@ class task extends control
         $data->desc        = (string)$this->getLarkValue($payload, array('desc', 'description', '任务描述'));
         $data->assignedTo  = $this->resolveLarkAssignee($this->getLarkValue($payload, array('assignedTo', 'assignee', '负责人', '执行人', '飞书负责人')));
         $data->openedDate  = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('createdDate', 'created_time', '创建日期', '创建时间')));
+        $data->estStarted  = $this->normalizeLarkDate($this->getLarkValue($payload, array('estStarted', 'startTime', '开始时间', '预计开始', '预计开始时间')));
         $data->deadline    = $this->normalizeLarkDate($this->getLarkValue($payload, array('deadline', 'dueDate', '截止日期', '截止时间')));
         $data->estimate    = $this->normalizeLarkFloat($this->getLarkValue($payload, array('estimate', 'workhour', '工时', '预计工时', '工时 (/人时)')));
         $data->pri         = $this->normalizeLarkPriority($this->getLarkValue($payload, array('pri', 'priority', '优先级')));
@@ -445,7 +446,7 @@ class task extends control
         $task->estimate     = $data->estimate;
         $task->left         = $data->estimate;
         $task->desc         = $data->desc;
-        $task->estStarted   = null;
+        $task->estStarted   = $data->estStarted;
         $task->deadline     = $data->deadline;
         $task->status       = 'wait';
         $task->openedBy     = $this->app->user->account;
@@ -573,7 +574,31 @@ class task extends control
     {
         http_response_code($status);
         header('Content-Type: application/json; charset=utf-8');
-        helper::end(json_encode(array_merge(array('success' => $success, 'message' => $message), $extra), JSON_UNESCAPED_UNICODE));
+        helper::end(json_encode(array_merge(array('success' => $success, 'message' => $message, 'errorText' => $this->formatLarkSyncMessage($message)), $extra), JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * Format response message for Lark text fields.
+     *
+     * @param  mixed     $message
+     * @access private
+     * @return string
+     */
+    private function formatLarkSyncMessage(mixed $message): string
+    {
+        if(is_string($message)) return $message;
+        if(is_array($message))
+        {
+            $textList = array();
+            foreach($message as $field => $errors)
+            {
+                $errors = is_array($errors) ? implode('；', $errors) : (string)$errors;
+                $textList[] = "{$field}: {$errors}";
+            }
+            return implode('；', $textList);
+        }
+
+        return json_encode($message, JSON_UNESCAPED_UNICODE);
     }
 
     /**
