@@ -504,7 +504,7 @@ class task extends control
         $priority = trim((string)$priority);
         if(is_numeric($priority)) return max(1, min(4, (int)$priority));
 
-        $map = array('最高' => 1, '紧急' => 1, '急' => 1, 'P0' => 1, '高' => 2, 'P1' => 2, '中' => 3, '普通' => 3, 'P2' => 3, '低' => 4, 'P3' => 4);
+        $map = array('最高' => 1, '紧急' => 1, '急' => 1, 'P0' => 1, '高' => 1, 'A1' => 1, '中' => 2, '普通' => 2, 'P1' => 2, 'A2' => 2, '低' => 3, 'P2' => 3, 'A3' => 3);
         return zget($map, $priority, (int)$this->config->task->default->pri);
     }
 
