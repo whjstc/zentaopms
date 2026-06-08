@@ -319,7 +319,8 @@ class task extends control
         $data->assignedTo  = $this->resolveLarkAssignee($this->getLarkValue($payload, array('assignedTo', 'assignee', '负责人', '执行人', '飞书负责人')));
         $data->openedDate  = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('createdDate', 'created_time', '创建日期', '创建时间')));
         $data->estStarted  = $this->normalizeLarkDate($this->getLarkValue($payload, array('estStarted', 'startTime', '开始时间', '预计开始', '预计开始时间')));
-        $data->deadline    = $this->normalizeLarkDate($this->getLarkValue($payload, array('deadline', 'dueDate', '截止日期', '截止时间')));
+        $data->deadline     = $this->normalizeLarkDate($this->getLarkValue($payload, array('deadline', 'dueDate', '截止日期', '截止时间')));
+        $data->finishedDate = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('finishedDate', 'completedTime', '完成时间')));
         $data->estimate    = $this->normalizeLarkFloat($this->getLarkValue($payload, array('estimate', 'workhour', '工时', '预计工时', '工时 (/人时)')));
         $data->pri         = $this->normalizeLarkPriority($this->getLarkValue($payload, array('pri', 'priority', '优先级')));
         $data->type        = (string)zget($this->config->task->larkSync, 'defaultType', 'devel');
@@ -414,9 +415,16 @@ class task extends control
         $task->deadline   = $data->deadline;
         $task->estimate   = $data->estimate;
         $task->pri        = $data->pri;
+        $task->status     = 'done';
+        $task->consumed   = max((float)$oldTask->consumed, $data->estimate);
+        $task->left       = 0;
 
         if($task->assignedTo != $oldTask->assignedTo) $task->assignedDate = helper::now();
-        if($oldTask->status == 'wait' && (float)$oldTask->consumed == 0) $task->left = $data->estimate;
+        if($oldTask->status != 'done')
+        {
+            $task->finishedBy   = $data->assignedTo ?: $this->app->user->account;
+            $task->finishedDate = $data->finishedDate ?: helper::now();
+        }
         if($oldTask->name != $task->name || $oldTask->deadline != $task->deadline) $task->version = (int)$oldTask->version + 1;
     }
 
@@ -444,15 +452,18 @@ class task extends control
         $task->type         = $data->type;
         $task->pri          = $data->pri;
         $task->estimate     = $data->estimate;
-        $task->left         = $data->estimate;
+        $task->consumed     = $data->estimate;
+        $task->left         = 0;
         $task->desc         = $data->desc;
         $task->estStarted   = $data->estStarted;
         $task->deadline     = $data->deadline;
-        $task->status       = 'wait';
+        $task->status       = 'done';
         $task->openedBy     = $this->app->user->account;
         $task->openedDate   = $data->openedDate ?: helper::now();
         $task->assignedTo   = $data->assignedTo;
         $task->assignedDate = $data->assignedTo ? helper::now() : null;
+        $task->finishedBy   = $data->assignedTo ?: $this->app->user->account;
+        $task->finishedDate = $data->finishedDate ?: helper::now();
         $task->version      = 1;
         $task->vision       = $this->config->vision;
         $task->mailto       = '';
