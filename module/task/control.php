@@ -223,7 +223,7 @@ class task extends control
         if(!empty($data->error)) return $this->sendLarkSyncResponse(false, $data->error, array(), 400);
 
         dao::$errors = array();
-        $_POST['uid']     = 0;
+        $_POST['uid']     = '';
         $_POST['comment'] = '飞书多维表格同步';
 
         if($data->taskID)
