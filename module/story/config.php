@@ -33,7 +33,7 @@ $config->story->editor->assignto = array('id' => 'comment', 'tools' => 'simpleTo
 
 $config->story->list = new stdclass();
 $config->story->exportFields = '
-    id, product, branch, module, plan, source, sourceNote, title, spec, verify, grade, parent, keywords,
+    id, product, branch, module, plan, source, sourceNote, title, complexity, spec, verify, grade, parent, keywords,
     pri, estimate, status, stage, category, taskCountAB, bugCountAB, caseCountAB,
     openedBy, openedDate, assignedTo, assignedDate, mailto,
     reviewedBy, reviewedDate,

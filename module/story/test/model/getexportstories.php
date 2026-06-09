@@ -17,6 +17,8 @@ cid=18532
  - 第2条的spec属性 @这是一个软件需求描述2
  - 第2条的verify属性 @这是一个需求验收2
  - 第2条的bugCountAB属性 @1
+- 查看导出需求包含复杂度字段。
+ - 第2条的complexity属性 @L1
 
 */
 include dirname(__FILE__, 5) . '/test/lib/init.php';
@@ -62,3 +64,4 @@ r(count($stories4)) && p() && e('5');  //查看保存全部导出SQL，导出全
 
 r(implode('|', array_keys($stories2))) && p() && e('9|8|7|6|5|4|3|2|1');  //查看需求的id顺序
 r($stories2) && p('2:title,spec,verify,bugCountAB') && e('用户需求版本一2,这是一个软件需求描述2,这是一个需求验收2,1');  //查看需求ID为2的数据信息。
+r($stories2) && p('2:complexity') && e('L1');  //查看导出需求包含复杂度字段。
