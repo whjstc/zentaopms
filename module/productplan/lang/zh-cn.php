@@ -26,6 +26,7 @@ $lang->productplan->activateAB = "激活";
 $lang->productplan->view       = "计划详情";
 $lang->productplan->bugSummary = "本页共 <strong>%s</strong> 个Bug";
 $lang->productplan->basicInfo  = '基本信息';
+$lang->productplan->searchPlaceholder = '搜索ID、标题、状态';
 $lang->productplan->batchEdit  = '批量编辑';
 $lang->productplan->project    = $lang->projectCommon;
 $lang->productplan->plan       = '计划';

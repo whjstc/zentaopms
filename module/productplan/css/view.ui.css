@@ -4,4 +4,6 @@
 #planInfo .history {padding: 16px 0px;}
 #mainContent .entity-label {flex: initial !important;}
 #mainContent .tab-actions {z-index: 10;}
+#mainContent .productplan-search {width: 240px;}
+#mainContent .productplan-search .productplan-search-keyword {min-width: 0;}
 #planInfo .extendBox > .panel-heading {padding-left: 0; font-size: 1rem;}

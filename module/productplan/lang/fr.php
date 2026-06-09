@@ -26,6 +26,7 @@ $lang->productplan->activateAB = "Activate";
 $lang->productplan->view       = "Détail Plan";
 $lang->productplan->bugSummary = "Total <strong>%s</strong> Bugs sur cette page.";
 $lang->productplan->basicInfo  = 'Infos de Base';
+$lang->productplan->searchPlaceholder = 'Search ID, title, status';
 $lang->productplan->batchEdit  = 'Edition par Lot';
 $lang->productplan->project    = $lang->projectCommon;
 $lang->productplan->plan       = 'Plan';

@@ -372,10 +372,11 @@ class productplan extends control
      * @access public
      * @return void
      */
-    public function view(int $planID = 0, string $type = 'story', string $orderBy = 'order_desc', string $link = 'false', string $param = '', int $recTotal = 0, int $recPerPage = 100, int $pageID = 1)
+    public function view(int $planID = 0, string $type = 'story', string $orderBy = 'order_desc', string $link = 'false', string $param = '', int $recTotal = 0, int $recPerPage = 100, int $pageID = 1, string $keyword = '')
     {
         $this->app->loadLang('requirement');
         $this->app->loadLang('epic');
+        $keyword = trim($keyword);
         $plan = $this->productplan->getByID($planID, true);
         if(!$plan)
         {
@@ -390,6 +391,7 @@ class productplan extends control
 
         $this->commonAction($plan->product, (int)$plan->branch);
         $products = $this->product->getProductPairsByProject((int)$this->session->project);
+        $encodedKeyword = urlencode($keyword);
 
         /* Load pager. */
         $this->app->loadClass('pager', true);
@@ -399,7 +401,7 @@ class productplan extends control
 
         /* Get stories of plan. */
         $modulePairs = $this->loadModel('tree')->getOptionMenu($plan->product, 'story', 0, 'all');
-        $planStories = $this->loadModel('story')->getPlanStories($planID, 'all', $type == 'story' ? $sort : 'id_desc', $storyPager);
+        $planStories = $this->loadModel('story')->getPlanStories($planID, 'all', $type == 'story' ? $sort : 'id_desc', $storyPager, $keyword);
 
         if($planStories) $this->productplanZen->reorderStories();
         foreach($planStories as $story)
@@ -414,14 +416,15 @@ class productplan extends control
         $this->view->title        = "PLAN #$plan->id $plan->title/" . zget($products, $plan->product, '');
         $this->view->modulePairs  = $modulePairs;
         $this->view->planStories  = $planStories;
-        $this->view->planBugs     = $this->loadModel('bug')->getPlanBugs($planID, 'all', $type == 'bug' ? $sort : 'id_desc', $bugPager);
+        $this->view->planBugs     = $this->loadModel('bug')->getPlanBugs($planID, 'all', $type == 'bug' ? $sort : 'id_desc', $bugPager, $keyword);
         $this->view->summary      = $this->productplanZen->buildViewSummary($planStories);
         $this->view->type         = $type;
         $this->view->orderBy      = $orderBy;
         $this->view->link         = $link;
         $this->view->param        = $param;
+        $this->view->keyword      = $keyword;
         $this->view->storyCases   = $this->loadModel('testcase')->getStoryCaseCounts($planStories ? array_keys($planStories) : array());
-        $this->view->tabUrl       = $this->createLink('productplan', 'view', "planID=$planID&type=%s&orderBy=$orderBy&link=$link&param=$param&recTotal=$recTotal&recPerPage=$recPerPage&pageID=$pageID");
+        $this->view->tabUrl       = $this->createLink('productplan', 'view', "planID=$planID&type=%s&orderBy=$orderBy&link=$link&param=$param&recTotal=$recTotal&recPerPage=$recPerPage&pageID=$pageID&keyword=$encodedKeyword");
 
         if($this->viewType != 'json')
         {

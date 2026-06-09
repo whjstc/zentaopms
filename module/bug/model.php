@@ -122,12 +122,24 @@ class bugModel extends model
      * @param  string $status
      * @param  string $orderBy
      * @param  object $pager
+     * @param  string $keyword
      * @access public
      * @return array
      */
-    public function getPlanBugs(int $planID, string $status = 'all', string $orderBy = 'id_desc', ?object $pager = null): array
+    public function getPlanBugs(int $planID, string $status = 'all', string $orderBy = 'id_desc', ?object $pager = null, string $keyword = ''): array
     {
         if(common::isTutorialMode()) return array();
+
+        $keyword       = trim($keyword);
+        $matchedStatus = array();
+        if($keyword !== '')
+        {
+            foreach($this->lang->bug->statusList as $statusCode => $statusName)
+            {
+                if($statusCode === '') continue;
+                if(stripos((string)$statusCode, $keyword) !== false || stripos((string)$statusName, $keyword) !== false) $matchedStatus[] = $statusCode;
+            }
+        }
 
         if(strpos($orderBy, 'pri_') !== false) $orderBy = str_replace('pri_', 'priOrder_', $orderBy);
 
@@ -135,6 +147,13 @@ class bugModel extends model
             ->where('plan')->eq($planID)
             ->beginIF(!$this->app->user->admin)->andWhere('execution')->in('0,' . $this->app->user->view->sprints)->fi()
             ->beginIF($status != 'all')->andWhere('status')->in($status)->fi()
+            ->beginIF($keyword !== '')
+            ->andWhere('id', true)->like("%{$keyword}%")
+            ->orWhere('title')->like("%{$keyword}%")
+            ->orWhere('status')->like("%{$keyword}%")
+            ->beginIF(!empty($matchedStatus))->orWhere('status')->in($matchedStatus)->fi()
+            ->markRight(1)
+            ->fi()
             ->andWhere('deleted')->eq(0)
             ->orderBy($orderBy)->page($pager)
             ->fetchAll('id', false);
