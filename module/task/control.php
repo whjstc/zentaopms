@@ -279,8 +279,8 @@ class task extends control
     private function getLarkSyncPayload(): ?object
     {
         $raw = file_get_contents('php://input');
-        if(!$raw && !empty($_POST)) $raw = json_encode($_POST);
         $payload = json_decode((string)$raw);
+        if(!is_object($payload) && !empty($_POST)) $payload = (object)$_POST;
         return is_object($payload) ? $payload : null;
     }
 
@@ -323,8 +323,10 @@ class task extends control
         $data->finishedDate = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('finishedDate', 'completedTime', '完成时间')));
         if(!$data->finishedDate) $data->finishedDate = helper::now();
         if(!$data->estStarted) $data->estStarted = substr($data->finishedDate, 0, 10);
+        if(!$data->deadline) $data->deadline = substr($data->finishedDate, 0, 10);
         $data->realStarted  = $data->estStarted . ' 00:00:00';
         $data->estimate    = $this->normalizeLarkFloat($this->getLarkValue($payload, array('estimate', 'workhour', '工时', '预计工时', '工时 (/人时)')));
+        if($data->estimate <= 0) $data->estimate = (float)zget($this->config->task->larkSync, 'defaultEstimate', 1);
         $data->pri         = $this->normalizeLarkPriority($this->getLarkValue($payload, array('pri', 'priority', '优先级')));
         $data->type        = (string)zget($this->config->task->larkSync, 'defaultType', 'devel');
 
@@ -370,35 +372,40 @@ class task extends control
      */
     private function resolveLarkAssignee(mixed $assignee): string
     {
-        $name = '';
+        $candidates = array();
         if(is_array($assignee))
         {
             $first = current($assignee);
-            if(is_object($first)) $name = (string)($first->name ?? $first->realname ?? $first->en_name ?? $first->email ?? '');
-            if(is_string($first)) $name = $first;
+            if(is_object($first)) $candidates = array($first->name ?? '', $first->realname ?? '', $first->en_name ?? '', $first->email ?? '');
+            if(is_string($first)) $candidates = array($first);
         }
         elseif(is_object($assignee))
         {
-            $name = (string)($assignee->name ?? $assignee->realname ?? $assignee->en_name ?? $assignee->email ?? '');
+            $candidates = array($assignee->name ?? '', $assignee->realname ?? '', $assignee->en_name ?? '', $assignee->email ?? '');
         }
         else
         {
-            $name = trim((string)$assignee);
+            $candidates = array((string)$assignee);
         }
 
-        $name = trim($name);
-        $nameList = preg_split('/[,，、]/u', $name);
-        if(!empty($nameList)) $name = trim((string)current($nameList));
-        if($name == '') return '';
+        foreach($candidates as $name)
+        {
+            $name = trim((string)$name);
+            $nameList = preg_split('/[,，、]/u', $name);
+            if(!empty($nameList)) $name = trim((string)current($nameList));
+            if($name == '') continue;
 
-        $allowed = (array)zget($this->config->task->larkSync, 'assignees', array());
-        if($allowed && !in_array($name, $allowed)) return '';
+            $user = $this->dao->select('account')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('account')->eq($name)->fetch();
+            if($user) return $user->account;
 
-        $users = $this->dao->select('account,realname,email')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('realname')->eq($name)->fetchAll();
-        if(count($users) == 1) return $users[0]->account;
+            $users = $this->dao->select('account,realname,email')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('realname')->eq($name)->fetchAll();
+            if(count($users) == 1) return $users[0]->account;
 
-        $user = $this->dao->select('account')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('account')->eq($name)->fetch();
-        return $user ? $user->account : '';
+            $users = $this->dao->select('account,realname,email')->from(TABLE_USER)->where('deleted')->eq('0')->andWhere('email')->eq($name)->fetchAll();
+            if(count($users) == 1) return $users[0]->account;
+        }
+
+        return '';
     }
 
     /**

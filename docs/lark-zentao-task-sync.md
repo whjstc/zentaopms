@@ -13,6 +13,7 @@
 ```php
 $config->task->larkSync->token = '替换为一段长随机密钥';
 $config->task->larkSync->account = 'admin';
+$config->task->larkSync->defaultEstimate = 1;
 ```
 
 也可以使用环境变量：
@@ -27,8 +28,9 @@ LARK_ZENTAO_SYNC_ACCOUNT=admin
 - 目标执行 ID: `37`
 - 默认任务类型: `devel`
 - 默认复杂度: `L1`
-- 允许同步负责人: `吴汉剑`、`李思凡`、`郭正国`
-- 负责人映射规则: 使用禅道用户 `realname` 精确匹配飞书负责人姓名。
+- 默认工时: `1` 人时。飞书 `工时 (/人时)` 为空或 `0` 时使用该值，避免禅道生产环境要求“最初预计”必填时同步失败。
+- 默认截止日期: 飞书 `截止时间` 为空时，使用 `完成时间` 的日期部分；如果完成时间也为空，使用接口处理时间。
+- 负责人映射规则: 取飞书人员字段的第一个人，依次使用 `account`、`realname`、`email` 精确匹配禅道用户；多人任务仍只同步第一个负责人。
 - 优先级映射: 飞书 `急` -> 禅道 `A1`，飞书 `中` -> 禅道 `A2`，飞书 `低` -> 禅道 `A3`。
 
 ## 飞书表格字段建议
@@ -43,7 +45,9 @@ LARK_ZENTAO_SYNC_ACCOUNT=admin
 
 ## 飞书自动化请求体
 
-在「发送 HTTP 请求」动作中选择 `Raw 格式（JSON）`，请求体参考：
+在「发送 HTTP 请求」动作中优先选择表单或 URL-encoded 参数，逐字段传值；不要把飞书字段直接拼到 Raw JSON 字符串里。任务描述、标题等字段可能包含换行、双引号、代码片段，直接拼 Raw JSON 会生成非法 JSON，接口会返回 `Invalid JSON request body.`。
+
+如果必须使用 `Raw 格式（JSON）`，请求体参考：
 
 ```json
 {
