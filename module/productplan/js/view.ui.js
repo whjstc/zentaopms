@@ -90,6 +90,27 @@ window.setStatistics = function(element, checkedIdList, pageSummary)
         .replace('%rate%', rate)};
 }
 
+window.searchPlanObjects = function($search)
+{
+    const type    = $search.data('type');
+    const keyword = $search.find('.productplan-search-keyword').val().trim();
+    const url     = type === 'bug' ? bugSearchUrl : storySearchUrl;
+
+    loadPage(url.replace('%s', encodeURIComponent(keyword)));
+}
+
+$(document).off('click', '.productplan-search-btn').on('click', '.productplan-search-btn', function()
+{
+    window.searchPlanObjects($(this).closest('.productplan-search'));
+});
+
+$(document).off('keydown', '.productplan-search-keyword').on('keydown', '.productplan-search-keyword', function(event)
+{
+    if(event.key != 'Enter') return;
+    event.preventDefault();
+    window.searchPlanObjects($(this).closest('.productplan-search'));
+});
+
 $(document).off('click', '.batch-btn > a, .batch-btn').on('click', '.batch-btn > a, .batch-btn', function()
 {
     const $this  = $(this);

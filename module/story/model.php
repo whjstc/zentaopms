@@ -446,12 +446,24 @@ class storyModel extends model
      * @param  string $status
      * @param  string $orderBy
      * @param  object $pager
+     * @param  string $keyword
      * @access public
      * @return array
      */
-    public function getPlanStories(int $planID, string $status = 'all', string $orderBy = 'id_desc', ?object $pager = null): array
+    public function getPlanStories(int $planID, string $status = 'all', string $orderBy = 'id_desc', ?object $pager = null, string $keyword = ''): array
     {
         if(common::isTutorialMode()) return array();
+
+        $keyword       = trim($keyword);
+        $matchedStatus = array();
+        if($keyword !== '')
+        {
+            foreach($this->lang->story->statusList as $statusCode => $statusName)
+            {
+                if($statusCode === '') continue;
+                if(stripos((string)$statusCode, $keyword) !== false || stripos((string)$statusName, $keyword) !== false) $matchedStatus[] = $statusCode;
+            }
+        }
 
         if(strpos($orderBy, 'module') !== false)
         {
@@ -462,6 +474,13 @@ class storyModel extends model
                 ->leftJoin(TABLE_MODULE)->alias('t3')->on('t2.module = t3.id')
                 ->where('t1.plan')->eq($planID)
                 ->beginIF($status and $status != 'all')->andWhere('t2.status')->in($status)->fi()
+                ->beginIF($keyword !== '')
+                ->andWhere('t2.id', true)->like("%{$keyword}%")
+                ->orWhere('t2.title')->like("%{$keyword}%")
+                ->orWhere('t2.status')->like("%{$keyword}%")
+                ->beginIF(!empty($matchedStatus))->orWhere('t2.status')->in($matchedStatus)->fi()
+                ->markRight(1)
+                ->fi()
                 ->andWhere('t2.deleted')->eq(0)
                 ->orderBy($orderBy)
                 ->page($pager)
@@ -474,6 +493,13 @@ class storyModel extends model
                 ->leftJoin(TABLE_STORY)->alias('t2')->on('t1.story = t2.id')
                 ->where('t1.plan')->eq($planID)
                 ->beginIF($status and $status != 'all')->andWhere('t2.status')->in($status)->fi()
+                ->beginIF($keyword !== '')
+                ->andWhere('t2.id', true)->like("%{$keyword}%")
+                ->orWhere('t2.title')->like("%{$keyword}%")
+                ->orWhere('t2.status')->like("%{$keyword}%")
+                ->beginIF(!empty($matchedStatus))->orWhere('t2.status')->in($matchedStatus)->fi()
+                ->markRight(1)
+                ->fi()
                 ->andWhere('t2.deleted')->eq(0)
                 ->orderBy($orderBy)
                 ->page($pager)

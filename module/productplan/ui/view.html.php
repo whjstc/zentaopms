@@ -39,6 +39,8 @@ jsVar('checkedSummary',  $lang->product->checkedSRSummary);
 jsVar('storyPageID',     $storyPager->pageID);
 jsVar('storyRecPerPage', $storyPager->recPerPage);
 jsVar('gradeGroup',      $gradeGroup);
+jsVar('storySearchUrl',  createLink('productplan', 'view', "planID={$plan->id}&type=story&orderBy={$orderBy}&link=false&param={$param}&recTotal=0&recPerPage={$storyPager->recPerPage}&pageID=1&keyword=%s"));
+jsVar('bugSearchUrl',    createLink('productplan', 'view', "planID={$plan->id}&type=bug&orderBy={$orderBy}&link=false&param={$param}&recTotal=0&recPerPage={$bugPager->recPerPage}&pageID=1&keyword=%s"));
 
 $bugCols   = array();
 $storyCols = array();
@@ -185,6 +187,28 @@ $fnGetChildrenPlans = function($childrenPlans)
     return $childrenPlanItems;
 };
 
+$fnBuildSearchBox = function(string $searchType) use ($lang, $keyword)
+{
+    return div
+    (
+        setClass('productplan-search flex gap-2'),
+        setData('type', $searchType),
+        input
+        (
+            setClass('productplan-search-keyword size-sm'),
+            set::name($searchType . 'Keyword'),
+            set::placeholder($lang->productplan->searchPlaceholder),
+            set::value($keyword)
+        ),
+        btn
+        (
+            setClass('productplan-search-btn secondary square size-sm'),
+            set::icon('search'),
+            set::title($lang->searchAB)
+        )
+    );
+};
+
 $actions = $this->loadModel('common')->buildOperateMenu($plan);
 foreach($actions as $actionType => $typeActions)
 {
@@ -233,11 +257,12 @@ detailBody
                 set::title($lang->productplan->linkedStories),
                 set::active($type == 'story'),
                 setData('url', sprintf($tabUrl, 'story')),
-                $plan->parent >= 0 ? toolbar
+                toolbar
                 (
                     setClass('tab-actions absolute right-0 gap-2'),
                     setStyle('top', '-8px'),
-                    $isInModal || (empty($createStoryLink) && empty($batchCreateStoryLink)) ? null : dropdown
+                    $fnBuildSearchBox('story'),
+                    $plan->parent < 0 || $isInModal || (empty($createStoryLink) && empty($batchCreateStoryLink)) ? null : dropdown
                     (
                         btn
                         (
@@ -260,7 +285,7 @@ detailBody
                         set::trigger('hover'),
                         set::placement('bottom-end')
                     ),
-                    !$isInModal && common::hasPriv('productplan', 'linkStory') ? btn
+                    $plan->parent >= 0 && !$isInModal && common::hasPriv('productplan', 'linkStory') ? btn
                     (
                         set::type('primary'),
                         set::icon('link'),
@@ -268,7 +293,7 @@ detailBody
                         set::className('linkStory-btn'),
                         bind::click('window.showLink', array('params' => array('story')))
                     ) : null
-                ) : toolbar(setClass('tab-actions absolute right-0 gap-2'), setStyle('top', '-8px')),
+                ),
                 dtable
                 (
                     setID('storyDTable'),
@@ -284,7 +309,7 @@ detailBody
                     set::checkable($canBatchActionStory),
                     set::onRenderCell(jsRaw('window.renderStoryCell')),
                     set::footToolbar($storyFootToolbar),
-                    set::sortLink(createLink('productplan', 'view', "planID={$plan->id}&type=story&orderBy={name}_{sortType}&link=false&param={$param}&recTotal={$storyPager->recTotal}&recPerPage={$storyPager->recPerPage}&page={$storyPager->pageID}")),
+                    set::sortLink(createLink('productplan', 'view', "planID={$plan->id}&type=story&orderBy={name}_{sortType}&link=false&param={$param}&recTotal={$storyPager->recTotal}&recPerPage={$storyPager->recPerPage}&page={$storyPager->pageID}&keyword=" . urlencode($keyword))),
                     set::orderBy($orderBy),
                     set::extraHeight('+144'),
                     set::checkInfo(jsRaw("function(checkedIDList){return window.setStatistics(this, checkedIDList, '{$summary}');}")),
@@ -293,7 +318,7 @@ detailBody
                         usePager('storyPager', '', array(
                             'recPerPage' => $storyPager->recPerPage,
                             'recTotal' => $storyPager->recTotal,
-                            'linkCreator' => helper::createLink('productplan', 'view', "planID={$plan->id}&type=story&orderBy={$orderBy}&link=false&param={$param}&recTotal={$storyPager->recTotal}&recPerPage={recPerPage}&page={page}")
+                            'linkCreator' => helper::createLink('productplan', 'view', "planID={$plan->id}&type=story&orderBy={$orderBy}&link=false&param={$param}&recTotal={$storyPager->recTotal}&recPerPage={recPerPage}&page={page}&keyword=" . urlencode($keyword))
                         ))
                    )
                 )
@@ -305,19 +330,20 @@ detailBody
                 set::title($lang->productplan->linkedBugs),
                 set::active($type == 'bug'),
                 setData('url', sprintf($tabUrl, 'bug')),
-                !$isInModal && $plan->parent >= 0 && common::hasPriv('productplan', 'linkBug') ? toolbar
+                toolbar
                 (
                     setClass('tab-actions absolute right-0 gap-2'),
                     setStyle('top', '-8px'),
-                    btn
+                    $fnBuildSearchBox('bug'),
+                    !$isInModal && $plan->parent >= 0 && common::hasPriv('productplan', 'linkBug') ? btn
                     (
                         set::type('primary'),
                         set::icon('link'),
                         set::text($lang->productplan->linkBug),
                         set::className('linkBug-btn'),
                         bind::click('window.showLink', array('params' => array('bug')))
-                    )
-                ) : null,
+                    ) : null
+                ),
                 dtable
                 (
                     setID('bugDTable'),
@@ -328,7 +354,7 @@ detailBody
                     set::data(array_values($planBugs)),
                     set::checkable($canBatchActionBug),
                     set::footToolbar($bugFootToolbar),
-                    set::sortLink(createLink('productplan', 'view', "planID={$plan->id}&type=bug&orderBy={name}_{sortType}&link=false&param={$param}&recTotal={$bugPager->recTotal}&recPerPage={$bugPager->recPerPage}&page={$bugPager->pageID}")),
+                    set::sortLink(createLink('productplan', 'view', "planID={$plan->id}&type=bug&orderBy={name}_{sortType}&link=false&param={$param}&recTotal={$bugPager->recTotal}&recPerPage={$bugPager->recPerPage}&page={$bugPager->pageID}&keyword=" . urlencode($keyword))),
                     set::orderBy($orderBy),
                     set::extraHeight('+144'),
                     set::footer(array('checkbox', 'toolbar', array('html' => sprintf($lang->productplan->bugSummary, count($planBugs)), 'className' => "text-dark"), 'flex', 'pager')),
@@ -337,7 +363,7 @@ detailBody
                         usePager('bugPager', '', array(
                             'recPerPage' => $bugPager->recPerPage,
                             'recTotal' => $bugPager->recTotal,
-                            'linkCreator' => helper::createLink('productplan', 'view', "planID={$plan->id}&type=bug&orderBy={$orderBy}&link=false&param={$param}&recTotal={$bugPager->recTotal}&recPerPage={recPerPage}&page={page}")
+                            'linkCreator' => helper::createLink('productplan', 'view', "planID={$plan->id}&type=bug&orderBy={$orderBy}&link=false&param={$param}&recTotal={$bugPager->recTotal}&recPerPage={recPerPage}&page={page}&keyword=" . urlencode($keyword))
                         ))
                     )
                 )
