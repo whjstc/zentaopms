@@ -13,6 +13,14 @@ declare(strict_types=1);
 class task extends control
 {
     /**
+     * Lark sync request log context.
+     *
+     * @var array
+     * @access private
+     */
+    private array $larkSyncLog = array();
+
+    /**
      * Construct function, load model of project and story modules.
      *
      * @access public
@@ -210,17 +218,31 @@ class task extends control
      */
     public function syncFromLark()
     {
+        $this->initLarkSyncLog();
+        $this->appendLarkSyncLogQueryParams();
+
         if(strtoupper((string)$_SERVER['REQUEST_METHOD']) != 'POST') return $this->sendLarkSyncResponse(false, 'Only POST is allowed.', array(), 405);
         if(!$this->checkLarkSyncToken()) return $this->sendLarkSyncResponse(false, 'Invalid sync token.', array(), 401);
 
         $payload = $this->getLarkSyncPayload();
-        if(!$payload) return $this->sendLarkSyncResponse(false, 'Invalid JSON request body.', array(), 400);
+        if(!$payload)
+        {
+            $taskID = $this->extractLarkTaskIDFromRawBody();
+            $extra  = $taskID ? array('taskID' => $taskID, 'taskLink' => $this->buildTaskLink($taskID)) : array();
+            return $this->sendLarkSyncResponse(false, 'Invalid JSON request body.', $extra);
+        }
+        $this->appendLarkSyncLogPayload($payload);
 
         $syncUser = $this->initLarkSyncUser();
         if(!$syncUser) return $this->sendLarkSyncResponse(false, 'Sync account is not configured or does not exist.', array(), 500);
+        $this->larkSyncLog['syncAccount'] = $syncUser->account;
 
         $data = $this->normalizeLarkTaskData($payload);
-        if(!empty($data->error)) return $this->sendLarkSyncResponse(false, $data->error, array(), 400);
+        if(!empty($data->error))
+        {
+            $this->appendLarkSyncLogData($data);
+            return $this->sendLarkSyncResponse(false, $data->error);
+        }
 
         dao::$errors = array();
         $_POST['uid']     = '';
@@ -229,21 +251,30 @@ class task extends control
         if($data->taskID)
         {
             $oldTask = $this->task->getByID($data->taskID);
-            if(!$oldTask || !empty($oldTask->deleted)) return $this->sendLarkSyncResponse(false, "Task {$data->taskID} does not exist.", array(), 404);
+            if(!$oldTask || !empty($oldTask->deleted)) return $this->sendLarkSyncResponse(false, "Task {$data->taskID} does not exist.");
+
+            $this->completeLarkTaskDates($data, $oldTask);
+            $this->appendLarkSyncLogData($data);
+            if(!empty($data->error)) return $this->sendLarkSyncResponse(false, $data->error, array('taskID' => $data->taskID, 'taskLink' => $this->buildTaskLink($data->taskID)));
 
             $task = clone $oldTask;
             $this->applyLarkDataToTask($task, $data, $oldTask);
+            $this->sanitizeLarkTaskForUpdate($task);
             $changes = $this->task->update($task, new stdclass());
-            if(dao::isError()) return $this->sendLarkSyncResponse(false, dao::getError(), array('taskID' => $data->taskID), 400);
+            if(dao::isError()) return $this->sendLarkSyncResponse(false, dao::getError(), array('taskID' => $data->taskID));
 
             return $this->sendLarkSyncResponse(true, $this->lang->saveSuccess, array('action' => 'updated', 'taskID' => $data->taskID, 'taskLink' => $this->buildTaskLink($data->taskID), 'changes' => $changes));
         }
 
+        $this->completeLarkTaskDates($data);
+        $this->appendLarkSyncLogData($data);
+        if(!empty($data->error)) return $this->sendLarkSyncResponse(false, $data->error);
+
         $execution = $this->dao->select('*')->from(TABLE_PROJECT)->where('id')->eq($data->execution)->andWhere('type')->in('stage,sprint,kanban')->fetch();
-        if(!$execution) return $this->sendLarkSyncResponse(false, "Execution {$data->execution} does not exist.", array(), 404);
+        if(!$execution) return $this->sendLarkSyncResponse(false, "Execution {$data->execution} does not exist.");
 
         $taskID = $this->createLarkTask($data, $execution);
-        if(!$taskID || dao::isError()) return $this->sendLarkSyncResponse(false, dao::getError(), array(), 400);
+        if(!$taskID || dao::isError()) return $this->sendLarkSyncResponse(false, dao::getError());
 
         return $this->sendLarkSyncResponse(true, $this->lang->saveSuccess, array('action' => 'created', 'taskID' => $taskID, 'taskLink' => $this->buildTaskLink($taskID)));
     }
@@ -279,9 +310,171 @@ class task extends control
     private function getLarkSyncPayload(): ?object
     {
         $raw = file_get_contents('php://input');
+        $this->larkSyncLog['rawBody'] = $this->truncateLarkSyncLogValue((string)$raw);
+        $this->larkSyncLog['contentType'] = (string)zget($_SERVER, 'CONTENT_TYPE', '');
+
         $payload = json_decode((string)$raw);
+        $jsonError = json_last_error_msg();
+        if(!is_object($payload) && $this->hasUnescapedJsonControlChars((string)$raw))
+        {
+            $payload = json_decode($this->escapeJsonControlCharsInStrings((string)$raw));
+            if(is_object($payload)) $jsonError = '';
+        }
+        if(!is_object($payload))
+        {
+            $payload = $this->parseLarkLooseJsonObject((string)$raw);
+            if(is_object($payload)) $jsonError = '';
+        }
         if(!is_object($payload) && !empty($_POST)) $payload = (object)$_POST;
+        $this->larkSyncLog['jsonError'] = is_object($payload) ? '' : json_last_error_msg();
+        if(!is_object($payload)) $this->larkSyncLog['jsonError'] = $jsonError;
         return is_object($payload) ? $payload : null;
+    }
+
+    /**
+     * Check whether raw JSON likely contains unescaped control characters in strings.
+     *
+     * @param  string    $raw
+     * @access private
+     * @return bool
+     */
+    private function hasUnescapedJsonControlChars(string $raw): bool
+    {
+        return json_last_error() === JSON_ERROR_CTRL_CHAR || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $raw);
+    }
+
+    /**
+     * Escape control characters that Feishu may put directly inside JSON string values.
+     *
+     * @param  string    $raw
+     * @access private
+     * @return string
+     */
+    private function escapeJsonControlCharsInStrings(string $raw): string
+    {
+        $escaped = '';
+        $inString = false;
+        $isEscaped = false;
+        $length = strlen($raw);
+
+        for($i = 0; $i < $length; $i++)
+        {
+            $char = $raw[$i];
+            $ord  = ord($char);
+
+            if($char === '"' && !$isEscaped) $inString = !$inString;
+            if($inString && $ord < 32)
+            {
+                if($char === "\n") $escaped .= '\n';
+                elseif($char === "\r") $escaped .= '\r';
+                elseif($char === "\t") $escaped .= '\t';
+                else $escaped .= sprintf('\u%04x', $ord);
+            }
+            else
+            {
+                $escaped .= $char;
+            }
+
+            $isEscaped = $char === '\\' && !$isEscaped;
+            if($char !== '\\') $isEscaped = false;
+        }
+
+        return $escaped;
+    }
+
+    /**
+     * Parse Feishu raw JSON object when field values contain unescaped quotes.
+     *
+     * @param  string      $raw
+     * @access private
+     * @return object|null
+     */
+    private function parseLarkLooseJsonObject(string $raw): ?object
+    {
+        if(trim($raw) == '' || strpos($raw, '{') === false) return null;
+        if(!preg_match_all('/"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"\\s*:/u', $raw, $matches, PREG_OFFSET_CAPTURE)) return null;
+
+        $payload = new stdclass();
+        $count   = count($matches[0]);
+        $length  = strlen($raw);
+
+        for($i = 0; $i < $count; $i++)
+        {
+            $key       = $this->decodeLarkLooseString($matches[1][$i][0]);
+            $valueFrom = $matches[0][$i][1] + strlen($matches[0][$i][0]);
+            $valueTo   = $i + 1 < $count ? $matches[0][$i + 1][1] : strrpos($raw, '}');
+            if($valueTo === false || $valueTo <= $valueFrom) $valueTo = $length;
+
+            $value = trim(substr($raw, $valueFrom, $valueTo - $valueFrom));
+            $value = rtrim($value);
+            if(substr($value, -1) === ',') $value = rtrim(substr($value, 0, -1));
+
+            $payload->{$key} = $this->parseLarkLooseJsonValue($value);
+        }
+
+        return $payload;
+    }
+
+    /**
+     * Parse a loose JSON scalar value.
+     *
+     * @param  string    $value
+     * @access private
+     * @return mixed
+     */
+    private function parseLarkLooseJsonValue(string $value): mixed
+    {
+        $value = trim($value);
+        if($value === '') return '';
+        if($value === 'null') return null;
+        if($value === 'true') return true;
+        if($value === 'false') return false;
+        if(is_numeric($value)) return strpos($value, '.') === false ? (int)$value : (float)$value;
+
+        if($value[0] === '"' && substr($value, -1) === '"') $value = substr($value, 1, -1);
+        return $this->decodeLarkLooseString($value);
+    }
+
+    /**
+     * Decode common JSON string escapes without rejecting unescaped quotes.
+     *
+     * @param  string    $value
+     * @access private
+     * @return string
+     */
+    private function decodeLarkLooseString(string $value): string
+    {
+        $value = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/u', function($matches)
+        {
+            $code = hexdec($matches[1]);
+            if($code < 0x80) return chr($code);
+            if($code < 0x800) return chr(0xC0 | ($code >> 6)) . chr(0x80 | ($code & 0x3F));
+            return chr(0xE0 | ($code >> 12)) . chr(0x80 | (($code >> 6) & 0x3F)) . chr(0x80 | ($code & 0x3F));
+        }, $value);
+
+        return strtr($value, array(
+            '\\n' => "\n",
+            '\\r' => "\r",
+            '\\t' => "\t",
+            '\\"' => '"',
+            '\\/' => '/',
+            '\\\\' => '\\'
+        ));
+    }
+
+    /**
+     * Extract task ID from invalid raw JSON.
+     *
+     * @access private
+     * @return int
+     */
+    private function extractLarkTaskIDFromRawBody(): int
+    {
+        $raw = (string)zget($this->larkSyncLog, 'rawBody', '');
+        if($raw == '') return 0;
+
+        if(!preg_match('/"(?:zentaoTaskID|禅道任务 ID|禅道任务ID)"\s*:\s*"?(\\d+)"?/u', $raw, $matches)) return 0;
+        return (int)$matches[1];
     }
 
     /**
@@ -314,17 +507,18 @@ class task extends control
         $data->recordID    = $this->getLarkValue($payload, array('record_id', 'recordID', '飞书记录ID'));
         $data->taskID      = (int)$this->getLarkValue($payload, array('zentaoTaskID', 'zentao_task_id', 'taskID', '禅道任务 ID', '禅道任务ID'));
         $data->execution   = (int)($this->getLarkValue($payload, array('execution', 'executionID', '执行ID')) ?: zget($this->config->task->larkSync, 'execution', 37));
-        $data->name        = trim((string)$this->getLarkValue($payload, array('title', 'name', '任务标题')));
+        $data->name        = $this->normalizeLarkTaskName($this->getLarkValue($payload, array('title', 'name', '任务标题')));
         $data->desc        = (string)$this->getLarkValue($payload, array('desc', 'description', '任务描述'));
         $data->assignedTo  = $this->resolveLarkAssignee($this->getLarkValue($payload, array('assignedTo', 'assignee', '负责人', '执行人', '飞书负责人')));
         $data->openedDate  = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('createdDate', 'created_time', '创建日期', '创建时间')));
         $data->estStarted  = $this->normalizeLarkDate($this->getLarkValue($payload, array('estStarted', 'startTime', '开始时间', '预计开始', '预计开始时间')));
         $data->deadline     = $this->normalizeLarkDate($this->getLarkValue($payload, array('deadline', 'dueDate', '截止日期', '截止时间')));
+        $data->completed    = $this->normalizeLarkBool($this->getLarkValue($payload, array('completed', 'done', 'isDone', '任务完成状态', '完成状态')));
         $data->finishedDate = $this->normalizeLarkDateTime($this->getLarkValue($payload, array('finishedDate', 'completedTime', '完成时间')));
+        if($data->completed === false) $data->error = '飞书任务未完成，不同步。';
         if(!$data->finishedDate) $data->finishedDate = helper::now();
-        if(!$data->estStarted) $data->estStarted = substr($data->finishedDate, 0, 10);
         if(!$data->deadline) $data->deadline = substr($data->finishedDate, 0, 10);
-        $data->realStarted  = $data->estStarted . ' 00:00:00';
+        $data->realStarted  = '';
         $data->estimate    = $this->normalizeLarkFloat($this->getLarkValue($payload, array('estimate', 'workhour', '工时', '预计工时', '工时 (/人时)')));
         if($data->estimate <= 0) $data->estimate = (float)zget($this->config->task->larkSync, 'defaultEstimate', 1);
         $data->pri         = $this->normalizeLarkPriority($this->getLarkValue($payload, array('pri', 'priority', '优先级')));
@@ -361,6 +555,40 @@ class task extends control
         }
 
         return null;
+    }
+
+    /**
+     * Get a query parameter value by possible keys.
+     *
+     * @param  array     $keys
+     * @access private
+     * @return string
+     */
+    private function getLarkQueryValue(array $keys): string
+    {
+        foreach($keys as $key)
+        {
+            if(isset($_GET[$key])) return trim((string)$_GET[$key]);
+        }
+
+        $queryString = (string)zget($_SERVER, 'QUERY_STRING', '');
+        if($queryString == '' && !empty($_SERVER['REQUEST_URI']))
+        {
+            $requestURI = (string)$_SERVER['REQUEST_URI'];
+            $queryString = parse_url($requestURI, PHP_URL_QUERY) ?: '';
+        }
+
+        if($queryString != '')
+        {
+            $params = array();
+            parse_str($queryString, $params);
+            foreach($keys as $key)
+            {
+                if(isset($params[$key])) return trim((string)$params[$key]);
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -409,6 +637,69 @@ class task extends control
     }
 
     /**
+     * Normalize task title from Lark.
+     *
+     * @param  mixed     $name
+     * @access private
+     * @return string
+     */
+    private function normalizeLarkTaskName(mixed $name): string
+    {
+        $name = trim((string)$name);
+        $name = preg_replace('/\s+/u', ' ', $name);
+        if(!is_string($name)) $name = '';
+
+        return $this->truncateLarkTaskName($name);
+    }
+
+    /**
+     * Truncate task title to ZenTao's task name limit.
+     *
+     * @param  string    $name
+     * @param  int       $length
+     * @access private
+     * @return string
+     */
+    private function truncateLarkTaskName(string $name, int $length = 255): string
+    {
+        if($length <= 3) return substr($name, 0, $length);
+        if(function_exists('mb_strlen') && mb_strlen($name, 'UTF-8') > $length) return mb_substr($name, 0, $length - 3, 'UTF-8') . '...';
+        if(!function_exists('mb_strlen') && strlen($name) > $length) return substr($name, 0, $length - 3) . '...';
+
+        return $name;
+    }
+
+    /**
+     * Complete start/deadline dates before saving Lark task data.
+     *
+     * @param  object       $data
+     * @param  object|null  $oldTask
+     * @access private
+     * @return void
+     */
+    private function completeLarkTaskDates(object $data, ?object $oldTask = null): void
+    {
+        $finishedDate = (string)zget($data, 'finishedDate', '');
+        $finishedDay  = $finishedDate ? substr($finishedDate, 0, 10) : helper::today();
+
+        if(!$data->deadline) $data->deadline = $finishedDay;
+
+        if(!$data->estStarted)
+        {
+            if($oldTask && !helper::isZeroDate($oldTask->estStarted)) $data->estStarted = $oldTask->estStarted;
+            if(!$data->estStarted || (!helper::isZeroDate($data->deadline) && $data->deadline < $data->estStarted)) $data->estStarted = $data->deadline ?: $finishedDay;
+        }
+
+        if(!$data->estStarted) $data->estStarted = $finishedDay;
+        $data->realStarted = $data->estStarted . ' 00:00:00';
+
+        if(!helper::isZeroDate($data->deadline) && !helper::isZeroDate($data->estStarted) && $data->deadline < $data->estStarted)
+        {
+            $data->error = sprintf('截止日期不能早于预计开始：预计开始 %s，截止日期 %s。', $data->estStarted, $data->deadline);
+        }
+    }
+
+    /**
      * Apply normalized data to existing task.
      *
      * @param  object    $task
@@ -438,6 +729,34 @@ class task extends control
             $task->finishedDate = $data->finishedDate;
         }
         if($oldTask->name != $task->name || $oldTask->deadline != $task->deadline) $task->version = (int)$oldTask->version + 1;
+    }
+
+    /**
+     * Remove expanded task fields that cannot be written back to zt_task.
+     *
+     * @param  object    $task
+     * @access private
+     * @return void
+     */
+    private function sanitizeLarkTaskForUpdate(object $task): void
+    {
+        $taskFields = array_flip(array(
+            'id', 'project', 'parent', 'isParent', 'isTpl', 'path', 'execution', 'module',
+            'design', 'story', 'storyVersion', 'designVersion', 'fromBug', 'fromIssue',
+            'feedback', 'name', 'complexity', 'type', 'mode', 'color', 'pri', 'estimate',
+            'consumed', 'left', 'deadline', 'status', 'subStatus', 'mailto', 'keywords',
+            'desc', 'version', 'openedBy', 'openedDate', 'assignedTo', 'assignedDate',
+            'estStarted', 'realStarted', 'finishedBy', 'finishedDate', 'finishedList',
+            'canceledBy', 'canceledDate', 'closedBy', 'closedDate', 'realDuration',
+            'planDuration', 'closedReason', 'lastEditedBy', 'lastEditedDate',
+            'activatedDate', 'order', 'repo', 'mr', 'entry', 'lines', 'v1', 'v2',
+            'deleted', 'vision'
+        ));
+
+        foreach(get_object_vars($task) as $field => $value)
+        {
+            if(!isset($taskFields[$field]) || is_array($value) || is_object($value)) unset($task->{$field});
+        }
     }
 
     /**
@@ -536,6 +855,28 @@ class task extends control
     }
 
     /**
+     * Normalize boolean values from Lark.
+     *
+     * @param  mixed     $value
+     * @access private
+     * @return bool|null
+     */
+    private function normalizeLarkBool(mixed $value): ?bool
+    {
+        if(is_array($value)) $value = current($value);
+        if(is_object($value)) $value = $value->value ?? $value->text ?? $value->name ?? null;
+        if($value === null || $value === '') return null;
+        if(is_bool($value)) return $value;
+        if(is_numeric($value)) return (int)$value === 1;
+
+        $value = strtolower(trim((string)$value));
+        if(in_array($value, array('true', 'yes', 'done', 'completed', '已完成', '完成'), true)) return true;
+        if(in_array($value, array('false', 'no', 'wait', 'doing', '未完成', '未完成任务'), true)) return false;
+
+        return null;
+    }
+
+    /**
      * Normalize date.
      *
      * @param  mixed     $value
@@ -581,7 +922,7 @@ class task extends control
      */
     private function buildTaskLink(int $taskID): string
     {
-        return $this->createLink('task', 'view', "taskID={$taskID}");
+        return "https://pm.hexincorp.com/index.php?m=task&f=view&taskID={$taskID}";
     }
 
     /**
@@ -598,7 +939,161 @@ class task extends control
     {
         http_response_code($status);
         header('Content-Type: application/json; charset=utf-8');
-        helper::end(json_encode(array_merge(array('success' => $success, 'message' => $message, 'errorText' => $this->formatLarkSyncMessage($message)), $extra), JSON_UNESCAPED_UNICODE));
+
+        $errorText = $this->formatLarkSyncMessage($message);
+        $response  = array(
+            'success'   => $success,
+            'message'   => $success || is_string($message) ? (string)$message : '保存失败',
+            'errorText' => $errorText,
+            'action'    => '',
+            'taskID'    => 0,
+            'taskLink'  => '',
+            'syncTime'  => helper::now()
+        );
+
+        $response = array_merge($response, $extra);
+        $this->saveLarkSyncLog($success, $status, $response);
+
+        helper::end(json_encode($response, JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * Initialize Lark sync log context.
+     *
+     * @access private
+     * @return void
+     */
+    private function initLarkSyncLog(): void
+    {
+        $this->larkSyncLog = array(
+            'requestID'    => function_exists('uniqid') ? uniqid('lark_', true) : (string)mt_rand(),
+            'requestTime'  => helper::now(),
+            'method'       => (string)zget($_SERVER, 'REQUEST_METHOD', ''),
+            'requestURI'   => $this->truncateLarkSyncLogValue((string)zget($_SERVER, 'REQUEST_URI', '')),
+            'queryString'  => $this->truncateLarkSyncLogValue((string)zget($_SERVER, 'QUERY_STRING', '')),
+            'remoteAddr'   => (string)zget($_SERVER, 'REMOTE_ADDR', ''),
+            'userAgent'    => $this->truncateLarkSyncLogValue((string)zget($_SERVER, 'HTTP_USER_AGENT', '')),
+            'contentType'  => '',
+            'recordID'     => '',
+            'larkTaskID'   => '',
+            'runID'        => '',
+            'zentaoTaskID' => 0,
+            'taskName'     => '',
+            'assignee'     => '',
+            'assignedTo'   => '',
+            'execution'    => 0,
+            'estimate'     => 0,
+            'completed'    => null,
+            'estStarted'   => '',
+            'deadline'     => '',
+            'finishedDate' => '',
+            'rawBody'      => '',
+            'jsonError'    => ''
+        );
+    }
+
+    /**
+     * Append query params to Lark sync log.
+     *
+     * @access private
+     * @return void
+     */
+    private function appendLarkSyncLogQueryParams(): void
+    {
+        $recordID = $this->getLarkQueryValue(array('recordID', 'record_id', 'recordId', '飞书记录ID'));
+        $taskID   = $this->getLarkQueryValue(array('larkTaskID', 'taskGuid', 'feishuTaskID', '任务 ID', '任务ID'));
+        $runID    = $this->getLarkQueryValue(array('runID', 'runId', 'automationRunID', 'logID', '日志ID', '飞书运行日志ID'));
+
+        if($recordID != '') $this->larkSyncLog['recordID'] = $recordID;
+        if($taskID != '')   $this->larkSyncLog['larkTaskID'] = $taskID;
+        if($runID != '')    $this->larkSyncLog['runID'] = $runID;
+    }
+
+    /**
+     * Append source payload fields to Lark sync log.
+     *
+     * @param  object    $payload
+     * @access private
+     * @return void
+     */
+    private function appendLarkSyncLogPayload(object $payload): void
+    {
+        $recordID = (string)$this->getLarkValue($payload, array('record_id', 'recordID', '飞书记录ID'));
+        $taskID   = (string)$this->getLarkValue($payload, array('taskGuid', 'taskID', '任务 ID', '任务ID'));
+        if($recordID != '') $this->larkSyncLog['recordID'] = $recordID;
+        if($taskID != '')   $this->larkSyncLog['larkTaskID'] = $taskID;
+
+        $assignee = $this->getLarkValue($payload, array('assignedTo', 'assignee', '负责人', '执行人', '飞书负责人'));
+        if(is_array($assignee)) $assignee = current($assignee);
+        if(is_object($assignee)) $assignee = $assignee->name ?? $assignee->realname ?? $assignee->en_name ?? $assignee->email ?? '';
+        $this->larkSyncLog['assignee'] = $this->truncateLarkSyncLogValue((string)$assignee);
+    }
+
+    /**
+     * Append normalized data to Lark sync log.
+     *
+     * @param  object    $data
+     * @access private
+     * @return void
+     */
+    private function appendLarkSyncLogData(object $data): void
+    {
+        $this->larkSyncLog['zentaoTaskID'] = (int)zget($data, 'taskID', 0);
+        $this->larkSyncLog['taskName']     = $this->truncateLarkSyncLogValue((string)zget($data, 'name', ''));
+        $this->larkSyncLog['assignedTo']   = (string)zget($data, 'assignedTo', '');
+        $this->larkSyncLog['execution']    = (int)zget($data, 'execution', 0);
+        $this->larkSyncLog['estimate']     = (float)zget($data, 'estimate', 0);
+        $this->larkSyncLog['completed']    = zget($data, 'completed', null);
+        $this->larkSyncLog['estStarted']   = (string)zget($data, 'estStarted', '');
+        $this->larkSyncLog['deadline']     = (string)zget($data, 'deadline', '');
+        $this->larkSyncLog['finishedDate'] = (string)zget($data, 'finishedDate', '');
+    }
+
+    /**
+     * Save Lark sync log.
+     *
+     * @param  bool      $success
+     * @param  int       $status
+     * @param  array     $response
+     * @access private
+     * @return void
+     */
+    private function saveLarkSyncLog(bool $success, int $status, array $response): void
+    {
+        if(empty($this->larkSyncLog)) $this->initLarkSyncLog();
+
+        $log = $this->larkSyncLog;
+        $log['success']   = $success;
+        $log['httpCode']  = $status;
+        $log['action']    = (string)zget($response, 'action', '');
+        $log['taskID']    = (int)zget($response, 'taskID', 0);
+        $log['taskLink']  = (string)zget($response, 'taskLink', '');
+        $log['message']   = $this->truncateLarkSyncLogValue((string)zget($response, 'message', ''));
+        $log['errorText'] = $this->truncateLarkSyncLogValue((string)zget($response, 'errorText', ''));
+
+        $logRoot = $this->app->getTmpRoot() . 'log' . DS;
+        if(!is_dir($logRoot)) @mkdir($logRoot, 0755, true);
+
+        $logFile = $logRoot . 'lark_sync.' . date('Ymd') . '.log.php';
+        $content = json_encode($log, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n";
+        if(!file_exists($logFile)) $content = "<?php\ndie();\n?" . ">\n" . $content;
+
+        @file_put_contents($logFile, $content, FILE_APPEND);
+    }
+
+    /**
+     * Truncate long log values.
+     *
+     * @param  string    $value
+     * @param  int       $length
+     * @access private
+     * @return string
+     */
+    private function truncateLarkSyncLogValue(string $value, int $length = 2000): string
+    {
+        if(function_exists('mb_strlen') && mb_strlen($value, 'UTF-8') > $length) return mb_substr($value, 0, $length, 'UTF-8') . '...';
+        if(!function_exists('mb_strlen') && strlen($value) > $length) return substr($value, 0, $length) . '...';
+        return $value;
     }
 
     /**
