@@ -29,9 +29,10 @@ LARK_ZENTAO_SYNC_ACCOUNT=admin
 - 默认任务类型: `devel`
 - 默认复杂度: `L1`
 - 默认工时: `1` 人时。飞书 `工时 (/人时)` 为空或 `0` 时使用该值，避免禅道生产环境要求“最初预计”必填时同步失败。
-- 默认截止日期: 飞书 `截止时间` 为空时，使用 `完成时间` 的日期部分；如果完成时间也为空，使用接口处理时间。
+- 默认日期: 飞书 `截止时间` 为空时，使用 `完成时间` 的日期部分；如果完成时间也为空，使用接口处理时间。飞书 `开始时间` 为空时，更新已有任务优先保留禅道原预计开始，但如果它晚于本次截止日期则改用截止日期；新建任务优先用截止日期作为预计开始，最后才用完成日期兜底。
 - 负责人映射规则: 取飞书人员字段的第一个人，依次使用 `account`、`realname`、`email` 精确匹配禅道用户；多人任务仍只同步第一个负责人。
 - 优先级映射: 飞书 `急` -> 禅道 `A1`，飞书 `中` -> 禅道 `A2`，飞书 `低` -> 禅道 `A3`。
+- 完成状态由飞书自动化触发条件筛选，建议限制 `任务完成状态=true`、`负责人` 不为空、`禅道任务 ID` 为空。HTTP 请求体不需要传 `任务完成状态`；接口只在请求体明确传入 `任务完成状态=false` 时拒绝同步。
 
 ## 飞书表格字段建议
 
@@ -44,6 +45,14 @@ LARK_ZENTAO_SYNC_ACCOUNT=admin
 - `同步错误`: 文本。字段 ID: `fldIRBbTVY`
 
 ## 飞书自动化请求体
+
+请求 URL 可以额外带定位参数，方便排查日志，例如：
+
+```text
+https://mp.hexincorp.com:42443/index.php?m=task&f=syncFromLark&larkTaskID={{任务 ID}}&recordID={{记录ID}}&runID={{运行日志ID}}
+```
+
+参数名建议使用 `larkTaskID` / `recordID` / `runID`。不要把飞书的任务 ID 命名成 `taskID`，避免和接口返回的禅道任务 ID 混淆。
 
 在「发送 HTTP 请求」动作中优先选择表单或 URL-encoded 参数，逐字段传值；不要把飞书字段直接拼到 Raw JSON 字符串里。任务描述、标题等字段可能包含换行、双引号、代码片段，直接拼 Raw JSON 会生成非法 JSON，接口会返回 `Invalid JSON request body.`。
 
@@ -70,10 +79,14 @@ LARK_ZENTAO_SYNC_ACCOUNT=admin
 {
   "success": true,
   "message": "保存成功",
+  "errorText": "",
   "action": "created",
   "taskID": 123,
-  "taskLink": "/index.php?m=task&f=view&taskID=123"
+  "taskLink": "https://pm.hexincorp.com/index.php?m=task&f=view&taskID=123",
+  "syncTime": "2026-06-11 17:54:45"
 }
 ```
 
-飞书自动化后续步骤应将返回的 `taskID` 回写到 `禅道任务 ID`，将 `taskLink` 回写到 `禅道任务链接`，并更新同步状态。
+同步业务失败时接口仍返回 HTTP 200，body 中 `success` 为 `false`，`errorText` 保存失败原因，方便飞书自动化继续执行并回写 `同步错误` 字段。鉴权失败或请求方法错误仍返回对应 HTTP 错误码。
+
+飞书自动化后续步骤应将返回的 `taskID` 回写到 `禅道任务 ID`，将 `taskLink` 回写到 `禅道任务链接`，将 `syncTime` 回写到 `同步时间`，并更新同步状态。不要使用 HTTP 节点的运行结束时间回写 `同步时间`，否则可能被飞书按 UTC 再转换一次，显示成未来时间。
